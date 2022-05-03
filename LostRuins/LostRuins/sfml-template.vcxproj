@@ -156,6 +156,7 @@
     <ClCompile Include="FrameWork\Mgr\TextureHolder.cpp" />
     <ClCompile Include="FrameWork\Mgr\Utils.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\Monster.cpp" />
+    <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp" />
     <ClCompile Include="FrameWork\Scene\Scene.cpp" />
     <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp" />
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="FrameWork\Mgr\TextureHolder.h" />
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
     <ClInclude Include="FrameWork\Object\Monster\Monster.h" />
+    <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h" />
     <ClInclude Include="FrameWork\Scene\Scene.h" />
     <ClInclude Include="FrameWork\Scene\TestSceneKK.h" />
     <ClInclude Include="FrameWork\Scene\TitleScene.h" />

@@ -35,6 +35,9 @@
     <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="FrameWork">
@@ -92,6 +95,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
       <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,14 +4,13 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 {
 	std::cout << "123";
 	this->sceneMgr = sceneManager;
-	Goblin.MonsterInit();
+	Goblin.MonsterInit(20,3,50.f);
 }
 
 void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
 	Goblin.Update(dt);
 	Goblin.Walk(dt);
-	
 }
 
 void TestSceneKK::Draw(RenderWindow* window, View* mainView)
