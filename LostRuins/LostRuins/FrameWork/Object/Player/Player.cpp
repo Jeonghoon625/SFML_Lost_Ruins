@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 void Player::Init()
 {
@@ -22,8 +23,8 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	resolustion = res;
 	this->tileSize = tileSize;
 
-	postion.x = this->gameMap.width * 0.5f;
-	postion.y = 0;
+	position.x = this->gameMap.width * 0.5f;
+	position.y = 200;
 }
 
 bool Player::OnHitted(Time timeHit)
@@ -43,7 +44,7 @@ FloatRect Player::GetGobalBound() const
 
 Vector2f Player::GetPosition() const
 {
-	return postion;
+	return position;
 }
 
 Sprite Player::GetSprite() const
@@ -66,11 +67,11 @@ bool Player::GetIsJump()
 	return isJump;
 }
 
-void Player::Update(float dt)
+void Player::Update(float dt, std::vector <TestBlock*> blocks)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
-	float v = InputManager::GetAxisRaw(Axis::Vertical);
-	Vector2f dir(h, v);
+	float bk = InputManager::GetAxisRaw(Axis::Vertical);
+	Vector2f dir(h, bk);
 
 	Utils::Normalize(dir);
 
@@ -102,14 +103,23 @@ void Player::Update(float dt)
 		SetIsJump(false);
 	}
 
-	postion.x += dir.x * speed * dt;
-
+	position.x += dir.x * speed * dt;
 	vel += GRAVITY_POWER * dt;
-	postion.y += vel * dt;
-
+	position.y += vel * dt;
 	lastDir = dir;
 
-	sprite.setPosition(postion);
+	sprite.setPosition(position);
+
+	for (auto bk : blocks)
+	{
+		if (sprite.getGlobalBounds().top+ sprite.getGlobalBounds().height > bk->GetBlockShape().getGlobalBounds().top)
+		{
+			std::cout << "fall" << std::endl;
+			position.y = bk->GetBlockShape().getGlobalBounds().top;
+			sprite.setPosition(position);
+		}
+	}
+
 	animation.Update(dt);
 }
 

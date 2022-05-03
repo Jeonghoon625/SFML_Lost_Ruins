@@ -7,6 +7,7 @@
 #include "../../Animation/rapidcsv.h"
 #include "../../Mgr/Utils.h"
 #include "../../Mgr/InputManager.h"
+#include "../TestBlock/TestBlock.h"
 
 using namespace sf;
 
@@ -33,7 +34,7 @@ private:
 	TextureHolder textureHlr;
 	AnimationController animation;
 
-	Vector2f postion;
+	Vector2f position;
 
 	Vector2f lastDir;
 
@@ -74,7 +75,7 @@ public:
 	bool GetIsJump();
 
 	void Init();
-	void Update(float dt);
+	void Update(float dt, std::vector <TestBlock*> blocks);
 	void Draw(RenderWindow* window, View* mainView);
 
 	void AnimationInit();
