@@ -11,6 +11,7 @@ void Player::Init()
 
 	Utils::SetOrigin(sprite, Pivots::CC);
 
+	sprite.setOrigin(15.5f, 50.f);
 	sprite.setScale(3.f, 3.f);
 	AnimationInit();
 	animation.Play("Idle");
@@ -58,23 +59,46 @@ int Player::GetHealth() const
 
 void Player::Update(float dt)
 {
-	if(InputManager::GetKey(Keyboard::Right))
+	float h = InputManager::GetAxis(Axis::Horizontal);
+	float v = InputManager::GetAxis(Axis::Vertical);
+	Vector2f dir(h, v);
+
+	float length = sqrt(dir.x * dir.x + dir.y * dir.y);
+	if (length > 1)
+	{
+		dir /= length;
+	}
+
+	/*if(InputManager::GetKey(Keyboard::Right))
 	{
 		dir = Vector2f(1.f, 0.f);	
 	}
 	else
 	{
 		dir = Vector2f(0.f, 0.f);
-	}
+	}*/
 	
 	if (InputManager::GetKeyDown(Keyboard::Right))
 	{
+		sprite.setScale(3.f, 3.f);
 		animation.Play("Run");
 
 	}
-
-	if (InputManager::GetKeyUp(Keyboard::Right))
+	else if (InputManager::GetKeyUp(Keyboard::Right))
 	{
+		sprite.setScale(3.f, 3.f);
+		animation.Play("Idle");
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Left))
+	{
+		sprite.setScale(-3.f, 3.f);
+		animation.Play("Run");
+
+	}
+	else if (InputManager::GetKeyUp(Keyboard::Left))
+	{
+		sprite.setScale(-3.f, 3.f);
 		animation.Play("Idle");
 	}
 

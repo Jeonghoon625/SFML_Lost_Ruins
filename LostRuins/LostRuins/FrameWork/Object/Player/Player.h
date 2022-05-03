@@ -21,7 +21,7 @@ enum class KeyInput
 class Player
 {
 private:
-	const float START_SPEED = 450;
+	const float START_SPEED = 600;
 	const float START_HEALTH = 20;
 	const float START_MANA = 20;
 	const float START_IMMUNE_MS = 200;
