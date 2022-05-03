@@ -71,13 +71,13 @@ void Player::Update(float dt)
 
 	/*if(InputManager::GetKey(Keyboard::Right))
 	{
-		dir = Vector2f(1.f, 0.f);	
+		dir = Vector2f(1.f, 0.f);
 	}
 	else
 	{
 		dir = Vector2f(0.f, 0.f);
 	}*/
-	
+
 	if (InputManager::GetKeyDown(Keyboard::Right))
 	{
 		sprite.setScale(3.f, 3.f);
