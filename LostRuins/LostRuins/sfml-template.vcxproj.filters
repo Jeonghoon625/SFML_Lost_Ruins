@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="FrameWork\FrameWork.cpp">
       <Filter>FrameWork</Filter>
     </ClCompile>
@@ -27,8 +27,15 @@
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Mgr\SceneManager.cpp">
-      <Filter>FrameWork\Mgr</Filter>
+      <Filter>FrameWork\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TestSceneTT.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="FrameWork\Scene\TestScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
@@ -75,9 +82,6 @@
     <ClInclude Include="FrameWork\Animation\rapidcsv.h">
       <Filter>FrameWork\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Mgr\SceneManager.h">
-      <Filter>FrameWork\Mgr</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Mgr\TextureHolder.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
@@ -87,6 +91,16 @@
     <ClInclude Include="FrameWork\Mgr\InputManager.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TestSceneTT.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Mgr\SceneManager.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="FrameWork\Scene\TestScene.h">
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>

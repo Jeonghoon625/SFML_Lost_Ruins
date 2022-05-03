@@ -2,6 +2,7 @@
 #include "SFML/Graphics.hpp"
 #include "../Scene/Scene.h"
 #include "../Scene/TitleScene.h"
+#include "../Scene/TestSceneTT.h"
 #include "../Scene/TestScene.h"
 
 using namespace sf;
