@@ -28,7 +28,8 @@ private:
 	const float START_HEALTH = 20;
 	const float START_MANA = 20;
 	const float START_IMMUNE_MS = 200;
-
+	const float GRAVITY_POWER = 980.f;
+ 
 	TextureHolder textureHlr;
 	AnimationController animation;
 
@@ -47,9 +48,12 @@ private:
 	int maxHealth;
 
 	float speed;
+	float vel;
 
 	float immuneMs;
 	bool immune;
+
+	bool isJump;
 
 	Time lastHit;
 
@@ -65,6 +69,9 @@ public:
 	Vector2f GetPosition() const;
 	Sprite GetSprite() const;
 	int GetHealth() const;
+
+	void SetIsJump(bool jump);
+	bool GetIsJump();
 
 	void Init();
 	void Update(float dt);

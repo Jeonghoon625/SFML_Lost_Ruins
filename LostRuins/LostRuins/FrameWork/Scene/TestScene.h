@@ -16,6 +16,8 @@ class TestScene : public Scene
 
 	Sprite heroineAction;
 
+	RectangleShape testGround;
+
 public:
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView);

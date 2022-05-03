@@ -6,6 +6,7 @@ void Player::Init()
 	health = START_HEALTH;
 	maxHealth = START_HEALTH;
 	immuneMs = START_IMMUNE_MS;
+	vel = 0.f;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -22,7 +23,7 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	postion.x = this->gameMap.width * 0.5f;
-	postion.y = this->gameMap.height * 0.5f;
+	postion.y = 0;
 }
 
 bool Player::OnHitted(Time timeHit)
@@ -55,6 +56,16 @@ int Player::GetHealth() const
 	return health;
 }
 
+void Player::SetIsJump(bool isJump)
+{
+	this->isJump = isJump;
+}
+
+bool Player::GetIsJump()
+{
+	return isJump;
+}
+
 void Player::Update(float dt)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
@@ -63,6 +74,7 @@ void Player::Update(float dt)
 
 	Utils::Normalize(dir);
 
+	// 이동
 	if (dir.x == 0 && lastDir != dir)
 	{
 		animation.Play("Idle");
@@ -78,8 +90,23 @@ void Player::Update(float dt)
 		sprite.setScale(scaleFlipX);
 	}
 
-	postion += dir * speed * dt;
-	postion.y = resolustion.y * 0.5f;
+	// 점프
+	if (InputManager::GetKey(Keyboard::Space) && GetIsJump() == false)
+	{
+		SetIsJump(true);
+	}
+
+	if (GetIsJump() == true)
+	{
+
+		SetIsJump(false);
+	}
+
+	postion.x += dir.x * speed * dt;
+
+	vel += GRAVITY_POWER * dt;
+	postion.y += vel * dt;
+
 	lastDir = dir;
 
 	sprite.setPosition(postion);
@@ -88,6 +115,7 @@ void Player::Update(float dt)
 
 void Player::Draw(RenderWindow* window, View* mainView)
 {
+	window->setView(*mainView);
 	window->draw(sprite);
 }
 
