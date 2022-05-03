@@ -1,0 +1,8 @@
+ID,FPS,"LOOP TYPE(0:Single, 1:Loop)",CLIP PATH
+GoblinAttackerIdle,32,1,data_tables/animations/monster/monster_animation_goblin_attacker_idle.csv
+GoblinAttackerWalk,6,1,data_tables/animations/monster/monster_animation_goblin_attacker_walk.csv
+GoblinAttackerRun,6,1,data_tables/animations/monster/monster_animation_goblin_attacker_run.csv
+GoblinAttackerAttack,7,0,data_tables/animations/monster/monster_animation_goblin_attacker_attack.csv
+GoblinAttackerAttackBlocked,1,0,data_tables/animations/monster/monster_animation_goblin_attacker_attack_blocked.csv
+GoblinAttackerDemageTaken,1,0,data_tables/animations/monster/monster_animation_goblin_attacker_damage_taken.csv
+GoblinAttackerDead,8,0,data_tables/animations/monster/monster_animation_goblin_attacker_dead.csv

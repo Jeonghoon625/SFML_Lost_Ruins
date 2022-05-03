@@ -3,6 +3,7 @@
 #include "../Scene/Scene.h"
 #include "../Scene/TitleScene.h"
 #include "../Scene/TestSceneTT.h"
+#include "../Scene/TestSceneKK.h"
 
 using namespace sf;
 
