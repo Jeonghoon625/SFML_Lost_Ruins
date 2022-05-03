@@ -29,6 +29,12 @@
     <ClCompile Include="FrameWork\Mgr\SceneManager.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\Monster.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="FrameWork">
@@ -42,6 +48,12 @@
     </Filter>
     <Filter Include="FrameWork\Mgr">
       <UniqueIdentifier>{fc9423f4-e7ee-49c6-a52e-bb06a78aa91b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object">
+      <UniqueIdentifier>{88dc38e6-bd20-44a1-ab70-003d01123e37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\Monster">
+      <UniqueIdentifier>{791f9a7d-2944-4cd7-b714-6db86b344098}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +86,12 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Mgr\InputManager.h">
       <Filter>FrameWork\Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\Monster.h">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
+      <Filter>FrameWork\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -79,7 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\$(ProjectName)-bin</OutDir>
+    <OutDir>..\$(ProjectName)-bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -155,7 +155,9 @@
     <ClCompile Include="FrameWork\Mgr\SceneManager.cpp" />
     <ClCompile Include="FrameWork\Mgr\TextureHolder.cpp" />
     <ClCompile Include="FrameWork\Mgr\Utils.cpp" />
+    <ClCompile Include="FrameWork\Object\Monster\Monster.cpp" />
     <ClCompile Include="FrameWork\Scene\Scene.cpp" />
+    <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp" />
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -168,7 +170,9 @@
     <ClInclude Include="FrameWork\Mgr\SceneManager.h" />
     <ClInclude Include="FrameWork\Mgr\TextureHolder.h" />
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
+    <ClInclude Include="FrameWork\Object\Monster\Monster.h" />
     <ClInclude Include="FrameWork\Scene\Scene.h" />
+    <ClInclude Include="FrameWork\Scene\TestSceneKK.h" />
     <ClInclude Include="FrameWork\Scene\TitleScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
