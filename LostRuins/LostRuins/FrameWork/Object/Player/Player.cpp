@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 void Player::Init()
 {
@@ -6,6 +7,8 @@ void Player::Init()
 	health = START_HEALTH;
 	maxHealth = START_HEALTH;
 	immuneMs = START_IMMUNE_MS;
+	vel = 0.f;
+	isFalling = true;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -21,8 +24,8 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	resolustion = res;
 	this->tileSize = tileSize;
 
-	postion.x = this->gameMap.width * 0.5f;
-	postion.y = this->gameMap.height * 0.5f;
+	position.x = this->gameMap.width * 0.5f;
+	position.y = -2000;
 }
 
 bool Player::OnHitted(Time timeHit)
@@ -42,7 +45,7 @@ FloatRect Player::GetGobalBound() const
 
 Vector2f Player::GetPosition() const
 {
-	return postion;
+	return position;
 }
 
 Sprite Player::GetSprite() const
@@ -55,7 +58,17 @@ int Player::GetHealth() const
 	return health;
 }
 
-void Player::Update(float dt)
+void Player::SetIsJump(bool isJump)
+{
+	this->isJump = isJump;
+}
+
+bool Player::GetIsJump()
+{
+	return isJump;
+}
+
+void Player::Update(float dt, std::vector <TestBlock*> blocks)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
 	float v = InputManager::GetAxisRaw(Axis::Vertical);
@@ -63,6 +76,7 @@ void Player::Update(float dt)
 
 	Utils::Normalize(dir);
 
+	// 이동
 	if (dir.x == 0 && lastDir != dir)
 	{
 		dir = Vector2f(1.f, 0.f);
@@ -79,16 +93,54 @@ void Player::Update(float dt)
 		sprite.setScale(scaleFlipX);
 	}
 
-	postion += dir * speed * dt;
-	postion.y = resolustion.y * 0.5f;
+	// 점프
+	if (InputManager::GetKey(Keyboard::Space) && GetIsJump() == false)
+	{
+		SetIsJump(true);
+	}
+
+	if (GetIsJump() == true)
+	{
+
+		SetIsJump(false);
+	}
+
+	position.x += dir.x * speed * dt;
+	if (isFalling == true)
+	{
+		vel += GRAVITY_POWER * dt;
+		position.y += vel * dt;
+	}
 	lastDir = dir;
 
-	sprite.setPosition(postion);
+	sprite.setPosition(position);
+
+	// 낙하
+	for (auto bk : blocks)
+	{
+		bool onTheBlock = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > bk->GetBlockShape().getGlobalBounds().top;
+
+		if (sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && onTheBlock && isFalling == true)
+		{
+			isFalling == false;
+			vel = 0.f;
+			position.y = bk->GetBlockShape().getGlobalBounds().top;
+		}
+		else if (!sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && isFalling == false)
+		{
+			isFalling == true;
+		}
+	}
 	animation.Update(dt);
+
+	//bool onTheBlock = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > bk->GetBlockShape().getGlobalBounds().top;
+	//bool leftTheBlock = sprite.getGlobalBounds().left + sprite.getGlobalBounds().width < bk->GetBlockShape().getGlobalBounds().left;
+	//bool rightTheBlock = sprite.getGlobalBounds().left > bk->GetBlockShape().getGlobalBounds().left + bk->GetBlockShape().getGlobalBounds().width;
 }
 
 void Player::Draw(RenderWindow* window, View* mainView)
 {
+	window->setView(*mainView);
 	window->draw(sprite);
 }
 

@@ -156,6 +156,7 @@
     <ClCompile Include="FrameWork\Mgr\TextureHolder.cpp" />
     <ClCompile Include="FrameWork\Mgr\Utils.cpp" />
     <ClCompile Include="FrameWork\Object\Player\Player.cpp" />
+    <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\Monster.cpp" />
     <ClCompile Include="FrameWork\Scene\Scene.cpp" />
     <ClCompile Include="FrameWork\Scene\TestScene.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="FrameWork\Mgr\TextureHolder.h" />
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
     <ClInclude Include="FrameWork\Object\Player\Player.h" />
+    <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h" />
     <ClInclude Include="FrameWork\Object\Monster\Monster.h" />
     <ClInclude Include="FrameWork\Scene\Scene.h" />
     <ClInclude Include="FrameWork\Scene\TestScene.h" />

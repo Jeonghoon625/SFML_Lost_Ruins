@@ -7,6 +7,7 @@
 #include "../../Animation/rapidcsv.h"
 #include "../../Mgr/Utils.h"
 #include "../../Mgr/InputManager.h"
+#include "../TestBlock/TestBlock.h"
 
 using namespace sf;
 
@@ -28,11 +29,12 @@ private:
 	const float START_HEALTH = 20;
 	const float START_MANA = 20;
 	const float START_IMMUNE_MS = 200;
-
+	const float GRAVITY_POWER = 980.f;
+ 
 	TextureHolder textureHlr;
 	AnimationController animation;
 
-	Vector2f postion;
+	Vector2f position;
 
 	Vector2f lastDir;
 
@@ -47,9 +49,13 @@ private:
 	int maxHealth;
 
 	float speed;
+	float vel;
 
 	float immuneMs;
 	bool immune;
+
+	bool isFalling;
+	bool isJump;
 
 	Time lastHit;
 
@@ -66,8 +72,11 @@ public:
 	Sprite GetSprite() const;
 	int GetHealth() const;
 
+	void SetIsJump(bool jump);
+	bool GetIsJump();
+
 	void Init();
-	void Update(float dt);
+	void Update(float dt, std::vector <TestBlock*> blocks);
 	void Draw(RenderWindow* window, View* mainView);
 
 	void AnimationInit();

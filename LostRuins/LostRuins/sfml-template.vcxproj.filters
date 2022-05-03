@@ -57,6 +57,9 @@
     <ClCompile Include="FrameWork\Object\Player\Player.cpp">
       <Filter>FrameWork\Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp">
+      <Filter>FrameWork\Object\TestBlock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="FrameWork">
@@ -82,6 +85,9 @@
     </Filter>
     <Filter Include="FrameWork\Object\Player">
       <UniqueIdentifier>{1e54ffe6-b73a-4967-86df-8a0faa8b7014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\TestBlock">
+      <UniqueIdentifier>{792e49d2-b9c1-4507-9143-6a4f9a61abc5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Player\Player.h">
       <Filter>FrameWork\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h">
+      <Filter>FrameWork\Object\TestBlock</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

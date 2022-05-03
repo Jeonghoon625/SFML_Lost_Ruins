@@ -1,8 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <algorithm>
 #include "Scene.h"
 #include "../Mgr/TextureHolder.h"
 #include "../Object/Player/Player.h"
+#include "../Object/TestBlock/TestBlock.h"
 
 class TestScene : public Scene
 {
@@ -11,10 +13,13 @@ class TestScene : public Scene
 	Vector2i resolution;
 
 	Player player;
+	IntRect gameMap;
 
 	Texture textureHeroine;
 
 	Sprite heroineAction;
+
+	vector <TestBlock*> blocks;
 
 public:
 	virtual void Init(SceneManager* sceneManager);
@@ -22,5 +27,6 @@ public:
 	virtual void Draw(RenderWindow* window, View* mainView);
 	virtual ~TestScene();
 
+	void CreateBlock();
 };
 
