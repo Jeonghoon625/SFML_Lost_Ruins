@@ -95,6 +95,11 @@ void TestUi::Init(SceneManager* sceneManager)
 	ButtonA.setTexture(textureUI);
 	ButtonA.setTextureRect(IntRect(62, 605, 42, 40));
 	ButtonA.setPosition(1590, 10); // 1540, 10
+
+	Invenwindow.setTexture(textureUI);
+	Invenwindow.setTextureRect(IntRect(1, 1068, 256, 256));
+	//Invenwindow.setScale(Vector2f(2.0f, 2.0f));
+	Invenwindow.setPosition(500, 500);
 }
 
 void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
@@ -127,4 +132,6 @@ void TestUi::Draw(RenderWindow* window, View* mainView)
 	window->draw(ButtonZ);
 	window->draw(ButtonS);
 	window->draw(ButtonA);
+
+	window->draw(Invenwindow);
 }

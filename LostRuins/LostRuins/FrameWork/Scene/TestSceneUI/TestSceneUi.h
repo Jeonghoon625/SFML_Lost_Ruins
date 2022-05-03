@@ -41,6 +41,8 @@ private:
 	Sprite ButtonZ;
 	Sprite ButtonX;
 
+	Sprite Invenwindow;
+
 	RectangleShape topBar;
 	RectangleShape bottomBar;
 
