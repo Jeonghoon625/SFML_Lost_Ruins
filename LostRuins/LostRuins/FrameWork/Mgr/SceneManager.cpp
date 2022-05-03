@@ -2,7 +2,7 @@
 
 void SceneManager::Init()
 {
-	SceneSwitch(SceneType::TITLE);
+	SceneSwitch(SceneType::TEST);
 }
 
 void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
@@ -23,6 +23,9 @@ void SceneManager::SceneSwitch(SceneType sceneType)
 	case SceneType::TITLE:
 		currentScene = new TitleScene();
 		break;
+
+	case SceneType::TEST:
+		currentScene = new TestSceneTT();
 	}
 	sceneInit();
 }

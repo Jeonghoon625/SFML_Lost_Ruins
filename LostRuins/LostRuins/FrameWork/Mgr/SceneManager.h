@@ -2,12 +2,13 @@
 #include "SFML/Graphics.hpp"
 #include "../Scene/Scene.h"
 #include "../Scene/TitleScene.h"
+#include "../Scene/TestSceneTT.h"
 
 using namespace sf;
 
 enum class SceneType
 {
-	TITLE,
+	TITLE, TEST
 };
 
 class SceneManager
