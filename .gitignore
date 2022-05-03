@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 
 *.exe
+*.vcxproj
+*.vcxproj.filters
