@@ -155,9 +155,11 @@
     <ClCompile Include="FrameWork\Mgr\SceneManager.cpp" />
     <ClCompile Include="FrameWork\Mgr\TextureHolder.cpp" />
     <ClCompile Include="FrameWork\Mgr\Utils.cpp" />
+    <ClCompile Include="FrameWork\Object\Player\Player.cpp" />
     <ClCompile Include="FrameWork\Scene\Scene.cpp" />
     <ClCompile Include="FrameWork\Scene\TestSceneTT.cpp" />
     <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp" />
+    <ClCompile Include="FrameWork\Scene\TestScene.cpp" />
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="UIManager.cpp" />
@@ -171,7 +173,9 @@
     <ClInclude Include="FrameWork\Mgr\SceneManager.h" />
     <ClInclude Include="FrameWork\Mgr\TextureHolder.h" />
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
+    <ClInclude Include="FrameWork\Object\Player\Player.h" />
     <ClInclude Include="FrameWork\Scene\Scene.h" />
+    <ClInclude Include="FrameWork\Scene\TestScene.h" />
     <ClInclude Include="FrameWork\Scene\TestSceneTT.h" />
     <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h" />
     <ClInclude Include="FrameWork\Scene\TitleScene.h" />

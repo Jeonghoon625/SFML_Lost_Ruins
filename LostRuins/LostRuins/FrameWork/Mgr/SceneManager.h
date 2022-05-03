@@ -8,7 +8,8 @@ using namespace sf;
 
 enum class SceneType
 {
-	TITLE, TEST
+	TITLE,
+	TEST,
 };
 
 class SceneManager
