@@ -158,10 +158,9 @@
     <ClCompile Include="FrameWork\Object\Player\Player.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\Monster.cpp" />
     <ClCompile Include="FrameWork\Scene\Scene.cpp" />
+    <ClCompile Include="FrameWork\Scene\TestScene.cpp" />
     <ClCompile Include="FrameWork\Scene\TestSceneTT.cpp" />
     <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp" />
-    <ClCompile Include="FrameWork\Scene\TestScene.cpp" />
-    <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp" />
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="UIManager.cpp" />
@@ -181,7 +180,6 @@
     <ClInclude Include="FrameWork\Scene\TestScene.h" />
     <ClInclude Include="FrameWork\Scene\TestSceneTT.h" />
     <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h" />
-    <ClInclude Include="FrameWork\Scene\TestSceneKK.h" />
     <ClInclude Include="FrameWork\Scene\TitleScene.h" />
     <ClInclude Include="UIManager.h" />
   </ItemGroup>

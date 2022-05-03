@@ -44,9 +44,18 @@
     </ClCompile>
     <ClCompile Include="FrameWork\Object\Monster\Monster.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
+    <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp">
+      <Filter>FrameWork\Scene</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp">
       <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="FrameWork\Scene\TestScene.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Player\Player.cpp">
+      <Filter>FrameWork\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -102,12 +111,6 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Mgr\InputManager.h">
       <Filter>FrameWork\Mgr</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Object\Monster\Monster.h">
-      <Filter>FrameWork\Object\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
-      <Filter>FrameWork\Scene</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h">
       <Filter>FrameWork\Scene</Filter>
