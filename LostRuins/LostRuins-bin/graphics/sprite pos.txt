@@ -1,0 +1,5 @@
+Idle L0, T13, W31, H50, C21, R3
+Run L0, T245, W40, H50, C8, R1
+Jump L0, T615, W33, H50, C5, R1
+Falling L0, T681, W33, H50, C3, R1
+Landing L0, T750, W33, H50, C3, R1
