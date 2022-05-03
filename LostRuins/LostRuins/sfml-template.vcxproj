@@ -79,11 +79,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\$(ProjectName)-bin</OutDir>
+    <OutDir>..\$(ProjectName)-bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\$(ProjectName)-bin</OutDir>
+    <OutDir>..\$(ProjectName)-bin\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -157,7 +157,8 @@
     <ClCompile Include="FrameWork\Mgr\Utils.cpp" />
     <ClCompile Include="FrameWork\Scene\Scene.cpp" />
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
     <ClInclude Include="FrameWork\Scene\Scene.h" />
     <ClInclude Include="FrameWork\Scene\TitleScene.h" />
+    <ClInclude Include="UIManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
