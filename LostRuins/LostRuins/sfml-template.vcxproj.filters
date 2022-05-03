@@ -29,6 +29,12 @@
     <ClCompile Include="FrameWork\Mgr\SceneManager.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TestScene.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Player\Player.cpp">
+      <Filter>FrameWork\Object\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="FrameWork">
@@ -42,6 +48,12 @@
     </Filter>
     <Filter Include="FrameWork\Mgr">
       <UniqueIdentifier>{fc9423f4-e7ee-49c6-a52e-bb06a78aa91b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object">
+      <UniqueIdentifier>{0b1e7bd2-85c0-4b02-967c-6a26b88f556b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\Player">
+      <UniqueIdentifier>{1e54ffe6-b73a-4967-86df-8a0faa8b7014}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +86,12 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Mgr\InputManager.h">
       <Filter>FrameWork\Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TestScene.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Player\Player.h">
+      <Filter>FrameWork\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
