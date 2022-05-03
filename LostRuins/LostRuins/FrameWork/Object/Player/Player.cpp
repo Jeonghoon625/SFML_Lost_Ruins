@@ -8,6 +8,7 @@ void Player::Init()
 	maxHealth = START_HEALTH;
 	immuneMs = START_IMMUNE_MS;
 	vel = 0.f;
+	isFalling = true;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -24,7 +25,7 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	position.x = this->gameMap.width * 0.5f;
-	position.y = 200;
+	position.y = -2000;
 }
 
 bool Player::OnHitted(Time timeHit)
@@ -70,8 +71,8 @@ bool Player::GetIsJump()
 void Player::Update(float dt, std::vector <TestBlock*> blocks)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
-	float bk = InputManager::GetAxisRaw(Axis::Vertical);
-	Vector2f dir(h, bk);
+	float v = InputManager::GetAxisRaw(Axis::Vertical);
+	Vector2f dir(h, v);
 
 	Utils::Normalize(dir);
 
@@ -104,23 +105,36 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	}
 
 	position.x += dir.x * speed * dt;
-	vel += GRAVITY_POWER * dt;
-	position.y += vel * dt;
+	if (isFalling == true)
+	{
+		vel += GRAVITY_POWER * dt;
+		position.y += vel * dt;
+	}
 	lastDir = dir;
 
 	sprite.setPosition(position);
 
+	// ³«ÇÏ
 	for (auto bk : blocks)
 	{
-		if (sprite.getGlobalBounds().top+ sprite.getGlobalBounds().height > bk->GetBlockShape().getGlobalBounds().top)
+		bool onTheBlock = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > bk->GetBlockShape().getGlobalBounds().top;
+
+		if (sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && onTheBlock && isFalling == true)
 		{
-			std::cout << "fall" << std::endl;
+			isFalling == false;
+			vel = 0.f;
 			position.y = bk->GetBlockShape().getGlobalBounds().top;
-			sprite.setPosition(position);
+		}
+		else if (!sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && isFalling == false)
+		{
+			isFalling == true;
 		}
 	}
-
 	animation.Update(dt);
+
+	//bool onTheBlock = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > bk->GetBlockShape().getGlobalBounds().top;
+	//bool leftTheBlock = sprite.getGlobalBounds().left + sprite.getGlobalBounds().width < bk->GetBlockShape().getGlobalBounds().left;
+	//bool rightTheBlock = sprite.getGlobalBounds().left > bk->GetBlockShape().getGlobalBounds().left + bk->GetBlockShape().getGlobalBounds().width;
 }
 
 void Player::Draw(RenderWindow* window, View* mainView)

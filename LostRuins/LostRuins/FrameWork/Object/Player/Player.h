@@ -54,6 +54,7 @@ private:
 	float immuneMs;
 	bool immune;
 
+	bool isFalling;
 	bool isJump;
 
 	Time lastHit;
