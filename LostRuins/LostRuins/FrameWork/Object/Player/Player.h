@@ -21,6 +21,9 @@ enum class KeyInput
 class Player
 {
 private:
+	const Vector2f scale = Vector2f(3.f, 3.f);
+	const Vector2f scaleFlipX = Vector2f(-3.f, 3.f);
+
 	const float START_SPEED = 600;
 	const float START_HEALTH = 20;
 	const float START_MANA = 20;
@@ -31,11 +34,11 @@ private:
 
 	Vector2f postion;
 
+	Vector2f lastDir;
+
 	Texture texture;
 	Sprite sprite;
 	
-	Vector2f dir;
-
 	Vector2i resolustion;
 	IntRect gameMap;
 

@@ -9,8 +9,6 @@ void Player::Init()
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
-	Utils::SetOrigin(sprite, Pivots::CC);
-
 	sprite.setOrigin(15.5f, 50.f);
 	sprite.setScale(3.f, 3.f);
 	AnimationInit();
@@ -59,51 +57,30 @@ int Player::GetHealth() const
 
 void Player::Update(float dt)
 {
-	float h = InputManager::GetAxis(Axis::Horizontal);
-	float v = InputManager::GetAxis(Axis::Vertical);
+	float h = InputManager::GetAxisRaw(Axis::Horizontal);
+	float v = InputManager::GetAxisRaw(Axis::Vertical);
 	Vector2f dir(h, v);
 
-	float length = sqrt(dir.x * dir.x + dir.y * dir.y);
-	if (length > 1)
-	{
-		dir /= length;
-	}
+	Utils::Normalize(dir);
 
-	/*if(InputManager::GetKey(Keyboard::Right))
+	if (dir.x == 0 && lastDir != dir)
 	{
-		dir = Vector2f(1.f, 0.f);	
-	}
-	else
-	{
-		dir = Vector2f(0.f, 0.f);
-	}*/
-	
-	if (InputManager::GetKeyDown(Keyboard::Right))
-	{
-		sprite.setScale(3.f, 3.f);
-		animation.Play("Run");
-
-	}
-	else if (InputManager::GetKeyUp(Keyboard::Right))
-	{
-		sprite.setScale(3.f, 3.f);
 		animation.Play("Idle");
 	}
-
-	if (InputManager::GetKeyDown(Keyboard::Left))
+	if (dir.x > 0.f && lastDir != dir)
 	{
-		sprite.setScale(-3.f, 3.f);
 		animation.Play("Run");
-
+		sprite.setScale(scale);
 	}
-	else if (InputManager::GetKeyUp(Keyboard::Left))
+	if (dir.x < 0.f && lastDir != dir)
 	{
-		sprite.setScale(-3.f, 3.f);
-		animation.Play("Idle");
+		animation.Play("Run");
+		sprite.setScale(scaleFlipX);
 	}
 
 	postion += dir * speed * dt;
 	postion.y = resolustion.y * 0.5f;
+	lastDir = dir;
 
 	sprite.setPosition(postion);
 	animation.Update(dt);
