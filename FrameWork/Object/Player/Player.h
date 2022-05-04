@@ -21,10 +21,10 @@ enum class KeyInput
 class Player
 {
 private:
-	const float START_SPEED = 600;
-	const float START_HEALTH = 20;
-	const float START_MANA = 20;
-	const float START_IMMUNE_MS = 200;
+	const float START_SPEED = 600; // 캐릭터 속도
+	const float START_HEALTH = 20; // 처음 체력
+	const float START_MANA = 20; // 처음 마나
+	const float START_IMMUNE_MS = 200; // ????
 
 	TextureHolder textureHlr;
 	AnimationController animation;

@@ -24,9 +24,9 @@ void SceneManager::SceneSwitch(SceneType sceneType)
 		/*currentScene = new TitleScene();*/
 		currentScene = new TestSceneKK();
 		break;
-	case SceneType::TEST:
+	/*case SceneType::TEST:
 		currentScene = new TestSceneKK();
-		break;
+		break;*/
 
 	case SceneType::TEST:
 		currentScene = new TestSceneTT();
