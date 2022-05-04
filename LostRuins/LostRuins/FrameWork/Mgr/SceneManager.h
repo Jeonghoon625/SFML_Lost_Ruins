@@ -11,7 +11,9 @@ using namespace sf;
 enum class SceneType
 {
 	TITLE,
-	TEST,
+	TEST_LMH,
+	TEST_KK,
+	TEST_LJW
 };
 
 class SceneManager

@@ -1,9 +1,9 @@
 TEXTURE PATH,L,T,W,H
-graphics/sprite_sheet.png,3,383,25,30
-graphics/sprite_sheet.png,41,383,27,30
-graphics/sprite_sheet.png,79,383,28,30
-graphics/sprite_sheet.png,117,383,30,30
-graphics/sprite_sheet.png,155,383,30,30
-graphics/sprite_sheet.png,193,383,31,30
-graphics/sprite_sheet.png,231,383,31,30
-graphics/sprite_sheet.png,269,383,33,30
+graphics/GoblinAttacker.png,3,383,25,30
+graphics/GoblinAttacker.png,41,383,27,30
+graphics/GoblinAttacker.png,79,383,28,30
+graphics/GoblinAttacker.png,117,383,30,30
+graphics/GoblinAttacker.png,155,383,30,30
+graphics/GoblinAttacker.png,193,383,31,30
+graphics/GoblinAttacker.png,231,383,31,30
+graphics/GoblinAttacker.png,269,383,33,30

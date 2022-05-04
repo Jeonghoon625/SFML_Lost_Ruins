@@ -15,7 +15,7 @@ private:
 	Vector2i resolution;
 
 	SceneManager sceneMgr;
-
+	TextureHolder textureHolder;
 	Clock clock;
 	Time playTime;
 	Time dt;
