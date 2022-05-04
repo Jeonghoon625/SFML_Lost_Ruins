@@ -45,12 +45,12 @@ void TestScene::CreateBlock()
 
 	Vector2i res = resolution;
 
-	TestBlock* block1 = new TestBlock(res.x * 0.5f - 100.f, res.y * 0.5f - 50.f, 200.f, 100.f);
+	TestBlock* block1 = new TestBlock(res.x * 0.5f - 100.f, res.y * 0.5f - 50.f, 200.f, 50.f);
 	blocks.push_back(block1);
 	TestBlock* block2 = new TestBlock(0.f, res.y - 100.f, res.x, 100.f);
 	blocks.push_back(block2);
-	TestBlock* block3 = new TestBlock(440.f, res.y * 0.75f - 100.f, 200.f, 100.f);
+	TestBlock* block3 = new TestBlock(440.f, res.y * 0.75f - 100.f, 200.f, 50.f);
 	blocks.push_back(block3);
-	TestBlock* block4 = new TestBlock(1280.f, res.y * 0.75f - 100.f, 200.f, 100.f);
+	TestBlock* block4 = new TestBlock(1280.f, res.y * 0.75f - 100.f, 200.f, 50.f);
 	blocks.push_back(block4);
 }

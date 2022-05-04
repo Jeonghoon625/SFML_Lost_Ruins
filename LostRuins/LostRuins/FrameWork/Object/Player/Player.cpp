@@ -7,7 +7,7 @@ void Player::Init()
 	health = START_HEALTH;
 	maxHealth = START_HEALTH;
 	immuneMs = START_IMMUNE_MS;
-	vel = 0.f;
+	vel = START_FALLING_SPEED;
 	isFalling = true;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
@@ -25,7 +25,13 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	position.x = this->gameMap.width * 0.5f;
-	position.y = -2000;
+	position.y = -1000;
+
+	hitBox.setFillColor(Color(153,153,153,80));
+	hitBox.setSize(Vector2f(20.f, 48.f));
+	hitBox.setOrigin(10.f, 48.f);
+	hitBox.setScale(3.f, 3.f);
+	hitBox.setPosition(position);
 }
 
 bool Player::OnHitted(Time timeHit)
@@ -104,7 +110,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		SetIsJump(false);
 	}
 
-	position.x += dir.x * speed * dt;
+	//position.x += dir.x * speed * dt;
 	if (isFalling == true)
 	{
 		vel += GRAVITY_POWER * dt;
@@ -113,23 +119,42 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	lastDir = dir;
 
 	sprite.setPosition(position);
+	hitBox.setPosition(position);
 
-	// 開馬
+	//// 開馬
+	//for (auto bk : blocks)
+	//{
+	//	bool onTheBlock = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > bk->GetBlockShape().getGlobalBounds().top;
+
+	//	if (sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && onTheBlock && isFalling == true)
+	//	{
+	//		std::cout << "Falling" << std::endl;
+	//		isFalling == false;
+	//		vel = 0;
+	//		position.y = bk->GetBlockShape().getGlobalBounds().top;
+	//		break;
+	//	}
+	//	else if (!sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && isFalling == false)
+	//	{
+	//		isFalling == true;
+	//		vel = START_FALLING_SPEED;
+	//	}
+	//}
+	
 	for (auto bk : blocks)
 	{
-		bool onTheBlock = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > bk->GetBlockShape().getGlobalBounds().top;
+		if (sprite.getGlobalBounds().intersects(bk->GetBlockRect()))
+		{
 
-		if (sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && onTheBlock && isFalling == true)
-		{
-			isFalling == false;
-			vel = 0.f;
-			position.y = bk->GetBlockShape().getGlobalBounds().top;
-		}
-		else if (!sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && isFalling == false)
-		{
-			isFalling == true;
+			Pivots pivot = Utils::CollisionDir(bk->GetBlockRect(), sprite.getGlobalBounds());
+			position.y -= (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height) - (bk->GetBlockRect().top);
+			vel = 0;
+
+			sprite.setPosition(position);
+			hitBox.setPosition(position);
 		}
 	}
+
 	animation.Update(dt);
 
 	//bool onTheBlock = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > bk->GetBlockShape().getGlobalBounds().top;
@@ -141,6 +166,7 @@ void Player::Draw(RenderWindow* window, View* mainView)
 {
 	window->setView(*mainView);
 	window->draw(sprite);
+	window->draw(hitBox);
 }
 
 void Player::AnimationInit()
