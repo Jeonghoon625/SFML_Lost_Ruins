@@ -4,7 +4,8 @@ bool FrameWork::Initialize()
 {
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
-	window = new RenderWindow(VideoMode(resolution.x, resolution.y), "Lost Ruins", Style::Default);
+	//window = new RenderWindow(VideoMode(resolution.x, resolution.y), "Lost Ruins", Style::Default);
+	window = new RenderWindow(VideoMode(1600.f, 900.f), "Lost Ruins", Style::Default);
 	mainView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 
 	InputManager::Init();
