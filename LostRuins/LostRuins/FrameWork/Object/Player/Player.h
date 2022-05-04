@@ -30,7 +30,7 @@ private:
 	const float START_MANA = 20;
 	const float START_IMMUNE_MS = 200;
 	const float GRAVITY_POWER = 980.f;
-	const float START_FALLING_SPEED = 300.F;
+	const float START_FALLING_SPEED = 0.F;
  
 	TextureHolder textureHlr;
 	AnimationController animation;
@@ -61,6 +61,8 @@ private:
 	Time lastHit;
 
 	std::map<std::string, Texture> texmap;
+
+	RectangleShape hitBox;
 
 public:
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
