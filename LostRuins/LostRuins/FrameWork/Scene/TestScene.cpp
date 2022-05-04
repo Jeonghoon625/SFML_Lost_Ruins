@@ -31,7 +31,11 @@ void TestScene::Draw(RenderWindow* window, View* mainView)
 
 TestScene::~TestScene()
 {
-
+	for (auto blockShape : blocks)
+	{
+		delete blockShape;
+	}
+	blocks.clear();
 }
 
 void TestScene::CreateBlock()

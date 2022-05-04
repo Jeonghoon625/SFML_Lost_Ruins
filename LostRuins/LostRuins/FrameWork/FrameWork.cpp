@@ -27,6 +27,12 @@ void FrameWork::Update()
 		case Event::Closed:
 			window->close();
 			break;
+		case Event::KeyPressed:
+			if (event.key.code == Keyboard::Escape)
+			{
+				window->close();
+			}
+			break;
 		default:
 			break;
 		}
