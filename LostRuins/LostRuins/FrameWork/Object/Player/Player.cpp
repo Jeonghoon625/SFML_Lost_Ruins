@@ -79,7 +79,6 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	// ÀÌµ¿
 	if (dir.x == 0 && lastDir != dir)
 	{
-		dir = Vector2f(1.f, 0.f);
 		animation.Play("Idle");
 	}
 	if (dir.x > 0.f && lastDir != dir)

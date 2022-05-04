@@ -14,7 +14,6 @@ private:
 
 	Vector2i resolution;
 
-	TextureHolder textureHlr;
 	AnimationController animation;
 
 	Texture textureTitle;

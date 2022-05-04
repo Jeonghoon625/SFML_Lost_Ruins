@@ -7,7 +7,7 @@ using namespace sf;
 
 class Monster
 {
-private:
+protected:
 	Vector2i resolution;
 
 	int health;
@@ -30,13 +30,19 @@ public:
 	int GetHealth();
 	void SetHealth(int damage);
 
-	void MonsterInit();
+	int GetAtk();
+	void SetAtk(int atk);
+
+	float GetSpeed();
+	void SetSpeed(float speed);
+
+	virtual void MonsterInit(int health, int atk, float speed);
 
 	void AnimationInit(Sprite* sprite);
 
-	void Walk(float dt);
-	void Run(float dt);
-	void Attack(float dt, int atk);
+	virtual void Walk(float dt);
+	virtual void Run(float dt);
+	virtual void Attack(float dt, int atk);
 
 	void Update(float dt);
 

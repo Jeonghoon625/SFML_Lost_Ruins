@@ -7,10 +7,7 @@ Monster::Monster()
 {
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
-	sprite.setOrigin(16.25f, 47);
-	sprite.setTextureRect(IntRect(0, 0, 40, 40));
-	sprite.setPosition(resolution.x*0.5f, resolution.y*0.5f);
-	position = sprite.getPosition();
+	
 }
 
 FloatRect Monster::GetGlobalBound()
@@ -33,17 +30,48 @@ int Monster::GetHealth()
 	return health;
 }
 
-void Monster::SetHealth(int damage)
+void Monster::SetHealth(int health)
 {
-	health -= damage;
+	this->health;
 }
 
-void Monster::MonsterInit()
+int Monster::GetAtk()
 {
+	return atk;
+}
+
+void Monster::SetAtk(int atk)
+{
+	this->atk;
+}
+
+float Monster::GetSpeed()
+{
+	return 0.0f;
+}
+
+void Monster::SetSpeed(float speed)
+{
+	this->speed;
+}
+
+void Monster::MonsterInit(int health, int atk, float speed)
+{
+	health = health;
+	atk = atk;
+	speed = speed;
+	sprite.setOrigin(20.f, 20);
+	sprite.setTextureRect(IntRect(0, 0, 40, 40));
+	sprite.setPosition(resolution.x * 0.5f, resolution.y * 0.5f);
+	position = sprite.getPosition();
+
 	AnimationInit(&sprite);
+
+
 	// ¿Ãµø
 	
 }
+
 
 void Monster::AnimationInit(Sprite* sprite)
 {
@@ -84,7 +112,7 @@ void Monster::AnimationInit(Sprite* sprite)
 		}
 		animation.AddClip(clip);
 	}
-	animation.Play("GoblinAttackerIdle");
+
 }
 
 void Monster::Walk(float dt)
@@ -136,6 +164,7 @@ void Monster::Attack(float dt, int atk)
 void Monster::Update(float dt)
 {
 	animation.Update(dt);
+	Walk(dt);
 }
 
 void Monster::Draw(RenderWindow* window)
