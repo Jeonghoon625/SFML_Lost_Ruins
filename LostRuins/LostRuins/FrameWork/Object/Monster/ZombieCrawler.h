@@ -2,17 +2,15 @@
 #include <SFML/Graphics.hpp>
 #include "Monster.h"
 
-class ZombieWalker : public Monster
+class ZombieCrawler : public Monster
 {
 private:
 
 public:
-	ZombieWalker();
+	ZombieCrawler();
 	virtual void MonsterInit(int health, int atk, float speed);
-
 
 	virtual void Walk(float dt);
 	virtual void Run(float dt);
 	virtual void Attack(float dt, int atk);
 };
-

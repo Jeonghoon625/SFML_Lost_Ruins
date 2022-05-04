@@ -1,103 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp" />
+    <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp" />
+    <ClCompile Include="FrameWork\Object\Monster\Monster.cpp" />
+    <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp" />
+    <ClCompile Include="FrameWork\Scene\TestScene.cpp" />
+    <ClCompile Include="FrameWork\Scene\TestSceneTT.cpp" />
+    <ClCompile Include="FrameWork\Object\Player\Player.cpp" />
+    <ClCompile Include="FrameWork\FrameWork.cpp" />
+    <ClCompile Include="FrameWork\Mgr\SceneManager.cpp" />
+    <ClCompile Include="FrameWork\Scene\TitleScene.cpp" />
+    <ClCompile Include="FrameWork\Scene\Scene.cpp" />
+    <ClCompile Include="FrameWork\Mgr\Utils.cpp" />
+    <ClCompile Include="FrameWork\Mgr\TextureHolder.cpp" />
+    <ClCompile Include="FrameWork\Mgr\InputManager.cpp" />
+    <ClCompile Include="FrameWork\Animation\AnimationController.cpp" />
+    <ClCompile Include="FrameWork\Animation\AnimationClip.cpp" />
+    <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="FrameWork\FrameWork.cpp">
-      <Filter>FrameWork</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Scene\Scene.cpp">
-      <Filter>FrameWork\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Scene\TitleScene.cpp">
-      <Filter>FrameWork\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Animation\AnimationClip.cpp">
-      <Filter>FrameWork\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Animation\AnimationController.cpp">
-      <Filter>FrameWork\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Mgr\TextureHolder.cpp">
-      <Filter>FrameWork\Mgr</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Mgr\Utils.cpp">
-      <Filter>FrameWork\Mgr</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Mgr\InputManager.cpp">
-      <Filter>FrameWork\Mgr</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Mgr\SceneManager.cpp">
-      <Filter>FrameWork\Mgr</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Object\Monster\Monster.cpp">
-      <Filter>FrameWork\Object\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp">
-      <Filter>FrameWork\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp">
-      <Filter>FrameWork\Object\Monster</Filter>
-    </ClCompile>
+    <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="FrameWork">
-      <UniqueIdentifier>{b051e840-b7a6-4d6f-9b86-7d061516372a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Scene">
-      <UniqueIdentifier>{43b9b32c-1b86-484e-abb5-8cece43f3fc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Animation">
-      <UniqueIdentifier>{5b3b9ce5-6a43-425d-9817-84a0fccd680b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Mgr">
-      <UniqueIdentifier>{fc9423f4-e7ee-49c6-a52e-bb06a78aa91b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Object">
-      <UniqueIdentifier>{88dc38e6-bd20-44a1-ab70-003d01123e37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Object\Monster">
-      <UniqueIdentifier>{791f9a7d-2944-4cd7-b714-6db86b344098}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="FrameWork\FrameWork.h">
-      <Filter>FrameWork</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Scene\Scene.h">
-      <Filter>FrameWork\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TitleScene.h">
-      <Filter>FrameWork\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Animation\AnimationClip.h">
-      <Filter>FrameWork\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Animation\AnimationController.h">
-      <Filter>FrameWork\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Animation\rapidcsv.h">
-      <Filter>FrameWork\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Mgr\SceneManager.h">
-      <Filter>FrameWork\Mgr</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Mgr\TextureHolder.h">
-      <Filter>FrameWork\Mgr</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Mgr\Utils.h">
-      <Filter>FrameWork\Mgr</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Mgr\InputManager.h">
-      <Filter>FrameWork\Mgr</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Object\Monster\Monster.h">
-      <Filter>FrameWork\Object\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
-      <Filter>FrameWork\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h">
-      <Filter>FrameWork\Object\Monster</Filter>
-    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h" />
+    <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h" />
+    <ClInclude Include="FrameWork\Scene\TestSceneTT.h" />
+    <ClInclude Include="FrameWork\Scene\TestScene.h" />
+    <ClInclude Include="FrameWork\Object\Player\Player.h" />
+    <ClInclude Include="FrameWork\Mgr\SceneManager.h" />
+    <ClInclude Include="FrameWork\Object\Monster\Monster.h" />
+    <ClInclude Include="FrameWork\Scene\TitleScene.h" />
+    <ClInclude Include="FrameWork\Scene\Scene.h" />
+    <ClInclude Include="FrameWork\Mgr\TextureHolder.h" />
+    <ClInclude Include="FrameWork\Mgr\Utils.h" />
+    <ClInclude Include="FrameWork\Mgr\InputManager.h" />
+    <ClInclude Include="FrameWork\FrameWork.h" />
+    <ClInclude Include="FrameWork\Animation\rapidcsv.h" />
+    <ClInclude Include="FrameWork\Animation\AnimationController.h" />
+    <ClInclude Include="FrameWork\Animation\AnimationClip.h" />
+    <ClInclude Include="FrameWork\Scene\TestSceneKK.h" />
+    <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h" />
+    <ClInclude Include="UIManager.h" />
   </ItemGroup>
 </Project>

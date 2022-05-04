@@ -29,7 +29,6 @@ private:
 	const float START_MANA = 20;
 	const float START_IMMUNE_MS = 200;
 
-	TextureHolder textureHlr;
 	AnimationController animation;
 
 	Vector2f postion;

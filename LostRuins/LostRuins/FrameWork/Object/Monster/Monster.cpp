@@ -60,7 +60,7 @@ void Monster::MonsterInit(int health, int atk, float speed)
 	health = health;
 	atk = atk;
 	speed = speed;
-	sprite.setOrigin(16.25f, 47);
+	sprite.setOrigin(20.f, 20);
 	sprite.setTextureRect(IntRect(0, 0, 40, 40));
 	sprite.setPosition(resolution.x * 0.5f, resolution.y * 0.5f);
 	position = sprite.getPosition();
@@ -71,6 +71,7 @@ void Monster::MonsterInit(int health, int atk, float speed)
 	// ¿Ãµø
 	
 }
+
 
 void Monster::AnimationInit(Sprite* sprite)
 {
@@ -163,6 +164,7 @@ void Monster::Attack(float dt, int atk)
 void Monster::Update(float dt)
 {
 	animation.Update(dt);
+	Walk(dt);
 }
 
 void Monster::Draw(RenderWindow* window)

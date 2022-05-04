@@ -10,8 +10,6 @@ private:
 
 	Vector2i resolution;
 
-	TextureHolder textureHlr;
-
 	Texture textureUI;
 
 	Sprite HPbar;

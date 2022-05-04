@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Mgr/InputManager.h"
 #include "Mgr/SceneManager.h"
+#include "Mgr/TextureHolder.h"
 
 using namespace sf;
 
@@ -19,6 +20,8 @@ private:
 	Time playTime;
 	Time dt;
 
+	TextureHolder textHolder;
+	
 public:
 	bool Initialize();
 	void Update();
