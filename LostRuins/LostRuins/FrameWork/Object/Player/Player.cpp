@@ -7,7 +7,7 @@ void Player::Init()
 	health = START_HEALTH;
 	maxHealth = START_HEALTH;
 	immuneMs = START_IMMUNE_MS;
-	vel = 0.f;
+	vel = START_FALLING_SPEED;
 	isFalling = true;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
@@ -122,12 +122,13 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		if (sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && onTheBlock && isFalling == true)
 		{
 			isFalling == false;
-			vel = 0.f;
+			vel = 0;
 			position.y = bk->GetBlockShape().getGlobalBounds().top;
 		}
 		else if (!sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && isFalling == false)
 		{
 			isFalling == true;
+			vel = START_FALLING_SPEED;
 		}
 	}
 	animation.Update(dt);
