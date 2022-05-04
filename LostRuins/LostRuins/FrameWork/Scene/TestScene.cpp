@@ -53,4 +53,10 @@ void TestScene::CreateBlock()
 	blocks.push_back(block3);
 	TestBlock* block4 = new TestBlock(1280.f, res.y * 0.75f - 100.f, 200.f, 50.f);
 	blocks.push_back(block4);
+	TestBlock* block5 = new TestBlock(140.f, res.y * 0.75f - 300.f, 200.f, 200.f);
+	blocks.push_back(block5);
+	TestBlock* block6 = new TestBlock(1580.f, res.y * 0.75f - 300.f, 200.f, 200.f);
+	blocks.push_back(block6);
+	TestBlock* block7 = new TestBlock(res.x * 0.5f - 50.f, res.y - 200.f, 100.f, 100.f);
+	blocks.push_back(block7);
 }

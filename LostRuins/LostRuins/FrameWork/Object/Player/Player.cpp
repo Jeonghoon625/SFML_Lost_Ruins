@@ -8,12 +8,12 @@ void Player::Init()
 	maxHealth = START_HEALTH;
 	immuneMs = START_IMMUNE_MS;
 	vel = START_FALLING_SPEED;
-	isFalling = true;
+	isFalling = false;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
 	sprite.setOrigin(15.5f, 50.f);
-	sprite.setScale(3.f, 3.f);
+	sprite.setScale(scale);
 	AnimationInit();
 	animation.Play("Idle");
 }
@@ -25,13 +25,19 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	position.x = this->gameMap.width * 0.5f;
-	position.y = -1000;
+	position.y = 0;
 
-	hitBox.setFillColor(Color(153,153,153,80));
-	hitBox.setSize(Vector2f(20.f, 48.f));
-	hitBox.setOrigin(10.f, 48.f);
-	hitBox.setScale(3.f, 3.f);
-	hitBox.setPosition(position);
+	upHitBox.setFillColor(Color(153, 153, 153, 80));
+	upHitBox.setSize(Vector2f(20.f, 48.f));
+	upHitBox.setOrigin(idleUpHitBox);
+	upHitBox.setScale(scale);
+	upHitBox.setPosition(position);
+
+	downHitBox.setFillColor(Color(153, 0, 0, 80));
+	downHitBox.setSize(Vector2f(20.f, 5.f));
+	downHitBox.setOrigin(idleDownHitBox);
+	downHitBox.setScale(scale);
+	downHitBox.setPosition(position);
 }
 
 bool Player::OnHitted(Time timeHit)
@@ -86,16 +92,22 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	if (dir.x == 0 && lastDir != dir)
 	{
 		animation.Play("Idle");
+		upHitBox.setOrigin(idleUpHitBox);
+		downHitBox.setOrigin(idleDownHitBox);
 	}
 	if (dir.x > 0.f && lastDir != dir)
 	{
 		animation.Play("Run");
 		sprite.setScale(scale);
+		upHitBox.setOrigin(rightRunUpHitBox);
+		downHitBox.setOrigin(rightRunDownHitBox);
 	}
 	if (dir.x < 0.f && lastDir != dir)
 	{
 		animation.Play("Run");
 		sprite.setScale(scaleFlipX);
+		upHitBox.setOrigin(leftRunUpHitBox);
+		downHitBox.setOrigin(leftRunDownHitBox);
 	}
 
 	// 점프
@@ -110,63 +122,69 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		SetIsJump(false);
 	}
 
-	//position.x += dir.x * speed * dt;
+	position.x += dir.x * speed * dt;
 	if (isFalling == true)
 	{
 		vel += GRAVITY_POWER * dt;
+		if (vel > 10000.f)
+		{
+			vel = 10000.f;
+		}
 		position.y += vel * dt;
 	}
 	lastDir = dir;
 
 	sprite.setPosition(position);
-	hitBox.setPosition(position);
+	upHitBox.setPosition(position);
+	downHitBox.setPosition(position);
 
-	//// 낙하
-	//for (auto bk : blocks)
-	//{
-	//	bool onTheBlock = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > bk->GetBlockShape().getGlobalBounds().top;
-
-	//	if (sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && onTheBlock && isFalling == true)
-	//	{
-	//		std::cout << "Falling" << std::endl;
-	//		isFalling == false;
-	//		vel = 0;
-	//		position.y = bk->GetBlockShape().getGlobalBounds().top;
-	//		break;
-	//	}
-	//	else if (!sprite.getGlobalBounds().intersects(bk->GetBlockRect()) && isFalling == false)
-	//	{
-	//		isFalling == true;
-	//		vel = START_FALLING_SPEED;
-	//	}
-	//}
-	
-	for (auto bk : blocks)
+	// 충돌 처리
+	if (isFalling == true)
 	{
-		if (sprite.getGlobalBounds().intersects(bk->GetBlockRect()))
+		for (auto bk : blocks)
+		{
+			if (downHitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
+			{
+				if (downHitBox.getGlobalBounds().top < bk->GetBlockRect().top)
+				{
+					isFalling = false;
+					vel = START_FALLING_SPEED;
+					position.y = bk->GetBlockRect().top + 1;
+					upHitBox.setPosition(position);
+					downHitBox.setPosition(position);
+					break;
+				}
+				else
+				{
+				
+				}
+			}
+		}
+	}
+
+	else if (isFalling == false)
+	{
+		for (auto bk : blocks)
 		{
 
-			Pivots pivot = Utils::CollisionDir(bk->GetBlockRect(), sprite.getGlobalBounds());
-			position.y -= (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height) - (bk->GetBlockRect().top);
-			vel = 0;
-
-			sprite.setPosition(position);
-			hitBox.setPosition(position);
+			if (downHitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
+			{
+				isFalling = false;
+				break;
+			}
+			isFalling = true;
 		}
 	}
 
 	animation.Update(dt);
-
-	//bool onTheBlock = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > bk->GetBlockShape().getGlobalBounds().top;
-	//bool leftTheBlock = sprite.getGlobalBounds().left + sprite.getGlobalBounds().width < bk->GetBlockShape().getGlobalBounds().left;
-	//bool rightTheBlock = sprite.getGlobalBounds().left > bk->GetBlockShape().getGlobalBounds().left + bk->GetBlockShape().getGlobalBounds().width;
 }
 
 void Player::Draw(RenderWindow* window, View* mainView)
 {
 	window->setView(*mainView);
 	window->draw(sprite);
-	window->draw(hitBox);
+	window->draw(upHitBox);
+	window->draw(downHitBox);
 }
 
 void Player::AnimationInit()

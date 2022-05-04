@@ -25,12 +25,20 @@ private:
 	const Vector2f scale = Vector2f(3.f, 3.f);
 	const Vector2f scaleFlipX = Vector2f(-3.f, 3.f);
 
+	const Vector2f idleUpHitBox = Vector2f(10.f, 48.f);
+	const Vector2f rightRunUpHitBox = Vector2f(5.f, 48.f);
+	const Vector2f leftRunUpHitBox = Vector2f(15.f, 48.f);
+
+	const Vector2f idleDownHitBox = Vector2f(10.f, 5.f);
+	const Vector2f rightRunDownHitBox = Vector2f(5.f, 5.f);
+	const Vector2f leftRunDownHitBox = Vector2f(15.f, 5.f);
+
 	const float START_SPEED = 600;
 	const float START_HEALTH = 20;
 	const float START_MANA = 20;
 	const float START_IMMUNE_MS = 200;
-	const float GRAVITY_POWER = 980.f;
-	const float START_FALLING_SPEED = 0.F;
+	const float GRAVITY_POWER = 2000.f;
+	const float START_FALLING_SPEED = 200.f;
  
 	TextureHolder textureHlr;
 	AnimationController animation;
@@ -62,7 +70,8 @@ private:
 
 	std::map<std::string, Texture> texmap;
 
-	RectangleShape hitBox;
+	RectangleShape upHitBox;
+	RectangleShape downHitBox;
 
 public:
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
