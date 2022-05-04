@@ -7,8 +7,9 @@ void Player::Init()
 	health = START_HEALTH;
 	maxHealth = START_HEALTH;
 	immuneMs = START_IMMUNE_MS;
-	vel = START_FALLING_SPEED;
+	fallingSpeed = 0.f;
 	isFalling = false;
+	skipDt = true;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -25,19 +26,13 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	position.x = this->gameMap.width * 0.5f;
-	position.y = 0;
+	position.y = 200.f;
 
-	upHitBox.setFillColor(Color(153, 153, 153, 80));
-	upHitBox.setSize(Vector2f(20.f, 48.f));
-	upHitBox.setOrigin(idleUpHitBox);
-	upHitBox.setScale(scale);
-	upHitBox.setPosition(position);
-
-	downHitBox.setFillColor(Color(153, 0, 0, 80));
-	downHitBox.setSize(Vector2f(20.f, 5.f));
-	downHitBox.setOrigin(idleDownHitBox);
-	downHitBox.setScale(scale);
-	downHitBox.setPosition(position);
+	hitBox.setFillColor(Color(153, 153, 153, 80));
+	hitBox.setSize(Vector2f(20.f, 48.f));
+	hitBox.setOrigin(idleUpHitBox);
+	hitBox.setScale(scale);
+	hitBox.setPosition(position);
 }
 
 bool Player::OnHitted(Time timeHit)
@@ -70,16 +65,6 @@ int Player::GetHealth() const
 	return health;
 }
 
-void Player::SetIsJump(bool isJump)
-{
-	this->isJump = isJump;
-}
-
-bool Player::GetIsJump()
-{
-	return isJump;
-}
-
 void Player::Update(float dt, std::vector <TestBlock*> blocks)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
@@ -92,86 +77,94 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	if (dir.x == 0 && lastDir != dir)
 	{
 		animation.Play("Idle");
-		upHitBox.setOrigin(idleUpHitBox);
-		downHitBox.setOrigin(idleDownHitBox);
+		hitBox.setOrigin(idleUpHitBox);
 	}
 	if (dir.x > 0.f && lastDir != dir)
 	{
 		animation.Play("Run");
 		sprite.setScale(scale);
-		upHitBox.setOrigin(rightRunUpHitBox);
-		downHitBox.setOrigin(rightRunDownHitBox);
+		hitBox.setOrigin(rightRunUpHitBox);
 	}
 	if (dir.x < 0.f && lastDir != dir)
 	{
 		animation.Play("Run");
 		sprite.setScale(scaleFlipX);
-		upHitBox.setOrigin(leftRunUpHitBox);
-		downHitBox.setOrigin(leftRunDownHitBox);
+		hitBox.setOrigin(leftRunUpHitBox);
 	}
 
 	// 점프
-	if (InputManager::GetKey(Keyboard::Space) && GetIsJump() == false)
+	if (InputManager::GetKeyDown(Keyboard::Space) && isJump == false && isFalling == false)
 	{
-		SetIsJump(true);
+		std::cout << "Jump" << std::endl;
+		isJump = true;
 	}
 
-	if (GetIsJump() == true)
+	if (isJump == true)
 	{
-
-		SetIsJump(false);
+		isFalling == true;
 	}
 
+	if (skipDt == true)
+	{
+		dt = 0.f;
+		skipDt = false;
+	}
+
+	// 이동
 	position.x += dir.x * speed * dt;
 	if (isFalling == true)
 	{
-		vel += GRAVITY_POWER * dt;
-		if (vel > 10000.f)
+		fallingSpeed += GRAVITY_POWER * dt;
+		if (fallingSpeed > 10000.f)
 		{
-			vel = 10000.f;
+			fallingSpeed = 10000.f;
 		}
-		position.y += vel * dt;
+		if (isJump == true)
+		{
+			fallingSpeed * -1.f;
+		}
+		position.y += fallingSpeed * dt;
 	}
 	lastDir = dir;
 
 	sprite.setPosition(position);
-	upHitBox.setPosition(position);
-	downHitBox.setPosition(position);
+	hitBox.setPosition(position);
 
 	// 충돌 처리
-	if (isFalling == true)
+	for (auto bk : blocks)
 	{
-		for (auto bk : blocks)
+		Vector2f pos = hitBox.getPosition();
+		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
 		{
-			if (downHitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
+			if (bk->GetBlockRect().top > hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f &&
+				hitBox.getPosition().y < bk->GetBlockRect().top + 5.f)
 			{
-				if (downHitBox.getGlobalBounds().top < bk->GetBlockRect().top)
+				pos.y = bk->GetBlockRect().top;
+				fallingSpeed = 0.f;
+				if (isJump == false)
 				{
 					isFalling = false;
-					vel = START_FALLING_SPEED;
-					position.y = bk->GetBlockRect().top + 1;
-					upHitBox.setPosition(position);
-					downHitBox.setPosition(position);
-					break;
-				}
-				else
-				{
-				
 				}
 			}
-		}
-	}
-
-	else if (isFalling == false)
-	{
-		for (auto bk : blocks)
-		{
-
-			if (downHitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
+			else if (bk->GetPosition().y + bk->GetBlockRect().height * 0.5f < hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f
+				&& abs(hitBox.getPosition().y - hitBox.getGlobalBounds().height) > bk->GetPosition().y + bk->GetBlockRect().height * 0.5f - 5.f)
 			{
-				isFalling = false;
-				break;
+				pos.y = bk->GetPosition().y + bk->GetBlockRect().height * 0.5f + hitBox.getGlobalBounds().height;
 			}
+			else if (bk->GetBlockRect().left > hitBox.getPosition().x)
+			{
+				pos.x = abs(hitBox.getGlobalBounds().width * 0.5f - bk->GetBlockRect().left);
+			}
+			else if (bk->GetPosition().x + bk->GetBlockRect().width * 0.5f < hitBox.getPosition().x)
+			{
+				pos.x = hitBox.getGlobalBounds().width * 0.5f + bk->GetPosition().x + bk->GetBlockRect().width * 0.5f;
+			}
+			hitBox.setPosition(pos);
+			position = pos;
+			break;
+		}
+		else if (isJump == false)
+		{
 			isFalling = true;
 		}
 	}
@@ -183,8 +176,7 @@ void Player::Draw(RenderWindow* window, View* mainView)
 {
 	window->setView(*mainView);
 	window->draw(sprite);
-	window->draw(upHitBox);
-	window->draw(downHitBox);
+	window->draw(hitBox);
 }
 
 void Player::AnimationInit()

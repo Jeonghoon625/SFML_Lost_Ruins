@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <map>
+#include <cstdlib>
 #include "../../Mgr/TextureHolder.h"
 #include "../../Animation/AnimationController.h"
 #include "../../Animation/rapidcsv.h"
@@ -38,7 +39,6 @@ private:
 	const float START_MANA = 20;
 	const float START_IMMUNE_MS = 200;
 	const float GRAVITY_POWER = 2000.f;
-	const float START_FALLING_SPEED = 200.f;
  
 	TextureHolder textureHlr;
 	AnimationController animation;
@@ -58,20 +58,20 @@ private:
 	int maxHealth;
 
 	float speed;
-	float vel;
+	float fallingSpeed;
 
 	float immuneMs;
 	bool immune;
 
 	bool isFalling;
 	bool isJump;
+	bool skipDt;
 
 	Time lastHit;
 
 	std::map<std::string, Texture> texmap;
 
-	RectangleShape upHitBox;
-	RectangleShape downHitBox;
+	RectangleShape hitBox;
 
 public:
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
@@ -83,9 +83,6 @@ public:
 	Vector2f GetPosition() const;
 	Sprite GetSprite() const;
 	int GetHealth() const;
-
-	void SetIsJump(bool jump);
-	bool GetIsJump();
 
 	void Init();
 	void Update(float dt, std::vector <TestBlock*> blocks);
