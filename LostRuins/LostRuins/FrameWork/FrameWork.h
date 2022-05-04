@@ -19,8 +19,6 @@ private:
 	Clock clock;
 	Time playTime;
 	Time dt;
-
-	TextureHolder textHolder;
 	
 public:
 	bool Initialize();

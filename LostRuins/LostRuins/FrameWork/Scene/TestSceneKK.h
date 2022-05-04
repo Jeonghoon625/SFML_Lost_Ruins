@@ -11,7 +11,7 @@
 #include "../Object/Monster/Monster.h"
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
-
+#include "../Object/TestBlock/TestBlock.h"
 
 
 
@@ -28,7 +28,8 @@ private:
 	Texture textureHeroine;
 	Sprite heroineAction;
 	
-
+	
+	vector <TestBlock*> blocks;
 	Monster Goblin;
 	ZombieCrawler zombieCrawler;
 	ZombieWalker zombieWalker;
