@@ -26,18 +26,14 @@ private:
 	const Vector2f scale = Vector2f(3.f, 3.f);
 	const Vector2f scaleFlipX = Vector2f(-3.f, 3.f);
 
-	const Vector2f idleUpHitBox = Vector2f(10.f, 48.f);
-	const Vector2f rightRunUpHitBox = Vector2f(5.f, 48.f);
-	const Vector2f leftRunUpHitBox = Vector2f(15.f, 48.f);
+	const Vector2f hitBoxMiddle = Vector2f(10.f, 48.f);
+	const Vector2f hitBoxRight = Vector2f(5.f, 48.f);
+	const Vector2f hitBoxLeft = Vector2f(15.f, 48.f);
 
-	const Vector2f idleDownHitBox = Vector2f(10.f, 5.f);
-	const Vector2f rightRunDownHitBox = Vector2f(5.f, 5.f);
-	const Vector2f leftRunDownHitBox = Vector2f(15.f, 5.f);
-
-	const float START_SPEED = 600;
-	const float START_HEALTH = 20;
-	const float START_MANA = 20;
-	const float START_IMMUNE_MS = 200;
+	const int START_HEALTH = 20;
+	const int START_MANA = 20;
+	const float START_SPEED = 600.f;
+	const float START_IMMUNE_MS = 200.f;
 	const float GRAVITY_POWER = 2000.f;
  
 	TextureHolder textureHlr;
@@ -64,7 +60,6 @@ private:
 	bool immune;
 
 	bool isFalling;
-	bool isJump;
 	bool skipDt;
 
 	Time lastHit;
@@ -89,6 +84,7 @@ public:
 	void Draw(RenderWindow* window, View* mainView);
 
 	void AnimationInit();
+	bool UpdateCollision(std::vector <TestBlock*> blocks);
 
 };
 
