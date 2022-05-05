@@ -33,8 +33,9 @@ private:
 	const int START_HEALTH = 20;
 	const int START_MANA = 20;
 	const float START_SPEED = 600.f;
-	const float START_IMMUNE_MS = 200.f;
+	const float START_JUMP_SPEED = 1000.f;
 	const float GRAVITY_POWER = 2000.f;
+	const float START_IMMUNE_MS = 200.f;
  
 	TextureHolder textureHlr;
 	AnimationController animation;
@@ -54,12 +55,14 @@ private:
 	int maxHealth;
 
 	float speed;
+	float JumpingSpeed;
 	float fallingSpeed;
 
 	float immuneMs;
 	bool immune;
 
 	bool isFalling;
+	bool isJump;
 	bool skipDt;
 
 	Time lastHit;
@@ -84,7 +87,7 @@ public:
 	void Draw(RenderWindow* window, View* mainView);
 
 	void AnimationInit();
-	bool UpdateCollision(std::vector <TestBlock*> blocks);
+	void UpdateCollision(std::vector <TestBlock*> blocks);
 
 };
 

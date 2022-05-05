@@ -8,7 +8,8 @@ void Player::Init()
 	maxHealth = START_HEALTH;
 	immuneMs = START_IMMUNE_MS;
 	fallingSpeed = 0.f;
-	isFalling = false;
+	isFalling = true;
+	isJump = false;
 	skipDt = true;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
@@ -28,7 +29,7 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	position.x = this->gameMap.width * 0.5f;
 	position.y = 200.f;
 
-	hitBox.setFillColor(Color(153, 153, 153, 80));
+	hitBox.setFillColor(Color(153, 153, 153, 0));
 	hitBox.setSize(Vector2f(20.f, 48.f));
 	hitBox.setOrigin(hitBoxMiddle);
 	hitBox.setScale(scale);
@@ -95,27 +96,50 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		skipDt = false;
 	}
 
+	if (InputManager::GetKeyDown(Keyboard::Up) && isFalling == false && isJump == false)
+	{
+		isJump = true;
+	}
+
 	// 이동
 	position.x += dir.x * speed * dt;
-	fallingSpeed += GRAVITY_POWER * dt;
-	if (isFalling == false)
+	if (isJump == false)
 	{
-		fallingSpeed = 0.f;
+		fallingSpeed += GRAVITY_POWER * dt;
+		if (fallingSpeed > 3000.f)
+		{
+			fallingSpeed = 3000.f;
+		}
 	}
-	else if (fallingSpeed > 10000.f)
+
+	else if (isJump == true)
 	{
-		fallingSpeed = 10000.f;
+		JumpingSpeed -= GRAVITY_POWER * dt;
+		position.y -= JumpingSpeed * dt;
+		if (JumpingSpeed < 0.f)
+		{
+			isJump = false;
+			JumpingSpeed = START_JUMP_SPEED;
+		}
 	}
 	position.y += fallingSpeed * dt;
+
 	lastDir = dir;
 
 	sprite.setPosition(position);
 	hitBox.setPosition(position);
 
 	// 충돌 처리
-	if (!UpdateCollision(blocks))
+	UpdateCollision(blocks);
+
+	//std::cout << fallingSpeed << std::endl;
+	if (isFalling == true)
 	{
-		isFalling = true;
+		std::cout << "떨어짐" << std::endl;
+	}
+	else
+	{
+		std::cout << "지면" << std::endl;
 	}
 
 	animation.Update(dt);
@@ -169,9 +193,9 @@ void Player::AnimationInit()
 	}
 }
 
-bool Player::UpdateCollision(std::vector<TestBlock*> blocks)
+void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 {
-	bool isCollided = false;
+	isFalling = true;
 	for (auto bk : blocks)
 	{
 		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
@@ -183,8 +207,6 @@ bool Player::UpdateCollision(std::vector<TestBlock*> blocks)
 
 			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height;
 			float playerDown = hitBox.getPosition().y;
-			float playerLeft = hitBox.getGlobalBounds().left;
-			float playerRight = hitBox.getPosition().x + hitBox.getGlobalBounds().width * 0.5f;
 
 			float playerXpos = hitBox.getPosition().x;
 			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
@@ -195,29 +217,28 @@ bool Player::UpdateCollision(std::vector<TestBlock*> blocks)
 			{
 				//std::cout << "블럭 아래에 플레이어가 충돌" << std::endl;
 				pos.y = blockDown + hitBox.getGlobalBounds().height;
+				isJump = false;
+				JumpingSpeed = START_JUMP_SPEED;
 			}
 			if (blockUp > playerYpos && playerDown < blockUp + 5.f)
 			{
 				//std::cout << "블럭 위에 플레이어가 충돌" << std::endl;
 				pos.y = blockUp;
-				fallingSpeed = 0.f;
 				isFalling = false;
+				fallingSpeed = 0.f;
 			}
 			else if (blockLeft > playerXpos)
 			{
 				//std::cout << "블럭 왼쪽에 플레이어가 충돌" << std::endl;
-				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f - 1.f;
 			}
 			else if (blockRight < playerXpos)
 			{
 				//std::cout << "블럭 오른쪽에 플레이어가 충돌" << std::endl;
-				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f + 1.f;
 			}
 			hitBox.setPosition(pos);
 			position = pos;
-			isCollided = true;
 		}
 	}
-
-	return isCollided;
 }
