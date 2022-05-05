@@ -132,14 +132,13 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	// 충돌 처리
 	UpdateCollision(blocks);
 
-	//std::cout << fallingSpeed << std::endl;
 	if (isFalling == true)
 	{
-		std::cout << "떨어짐" << std::endl;
+		std::cout << "떨어짐" << "  " << fallingSpeed << std::endl;
 	}
 	else
 	{
-		std::cout << "지면" << std::endl;
+		std::cout << "지면" << "  " << fallingSpeed << std::endl;
 	}
 
 	animation.Update(dt);
@@ -207,32 +206,34 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 
 			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height;
 			float playerDown = hitBox.getPosition().y;
+			float playerLeft = hitBox.getGlobalBounds().left;
+			float playerRight = hitBox.getPosition().x + hitBox.getGlobalBounds().width * 0.5f;
 
 			float playerXpos = hitBox.getPosition().x;
 			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
 
 			Vector2f pos = hitBox.getPosition();
 
-			if (blockDown < playerYpos && playerUp > blockDown - 5.f)
+			if (blockDown < playerYpos && playerUp > blockDown - 10.f)
 			{
 				//std::cout << "블럭 아래에 플레이어가 충돌" << std::endl;
 				pos.y = blockDown + hitBox.getGlobalBounds().height;
 				isJump = false;
 				JumpingSpeed = START_JUMP_SPEED;
 			}
-			if (blockUp > playerYpos && playerDown < blockUp + 5.f)
+			if (blockUp > playerYpos && playerDown < blockUp + 10.f)
 			{
 				//std::cout << "블럭 위에 플레이어가 충돌" << std::endl;
 				pos.y = blockUp;
 				isFalling = false;
 				fallingSpeed = 0.f;
 			}
-			else if (blockLeft > playerXpos)
+			if (blockLeft > playerXpos && playerRight < blockLeft + 10.f)
 			{
 				//std::cout << "블럭 왼쪽에 플레이어가 충돌" << std::endl;
 				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f - 1.f;
 			}
-			else if (blockRight < playerXpos)
+			if (blockRight < playerXpos && playerLeft > blockRight - 10.f)
 			{
 				//std::cout << "블럭 오른쪽에 플레이어가 충돌" << std::endl;
 				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f + 1.f;
