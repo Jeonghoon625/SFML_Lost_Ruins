@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <map>
+#include <cstdlib>
 #include "../../Mgr/TextureHolder.h"
 #include "../../Animation/AnimationController.h"
 #include "../../Animation/rapidcsv.h"
@@ -25,12 +26,16 @@ private:
 	const Vector2f scale = Vector2f(3.f, 3.f);
 	const Vector2f scaleFlipX = Vector2f(-3.f, 3.f);
 
-	const float START_SPEED = 600;
-	const float START_HEALTH = 20;
-	const float START_MANA = 20;
-	const float START_IMMUNE_MS = 200;
-	const float GRAVITY_POWER = 980.f;
-	const float START_FALLING_SPEED = 0.F;
+	const Vector2f hitBoxMiddle = Vector2f(10.f, 48.f);
+	const Vector2f hitBoxRight = Vector2f(5.f, 48.f);
+	const Vector2f hitBoxLeft = Vector2f(15.f, 48.f);
+
+	const int START_HEALTH = 20;
+	const int START_MANA = 20;
+	const float START_SPEED = 600.f;
+	const float START_JUMP_SPEED = 1000.f;
+	const float GRAVITY_POWER = 2000.f;
+	const float START_IMMUNE_MS = 200.f;
  
 	TextureHolder textureHlr;
 	AnimationController animation;
@@ -50,13 +55,15 @@ private:
 	int maxHealth;
 
 	float speed;
-	float vel;
+	float JumpingSpeed;
+	float fallingSpeed;
 
 	float immuneMs;
 	bool immune;
 
 	bool isFalling;
 	bool isJump;
+	bool skipDt;
 
 	Time lastHit;
 
@@ -75,14 +82,12 @@ public:
 	Sprite GetSprite() const;
 	int GetHealth() const;
 
-	void SetIsJump(bool jump);
-	bool GetIsJump();
-
 	void Init();
 	void Update(float dt, std::vector <TestBlock*> blocks);
 	void Draw(RenderWindow* window, View* mainView);
 
 	void AnimationInit();
+	void UpdateCollision(std::vector <TestBlock*> blocks);
 
 };
 

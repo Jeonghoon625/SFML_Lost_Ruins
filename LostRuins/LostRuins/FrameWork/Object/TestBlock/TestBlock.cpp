@@ -1,15 +1,23 @@
 #include "TestBlock.h"
 
-TestBlock::TestBlock(float left, float top, float width, float height)
+TestBlock::TestBlock(float xpos, float ypos, float width, float height)
 {
-	blockRect.top = top;
-	blockRect.left = left;
+	position = Vector2f(xpos, ypos);
+
+	blockRect.top = ypos - height * 0.5f;
+	blockRect.left = xpos - width * 0.5f;
 	blockRect.width = width;
 	blockRect.height = height;
 
 	blockShape.setFillColor(Color(153, 153, 153));
 	blockShape.setSize(Vector2f(width, height));
-	blockShape.setPosition(left, top);
+	blockShape.setOrigin(Vector2f(width * 0.5f, height * 0.5f));
+	blockShape.setPosition(position);
+}
+
+const Vector2f TestBlock::GetPosition()
+{
+	return position;
 }
 
 const FloatRect TestBlock::GetBlockRect()
