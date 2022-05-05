@@ -36,8 +36,7 @@ private:
 	const float START_JUMP_SPEED = 1000.f;
 	const float GRAVITY_POWER = 2000.f;
 	const float START_IMMUNE_MS = 200.f;
- 
-	TextureHolder textureHlr;
+
 	AnimationController animation;
 
 	Vector2f position;
