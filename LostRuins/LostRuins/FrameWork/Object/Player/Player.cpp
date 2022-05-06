@@ -141,7 +141,6 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	{
 		std::cout << "Áö¸é" << "  " << fallingSpeed << std::endl;
 	}*/
-
 	AnimationUpdate();
 	animation.Update(dt);
 }
@@ -393,9 +392,4 @@ void Player::SetStatus(Status newStatus)
 		animation.Play("Falling");
 		break;
 	}
-}
-
-RectangleShape Player::GetHitBox()
-{
-	return hitBox;
 }

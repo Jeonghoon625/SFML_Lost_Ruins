@@ -151,6 +151,11 @@ void GoblinAttacker::Attack(float dt, int atk, Player& player)
 {
 	if (isAttackPlayer)
 	{
+		sprite.setPosition(position);
+		findPlayerBox.setPosition(position);
+		attackRangeBox.setPosition(position);
+		hitBox.setPosition(position);
+
 		attackDelay += dt;
 		if (attackDelay > 1.5f)
 		{

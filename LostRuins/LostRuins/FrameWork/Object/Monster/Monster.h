@@ -34,6 +34,7 @@ protected:
 	bool isFindPlayer;
 	bool isAttackPlayer;
 	float attackDelay;
+	float hitDelay;
 
 	Sprite sprite;
 	Vector2f position;
@@ -71,7 +72,7 @@ public:
 	virtual void Run(float dt);
 	virtual void Attack(float dt, int atk, Player& player);
 
-	virtual bool OnHitted(int atk);
+	virtual bool OnHitted(int atk, float dt);
 
 	void Gravity(float dt, std::vector<TestBlock*> blocks);
 	void UpdateCollision(std::vector <TestBlock*> blocks);

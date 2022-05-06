@@ -3,7 +3,7 @@
 #include "../../FrameWork/Mgr/TextureHolder.h"
 
 Monster::Monster()
-	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f),isFindPlayer(false),isAttackPlayer(false),attackDelay(0.f),isFalling(true)
+	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f),isFindPlayer(false),isAttackPlayer(false),attackDelay(0.f),isFalling(true),hitDelay(0.f)
 	,strWalk("GoblinAttackerWalk"),strIdle("GoblinAttackerIdle"),strRun("GoblinAttackerRun"),strDead("GoblinAttackerDead"), strAttack("GoblinAttackerAttack")
 	,strAttackBlocked("GoblinAttackerAttackBlocked"),strDemageTaken("GoblinAttackerDemageTaken")
 {
@@ -212,7 +212,6 @@ void Monster::ChasePlayer(Player&player, float dt)
 
 		if (!isAttackPlayer)
 		{
-			
 			float h = player.GetPosition().x - sprite.getPosition().x;
 			float v = 0.f;
 			Vector2f dir(h, v);
@@ -255,6 +254,12 @@ void Monster::Attack(float dt, int atk, Player&player)
 	if (isAttackPlayer)
 	{
 		attackDelay += dt;
+
+		sprite.setPosition(position);
+		findPlayerBox.setPosition(position);
+		attackRangeBox.setPosition(position);
+		hitBox.setPosition(position);
+
 		if (attackDelay > 1.5f)
 		{
 			//if(attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()));
@@ -270,7 +275,7 @@ void Monster::Attack(float dt, int atk, Player&player)
 	}
 }
 
-bool Monster::OnHitted(int atk)
+bool Monster::OnHitted(int atk, float dt)
 {
 	if(health > 0)
 	{
@@ -282,25 +287,29 @@ bool Monster::OnHitted(int atk)
 
 void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
 {
-	
+
+	if (isFalling)
+	{
 		fallingSpeed += GRAVITY_POWER * dt;
 		if (fallingSpeed > 3000.f)
 		{
 			fallingSpeed = 3000.f;
 		}
 		position.y += fallingSpeed * dt;
-		std::cout << position.y << std::endl;
-		UpdateCollision(blocks);
-	
+	}
+	UpdateCollision(blocks);
+	std::cout << position.y << std::endl;
+
 }
 
 void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 {
+
+	isFalling = true;
 	for (auto bk : blocks)
 	{
 		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
 		{
-			isFalling = false;
 			float blockUp = bk->GetBlockRect().top;
 			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height * 0.5f;
 			float blockLeft = bk->GetBlockRect().left;
@@ -316,38 +325,109 @@ void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 
 			Vector2f pos = hitBox.getPosition();
 
-			if (blockDown < playerYpos && playerUp > blockDown - 10.f)
+			// 블럭 CB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
 			{
-				//std::cout << "블럭 아래에 플레이어가 충돌" << std::endl;
 				pos.y = blockDown + hitBox.getGlobalBounds().height;
-				/*JumpingSpeed = START_JUMP_SPEED;*/
+
 			}
-			if (blockUp > playerYpos && playerDown < blockUp + 10.f)
+			// 블럭 LB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockLeft > playerXpos && blockDown < playerYpos)
 			{
-				//std::cout << "블럭 위에 플레이어가 충돌" << std::endl;
+				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+				}
+				else if (abs(blockLeft - playerRight) < abs(blockDown - playerUp))
+				{
+					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockLeft - playerRight);
+					pos.y -= abs(blockDown - playerUp);
+				}
+			}
+			// 블럭 RB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockRight < playerXpos && blockDown < playerYpos)
+			{
+				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+
+				}
+				else if (abs(blockRight - playerLeft) < abs(blockDown - playerUp))
+				{
+					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x += abs(blockRight - playerLeft);
+					pos.y -= abs(blockDown - playerUp);
+				}
+			}
+			// 블럭 CT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
+			{
 				pos.y = blockUp;
 				isFalling = false;
 				fallingSpeed = 0.f;
 			}
-			if (blockLeft > playerXpos && playerRight < blockLeft + 10.f)
+			// 블럭 LT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockLeft > playerXpos && blockUp > playerYpos)
 			{
-				//std::cout << "블럭 왼쪽에 플레이어가 충돌" << std::endl;
-				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f - 1.f;
+				if (abs(blockLeft - playerRight) > abs(blockUp - playerDown))
+				{
+					pos.y = blockUp;
+					isFalling = false;
+					fallingSpeed = 0.f;
+				}
+				else if (abs(blockLeft - playerRight) < abs(blockUp - playerDown))
+				{
+					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockLeft - playerRight);
+					pos.y -= abs(blockUp - playerDown);
+				}
 			}
-			if (blockRight < playerXpos && playerLeft > blockRight - 10.f)
+			// 블럭 RT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockRight < playerXpos && blockUp > playerYpos)
 			{
-				//std::cout << "블럭 오른쪽에 플레이어가 충돌" << std::endl;
-				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f + 1.f;
+				if (abs(blockRight - playerLeft) > abs(blockUp - playerDown))
+				{
+					pos.y = blockUp;
+					isFalling = false;
+					fallingSpeed = 0.f;
+				}
+				else if (abs(blockRight - playerLeft) < abs(blockUp - playerDown))
+				{
+					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockRight - playerLeft);
+					pos.y -= abs(blockUp - playerDown);
+				}
 			}
-			sprite.setPosition(pos);
+			// 블럭 LC에 플레이어가 충돌
+			if (blockLeft > playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			{
+				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+			}
+			// 블럭 RC에 플레이어가 충돌
+			if (blockRight < playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			{
+				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+			}
 			hitBox.setPosition(pos);
 			position = pos;
+			sprite.setPosition(pos);
 		}
-		/*else
-		{
-			isFalling = true;
-		}*/
-	}
+
+		}
+	
 }
 
 void Monster::Update(Player& player,float dt, std::vector<TestBlock*> blocks)
