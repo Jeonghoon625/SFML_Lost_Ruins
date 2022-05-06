@@ -2,12 +2,17 @@
 #include <SFML/Graphics.hpp>
 #include "../../Animation/AnimationController.h"
 #include "../../Animation/rapidcsv.h"
-
+#include "../Player/Player.h"
 using namespace sf;
 
 class Monster
 {
 protected:
+	const Vector2f scale = Vector2f(3.f, 3.f);
+	const float GRAVITY_POWER = 2000.f;
+	float fallingSpeed;
+	bool isFalling;
+
 	Vector2i resolution;
 
 	int health;
@@ -17,8 +22,16 @@ protected:
 	int nextMove;
 	float checkTime;
 
+	bool isFindPlayer;
+	bool isAttackPlayer;
+	float attackDelay;
+
 	Sprite sprite;
 	Vector2f position;
+
+	RectangleShape findPlayerBox;		// Find Player
+	RectangleShape attackRangeBox;
+	RectangleShape hitBox;
 
 	AnimationController animation;
 	std::map<std::string, Texture> texmap;
@@ -36,15 +49,23 @@ public:
 	float GetSpeed();
 	void SetSpeed(float speed);
 
-	virtual void MonsterInit(int health, int atk, float speed);
+	RectangleShape GetHitBox();
+
+	virtual void MonsterInit();
 
 	void AnimationInit(Sprite* sprite);
 
 	virtual void Walk(float dt);
+
+	virtual void FindPlayer(Player& player);
+	virtual void ChasePlayer(Player& player, float dt);
 	virtual void Run(float dt);
 	virtual void Attack(float dt, int atk);
 
-	void Update(float dt);
+	void Gravity(float dt, std::vector<TestBlock*> blocks);
+	void UpdateCollision(std::vector <TestBlock*> blocks);
+
+	void Update(Player& player, float dt, std::vector<TestBlock*> blocks);
 
 	void Draw(RenderWindow* window);
 };

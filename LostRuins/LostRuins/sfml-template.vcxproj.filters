@@ -23,12 +23,6 @@
     <ClCompile Include="FrameWork\Mgr\Utils.cpp">
       <Filter>Framework\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\Monster\Monster.cpp">
-      <Filter>Framework\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Object\Player\Player.cpp">
-      <Filter>Framework\Object</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\Scene\Scene.cpp">
       <Filter>Framework\Scene</Filter>
     </ClCompile>
@@ -47,17 +41,26 @@
     <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp">
       <Filter>Framework\Object</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp">
-      <Filter>Framework\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp">
-      <Filter>Framework\Object</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp">
       <Filter>Framework\Scene</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp">
       <Filter>Framework\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\Monster.cpp">
+      <Filter>Framework\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp">
+      <Filter>Framework\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp">
+      <Filter>Framework\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Player\Player.cpp">
+      <Filter>Framework\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp">
+      <Filter>Framework\Object\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,12 +85,6 @@
     <ClInclude Include="FrameWork\Mgr\Utils.h">
       <Filter>Framework\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\Monster\Monster.h">
-      <Filter>Framework\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Object\Player\Player.h">
-      <Filter>Framework\Object</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Animation\rapidcsv.h">
       <Filter>Framework\Manager</Filter>
     </ClInclude>
@@ -109,17 +106,26 @@
     <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h">
       <Filter>Framework\Object</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h">
-      <Filter>Framework\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h">
-      <Filter>Framework\Object</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Scene\TitleScene.h">
       <Filter>Framework\Scene</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h">
       <Filter>Framework\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\Monster.h">
+      <Filter>Framework\Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h">
+      <Filter>Framework\Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h">
+      <Filter>Framework\Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Player\Player.h">
+      <Filter>Framework\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h">
+      <Filter>Framework\Object\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +152,9 @@
     </Filter>
     <Filter Include="Framework\Object\Monster">
       <UniqueIdentifier>{9cc68969-7058-4bab-9ba8-fa203ecc8d0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Object\Player">
+      <UniqueIdentifier>{a90c2d4f-cece-40b4-a855-858aa514cf13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

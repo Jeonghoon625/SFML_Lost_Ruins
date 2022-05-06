@@ -56,8 +56,11 @@ int FrameWork::Run()
 		dt = clock.restart();
 		playTime += dt;
 
-		Update();
-		Draw();
+		if (dt.asSeconds() <= 1.f / 200.f)
+		{
+			Update();
+			Draw();
+		}
 	}
 
 	return 0;
