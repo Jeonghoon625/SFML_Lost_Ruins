@@ -38,7 +38,7 @@
     <ClCompile Include="FrameWork\Scene\TestSceneTT.cpp" />
     <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp" />
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h" />
