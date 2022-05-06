@@ -58,11 +58,12 @@ private:
 	bool immune;
 
 	Status currentStatus;
-	bool isFalling;
+	bool isFloor;
 	bool isJump;
 	bool isAttack;
 
 	Time lastHit;
+	float lastYpos;
 
 	std::map<std::string, Texture> texmap;
 
