@@ -78,55 +78,48 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 
 	Utils::Normalize(dir);
 
-	// 애니메이션
-	/*{
-		if (dir.x == 0 && lastDir != dir)
-		{
-			animation.Play("Idle");
-		}
-		if (dir.x > 0.f && lastDir != dir)
-		{
-			animation.Play("Run");
-			sprite.setScale(scale);
-		}
-		if (dir.x < 0.f && lastDir != dir)
-		{
-			animation.Play("Run");
-			sprite.setScale(scaleFlipX);
-		}
-	}*/
-
 	if (InputManager::GetKeyDown(Keyboard::C) && isFalling == false && isJump == false)
 	{
 		isJump = true;
 	}
+	if (InputManager::GetKeyDown(Keyboard::X) && isFalling == false && isJump == false)
+	{
+		isAttack = true;
+	}
 
+	// 공격
+	if (isAttack == true)
+	{
+
+	}
 	// 이동
-	position.x += dir.x * speed * dt;
-	if (isJump == false)
+	else
 	{
-		fallingSpeed += GRAVITY_POWER * dt;
-		if (fallingSpeed > 3000.f)
+		position.x += dir.x * speed * dt;
+		if (isJump == false)
 		{
-			fallingSpeed = 3000.f;
+			fallingSpeed += GRAVITY_POWER * dt;
+			if (fallingSpeed > 3000.f)
+			{
+				fallingSpeed = 3000.f;
+			}
 		}
-	}
-	else if (isJump == true)
-	{
-		JumpingSpeed -= GRAVITY_POWER * dt;
-		position.y -= JumpingSpeed * dt;
-		if (JumpingSpeed < 0.f)
+		else if (isJump == true)
 		{
-			isJump = false;
-			JumpingSpeed = START_JUMP_SPEED;
+			JumpingSpeed -= GRAVITY_POWER * dt;
+			position.y -= JumpingSpeed * dt;
+			if (JumpingSpeed < 0.f)
+			{
+				isJump = false;
+				JumpingSpeed = START_JUMP_SPEED;
+			}
 		}
-	}
-	position.y += fallingSpeed * dt;
-	lastYpos = position.y;
-	lastDir = dir;
+		position.y += fallingSpeed * dt;
+		lastDir = dir;
 
-	sprite.setPosition(position);
-	hitBox.setPosition(position);
+		sprite.setPosition(position);
+		hitBox.setPosition(position);
+	}
 
 	// 충돌 처리
 	UpdateCollision(blocks);
@@ -338,42 +331,52 @@ void Player::AnimationUpdate()
 	case Status::STATUS_IDLE:
 		if (InputManager::GetKey(Keyboard::Left) || InputManager::GetKey(Keyboard::Right))
 		{
-			SetStatus(STATUS_RUN);
+			SetStatus(Status::STATUS_RUN);
 		}
 		else if (InputManager::GetKeyDown(Keyboard::C))
 		{
-			SetStatus(STATUS_JUMP);
+			SetStatus(Status::STATUS_JUMP);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::X))
+		{
+			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
 		else if (isFalling == true)
 		{
-			SetStatus(STATUS_FALLING);
+			SetStatus(Status::STATUS_FALLING);
 		}
 		break;
 	case Status::STATUS_RUN:
 		if (InputManager::GetKeyUp(Keyboard::Left) || InputManager::GetKeyUp(Keyboard::Right))
 		{
-			SetStatus(STATUS_IDLE);
+			SetStatus(Status::STATUS_IDLE);
 		}
 		else if (InputManager::GetKeyDown(Keyboard::C))
 		{
-			SetStatus(STATUS_JUMP);
+			SetStatus(Status::STATUS_JUMP);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::X))
+		{
+			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
 		else if (isFalling == true)
 		{
-			SetStatus(STATUS_FALLING);
+			SetStatus(Status::STATUS_FALLING);
 		}
 		break;
 	case Status::STATUS_JUMP:
 		if (isJump == false)
 		{
-			SetStatus(STATUS_FALLING);
+			SetStatus(Status::STATUS_FALLING);
 		}
 		break;
 	case Status::STATUS_FALLING:
 		if (isFalling == false)
 		{
-			SetStatus(STATUS_IDLE);
+			SetStatus(Status::STATUS_IDLE);
 		}
+		break;
+	case Status::STATUS_ATK_TWO_STAND:
 		break;
 	default:
 		break;
@@ -387,17 +390,20 @@ void Player::SetStatus(Status newStatus)
 
 	switch (currentStatus)
 	{
-	case STATUS_IDLE:
+	case Status::STATUS_IDLE:
 		animation.Play("Idle");
 		break;
-	case STATUS_RUN:
+	case Status::STATUS_RUN:
 		animation.Play("Run");
 		break;
-	case STATUS_JUMP:
+	case Status::STATUS_JUMP:
 		animation.Play("Jump");
 		break;
-	case STATUS_FALLING:
+	case Status::STATUS_FALLING:
 		animation.Play("Falling");
+		break;
+	case Status::STATUS_ATK_TWO_STAND:
+		animation.Play("Attack_Twohanded_Standing");
 		break;
 	}
 }

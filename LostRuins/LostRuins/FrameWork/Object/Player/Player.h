@@ -12,12 +12,13 @@
 
 using namespace sf;
 
-enum Status
+enum class Status
 {
 	STATUS_IDLE,
 	STATUS_RUN,
 	STATUS_JUMP,
 	STATUS_FALLING,
+	STATUS_ATK_TWO_STAND,
 };
 
 class Player
@@ -25,7 +26,6 @@ class Player
 private:
 	const Vector2f scale = Vector2f(3.f, 3.f);
 	const Vector2f scaleFlipX = Vector2f(-3.f, 3.f);
-
 	const Vector2f hitBoxOrigin = Vector2f(10.f, 48.f);
 
 	const int START_HEALTH = 20;
@@ -38,7 +38,6 @@ private:
 	AnimationController animation;
 
 	Vector2f position;
-
 	Vector2f lastDir;
 
 	Texture texture;
@@ -55,14 +54,13 @@ private:
 	float JumpingSpeed;
 	float fallingSpeed;
 
-	float lastYpos;
-
 	float immuneMs;
 	bool immune;
 
 	Status currentStatus;
 	bool isFalling;
 	bool isJump;
+	bool isAttack;
 
 	Time lastHit;
 
