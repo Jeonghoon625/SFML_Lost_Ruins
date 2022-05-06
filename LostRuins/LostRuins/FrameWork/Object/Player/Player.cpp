@@ -79,47 +79,25 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	Utils::Normalize(dir);
 
 	// 애니메이션
-	if (dir.x == 0 && lastDir != dir)
-	{
-		if (isFalling == false)
+	/*{
+		if (dir.x == 0 && lastDir != dir)
 		{
 			animation.Play("Idle");
 		}
-		else
-		{
-			animation.Play("Falling");
-		}
-	}
-	if (dir.x > 0.f && lastDir != dir)
-	{
-		if (isFalling == false)
+		if (dir.x > 0.f && lastDir != dir)
 		{
 			animation.Play("Run");
 			sprite.setScale(scale);
 		}
-		else
-		{
-			animation.Play("Falling");
-			sprite.setScale(scale);
-		}
-	}
-	if (dir.x < 0.f && lastDir != dir)
-	{
-		if (isFalling == false)
+		if (dir.x < 0.f && lastDir != dir)
 		{
 			animation.Play("Run");
 			sprite.setScale(scaleFlipX);
 		}
-		else
-		{
-			animation.Play("Falling");
-			sprite.setScale(scaleFlipX);
-		}
-	}
+	}*/
 
-	if (InputManager::GetKeyDown(Keyboard::Up) && isFalling == false && isJump == false)
+	if (InputManager::GetKeyDown(Keyboard::C) && isFalling == false && isJump == false)
 	{
-		animation.Play("Jump");
 		isJump = true;
 	}
 
@@ -164,6 +142,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		std::cout << "지면" << "  " << fallingSpeed << std::endl;
 	}*/
 
+	AnimationUpdate();
 	animation.Update(dt);
 }
 
@@ -340,5 +319,78 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 			hitBox.setPosition(pos);
 			position = pos;
 		}
+	}
+}
+
+void Player::AnimationUpdate()
+{
+	switch (currentStatus)
+	{
+	case Status::STATUS_IDLE:
+		if (InputManager::GetKeyDown(Keyboard::Left))
+		{
+			sprite.setScale(scaleFlipX);
+			SetStatus(STATUS_RUN);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::Right))
+		{
+			sprite.setScale(scale);
+			SetStatus(STATUS_RUN);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::C))
+		{
+			SetStatus(STATUS_JUMP);
+		}
+		break;
+	case Status::STATUS_RUN:
+		if (InputManager::GetKeyUp(Keyboard::Left) || InputManager::GetKeyUp(Keyboard::Right))
+		{
+			SetStatus(STATUS_IDLE);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::C))
+		{
+			SetStatus(STATUS_JUMP);
+		}
+		break;
+	case Status::STATUS_JUMP:
+		if (isFalling == false)
+		{
+			SetStatus(STATUS_IDLE);
+		}
+		if (InputManager::GetKeyDown(Keyboard::Left))
+		{
+			sprite.setScale(scaleFlipX);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::Right))
+		{
+			sprite.setScale(scale);
+		}
+		break;
+	case Status::STATUS_FALLING:
+		break;
+	default:
+		break;
+	}
+}
+
+void Player::SetStatus(Status newStatus)
+{
+	Status prevStatus = currentStatus;
+	currentStatus = newStatus;
+
+	switch (currentStatus)
+	{
+	case STATUS_IDLE:
+		animation.Play("Idle");
+		break;
+	case STATUS_RUN:
+		animation.Play("Run");
+		break;
+	case STATUS_JUMP:
+		animation.Play("Jump");
+		break;
+	case STATUS_FALLING:
+		animation.Play("Falling");
+		break;
 	}
 }

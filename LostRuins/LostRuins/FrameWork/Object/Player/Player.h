@@ -12,12 +12,12 @@
 
 using namespace sf;
 
-enum class KeyInput
+enum Status
 {
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN,
+	STATUS_IDLE,
+	STATUS_RUN,
+	STATUS_JUMP,
+	STATUS_FALLING,
 };
 
 class Player
@@ -60,6 +60,7 @@ private:
 	float immuneMs;
 	bool immune;
 
+	Status currentStatus;
 	bool isFalling;
 	bool isJump;
 
@@ -79,6 +80,7 @@ public:
 	Vector2f GetPosition() const;
 	Sprite GetSprite() const;
 	int GetHealth() const;
+	RectangleShape GetHitBox();
 
 	void Init();
 	void Update(float dt, std::vector <TestBlock*> blocks);
@@ -87,6 +89,7 @@ public:
 	void AnimationInit();
 	void UpdateCollision(std::vector <TestBlock*> blocks);
 
-	RectangleShape GetHitBox();
+	void AnimationUpdate();
+	void SetStatus(Status newStatus);
 };
 
