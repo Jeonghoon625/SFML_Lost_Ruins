@@ -19,6 +19,15 @@ protected:
 	int atk;
 	float speed;
 
+	string strIdle;
+	string strWalk;
+	string strRun;
+	string strDead;
+	string strAttack;
+	string strAttackBlocked;
+	string strDemageTaken;
+
+
 	int nextMove;
 	float checkTime;
 
@@ -60,7 +69,9 @@ public:
 	virtual void FindPlayer(Player& player);
 	virtual void ChasePlayer(Player& player, float dt);
 	virtual void Run(float dt);
-	virtual void Attack(float dt, int atk);
+	virtual void Attack(float dt, int atk, Player& player);
+
+	virtual bool OnHitted(int atk);
 
 	void Gravity(float dt, std::vector<TestBlock*> blocks);
 	void UpdateCollision(std::vector <TestBlock*> blocks);

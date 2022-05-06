@@ -11,7 +11,8 @@ ZombieCrawler::ZombieCrawler()
 
 void ZombieCrawler::MonsterInit()
 {
-	
+	strDemageTaken = ("ZombieCrawlerDemageTaken");
+
 	Monster::SetHealth(20);
 	Monster::SetAtk(3);
 	Monster::SetSpeed(30.f);
@@ -23,13 +24,13 @@ void ZombieCrawler::MonsterInit()
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
-	findPlayerBox.setFillColor(Color::White);
+	findPlayerBox.setFillColor(Color(255, 255, 255, 80));
 	findPlayerBox.setOrigin(200, 40);
 	findPlayerBox.setPosition(sprite.getOrigin());
 
 	attackRangeBox.setSize(Vector2f(30.f, 30.f));
 	attackRangeBox.setScale(scale);
-	attackRangeBox.setFillColor(Color::Red);
+	attackRangeBox.setFillColor(Color(153, 0, 0, 80));
 	attackRangeBox.setOrigin(30, 30);
 	attackRangeBox.setPosition(sprite.getOrigin());
 
@@ -44,7 +45,7 @@ void ZombieCrawler::FindPlayer(Player& player)
 {
 	if (!isFindPlayer)
 	{
-		if (findPlayerBox.getGlobalBounds().intersects(FloatRect(player.GetPosition().x, player.GetPosition().y, 1.f, 1.f)))
+		if (findPlayerBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
 			isFindPlayer = true;
 
@@ -58,7 +59,7 @@ void ZombieCrawler::ChasePlayer(Player& player, float dt)
 {
 	if (isFindPlayer && !isAttackPlayer)
 	{
-		if (attackRangeBox.getGlobalBounds().intersects(FloatRect(player.GetPosition().x, player.GetPosition().y, 1.f, 1.f)))
+		if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
 			sprite.setOrigin(18.f, 23);		//공격할때 좀비 크러울러 발 끝 좌표19,23
 			animation.Play("ZombieCrawlerAttack");
@@ -149,7 +150,7 @@ void ZombieCrawler::Run(float dt)
 {
 }
 
-void ZombieCrawler::Attack(float dt, int atk)
+void ZombieCrawler::Attack(float dt, int atk, Player& player)
 {
 	if (isAttackPlayer)
 	{
@@ -162,5 +163,15 @@ void ZombieCrawler::Attack(float dt, int atk)
 			sprite.setOrigin(15.f, 23);	//뛸 때 좀비 크러울러 발 끝 좌표 15,23
 			animation.Play("ZombieCrawlerWalk");
 		}
+	}
+}
+
+bool ZombieCrawler::OnHitted(int atk)
+{
+	if (health > 0)
+	{
+		animation.Play(strDemageTaken);
+		health -= atk;
+		return true;
 	}
 }

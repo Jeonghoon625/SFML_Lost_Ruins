@@ -20,7 +20,7 @@ void FrameWork::Update()
 	InputManager::ClearInput();
 
 	Event event;
-	while (window->pollEvent(event));
+	while (window->pollEvent(event))
 	{
 		switch (event.type)
 		{

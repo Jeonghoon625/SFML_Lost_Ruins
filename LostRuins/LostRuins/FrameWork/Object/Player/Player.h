@@ -88,5 +88,6 @@ public:
 	void AnimationInit();
 	void UpdateCollision(std::vector <TestBlock*> blocks);
 
+	RectangleShape GetHitBox();
 };
 

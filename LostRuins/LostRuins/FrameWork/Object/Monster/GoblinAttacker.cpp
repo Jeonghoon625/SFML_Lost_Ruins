@@ -10,6 +10,8 @@ GoblinAttacker::GoblinAttacker()
 
 void GoblinAttacker::MonsterInit()
 {
+	strDemageTaken = ("GoblinAttackerDemageTaken");
+
 	sprite.setOrigin(23.f, 30);		//고블린 발 끝 좌표 23,30
 	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
 	sprite.setScale(scale);
@@ -39,7 +41,7 @@ void GoblinAttacker::FindPlayer(Player& player)
 {
 	if (!isFindPlayer)
 	{
-		if (findPlayerBox.getGlobalBounds().intersects(FloatRect(player.GetPosition().x, player.GetPosition().y, 1.f, 1.f)))
+		if (findPlayerBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
 			isFindPlayer = true;
 
@@ -53,7 +55,7 @@ void GoblinAttacker::ChasePlayer(Player& player, float dt)
 {
 	if (isFindPlayer && !isAttackPlayer)
 	{
-		if (attackRangeBox.getGlobalBounds().intersects(FloatRect(player.GetPosition().x, player.GetPosition().y, 1.f, 1.f)))
+		if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
 			sprite.setOrigin(20.f, 38);		//공격할때 고블린 발 끝 좌표 20,38
 			animation.Play("GoblinAttackerAttack");
@@ -145,7 +147,7 @@ void GoblinAttacker::Run(float dt)
 {
 }
 
-void GoblinAttacker::Attack(float dt, int atk)
+void GoblinAttacker::Attack(float dt, int atk, Player& player)
 {
 	if (isAttackPlayer)
 	{
@@ -156,7 +158,17 @@ void GoblinAttacker::Attack(float dt, int atk)
 			attackDelay = 0.f;
 			isAttackPlayer = false;
 			sprite.setOrigin(21.f, 46.f);	//뛸 때  발 끝 좌표 21 46
-			animation.Play("ZombieWalkerWalk");
+			animation.Play("GoblinAttackerRun");
 		}
+	}
+}
+
+bool GoblinAttacker::OnHitted(int atk)
+{
+	if (health > 0)
+	{
+		animation.Play(strDemageTaken);
+		health -= atk;
+		return true;
 	}
 }

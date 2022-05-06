@@ -4,7 +4,11 @@
 
 Monster::Monster()
 	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f),isFindPlayer(false),isAttackPlayer(false),attackDelay(0.f),isFalling(true)
+	,strWalk("GoblinAttackerWalk"),strIdle("GoblinAttackerIdle"),strRun("GoblinAttackerRun"),strDead("GoblinAttackerDead"), strAttack("GoblinAttackerAttack")
+	,strAttackBlocked("GoblinAttackerAttackBlocked"),strDemageTaken("GoblinAttackerDemageTaken")
 {
+
+	
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 	
@@ -185,7 +189,7 @@ void Monster::FindPlayer(Player& player)
 {
 	if (!isFindPlayer)
 	{
-		if (findPlayerBox.getGlobalBounds().intersects(FloatRect(player.GetPosition().x, player.GetPosition().y, 1.f, 1.f)))
+		if (findPlayerBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
 			isFindPlayer = true;
 			
@@ -199,7 +203,7 @@ void Monster::ChasePlayer(Player&player, float dt)
 {
 	if (isFindPlayer&& !isAttackPlayer)
 	{
-		if (attackRangeBox.getGlobalBounds().intersects(FloatRect(player.GetPosition().x, player.GetPosition().y, 1.f, 1.f)))
+		if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
 			sprite.setOrigin(20.f, 38);		//공격할때 고블린 발 끝 좌표 20,38
 			animation.Play("GoblinAttackerAttack");
@@ -208,6 +212,7 @@ void Monster::ChasePlayer(Player&player, float dt)
 
 		if (!isAttackPlayer)
 		{
+			
 			float h = player.GetPosition().x - sprite.getPosition().x;
 			float v = 0.f;
 			Vector2f dir(h, v);
@@ -245,13 +250,17 @@ void Monster::Run(float dt)
 }
 
 
-void Monster::Attack(float dt, int atk)
+void Monster::Attack(float dt, int atk, Player&player)
 {
 	if (isAttackPlayer)
 	{
 		attackDelay += dt;
 		if (attackDelay > 1.5f)
 		{
+			//if(attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()));
+			//{
+			//	/*player.OnHitted();*/
+			//}
 			//여기에 함수 추가해서 플레이어 Onhitted 나 set 함수 써서 hp 깎이면 됨 ㅇ.
 			attackDelay = 0.f;
 			isAttackPlayer = false;
@@ -261,19 +270,28 @@ void Monster::Attack(float dt, int atk)
 	}
 }
 
+bool Monster::OnHitted(int atk)
+{
+	if(health > 0)
+	{
+		animation.Play(strDemageTaken);
+		health -= atk;
+		return true;
+	}
+}
+
 void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
 {
-	if (isFalling)
-	{
+	
 		fallingSpeed += GRAVITY_POWER * dt;
 		if (fallingSpeed > 3000.f)
 		{
 			fallingSpeed = 3000.f;
 		}
 		position.y += fallingSpeed * dt;
-
+		std::cout << position.y << std::endl;
 		UpdateCollision(blocks);
-	}
+	
 }
 
 void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
@@ -321,6 +339,7 @@ void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 				//std::cout << "블럭 오른쪽에 플레이어가 충돌" << std::endl;
 				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f + 1.f;
 			}
+			sprite.setPosition(pos);
 			hitBox.setPosition(pos);
 			position = pos;
 		}
@@ -337,7 +356,7 @@ void Monster::Update(Player& player,float dt, std::vector<TestBlock*> blocks)
 	Walk(dt);
 	FindPlayer(player);
 	ChasePlayer(player,dt);
-	Attack(dt, atk);
+	Attack(dt, atk, player);
 	Gravity(dt, blocks);
 }
 
