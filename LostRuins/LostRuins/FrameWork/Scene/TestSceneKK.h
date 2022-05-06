@@ -15,6 +15,7 @@
 
 
 
+
 class TestSceneKK : public Scene
 {
 private:
@@ -28,17 +29,19 @@ private:
 	Texture textureHeroine;
 	Sprite heroineAction;
 	
-	
-	vector <TestBlock*> blocks;
+
 	Monster Goblin;
 	ZombieCrawler zombieCrawler;
 	ZombieWalker zombieWalker;
 
+	vector <TestBlock*> blocks;
 public:
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView);
 	virtual void Draw(RenderWindow* window, View* mainView);
 	virtual ~TestSceneKK();
+
+	void CreateBlock();
 };
 
 

@@ -1,36 +1,30 @@
-#include "ZombieWalker.h"
-#include "../../Mgr/Utils.h"
+#include "GoblinAttacker.h"
 
-ZombieWalker::ZombieWalker()
+GoblinAttacker::GoblinAttacker()
 	:Monster()
 {
 	Monster::SetHealth(20);
 	Monster::SetAtk(3);
-	Monster::SetSpeed(20.f);
+	Monster::SetSpeed(50.f);
 }
 
-
-void ZombieWalker::MonsterInit()
+void GoblinAttacker::MonsterInit()
 {
-	Monster::SetHealth(20);
-	Monster::SetAtk(3);
-	Monster::SetSpeed(20.f);
-	sprite.setOrigin(17.f, 45.f);
-	sprite.setPosition(resolution.x * 0.5f, resolution.y * 0.5f);
+	sprite.setOrigin(23.f, 30);		//고블린 발 끝 좌표 23,30
+	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
-		
-	AnimationInit(&sprite);
+
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
-	findPlayerBox.setFillColor(Color::White);
+	findPlayerBox.setFillColor(Color(255, 255, 255, 80));
 	findPlayerBox.setOrigin(200, 40);
 	findPlayerBox.setPosition(sprite.getOrigin());
 
 	attackRangeBox.setSize(Vector2f(30.f, 30.f));
 	attackRangeBox.setScale(scale);
-	attackRangeBox.setFillColor(Color::Red);
+	attackRangeBox.setFillColor(Color(153, 0, 0, 80));
 	attackRangeBox.setOrigin(30, 30);
 	attackRangeBox.setPosition(sprite.getOrigin());
 
@@ -41,7 +35,7 @@ void ZombieWalker::MonsterInit()
 	hitBox.setPosition(sprite.getOrigin());
 }
 
-void ZombieWalker::FindPlayer(Player& player)
+void GoblinAttacker::FindPlayer(Player& player)
 {
 	if (!isFindPlayer)
 	{
@@ -49,20 +43,20 @@ void ZombieWalker::FindPlayer(Player& player)
 		{
 			isFindPlayer = true;
 
-			sprite.setOrigin(21.f, 46.f);		//좀비 워커 뛸때 발 좌표가 21.f, 46임
-			animation.Play("ZombieWalkerWalk");
+			sprite.setOrigin(23.f, 47);		//고블린 뛸때 발 좌표가 23.f, 47임
+			animation.Play("GoblinAttackerRun");
 		}
 	}
 }
 
-void ZombieWalker::ChasePlayer(Player& player, float dt)
+void GoblinAttacker::ChasePlayer(Player& player, float dt)
 {
 	if (isFindPlayer && !isAttackPlayer)
 	{
 		if (attackRangeBox.getGlobalBounds().intersects(FloatRect(player.GetPosition().x, player.GetPosition().y, 1.f, 1.f)))
 		{
-			sprite.setOrigin(19.f, 45);		//공격할때 좀비워커 발 끝 좌표 19 45
-			animation.Play("ZombieWalkerAttack");
+			sprite.setOrigin(20.f, 38);		//공격할때 고블린 발 끝 좌표 20,38
+			animation.Play("GoblinAttackerAttack");
 			isAttackPlayer = true;
 		}
 
@@ -72,26 +66,27 @@ void ZombieWalker::ChasePlayer(Player& player, float dt)
 			float v = 0.f;
 			Vector2f dir(h, v);
 
-			position += (Utils::Normalize(dir) * speed) * 1.f * dt;
+			position += (Utils::Normalize(dir) * speed) * 2.f * dt;
 			sprite.setPosition(position);
 
 			findPlayerBox.setPosition(position);
 			attackRangeBox.setPosition(position);
 			hitBox.setPosition(position);
+
 			if (h > 0)
 			{
 				sprite.setScale(-3.f, 3.f);	//플레이어가 몬스터 왼쪽에 있을때
-				findPlayerBox.setOrigin(0.f, 40.f);
 				attackRangeBox.setOrigin(0, 30);
+				findPlayerBox.setOrigin(0.f, 40.f);
 			}
 			else
 			{
 				sprite.setScale(3.f, 3.f);	//플레이어가 몬스터 오른쪽에 있을때
-				findPlayerBox.setOrigin(200.f, 40.f);
 				attackRangeBox.setOrigin(30, 30);
+				findPlayerBox.setOrigin(200.f, 40.f);
 			}
 
-			if (h * h > 500 * 500)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
+			if (h * h > 500.f * 500.f)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
 			{
 				isFindPlayer = false;
 			}
@@ -99,39 +94,40 @@ void ZombieWalker::ChasePlayer(Player& player, float dt)
 	}
 }
 
-void ZombieWalker::Walk(float dt)
+void GoblinAttacker::Walk(float dt)
 {
 	if (!isFindPlayer)
 	{
 		checkTime += dt;
 		if (checkTime > 3.f)
 		{
+			checkTime = 0;
 			nextMove = Utils::RandomRange(-1, 2);	//-1이면 오른쪽 0이면 멈춤 1이면 왼쪽
 			switch (nextMove)
 			{
 			case -1:
 				sprite.setScale(3.f, 3.f);
-				animation.Play("ZombieWalkerWalk");
-				sprite.setOrigin(21.f, 46.f);
+				animation.Play("GoblinAttackerWalk");
+				sprite.setOrigin(23.f, 30);
 				findPlayerBox.setOrigin(200.f, 40.f);
 				attackRangeBox.setOrigin(30, 30);
 				break;
 			case 0:
-				animation.Play("ZombieWalkerIdle");
+				animation.Play("GoblinAttackerIdle");
+				sprite.setOrigin(23.f, 30);
 				break;
 			case 1:
 				sprite.setScale(-3.f, 3.f);
-				animation.Play("ZombieWalkerWalk");
-				sprite.setOrigin(21.f, 46.f);
+				animation.Play("GoblinAttackerWalk");
+				sprite.setOrigin(23.f, 30);
 				findPlayerBox.setOrigin(0.f, 40.f);
 				attackRangeBox.setOrigin(0, 30);
 				break;
 			default:
 				break;
 			}
-			checkTime = 0;
-
 		}
+
 		float h = (float)nextMove;
 		float v = 0.f;
 		Vector2f dir(h, v);
@@ -143,14 +139,13 @@ void ZombieWalker::Walk(float dt)
 		attackRangeBox.setPosition(position);
 		hitBox.setPosition(position);
 	}
-	
 }
 
-void ZombieWalker::Run(float dt)
+void GoblinAttacker::Run(float dt)
 {
 }
 
-void ZombieWalker::Attack(float dt, int atk)
+void GoblinAttacker::Attack(float dt, int atk)
 {
 	if (isAttackPlayer)
 	{
