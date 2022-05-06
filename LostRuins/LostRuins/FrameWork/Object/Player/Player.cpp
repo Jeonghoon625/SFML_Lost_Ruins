@@ -324,22 +324,29 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 
 void Player::AnimationUpdate()
 {
+	if (InputManager::GetKey(Keyboard::Left))
+	{
+		sprite.setScale(scaleFlipX);
+	}
+	else if (InputManager::GetKey(Keyboard::Right))
+	{
+		sprite.setScale(scale);
+	}
+
 	switch (currentStatus)
 	{
 	case Status::STATUS_IDLE:
-		if (InputManager::GetKeyDown(Keyboard::Left))
+		if (InputManager::GetKey(Keyboard::Left) || InputManager::GetKey(Keyboard::Right))
 		{
-			sprite.setScale(scaleFlipX);
-			SetStatus(STATUS_RUN);
-		}
-		else if (InputManager::GetKeyDown(Keyboard::Right))
-		{
-			sprite.setScale(scale);
 			SetStatus(STATUS_RUN);
 		}
 		else if (InputManager::GetKeyDown(Keyboard::C))
 		{
 			SetStatus(STATUS_JUMP);
+		}
+		else if (isFalling == true)
+		{
+			SetStatus(STATUS_FALLING);
 		}
 		break;
 	case Status::STATUS_RUN:
@@ -351,22 +358,22 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(STATUS_JUMP);
 		}
+		else if (isFalling == true)
+		{
+			SetStatus(STATUS_FALLING);
+		}
 		break;
 	case Status::STATUS_JUMP:
+		if (isJump == false)
+		{
+			SetStatus(STATUS_FALLING);
+		}
+		break;
+	case Status::STATUS_FALLING:
 		if (isFalling == false)
 		{
 			SetStatus(STATUS_IDLE);
 		}
-		if (InputManager::GetKeyDown(Keyboard::Left))
-		{
-			sprite.setScale(scaleFlipX);
-		}
-		else if (InputManager::GetKeyDown(Keyboard::Right))
-		{
-			sprite.setScale(scale);
-		}
-		break;
-	case Status::STATUS_FALLING:
 		break;
 	default:
 		break;
