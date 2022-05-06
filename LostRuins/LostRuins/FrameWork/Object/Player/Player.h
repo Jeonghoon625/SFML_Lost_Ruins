@@ -55,6 +55,8 @@ private:
 	float JumpingSpeed;
 	float fallingSpeed;
 
+	float lastYpos;
+
 	float immuneMs;
 	bool immune;
 
@@ -85,5 +87,6 @@ public:
 	void AnimationInit();
 	void UpdateCollision(std::vector <TestBlock*> blocks);
 
+	RectangleShape GetHitBox();
 };
 

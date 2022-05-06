@@ -19,6 +19,11 @@ void Player::Init()
 	animation.Play("Idle");
 }
 
+RectangleShape Player::GetHitBox()
+{
+	return hitBox;
+}
+
 void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 {
 	this->gameMap = gameMap;
@@ -26,7 +31,7 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	position.x = this->gameMap.width * 0.5f;
-	position.y = resolustion.y * 0.5f -1.f;
+	position.y = resolustion.y * 0.5f - 1.f;
 
 	hitBox.setFillColor(Color(153, 153, 153, 0));
 	hitBox.setSize(Vector2f(20.f, 48.f));
@@ -76,21 +81,45 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	// 애니메이션
 	if (dir.x == 0 && lastDir != dir)
 	{
-		animation.Play("Idle");
+		if (isFalling == false)
+		{
+			animation.Play("Idle");
+		}
+		else
+		{
+			animation.Play("Falling");
+		}
 	}
 	if (dir.x > 0.f && lastDir != dir)
 	{
-		animation.Play("Run");
-		sprite.setScale(scale);
+		if (isFalling == false)
+		{
+			animation.Play("Run");
+			sprite.setScale(scale);
+		}
+		else
+		{
+			animation.Play("Falling");
+			sprite.setScale(scale);
+		}
 	}
 	if (dir.x < 0.f && lastDir != dir)
 	{
-		animation.Play("Run");
-		sprite.setScale(scaleFlipX);
+		if (isFalling == false)
+		{
+			animation.Play("Run");
+			sprite.setScale(scaleFlipX);
+		}
+		else
+		{
+			animation.Play("Falling");
+			sprite.setScale(scaleFlipX);
+		}
 	}
 
 	if (InputManager::GetKeyDown(Keyboard::Up) && isFalling == false && isJump == false)
 	{
+		animation.Play("Jump");
 		isJump = true;
 	}
 
@@ -104,7 +133,6 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			fallingSpeed = 3000.f;
 		}
 	}
-
 	else if (isJump == true)
 	{
 		JumpingSpeed -= GRAVITY_POWER * dt;
@@ -116,7 +144,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		}
 	}
 	position.y += fallingSpeed * dt;
-
+	lastYpos = position.y;
 	lastDir = dir;
 
 	sprite.setPosition(position);
@@ -125,14 +153,16 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	// 충돌 처리
 	UpdateCollision(blocks);
 
-	if (isFalling == true)
+	// 테스트용
+	std::cout << isFalling << std::endl;
+	/*if (isFalling == true)
 	{
 		std::cout << "떨어짐" << "  " << fallingSpeed << std::endl;
 	}
 	else
 	{
 		std::cout << "지면" << "  " << fallingSpeed << std::endl;
-	}
+	}*/
 
 	animation.Update(dt);
 }
