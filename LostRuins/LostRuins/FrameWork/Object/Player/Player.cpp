@@ -10,7 +10,6 @@ void Player::Init()
 	fallingSpeed = 0.f;
 	isFalling = true;
 	isJump = false;
-	skipDt = true;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -20,6 +19,11 @@ void Player::Init()
 	animation.Play("Idle");
 }
 
+RectangleShape Player::GetHitBox()
+{
+	return hitBox;
+}
+
 void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 {
 	this->gameMap = gameMap;
@@ -27,11 +31,11 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	position.x = this->gameMap.width * 0.5f;
-	position.y = 200.f;
+	position.y = resolustion.y * 0.5f - 1.f;
 
 	hitBox.setFillColor(Color(153, 153, 153, 0));
 	hitBox.setSize(Vector2f(20.f, 48.f));
-	hitBox.setOrigin(hitBoxMiddle);
+	hitBox.setOrigin(hitBoxOrigin);
 	hitBox.setScale(scale);
 	hitBox.setPosition(position);
 }
@@ -75,28 +79,24 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	Utils::Normalize(dir);
 
 	// 애니메이션
-	if (dir.x == 0 && lastDir != dir)
-	{
-		animation.Play("Idle");
-	}
-	if (dir.x > 0.f && lastDir != dir)
-	{
-		animation.Play("Run");
-		sprite.setScale(scale);
-	}
-	if (dir.x < 0.f && lastDir != dir)
-	{
-		animation.Play("Run");
-		sprite.setScale(scaleFlipX);
-	}
+	/*{
+		if (dir.x == 0 && lastDir != dir)
+		{
+			animation.Play("Idle");
+		}
+		if (dir.x > 0.f && lastDir != dir)
+		{
+			animation.Play("Run");
+			sprite.setScale(scale);
+		}
+		if (dir.x < 0.f && lastDir != dir)
+		{
+			animation.Play("Run");
+			sprite.setScale(scaleFlipX);
+		}
+	}*/
 
-	if (skipDt == true)
-	{
-		dt = 0.f;
-		skipDt = false;
-	}
-
-	if (InputManager::GetKeyDown(Keyboard::Up) && isFalling == false && isJump == false)
+	if (InputManager::GetKeyDown(Keyboard::C) && isFalling == false && isJump == false)
 	{
 		isJump = true;
 	}
@@ -111,7 +111,6 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			fallingSpeed = 3000.f;
 		}
 	}
-
 	else if (isJump == true)
 	{
 		JumpingSpeed -= GRAVITY_POWER * dt;
@@ -123,7 +122,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		}
 	}
 	position.y += fallingSpeed * dt;
-
+	lastYpos = position.y;
 	lastDir = dir;
 
 	sprite.setPosition(position);
@@ -132,15 +131,18 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	// 충돌 처리
 	UpdateCollision(blocks);
 
-	if (isFalling == true)
+	// 테스트용
+	std::cout << isFalling << std::endl;
+	/*if (isFalling == true)
 	{
 		std::cout << "떨어짐" << "  " << fallingSpeed << std::endl;
 	}
 	else
 	{
 		std::cout << "지면" << "  " << fallingSpeed << std::endl;
-	}
+	}*/
 
+	AnimationUpdate();
 	animation.Update(dt);
 }
 
@@ -214,32 +216,188 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 
 			Vector2f pos = hitBox.getPosition();
 
-			if (blockDown < playerYpos && playerUp > blockDown - 10.f)
+			// 블럭 CB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
 			{
-				//std::cout << "블럭 아래에 플레이어가 충돌" << std::endl;
 				pos.y = blockDown + hitBox.getGlobalBounds().height;
 				isJump = false;
 				JumpingSpeed = START_JUMP_SPEED;
 			}
-			if (blockUp > playerYpos && playerDown < blockUp + 10.f)
+			// 블럭 LB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockLeft > playerXpos && blockDown < playerYpos)
 			{
-				//std::cout << "블럭 위에 플레이어가 충돌" << std::endl;
+				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+					isJump = false;
+					JumpingSpeed = START_JUMP_SPEED;
+				}
+				else if (abs(blockLeft - playerRight) < abs(blockDown - playerUp))
+				{
+					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockLeft - playerRight);
+					pos.y -= abs(blockDown - playerUp);
+				}
+			}
+			// 블럭 RB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockRight < playerXpos && blockDown < playerYpos)
+			{
+				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+					isJump = false;
+					JumpingSpeed = START_JUMP_SPEED;
+				}
+				else if (abs(blockRight - playerLeft) < abs(blockDown - playerUp))
+				{
+					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x += abs(blockRight - playerLeft);
+					pos.y -= abs(blockDown - playerUp);
+				}
+			}
+			// 블럭 CT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
+			{
 				pos.y = blockUp;
 				isFalling = false;
 				fallingSpeed = 0.f;
 			}
-			if (blockLeft > playerXpos && playerRight < blockLeft + 10.f)
+			// 블럭 LT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockLeft > playerXpos && blockUp > playerYpos)
 			{
-				//std::cout << "블럭 왼쪽에 플레이어가 충돌" << std::endl;
-				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f - 1.f;
+				if (abs(blockLeft - playerRight) > abs(blockUp - playerDown))
+				{
+					pos.y = blockUp;
+					isFalling = false;
+					fallingSpeed = 0.f;
+				}
+				else if (abs(blockLeft - playerRight) < abs(blockUp - playerDown))
+				{
+					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockLeft - playerRight);
+					pos.y -= abs(blockUp - playerDown);
+				}
 			}
-			if (blockRight < playerXpos && playerLeft > blockRight - 10.f)
+			// 블럭 RT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockRight < playerXpos && blockUp > playerYpos)
 			{
-				//std::cout << "블럭 오른쪽에 플레이어가 충돌" << std::endl;
-				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f + 1.f;
+				if (abs(blockRight - playerLeft) > abs(blockUp - playerDown))
+				{
+					pos.y = blockUp;
+					isFalling = false;
+					fallingSpeed = 0.f;
+				}
+				else if (abs(blockRight - playerLeft) < abs(blockUp - playerDown))
+				{
+					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockRight - playerLeft);
+					pos.y -= abs(blockUp - playerDown);
+				}
+			}
+			// 블럭 LC에 플레이어가 충돌
+			if (blockLeft > playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			{
+				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+			}
+			// 블럭 RC에 플레이어가 충돌
+			if (blockRight < playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			{
+				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
 			}
 			hitBox.setPosition(pos);
 			position = pos;
 		}
+	}
+}
+
+void Player::AnimationUpdate()
+{
+	if (InputManager::GetKey(Keyboard::Left))
+	{
+		sprite.setScale(scaleFlipX);
+	}
+	else if (InputManager::GetKey(Keyboard::Right))
+	{
+		sprite.setScale(scale);
+	}
+
+	switch (currentStatus)
+	{
+	case Status::STATUS_IDLE:
+		if (InputManager::GetKey(Keyboard::Left) || InputManager::GetKey(Keyboard::Right))
+		{
+			SetStatus(STATUS_RUN);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::C))
+		{
+			SetStatus(STATUS_JUMP);
+		}
+		else if (isFalling == true)
+		{
+			SetStatus(STATUS_FALLING);
+		}
+		break;
+	case Status::STATUS_RUN:
+		if (InputManager::GetKeyUp(Keyboard::Left) || InputManager::GetKeyUp(Keyboard::Right))
+		{
+			SetStatus(STATUS_IDLE);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::C))
+		{
+			SetStatus(STATUS_JUMP);
+		}
+		else if (isFalling == true)
+		{
+			SetStatus(STATUS_FALLING);
+		}
+		break;
+	case Status::STATUS_JUMP:
+		if (isJump == false)
+		{
+			SetStatus(STATUS_FALLING);
+		}
+		break;
+	case Status::STATUS_FALLING:
+		if (isFalling == false)
+		{
+			SetStatus(STATUS_IDLE);
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void Player::SetStatus(Status newStatus)
+{
+	Status prevStatus = currentStatus;
+	currentStatus = newStatus;
+
+	switch (currentStatus)
+	{
+	case STATUS_IDLE:
+		animation.Play("Idle");
+		break;
+	case STATUS_RUN:
+		animation.Play("Run");
+		break;
+	case STATUS_JUMP:
+		animation.Play("Jump");
+		break;
+	case STATUS_FALLING:
+		animation.Play("Falling");
+		break;
 	}
 }
