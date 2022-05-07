@@ -14,8 +14,6 @@ private:
 
 	Vector2i resolution;
 
-	TextureHolder textureHlr;
-
 	Texture textureUI;
 	Texture textureIN;
 	Texture textureSQ;

@@ -14,6 +14,7 @@ private:
 	RenderWindow* window;
 	Vector2i resolution;
 	View* objectView;
+	View* uiView;
 
 	SceneManager sceneMgr;
 	TextureHolder textureHolder;

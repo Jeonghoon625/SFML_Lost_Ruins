@@ -5,6 +5,7 @@
 #include "../Scene/TestSceneTT.h"
 #include "../Scene/TestScene.h"
 #include "../Scene/TestSceneKK.h"
+#include "../Scene/GameScene.h"
 
 using namespace sf;
 
@@ -13,7 +14,8 @@ enum class SceneType
 	TITLE,
 	TEST_LMH,
 	TEST_KK,
-	TEST_LJW
+	TEST_LJW,
+	GameScene
 };
 
 class SceneManager

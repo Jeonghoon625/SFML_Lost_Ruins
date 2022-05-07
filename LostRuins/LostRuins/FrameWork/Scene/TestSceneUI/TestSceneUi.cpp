@@ -4,8 +4,8 @@ void TestUi::Init(SceneManager* sceneManager)
 {
 	this->sceneMgr = sceneManager;
 
-	resolution.x = VideoMode::getDesktopMode().width; //1920
-	resolution.y = VideoMode::getDesktopMode().height; //1080
+	resolution.x = VideoMode::getDesktopMode().width * 0.8f; //1920
+	resolution.y = VideoMode::getDesktopMode().height * 0.8f; //1080
 
 	textureUI = TextureHolder::GetTexture("graphics/UI.png");
 

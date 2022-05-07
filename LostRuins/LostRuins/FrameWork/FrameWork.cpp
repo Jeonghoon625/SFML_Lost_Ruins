@@ -2,14 +2,15 @@
 
 bool FrameWork::Initialize()
 {
-	
-	resolution.x = VideoMode::getDesktopMode().width;
-	resolution.y = VideoMode::getDesktopMode().height;
-	
-	//resolution.x = 1600.f;
-	//resolution.y = 900.f;
-	window = new RenderWindow(VideoMode(1600.f, 900.f), "Lost Ruins", Style::Default);
+	resolution.x = VideoMode::getDesktopMode().width * 0.8f;
+	resolution.y = VideoMode::getDesktopMode().height * 0.8f;
+
+	window = new RenderWindow(VideoMode(resolution.x, resolution.y), "Lost Ruins", Style::Default);
+
 	objectView = new View(FloatRect(0, 0, resolution.x, resolution.y));
+	objectView->setCenter(resolution.x * 0.5f, resolution.y * 0.5f);
+	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
+	uiView->setCenter(resolution.x * 0.5f, resolution.y * 0.5f);
 
 	frameLimit = INIT_FRAME; //√ ±‚ 60.f
 	frameTimer = 0.f;
