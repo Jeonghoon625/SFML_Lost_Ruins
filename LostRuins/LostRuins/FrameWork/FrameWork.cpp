@@ -9,8 +9,8 @@ bool FrameWork::Initialize()
 	//resolution.x = 1600.f;
 	//resolution.y = 900.f;
 	window = new RenderWindow(VideoMode(1600.f, 900.f), "Lost Ruins", Style::Default);
-	objectView = new View(FloatRect(0, 0, resolution.x, resolution.y));
-
+	objectView = new View(FloatRect(0, 0, 1280.f, 720.f));
+	objectView->setCenter(1600.f * 0.5f, 900.f * 0.5f);
 	frameLimit = INIT_FRAME; //√ ±‚ 60.f
 	frameTimer = 0.f;
 
