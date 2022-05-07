@@ -4,14 +4,9 @@
 
 Monster::Monster()
 	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f),isFindPlayer(false),isAttackPlayer(false),attackDelay(0.f),isFalling(true),hitDelay(0.f),alive(true)
-	,strWalk("GoblinAttackerWalk"),strIdle("GoblinAttackerIdle"),strRun("GoblinAttackerRun"),strDead("GoblinAttackerDead"), strAttack("GoblinAttackerAttack")
-	,strAttackBlocked("GoblinAttackerAttackBlocked"),strDemageTaken("GoblinAttackerDemageTaken")
 {
-
-	
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
-	
 }
 
 FloatRect Monster::GetGlobalBound()
@@ -34,9 +29,9 @@ int Monster::GetHealth()
 	return health;
 }
 
-void Monster::SetHealth(int health)
+void Monster::SetHealth(int healthNum)
 {
-	this->health;
+	health=healthNum;
 }
 
 int Monster::GetAtk()
@@ -44,9 +39,9 @@ int Monster::GetAtk()
 	return atk;
 }
 
-void Monster::SetAtk(int atk)
+void Monster::SetAtk(int atkNum)
 {
-	this->atk;
+	atk=atkNum;
 }
 
 float Monster::GetSpeed()
@@ -54,9 +49,9 @@ float Monster::GetSpeed()
 	return 0.0f;
 }
 
-void Monster::SetSpeed(float speed)
+void Monster::SetSpeed(float speedNum)
 {
-	this->speed;
+	speed=speedNum;
 }
 
 RectangleShape Monster::GetHitBox()
@@ -66,9 +61,18 @@ RectangleShape Monster::GetHitBox()
 
 void Monster::MonsterInit()
 {
+	strWalk=("GoblinAttackerWalk");
+	strIdle=("GoblinAttackerIdle");
+	strRun=("GoblinAttackerRun");
+	strDead=("GoblinAttackerDead");
+	strAttack=("GoblinAttackerAttack");
+	strAttackBlocked=("GoblinAttackerAttackBlocked");
+	strDemageTaken=("GoblinAttackerDemageTaken");
 	AnimationInit(&sprite);
 
-	sprite.setOrigin(23.f,30);		//고블린 발 끝 좌표 23,30
+	animation.Play(strIdle);
+	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);
+
 	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
@@ -138,6 +142,8 @@ void Monster::AnimationInit(Sprite* sprite)
 
 void Monster::Walk(float dt)
 {
+	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);	//sprite의 origin 수정
+
 	if (!isFindPlayer)
 	{
 		checkTime += dt;
@@ -145,23 +151,21 @@ void Monster::Walk(float dt)
 		{
 			checkTime = 0;
 			nextMove = Utils::RandomRange(-1, 2);	//-1이면 오른쪽 0이면 멈춤 1이면 왼쪽
+
 			switch (nextMove)
 			{
 			case -1:
 				sprite.setScale(3.f, 3.f);
-				animation.Play("GoblinAttackerWalk");
-				sprite.setOrigin(23.f, 30);
+				animation.Play(strWalk);
 				findPlayerBox.setOrigin(200.f, 40.f);
 				attackRangeBox.setOrigin(30, 30);
 				break;
 			case 0:
-				animation.Play("GoblinAttackerIdle");
-				sprite.setOrigin(23.f, 30);
+				animation.Play(strIdle);
 				break;
 			case 1:
 				sprite.setScale(-3.f, 3.f);
-				animation.Play("GoblinAttackerWalk");
-				sprite.setOrigin(23.f, 30);
+				animation.Play(strWalk);
 				findPlayerBox.setOrigin(0.f, 40.f);
 				attackRangeBox.setOrigin(0, 30);
 				break;
@@ -175,7 +179,6 @@ void Monster::Walk(float dt)
 		Vector2f dir(h, v);
 
 		position += Utils::Normalize(dir) * speed * dt;
-
 		sprite.setPosition(position);
 		findPlayerBox.setPosition(position);
 		attackRangeBox.setPosition(position);
@@ -192,9 +195,8 @@ void Monster::FindPlayer(Player& player)
 		if (findPlayerBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
 			isFindPlayer = true;
-			
-			sprite.setOrigin(23.f, 47);		//고블린 뛸때 발 좌표가 23.f, 47임
-			animation.Play("GoblinAttackerRun");
+					//고블린 뛸때 발 좌표가 23.f, 47임
+			animation.Play(strRun);
 		}
 	}
 }
@@ -205,8 +207,7 @@ void Monster::ChasePlayer(Player&player, float dt)
 	{
 		if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
-			sprite.setOrigin(20.f, 38);		//공격할때 고블린 발 끝 좌표 20,38
-			animation.Play("GoblinAttackerAttack");
+			animation.Play(strAttack);
 			isAttackPlayer = true;
 		}
 
@@ -216,7 +217,7 @@ void Monster::ChasePlayer(Player&player, float dt)
 			float v = 0.f;
 			Vector2f dir(h, v);
 
-			position += (Utils::Normalize(dir) * speed) * 2.f * dt;
+			position += Utils::Normalize(dir) * speed * dt;
 			sprite.setPosition(position);
 
 			findPlayerBox.setPosition(position);
@@ -269,8 +270,7 @@ void Monster::Attack(float dt, int atk, Player&player)
 			
 			attackDelay = 0.f;
 			isAttackPlayer = false;
-			sprite.setOrigin(23.f, 47);	//뛸 때 고블린 발 끝 좌표 20,38
-			animation.Play("GoblinAttackerRun");
+			animation.Play(strRun);
 		}
 	}
 }
@@ -287,6 +287,7 @@ bool Monster::OnHitted(int atk, float dt)
 	{
 		alive = false;
 	}
+	return false;
 }
 
 void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
@@ -301,8 +302,6 @@ void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
 		position.y += fallingSpeed * dt;
 	}
 	UpdateCollision(blocks);
-	std::cout << position.y << std::endl;
-
 }
 
 void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
