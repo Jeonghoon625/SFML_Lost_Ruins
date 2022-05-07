@@ -68,6 +68,9 @@
     <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp">
       <Filter>FrameWork\Scene\TestSceneUI</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Scene\GameScene.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\FrameWork.h">
@@ -138,6 +141,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h">
       <Filter>FrameWork\Scene\TestSceneUI</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\GameScene.h">
+      <Filter>FrameWork\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
