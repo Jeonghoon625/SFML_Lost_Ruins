@@ -19,6 +19,8 @@ private:
 	const int MAX_TWO_HANDED_FPS = 16;
 
 	WeaponType currentWeapon;
+	Sprite sprite;
+
 	int isFps;
 	int maxFps;
 
@@ -26,7 +28,7 @@ private:
 
 public:
 	void Init();
-	void SetSpritePosition(WeaponType weaponType, Sprite sprite, bool isDirection);
+	void SetSpritePosition(WeaponType weaponType, Sprite sprite);
 	void AttackWeapon(WeaponType weaponType);
 	void Draw(RenderWindow* window, View* mainView);
 

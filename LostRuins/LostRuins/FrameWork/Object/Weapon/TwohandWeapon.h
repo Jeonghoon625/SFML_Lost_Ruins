@@ -13,7 +13,7 @@ private:
 
 public:
 	TwohandWeapon(float xpos, float ypos, float angle);
-	void SetPosition(Sprite sprite, bool isDirection);
+	void SetPosition(Sprite sprite);
 	const Sprite GetSprite();
 	const Vector2f GetPosition();
 	const float GetRotation();

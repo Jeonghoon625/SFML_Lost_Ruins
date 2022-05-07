@@ -77,16 +77,16 @@ void Monster::MonsterInit()
 	sprite.setScale(scale);
 	position = sprite.getPosition();
 
-	
-	findPlayerBox.setSize(Vector2f(200.f,40.f));
+
+	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
 	findPlayerBox.setFillColor(Color(255, 255, 255, 80));
-	findPlayerBox.setOrigin(200,40);
+	findPlayerBox.setOrigin(200, 40);
 	findPlayerBox.setPosition(sprite.getOrigin());
-	
+
 	attackRangeBox.setSize(Vector2f(30.f, 30.f));
 	attackRangeBox.setScale(scale);
-	attackRangeBox.setFillColor(Color(153,0,0,80));
+	attackRangeBox.setFillColor(Color(153, 0, 0, 80));
 	attackRangeBox.setOrigin(30, 30);
 	attackRangeBox.setPosition(sprite.getOrigin());
 
@@ -201,9 +201,9 @@ void Monster::FindPlayer(Player& player)
 	}
 }
 
-void Monster::ChasePlayer(Player&player, float dt)
+void Monster::ChasePlayer(Player& player, float dt)
 {
-	if (isFindPlayer&& !isAttackPlayer)
+	if (isFindPlayer && !isAttackPlayer)
 	{
 		if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
@@ -250,7 +250,7 @@ void Monster::Run(float dt)
 }
 
 
-void Monster::Attack(float dt, int atk, Player&player)
+void Monster::Attack(float dt, int atk, Player& player)
 {
 	if (isAttackPlayer)
 	{
@@ -277,7 +277,7 @@ void Monster::Attack(float dt, int atk, Player&player)
 
 bool Monster::OnHitted(int atk, float dt)
 {
-	if(health > 0)
+	if (health > 0)
 	{
 		animation.Play(strDemageTaken);
 		health -= atk;
@@ -428,16 +428,16 @@ void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 			sprite.setPosition(pos);
 		}
 
-		}
-	
+	}
+
 }
 
-void Monster::Update(Player& player,float dt, std::vector<TestBlock*> blocks)
+void Monster::Update(Player& player, float dt, std::vector<TestBlock*> blocks)
 {
 	animation.Update(dt);
 	Walk(dt);
 	FindPlayer(player);
-	ChasePlayer(player,dt);
+	ChasePlayer(player, dt);
 	Attack(dt, atk, player);
 	Gravity(dt, blocks);
 }
@@ -449,6 +449,6 @@ void Monster::Draw(RenderWindow* window)
 	window->draw(attackRangeBox);
 	window->draw(hitBox);
 	window->draw(sprite);
-	
+
 }
 

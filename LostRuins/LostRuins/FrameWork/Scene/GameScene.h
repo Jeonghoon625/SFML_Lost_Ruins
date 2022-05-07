@@ -5,16 +5,14 @@
 #include "../Mgr/TextureHolder.h"
 #include "../Object/Player/Player.h"
 #include "../Object/TestBlock/TestBlock.h"
-
-// test
 #include "../Object/Monster/Monster.h"
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
+#include "TestSceneUI/TestSceneUi.h"
 
-class TestScene : public Scene
+class GameScene : public Scene
 {
 	SceneManager* sceneMgr;
-
 	Vector2i resolution;
 
 	Player player;
@@ -31,12 +29,13 @@ class TestScene : public Scene
 
 	// test
 	ZombieWalker zombieWalker;
+	TestUi testUI;
 
 public:
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView);
 	virtual void Draw(RenderWindow* window, View* mainView);
-	virtual ~TestScene();
+	virtual ~GameScene();
 
 	void CreateBlock();
 };

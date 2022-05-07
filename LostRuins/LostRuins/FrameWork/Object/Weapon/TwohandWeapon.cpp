@@ -14,18 +14,18 @@ TwohandWeapon::TwohandWeapon(float xpos, float ypos, float angle)
 	spriteWeapon.setRotation(rotation);
 }
 
-void TwohandWeapon::SetPosition(Sprite sprite, bool isDirection)
+void TwohandWeapon::SetPosition(Sprite sprite)
 {
 	float xpos = 0.f;
 	float ypos = 0.f;
 
-	if (isDirection == true)
+	if (sprite.getScale().x > 0.f)
 	{
 		xpos = sprite.getGlobalBounds().left + position.x;
 		spriteWeapon.setRotation(rotation);
 
 	}
-	else if (isDirection == false)
+	else if (sprite.getScale().x < 0.f)
 	{
 		xpos = sprite.getGlobalBounds().left + sprite.getGlobalBounds().width - position.x;
 		spriteWeapon.setRotation(rotation * -1.f);

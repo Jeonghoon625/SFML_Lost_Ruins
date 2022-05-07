@@ -23,25 +23,25 @@ void ZombieWalker::MonsterInit()
 	sprite.setPosition(resolution.x * 0.5f, resolution.y * 0.4f);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
-		
+
 	AnimationInit(&sprite);
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setOrigin(200, 40);
 	findPlayerBox.setScale(scale);
-	findPlayerBox.setFillColor(Color::White);
+	findPlayerBox.setFillColor(Color(153, 153, 0, 80));
 	findPlayerBox.setPosition(sprite.getOrigin());
 
 	attackRangeBox.setSize(Vector2f(30.f, 30.f));
 	attackRangeBox.setOrigin(30, 30);
 	attackRangeBox.setScale(scale);
-	attackRangeBox.setFillColor(Color::Blue);
+	attackRangeBox.setFillColor(Color(155, 0, 0, 80));
 	attackRangeBox.setPosition(sprite.getOrigin());
 
-	hitBox.setSize(Vector2f(43.f, 30.f));
-	hitBox.setOrigin(21.5f, 30.f);
+	hitBox.setSize(Vector2f(43.f, 40.f));
+	hitBox.setOrigin(21.5f, 40.f);
 	hitBox.setScale(scale);
-	hitBox.setFillColor(Color(50, 50, 25, 70));
+	hitBox.setFillColor(Color(155, 0, 255, 80));
 	hitBox.setPosition(sprite.getOrigin());
 
 	animation.Play(strIdle);

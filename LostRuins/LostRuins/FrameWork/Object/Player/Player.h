@@ -68,7 +68,6 @@ private:
 	bool isFloor;
 	bool isJump;
 	bool isAttack;
-	bool isDirection;
 
 	Time lastHit;
 
@@ -87,7 +86,6 @@ public:
 	Sprite GetSprite() const;
 	int GetHealth() const;
 	RectangleShape GetHitBox();
-	bool getDirection();
 
 	void Init();
 	void Update(float dt, std::vector <TestBlock*> blocks);

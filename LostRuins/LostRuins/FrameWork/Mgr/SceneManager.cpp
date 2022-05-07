@@ -2,7 +2,7 @@
 
 void SceneManager::Init()
 {
-	SceneSwitch(SceneType::TEST_KK);
+	SceneSwitch(SceneType::GameScene);
 }
 
 void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
@@ -34,6 +34,10 @@ void SceneManager::SceneSwitch(SceneType sceneType)
 
 	case SceneType::TEST_LMH:
 		currentScene = new TestScene();
+		break;
+
+	case SceneType::GameScene:
+		currentScene = new GameScene();
 		break;
 	}
 	sceneInit();

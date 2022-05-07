@@ -1,6 +1,6 @@
-#include "TestScene.h"
+#include "GameScene.h"
 
-void TestScene::Init(SceneManager* sceneManager)
+void GameScene::Init(SceneManager* sceneManager)
 {
 	this->sceneMgr = sceneManager;
 
@@ -21,7 +21,7 @@ void TestScene::Init(SceneManager* sceneManager)
 	zombieWalker.MonsterInit();
 }
 
-void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
+void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
 	player.Update(dt, blocks);
 
@@ -29,8 +29,9 @@ void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* main
 	zombieWalker.Update(player, dt, blocks);
 }
 
-void TestScene::Draw(RenderWindow* window, View* mainView)
+void GameScene::Draw(RenderWindow* window, View* mainView)
 {
+	
 	for (auto blockShape : blocks)
 	{
 		window->draw(blockShape->GetBlockShape());
@@ -39,9 +40,12 @@ void TestScene::Draw(RenderWindow* window, View* mainView)
 
 	// test
 	zombieWalker.Draw(window);
+	
+
+	//testUI.Draw(window, mainView);
 }
 
-TestScene::~TestScene()
+GameScene::~GameScene()
 {
 	for (auto blockShape : blocks)
 	{
@@ -50,7 +54,7 @@ TestScene::~TestScene()
 	blocks.clear();
 }
 
-void TestScene::CreateBlock()
+void GameScene::CreateBlock()
 {
 	for (auto bk : blocks)
 	{
