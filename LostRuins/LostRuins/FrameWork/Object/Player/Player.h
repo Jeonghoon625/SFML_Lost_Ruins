@@ -9,6 +9,9 @@
 #include "../../Mgr/Utils.h"
 #include "../../Mgr/InputManager.h"
 #include "../TestBlock/TestBlock.h"
+#include "../../Mgr/WeaponManager.h"
+
+class WeaponManager;
 
 using namespace sf;
 
@@ -33,15 +36,18 @@ private:
 	const float START_SPEED = 600.f;
 	const float START_JUMP_SPEED = 1000.f;
 	const float GRAVITY_POWER = 2000.f;
+	const float ATTACK_FPS = 0.025f;
 	const float START_IMMUNE_MS = 200.f;
 
 	AnimationController animation;
+	WeaponManager weaponMgr;
 
 	Vector2f position;
 	Vector2f lastDir;
 
 	Texture texture;
 	Sprite sprite;
+	Sprite spriteWeapon;
 	
 	Vector2i resolustion;
 	IntRect gameMap;
@@ -53,6 +59,7 @@ private:
 	float speed;
 	float JumpingSpeed;
 	float fallingSpeed;
+	float attackFps;
 
 	float immuneMs;
 	bool immune;
@@ -61,9 +68,9 @@ private:
 	bool isFloor;
 	bool isJump;
 	bool isAttack;
+	bool isDirection;
 
 	Time lastHit;
-	float lastYpos;
 
 	std::map<std::string, Texture> texmap;
 
@@ -80,6 +87,7 @@ public:
 	Sprite GetSprite() const;
 	int GetHealth() const;
 	RectangleShape GetHitBox();
+	bool getDirection();
 
 	void Init();
 	void Update(float dt, std::vector <TestBlock*> blocks);
@@ -90,5 +98,6 @@ public:
 
 	void AnimationUpdate();
 	void SetStatus(Status newStatus);
+
 };
 

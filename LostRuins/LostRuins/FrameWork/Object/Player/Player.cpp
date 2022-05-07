@@ -8,8 +8,10 @@ void Player::Init()
 	maxHealth = START_HEALTH;
 	immuneMs = START_IMMUNE_MS;
 	fallingSpeed = 0.f;
+	attackFps = ATTACK_FPS;
 	isFloor = false;
 	isJump = false;
+	isDirection = true;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -17,11 +19,8 @@ void Player::Init()
 	sprite.setScale(scale);
 	AnimationInit();
 	animation.Play("Idle");
-}
 
-RectangleShape Player::GetHitBox()
-{
-	return hitBox;
+	weaponMgr.Init();
 }
 
 void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
@@ -31,7 +30,7 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	position.x = this->gameMap.width * 0.5f;
-	position.y = resolustion.y * 0.5f - 1.f;
+	position.y = resolustion.y * 0.5f - 10.f;
 
 	hitBox.setFillColor(Color(153, 153, 153, 0));
 	hitBox.setSize(Vector2f(20.f, 48.f));
@@ -70,6 +69,16 @@ int Player::GetHealth() const
 	return health;
 }
 
+RectangleShape Player::GetHitBox()
+{
+	return hitBox;
+}
+
+bool Player::getDirection()
+{
+	return isDirection;
+}
+
 void Player::Update(float dt, std::vector <TestBlock*> blocks)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
@@ -78,20 +87,41 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 
 	Utils::Normalize(dir);
 
+	if (InputManager::GetKeyDown(Keyboard::Left))
+	{
+		isDirection = false;
+	}
+	else if (InputManager::GetKeyDown(Keyboard::Right))
+	{
+		isDirection = true;
+	}
+
 	if (InputManager::GetKeyDown(Keyboard::C) && isFloor == true && isJump == false)
 	{
 		isFloor = false;
 		isJump = true;
 	}
-	if (InputManager::GetKeyDown(Keyboard::X) && isFloor == true > position.y && isJump == false)
+	if (InputManager::GetKeyDown(Keyboard::X) && isFloor == true && isJump == false && isAttack == false)
 	{
+		weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
+		weaponMgr.SetSpritePosition(WeaponType::TWO_HANDED, sprite, isDirection);
 		isAttack = true;
 	}
 
 	// 공격
 	if (isAttack == true)
 	{
-
+		attackFps -= dt;
+		if (attackFps < 0.f)
+		{
+			weaponMgr.NextFps();
+			attackFps = ATTACK_FPS;
+			if (weaponMgr.CheckFps() == false)
+			{
+				weaponMgr.ResetFps();
+				isAttack = false;
+			}
+		}
 	}
 	// 이동
 	else
@@ -116,7 +146,6 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			}
 		}
 		position.y += fallingSpeed * dt;
-		lastYpos = position.y;
 		lastDir = dir;
 
 		sprite.setPosition(position);
@@ -127,15 +156,15 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	UpdateCollision(blocks);
 
 	// 테스트용
-	std::cout << position.y << std::endl;
-	/*if (isFalling == true)
-	{
-		std::cout << "떨어짐" << "  " << fallingSpeed << std::endl;
-	}
-	else
-	{
-		std::cout << "지면" << "  " << fallingSpeed << std::endl;
-	}*/
+	std::cout << isDirection << std::endl;
+	//if (isFloor == false)
+	//{
+	//	std::cout << "떨어짐" << "  " << fallingSpeed << std::endl;
+	//}
+	//else
+	//{
+	//	std::cout << "지면" << "  " << fallingSpeed << std::endl;
+	//}
 
 	AnimationUpdate();
 	animation.Update(dt);
@@ -146,6 +175,10 @@ void Player::Draw(RenderWindow* window, View* mainView)
 	window->setView(*mainView);
 	window->draw(sprite);
 	window->draw(hitBox);
+	if (isAttack == true)
+	{
+		weaponMgr.Draw(window, mainView);
+	}
 }
 
 void Player::AnimationInit()
@@ -208,7 +241,6 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 
 			float playerXpos = hitBox.getPosition().x;
 			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
-
 			Vector2f pos = hitBox.getPosition();
 
 			// 블럭 CB에 플레이어가 충돌
@@ -313,6 +345,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 			{
 				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
 			}
+
 			isCollided = true;
 			hitBox.setPosition(pos);
 			position = pos;
@@ -326,13 +359,17 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 
 void Player::AnimationUpdate()
 {
-	if (InputManager::GetKey(Keyboard::Left))
+	// 스프라이트 반전
+	if (isAttack == false)
 	{
-		sprite.setScale(scaleFlipX);
-	}
-	else if (InputManager::GetKey(Keyboard::Right))
-	{
-		sprite.setScale(scale);
+		if (InputManager::GetKey(Keyboard::Left))
+		{
+			sprite.setScale(scaleFlipX);
+		}
+		else if (InputManager::GetKey(Keyboard::Right))
+		{
+			sprite.setScale(scale);
+		}
 	}
 
 	switch (currentStatus)
@@ -386,6 +423,10 @@ void Player::AnimationUpdate()
 		}
 		break;
 	case Status::STATUS_ATK_TWO_STAND:
+		if (isAttack == false)
+		{
+			SetStatus(Status::STATUS_IDLE);
+		}
 		break;
 	default:
 		break;

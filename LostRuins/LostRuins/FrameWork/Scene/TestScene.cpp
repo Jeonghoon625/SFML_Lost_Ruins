@@ -13,6 +13,9 @@ void TestScene::Init(SceneManager* sceneManager)
 	CreateBlock();
 
 	player.Spawn(gameMap, resolution, 0.5f);
+
+	float wpXpos = 500.f;
+	float wpYpos = resolution.y * 0.5f;
 }
 
 void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
