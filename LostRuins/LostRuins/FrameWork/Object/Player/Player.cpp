@@ -11,7 +11,6 @@ void Player::Init()
 	attackFps = ATTACK_FPS;
 	isFloor = false;
 	isJump = false;
-	isDirection = true;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -30,9 +29,9 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	position.x = this->gameMap.width * 0.5f;
-	position.y = resolustion.y * 0.5f - 10.f;
+	position.y = resolustion.y - 200.f;
 
-	hitBox.setFillColor(Color(0, 0, 255, 192));
+	hitBox.setFillColor(Color(153, 153, 153, 80));
 	hitBox.setSize(Vector2f(20.f, 48.f));
 	hitBox.setOrigin(hitBoxOrigin);
 	hitBox.setScale(scale);
@@ -74,11 +73,6 @@ RectangleShape Player::GetHitBox()
 	return hitBox;
 }
 
-bool Player::getDirection()
-{
-	return isDirection;
-}
-
 void Player::Update(float dt, std::vector <TestBlock*> blocks)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
@@ -86,15 +80,6 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	Vector2f dir(h, v);
 
 	Utils::Normalize(dir);
-
-	if (InputManager::GetKeyDown(Keyboard::Left))
-	{
-		isDirection = false;
-	}
-	else if (InputManager::GetKeyDown(Keyboard::Right))
-	{
-		isDirection = true;
-	}
 
 	if (InputManager::GetKeyDown(Keyboard::C) && isFloor == true && isJump == false)
 	{
@@ -104,7 +89,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	if (InputManager::GetKeyDown(Keyboard::X) && isFloor == true && isJump == false && isAttack == false)
 	{
 		weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
-		weaponMgr.SetSpritePosition(WeaponType::TWO_HANDED, sprite, isDirection);
+		weaponMgr.SetSpritePosition(WeaponType::TWO_HANDED, sprite);
 		isAttack = true;
 	}
 
@@ -156,7 +141,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	UpdateCollision(blocks);
 
 	// Å×½ºÆ®¿ë
-	std::cout << isDirection << std::endl;
+	//std::cout << isDirection << std::endl;
 	//if (isFloor == false)
 	//{
 	//	std::cout << "¶³¾îÁü" << "  " << fallingSpeed << std::endl;

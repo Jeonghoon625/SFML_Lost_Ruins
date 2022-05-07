@@ -8,7 +8,7 @@ void WeaponManager::Init()
 	TwohandWeaponInit();
 }
 
-void WeaponManager::SetSpritePosition(WeaponType weaponType, Sprite sprite, bool isDirection)
+void WeaponManager::SetSpritePosition(WeaponType weaponType, Sprite sprite)
 {
 	switch (weaponType)
 	{
@@ -20,7 +20,7 @@ void WeaponManager::SetSpritePosition(WeaponType weaponType, Sprite sprite, bool
 		maxFps = MAX_TWO_HANDED_FPS;
 		for (auto spriteWeapon : twoHanded)
 		{
-			spriteWeapon->SetPosition(sprite, isDirection);
+			spriteWeapon->SetPosition(sprite);
 		}
 		break;
 	}
@@ -53,7 +53,8 @@ void WeaponManager::Draw(RenderWindow* window, View* mainView)
 	case WeaponType::ONE_HANDED:
 		break;
 	case WeaponType::TWO_HANDED:
-		window->draw(twoHanded.at(isFps)->GetSprite());
+		this->sprite = twoHanded.at(isFps)->GetSprite();
+		window->draw(sprite);
 		break;
 	}
 }
