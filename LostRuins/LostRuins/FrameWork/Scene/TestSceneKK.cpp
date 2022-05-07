@@ -25,16 +25,12 @@ void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* ma
 
 	player.Update(dt, blocks);
 	Goblin.Update(player,dt, blocks);
-	/*Goblin.Walk(dt);*/
 	zombieCrawler.Update(player,dt, blocks);
-	/*zombieCrawler.Walk(dt);*/
 	zombieWalker.Update(player,dt, blocks);
-	/*zombieWalker.Walk(dt);*/
 }
 
 void TestSceneKK::Draw(RenderWindow* window, View* mainView)
 {
-
 	for (auto blockShape : blocks)
 	{
 		window->draw(blockShape->GetBlockShape());

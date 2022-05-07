@@ -33,6 +33,8 @@ protected:
 
 	bool isFindPlayer;
 	bool isAttackPlayer;
+	bool alive;
+
 	float attackDelay;
 	float hitDelay;
 

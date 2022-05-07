@@ -3,7 +3,7 @@
 #include "../../FrameWork/Mgr/TextureHolder.h"
 
 Monster::Monster()
-	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f),isFindPlayer(false),isAttackPlayer(false),attackDelay(0.f),isFalling(true),hitDelay(0.f)
+	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f),isFindPlayer(false),isAttackPlayer(false),attackDelay(0.f),isFalling(true),hitDelay(0.f),alive(true)
 	,strWalk("GoblinAttackerWalk"),strIdle("GoblinAttackerIdle"),strRun("GoblinAttackerRun"),strDead("GoblinAttackerDead"), strAttack("GoblinAttackerAttack")
 	,strAttackBlocked("GoblinAttackerAttackBlocked"),strDemageTaken("GoblinAttackerDemageTaken")
 {
@@ -262,11 +262,11 @@ void Monster::Attack(float dt, int atk, Player&player)
 
 		if (attackDelay > 1.5f)
 		{
-			//if(attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()));
-			//{
-			//	/*player.OnHitted();*/
-			//}
-			//여기에 함수 추가해서 플레이어 Onhitted 나 set 함수 써서 hp 깎이면 됨 ㅇ.
+			if(attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()));
+			{
+				// 여기에 player.onhitted
+			}
+			
 			attackDelay = 0.f;
 			isAttackPlayer = false;
 			sprite.setOrigin(23.f, 47);	//뛸 때 고블린 발 끝 좌표 20,38
@@ -283,11 +283,14 @@ bool Monster::OnHitted(int atk, float dt)
 		health -= atk;
 		return true;
 	}
+	else
+	{
+		alive = false;
+	}
 }
 
 void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
 {
-
 	if (isFalling)
 	{
 		fallingSpeed += GRAVITY_POWER * dt;
