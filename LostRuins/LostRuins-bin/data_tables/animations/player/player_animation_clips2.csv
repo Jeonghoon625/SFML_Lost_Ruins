@@ -1,8 +1,9 @@
 ID,FPS,"LOOP TYPE(0:Single, 1:Loop)",CLIP PATH
 Idle,35,1,data_tables/animations/player/player_animation_Idle.csv
 Run,15,1,data_tables/animations/player/player_animation_Run.csv
-Jump,15,0,data_tables/animations/player/player_animation_Jump.csv
+Jump,10,0,data_tables/animations/player/player_animation_Jump.csv
 Falling,15,1,data_tables/animations/player/player_animation_Falling.csv
 Landing,15,0,data_tables/animations/player/player_animation_Landing.csv
 IdletoRun,12,0,data_tables/animations/player/player_animation_IdletoRun.csv
 RuntoIdle,12,0,data_tables/animations/player/player_animation_RuntoIdle.csv
+Attack_Twohanded_Standing,40,0,data_tables/animations/player/player_animation_Attack_Twohanded_Standing.csv

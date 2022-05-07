@@ -21,6 +21,9 @@ class TestScene : public Scene
 
 	vector <TestBlock*> blocks;
 
+	Sprite testSprite;
+	Sprite testWeapon;
+
 public:
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView);

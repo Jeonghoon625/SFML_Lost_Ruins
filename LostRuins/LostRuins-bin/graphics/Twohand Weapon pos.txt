@@ -1,0 +1,73 @@
+dtestWeapon.setTexture(TextureHolder::GetTexture("graphics/weapon.png"));
+testWeapon.setTextureRect(IntRect(13, 148, 14, 53));
+testWeapon.setOrigin(7.f, 53.f);
+testWeapon.setScale(3.f, 3.f);
+
+sprite L0, T0
+
+1_fm
+testWeapon.setPosition(wpXpos + 75.f, wpYpos + 80.f);
+testWeapon.setRotation(-80.f);
+
+2_fps
+testWeapon.setPosition(wpXpos + 75.f, wpYpos + 65.f);
+testWeapon.setRotation(-85.f);
+
+3_fps
+testWeapon.setPosition(wpXpos + 60.f, wpYpos + 60.f);
+testWeapon.setRotation(-100.f);
+
+4_fps
+testWeapon.setPosition(wpXpos + 55.f, wpYpos + 40.f);
+testWeapon.setRotation(-110.f);
+
+5_fps
+testWeapon.setPosition(wpXpos + 50.f, wpYpos + 30.f);
+testWeapon.setRotation(-125.f);
+
+6_fps
+testWeapon.setPosition(wpXpos + 50.f, wpYpos + 30.f);
+testWeapon.setRotation(-125.f);
+
+7_fps
+testWeapon.setPosition(wpXpos + 55.f, wpYpos + 30.f);
+testWeapon.setRotation(-115.f);
+
+8_fps
+testWeapon.setPosition(wpXpos + 70.f, wpYpos + 30.f);
+testWeapon.setRotation(-100.f);
+
+9_fps
+testWeapon.setPosition(wpXpos + 85.f, wpYpos + 30.f);
+testWeapon.setRotation(-80.f);
+
+10_fps
+testWeapon.setPosition(wpXpos + 85.f, wpYpos + 50.f);
+testWeapon.setRotation(-40.f);
+
+11_fps
+testWeapon.setPosition(wpXpos + 90.f, wpYpos + 90.f);
+testWeapon.setRotation(20.f);
+
+12_fps
+testWeapon.setPosition(wpXpos + 65.f, wpYpos + 80.f);
+testWeapon.setRotation(120.f);
+
+13_fps
+testWeapon.setPosition(wpXpos + 65.f, wpYpos + 80.f);
+testWeapon.setRotation(120.f);
+
+14_fps
+testWeapon.setPosition(wpXpos + 65.f, wpYpos + 80.f);
+testWeapon.setRotation(120.f);
+
+15_fps
+testWeapon.setPosition(wpXpos + 65.f, wpYpos + 80.f);
+testWeapon.setRotation(120.f);
+
+16_fps
+testWeapon.setPosition(wpXpos + 65.f, wpYpos + 80.f);
+testWeapon.setRotation(120.f);
+
+17~19_fps
+no weapon
