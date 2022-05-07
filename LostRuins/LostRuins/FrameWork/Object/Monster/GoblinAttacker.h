@@ -2,12 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include "Monster.h"
 
-class ZombieWalker : public Monster
+class GoblinAttacker :public Monster
 {
 private:
 
 public:
-	ZombieWalker();
+	GoblinAttacker();
+
 	virtual void MonsterInit();
 
 	virtual void FindPlayer(Player& player);
@@ -17,5 +18,6 @@ public:
 	virtual void Attack(float dt, int atk, Player& player);
 
 	virtual bool OnHitted(int atk);
+
 };
 

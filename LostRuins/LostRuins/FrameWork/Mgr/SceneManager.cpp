@@ -2,7 +2,7 @@
 
 void SceneManager::Init()
 {
-	SceneSwitch(SceneType::TEST_LMH);
+	SceneSwitch(SceneType::TEST_KK);
 }
 
 void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* mainView)

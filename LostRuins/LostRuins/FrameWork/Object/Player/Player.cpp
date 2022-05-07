@@ -32,7 +32,7 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	position.x = this->gameMap.width * 0.5f;
 	position.y = resolustion.y * 0.5f - 10.f;
 
-	hitBox.setFillColor(Color(153, 153, 153, 0));
+	hitBox.setFillColor(Color(0, 0, 255, 192));
 	hitBox.setSize(Vector2f(20.f, 48.f));
 	hitBox.setOrigin(hitBoxOrigin);
 	hitBox.setScale(scale);

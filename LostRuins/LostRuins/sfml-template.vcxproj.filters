@@ -50,6 +50,15 @@
     <ClCompile Include="FrameWork\Object\Player\Player.cpp">
       <Filter>Framework\Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TitleScene.cpp">
+      <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp">
+      <Filter>Framework\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\Monster.cpp">
+      <Filter>Framework\Object\Monster</Filter>
+    </ClCompile>
     <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp">
       <Filter>Framework\Object\Monster</Filter>
     </ClCompile>
@@ -61,7 +70,11 @@
     </ClCompile>
     <ClCompile Include="FrameWork\Object\Monster\Monster.cpp">
       <Filter>Framework\Object\Monster</Filter>
+    <ClCompile Include="FrameWork\Object\Player\Player.cpp">
+      <Filter>Framework\Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp">
+      <Filter>Framework\Object\Monster</Filter>
     <ClCompile Include="FrameWork\Mgr\WeaponManager.cpp">
       <Filter>Framework\Manager</Filter>
     </ClCompile>
@@ -118,20 +131,34 @@
     <ClInclude Include="FrameWork\Object\Player\Player.h">
       <Filter>Framework\Object\Player</Filter>
     </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TitleScene.h">
+      <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h">
+      <Filter>Framework\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\Monster.h">
+      <Filter>Framework\Object\Monster</Filter>
+    </ClInclude>
     <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h">
       <Filter>Framework\Object\Monster</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h">
       <Filter>Framework\Object\Monster</Filter>
+      <Filter>Framework\Object\Monster</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Weapon\TwohandWeapon.h">
       <Filter>Framework\Object\Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="FrameWork\Object\Player\Player.h">
+      <Filter>Framework\Object\Player</Filter>
     <ClInclude Include="FrameWork\Object\Monster\Monster.h">
       <Filter>Framework\Object\Monster</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Mgr\WeaponManager.h">
       <Filter>Framework\Manager</Filter>
+    <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h">
+      <Filter>Framework\Object\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +191,9 @@
     </Filter>
     <Filter Include="Framework\Object\Weapon">
       <UniqueIdentifier>{5ffa8d20-d269-4836-adfb-e3026cf26196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Object\Player">
+      <UniqueIdentifier>{a90c2d4f-cece-40b4-a855-858aa514cf13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
