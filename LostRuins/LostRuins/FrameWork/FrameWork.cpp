@@ -2,14 +2,19 @@
 
 bool FrameWork::Initialize()
 {
+	
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
-	//window = new RenderWindow(VideoMode(resolution.x, resolution.y), "Lost Ruins", Style::Default);
-	window = new RenderWindow(VideoMode(1280.f, 800.f), "Lost Ruins", Style::Default);
-	mainView = new View(FloatRect(0, 0, resolution.x, resolution.y));
+	
+	//resolution.x = 1600.f;
+	//resolution.y = 900.f;
+	window = new RenderWindow(VideoMode(1600.f, 900.f), "Lost Ruins", Style::Default);
+	objectView = new View(FloatRect(0, 0, resolution.x, resolution.y));
+
+	frameLimit = INIT_FRAME; //ÃÊ±â 60.f
+	frameTimer = 0.f;
 
 	InputManager::Init();
-
 	sceneMgr.Init();
 
 	return true;
@@ -27,25 +32,31 @@ void FrameWork::Update()
 		case Event::Closed:
 			window->close();
 			break;
-		case Event::KeyPressed:
+
+		//ESC close
+		/*case Event::KeyPressed:
 			if (event.key.code == Keyboard::Escape)
 			{
 				window->close();
 			}
 			break;
+		*/
+
 		default:
 			break;
 		}
+
 		InputManager::ProcessInput(event);
 	}
-	InputManager::Update(dt.asSeconds(), *window, *mainView);
-	sceneMgr.Update(dt.asSeconds(), playTime, window, mainView);
+
+	InputManager::Update(frameTimer, *window, *objectView);
+	sceneMgr.Update(frameTimer, playTime, window, objectView);
 }
 
 void FrameWork::Draw()
 {
 	window->clear();
-	sceneMgr.Draw(window, mainView);
+	sceneMgr.Draw(window, objectView);
 	window->display();
 }
 
@@ -54,12 +65,24 @@ int FrameWork::Run()
 	while (window->isOpen())
 	{
 		dt = clock.restart();
-		playTime += dt;
 
-		if (dt.asSeconds() <= 1.f / 200.f)
+		playTime += dt;
+		
+		frameTimer += dt.asSeconds();
+		float maxFPS = 1.f / frameLimit;
+		float minFPS = 2.f / frameLimit;
+
+		if (maxFPS <= frameTimer && frameTimer <= minFPS)
 		{
+			// std::cout << 1.f / frameTimer << std::endl; //Output FPS
 			Update();
 			Draw();
+
+			frameTimer = 0.f;
+		}	
+		else if (frameTimer >= 2.f / frameLimit)
+		{
+			frameTimer = 0.f;
 		}
 	}
 
@@ -69,5 +92,5 @@ int FrameWork::Run()
 FrameWork::~FrameWork()
 {
 	delete window;
-	delete mainView;
+	delete objectView;
 }

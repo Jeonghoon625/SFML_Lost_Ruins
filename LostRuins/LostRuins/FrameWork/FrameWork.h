@@ -9,16 +9,21 @@ using namespace sf;
 class FrameWork
 {
 private:
-	RenderWindow* window;
-	View* mainView;
+	const float INIT_FRAME = 60.f;
 
+	RenderWindow* window;
 	Vector2i resolution;
+	View* objectView;
 
 	SceneManager sceneMgr;
 	TextureHolder textureHolder;
+
 	Clock clock;
 	Time playTime;
 	Time dt;
+
+	float frameLimit;
+	float frameTimer;
 	
 public:
 	bool Initialize();
