@@ -9,15 +9,19 @@
 #include "../../Mgr/Utils.h"
 #include "../../Mgr/InputManager.h"
 #include "../TestBlock/TestBlock.h"
+#include "../../Mgr/WeaponManager.h"
+
+class WeaponManager;
 
 using namespace sf;
 
-enum Status
+enum class Status
 {
 	STATUS_IDLE,
 	STATUS_RUN,
 	STATUS_JUMP,
 	STATUS_FALLING,
+	STATUS_ATK_TWO_STAND,
 };
 
 class Player
@@ -25,7 +29,6 @@ class Player
 private:
 	const Vector2f scale = Vector2f(3.f, 3.f);
 	const Vector2f scaleFlipX = Vector2f(-3.f, 3.f);
-
 	const Vector2f hitBoxOrigin = Vector2f(10.f, 48.f);
 
 	const int START_HEALTH = 20;
@@ -33,16 +36,18 @@ private:
 	const float START_SPEED = 600.f;
 	const float START_JUMP_SPEED = 1000.f;
 	const float GRAVITY_POWER = 2000.f;
+	const float ATTACK_FPS = 0.025f;
 	const float START_IMMUNE_MS = 200.f;
 
 	AnimationController animation;
+	WeaponManager weaponMgr;
 
 	Vector2f position;
-
 	Vector2f lastDir;
 
 	Texture texture;
 	Sprite sprite;
+	Sprite spriteWeapon;
 	
 	Vector2i resolustion;
 	IntRect gameMap;
@@ -54,15 +59,15 @@ private:
 	float speed;
 	float JumpingSpeed;
 	float fallingSpeed;
-
-	float lastYpos;
+	float attackFps;
 
 	float immuneMs;
 	bool immune;
 
 	Status currentStatus;
-	bool isFalling;
+	bool isFloor;
 	bool isJump;
+	bool isAttack;
 
 	Time lastHit;
 
@@ -91,5 +96,6 @@ public:
 
 	void AnimationUpdate();
 	void SetStatus(Status newStatus);
+
 };
 

@@ -8,7 +8,8 @@ void Player::Init()
 	maxHealth = START_HEALTH;
 	immuneMs = START_IMMUNE_MS;
 	fallingSpeed = 0.f;
-	isFalling = true;
+	attackFps = ATTACK_FPS;
+	isFloor = false;
 	isJump = false;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
@@ -17,11 +18,8 @@ void Player::Init()
 	sprite.setScale(scale);
 	AnimationInit();
 	animation.Play("Idle");
-}
 
-RectangleShape Player::GetHitBox()
-{
-	return hitBox;
+	weaponMgr.Init();
 }
 
 void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
@@ -31,9 +29,9 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	position.x = this->gameMap.width * 0.5f;
-	position.y = resolustion.y * 0.5f - 1.f;
+	position.y = resolustion.y - 200.f;
 
-	hitBox.setFillColor(Color(153, 153, 153, 0));
+	hitBox.setFillColor(Color(153, 153, 153, 80));
 	hitBox.setSize(Vector2f(20.f, 48.f));
 	hitBox.setOrigin(hitBoxOrigin);
 	hitBox.setScale(scale);
@@ -70,6 +68,11 @@ int Player::GetHealth() const
 	return health;
 }
 
+RectangleShape Player::GetHitBox()
+{
+	return hitBox;
+}
+
 void Player::Update(float dt, std::vector <TestBlock*> blocks)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
@@ -78,69 +81,75 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 
 	Utils::Normalize(dir);
 
-	// 애니메이션
-	/*{
-		if (dir.x == 0 && lastDir != dir)
-		{
-			animation.Play("Idle");
-		}
-		if (dir.x > 0.f && lastDir != dir)
-		{
-			animation.Play("Run");
-			sprite.setScale(scale);
-		}
-		if (dir.x < 0.f && lastDir != dir)
-		{
-			animation.Play("Run");
-			sprite.setScale(scaleFlipX);
-		}
-	}*/
-
-	if (InputManager::GetKeyDown(Keyboard::C) && isFalling == false && isJump == false)
+	if (InputManager::GetKeyDown(Keyboard::C) && isFloor == true && isJump == false)
 	{
+		isFloor = false;
 		isJump = true;
 	}
+	if (InputManager::GetKeyDown(Keyboard::X) && isFloor == true && isJump == false && isAttack == false)
+	{
+		weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
+		weaponMgr.SetSpritePosition(WeaponType::TWO_HANDED, sprite);
+		isAttack = true;
+	}
 
+	// 공격
+	if (isAttack == true)
+	{
+		attackFps -= dt;
+		if (attackFps < 0.f)
+		{
+			weaponMgr.NextFps();
+			attackFps = ATTACK_FPS;
+			if (weaponMgr.CheckFps() == false)
+			{
+				weaponMgr.ResetFps();
+				isAttack = false;
+			}
+		}
+	}
 	// 이동
-	position.x += dir.x * speed * dt;
-	if (isJump == false)
+	else
 	{
-		fallingSpeed += GRAVITY_POWER * dt;
-		if (fallingSpeed > 3000.f)
+		position.x += dir.x * speed * dt;
+		if (isJump == false)
 		{
-			fallingSpeed = 3000.f;
+			fallingSpeed += GRAVITY_POWER * dt;
+			if (fallingSpeed > 3000.f)
+			{
+				fallingSpeed = 3000.f;
+			}
 		}
-	}
-	else if (isJump == true)
-	{
-		JumpingSpeed -= GRAVITY_POWER * dt;
-		position.y -= JumpingSpeed * dt;
-		if (JumpingSpeed < 0.f)
+		else if (isJump == true)
 		{
-			isJump = false;
-			JumpingSpeed = START_JUMP_SPEED;
+			JumpingSpeed -= GRAVITY_POWER * dt;
+			position.y -= JumpingSpeed * dt;
+			if (JumpingSpeed < 0.f)
+			{
+				isJump = false;
+				JumpingSpeed = START_JUMP_SPEED;
+			}
 		}
-	}
-	position.y += fallingSpeed * dt;
-	lastYpos = position.y;
-	lastDir = dir;
+		position.y += fallingSpeed * dt;
+		lastDir = dir;
 
-	sprite.setPosition(position);
-	hitBox.setPosition(position);
+		sprite.setPosition(position);
+		hitBox.setPosition(position);
+	}
 
 	// 충돌 처리
 	UpdateCollision(blocks);
 
 	// 테스트용
-	std::cout << isFalling << std::endl;
-	/*if (isFalling == true)
-	{
-		std::cout << "떨어짐" << "  " << fallingSpeed << std::endl;
-	}
-	else
-	{
-		std::cout << "지면" << "  " << fallingSpeed << std::endl;
-	}*/
+	//std::cout << isDirection << std::endl;
+	//if (isFloor == false)
+	//{
+	//	std::cout << "떨어짐" << "  " << fallingSpeed << std::endl;
+	//}
+	//else
+	//{
+	//	std::cout << "지면" << "  " << fallingSpeed << std::endl;
+	//}
 
 	AnimationUpdate();
 	animation.Update(dt);
@@ -151,6 +160,10 @@ void Player::Draw(RenderWindow* window, View* mainView)
 	window->setView(*mainView);
 	window->draw(sprite);
 	window->draw(hitBox);
+	if (isAttack == true)
+	{
+		weaponMgr.Draw(window, mainView);
+	}
 }
 
 void Player::AnimationInit()
@@ -196,7 +209,7 @@ void Player::AnimationInit()
 
 void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 {
-	isFalling = true;
+	bool isCollided = false;
 	for (auto bk : blocks)
 	{
 		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
@@ -213,7 +226,6 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 
 			float playerXpos = hitBox.getPosition().x;
 			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
-
 			Vector2f pos = hitBox.getPosition();
 
 			// 블럭 CB에 플레이어가 충돌
@@ -264,8 +276,8 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 			// 블럭 CT에 플레이어가 충돌
 			if (blockUp > playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
 			{
-				pos.y = blockUp;
-				isFalling = false;
+				pos.y = blockUp + 1.f;
+				isFloor = true;
 				fallingSpeed = 0.f;
 			}
 			// 블럭 LT에 플레이어가 충돌
@@ -273,8 +285,8 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 			{
 				if (abs(blockLeft - playerRight) > abs(blockUp - playerDown))
 				{
-					pos.y = blockUp;
-					isFalling = false;
+					pos.y = blockUp + 1.f;
+					isFloor = true;
 					fallingSpeed = 0.f;
 				}
 				else if (abs(blockLeft - playerRight) < abs(blockUp - playerDown))
@@ -285,6 +297,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				{
 					pos.x -= abs(blockLeft - playerRight);
 					pos.y -= abs(blockUp - playerDown);
+					pos.y += 1.f;
 				}
 			}
 			// 블럭 RT에 플레이어가 충돌
@@ -292,8 +305,8 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 			{
 				if (abs(blockRight - playerLeft) > abs(blockUp - playerDown))
 				{
-					pos.y = blockUp;
-					isFalling = false;
+					pos.y = blockUp + 1.f;
+					isFloor = true;
 					fallingSpeed = 0.f;
 				}
 				else if (abs(blockRight - playerLeft) < abs(blockUp - playerDown))
@@ -304,6 +317,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				{
 					pos.x -= abs(blockRight - playerLeft);
 					pos.y -= abs(blockUp - playerDown);
+					pos.y += 1.f;
 				}
 			}
 			// 블럭 LC에 플레이어가 충돌
@@ -316,21 +330,31 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 			{
 				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
 			}
+
+			isCollided = true;
 			hitBox.setPosition(pos);
 			position = pos;
 		}
+	}
+	if (isCollided == false)
+	{
+		isFloor = false;
 	}
 }
 
 void Player::AnimationUpdate()
 {
-	if (InputManager::GetKey(Keyboard::Left))
+	// 스프라이트 반전
+	if (isAttack == false)
 	{
-		sprite.setScale(scaleFlipX);
-	}
-	else if (InputManager::GetKey(Keyboard::Right))
-	{
-		sprite.setScale(scale);
+		if (InputManager::GetKey(Keyboard::Left))
+		{
+			sprite.setScale(scaleFlipX);
+		}
+		else if (InputManager::GetKey(Keyboard::Right))
+		{
+			sprite.setScale(scale);
+		}
 	}
 
 	switch (currentStatus)
@@ -338,41 +362,55 @@ void Player::AnimationUpdate()
 	case Status::STATUS_IDLE:
 		if (InputManager::GetKey(Keyboard::Left) || InputManager::GetKey(Keyboard::Right))
 		{
-			SetStatus(STATUS_RUN);
+			SetStatus(Status::STATUS_RUN);
 		}
 		else if (InputManager::GetKeyDown(Keyboard::C))
 		{
-			SetStatus(STATUS_JUMP);
+			SetStatus(Status::STATUS_JUMP);
 		}
-		else if (isFalling == true)
+		else if (InputManager::GetKeyDown(Keyboard::X))
 		{
-			SetStatus(STATUS_FALLING);
+			SetStatus(Status::STATUS_ATK_TWO_STAND);
+		}
+		else if (isFloor == false)
+		{
+			SetStatus(Status::STATUS_FALLING);
 		}
 		break;
 	case Status::STATUS_RUN:
 		if (InputManager::GetKeyUp(Keyboard::Left) || InputManager::GetKeyUp(Keyboard::Right))
 		{
-			SetStatus(STATUS_IDLE);
+			SetStatus(Status::STATUS_IDLE);
 		}
 		else if (InputManager::GetKeyDown(Keyboard::C))
 		{
-			SetStatus(STATUS_JUMP);
+			SetStatus(Status::STATUS_JUMP);
 		}
-		else if (isFalling == true)
+		else if (InputManager::GetKeyDown(Keyboard::X))
 		{
-			SetStatus(STATUS_FALLING);
+			SetStatus(Status::STATUS_ATK_TWO_STAND);
+		}
+		else if (isFloor == false)
+		{
+			SetStatus(Status::STATUS_FALLING);
 		}
 		break;
 	case Status::STATUS_JUMP:
 		if (isJump == false)
 		{
-			SetStatus(STATUS_FALLING);
+			SetStatus(Status::STATUS_FALLING);
 		}
 		break;
 	case Status::STATUS_FALLING:
-		if (isFalling == false)
+		if (isFloor == true)
 		{
-			SetStatus(STATUS_IDLE);
+			SetStatus(Status::STATUS_IDLE);
+		}
+		break;
+	case Status::STATUS_ATK_TWO_STAND:
+		if (isAttack == false)
+		{
+			SetStatus(Status::STATUS_IDLE);
 		}
 		break;
 	default:
@@ -387,17 +425,20 @@ void Player::SetStatus(Status newStatus)
 
 	switch (currentStatus)
 	{
-	case STATUS_IDLE:
+	case Status::STATUS_IDLE:
 		animation.Play("Idle");
 		break;
-	case STATUS_RUN:
+	case Status::STATUS_RUN:
 		animation.Play("Run");
 		break;
-	case STATUS_JUMP:
+	case Status::STATUS_JUMP:
 		animation.Play("Jump");
 		break;
-	case STATUS_FALLING:
+	case Status::STATUS_FALLING:
 		animation.Play("Falling");
+		break;
+	case Status::STATUS_ATK_TWO_STAND:
+		animation.Play("Attack_Twohanded_Standing");
 		break;
 	}
 }

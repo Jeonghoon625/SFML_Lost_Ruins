@@ -6,6 +6,11 @@
 #include "../Object/Player/Player.h"
 #include "../Object/TestBlock/TestBlock.h"
 
+// test
+#include "../Object/Monster/Monster.h"
+#include "../Object/Monster/ZombieCrawler.h"
+#include "../Object/Monster/ZombieWalker.h"
+
 class TestScene : public Scene
 {
 	SceneManager* sceneMgr;
@@ -20,6 +25,12 @@ class TestScene : public Scene
 	Sprite heroineAction;
 
 	vector <TestBlock*> blocks;
+
+	Sprite testSprite;
+	Sprite testWeapon;
+
+	// test
+	ZombieWalker zombieWalker;
 
 public:
 	virtual void Init(SceneManager* sceneManager);

@@ -12,32 +12,34 @@ ZombieWalker::ZombieWalker()
 
 void ZombieWalker::MonsterInit()
 {
+	strDemageTaken = ("ZombieWalkerDemageTaken");
+
 	Monster::SetHealth(20);
 	Monster::SetAtk(3);
 	Monster::SetSpeed(20.f);
 	sprite.setOrigin(17.f, 45.f);
-	sprite.setPosition(resolution.x * 0.5f, resolution.y * 0.5f);
+	sprite.setPosition(resolution.x * 0.5f, resolution.y * 0.4f);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
-		
+
 	AnimationInit(&sprite);
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
-	findPlayerBox.setScale(scale);
-	findPlayerBox.setFillColor(Color::White);
 	findPlayerBox.setOrigin(200, 40);
+	findPlayerBox.setScale(scale);
+	findPlayerBox.setFillColor(Color(153, 153, 0, 80));
 	findPlayerBox.setPosition(sprite.getOrigin());
 
 	attackRangeBox.setSize(Vector2f(30.f, 30.f));
-	attackRangeBox.setScale(scale);
-	attackRangeBox.setFillColor(Color::Red);
 	attackRangeBox.setOrigin(30, 30);
+	attackRangeBox.setScale(scale);
+	attackRangeBox.setFillColor(Color(155, 0, 0, 80));
 	attackRangeBox.setPosition(sprite.getOrigin());
 
-	hitBox.setSize(Vector2f(43.f, 30.f));
+	hitBox.setSize(Vector2f(43.f, 40.f));
+	hitBox.setOrigin(21.5f, 40.f);
 	hitBox.setScale(scale);
-	hitBox.setOrigin(21.5f, 30.f);
-	hitBox.setFillColor(Color(50, 50, 25, 70));
+	hitBox.setFillColor(Color(155, 0, 255, 80));
 	hitBox.setPosition(sprite.getOrigin());
 }
 
@@ -45,7 +47,7 @@ void ZombieWalker::FindPlayer(Player& player)
 {
 	if (!isFindPlayer)
 	{
-		if (findPlayerBox.getGlobalBounds().intersects(FloatRect(player.GetPosition().x, player.GetPosition().y, 1.f, 1.f)))
+		if (findPlayerBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
 			isFindPlayer = true;
 
@@ -59,7 +61,7 @@ void ZombieWalker::ChasePlayer(Player& player, float dt)
 {
 	if (isFindPlayer && !isAttackPlayer)
 	{
-		if (attackRangeBox.getGlobalBounds().intersects(FloatRect(player.GetPosition().x, player.GetPosition().y, 1.f, 1.f)))
+		if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
 			sprite.setOrigin(19.f, 45);		//공격할때 좀비워커 발 끝 좌표 19 45
 			animation.Play("ZombieWalkerAttack");
@@ -143,25 +145,41 @@ void ZombieWalker::Walk(float dt)
 		attackRangeBox.setPosition(position);
 		hitBox.setPosition(position);
 	}
-	
+
 }
 
 void ZombieWalker::Run(float dt)
 {
 }
 
-void ZombieWalker::Attack(float dt, int atk)
+void ZombieWalker::Attack(float dt, int atk, Player& player)
 {
 	if (isAttackPlayer)
 	{
+		sprite.setPosition(position);
+		findPlayerBox.setPosition(position);
+		attackRangeBox.setPosition(position);
+		hitBox.setPosition(position);
+
 		attackDelay += dt;
 		if (attackDelay > 1.5f)
 		{
 			//여기에 함수 추가해서 플레이어 Onhitted 나 set 함수 써서 hp 깎이면 됨 ㅇ.
 			attackDelay = 0.f;
 			isAttackPlayer = false;
-			sprite.setOrigin(21.f, 46.f);	//뛸 때  발 끝 좌표 21 46
+			sprite.setOrigin(19.f, 45.f);	//뛸 때  발 끝 좌표 21 46
 			animation.Play("ZombieWalkerWalk");
 		}
 	}
 }
+
+bool ZombieWalker::OnHitted(int atk)
+{
+	if (health > 0)
+	{
+		animation.Play(strDemageTaken);
+		health -= atk;
+		return true;
+	}
+}
+
