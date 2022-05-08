@@ -1,20 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="FrameWork\FrameWork.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="FrameWork\FrameWork.cpp">
-      <Filter>FrameWork</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\Animation\AnimationClip.cpp">
       <Filter>FrameWork\Animation</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Animation\AnimationController.cpp">
       <Filter>FrameWork\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Mgr\InputManager.cpp">
+      <Filter>FrameWork\Mgr</Filter>
+    </ClCompile>
     <ClCompile Include="FrameWork\Mgr\SceneManager.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Mgr\WeaponManager.cpp">
+    <ClCompile Include="FrameWork\Mgr\TextureHolder.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Mgr\UIManager.cpp">
@@ -23,14 +24,29 @@
     <ClCompile Include="FrameWork\Mgr\Utils.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Mgr\TextureHolder.cpp">
+    <ClCompile Include="FrameWork\Mgr\WeaponManager.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Mgr\InputManager.cpp">
-      <Filter>FrameWork\Mgr</Filter>
+    <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Scene\Scene.cpp">
-      <Filter>FrameWork\Scene</Filter>
+    <ClCompile Include="FrameWork\Object\Monster\Monster.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Player\Player.cpp">
+      <Filter>FrameWork\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp">
+      <Filter>FrameWork\Object\TestBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp">
+      <Filter>FrameWork\Object\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Scene\TestScene.cpp">
       <Filter>FrameWork\Scene</Filter>
@@ -73,22 +89,20 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FrameWork\FrameWork.h">
-      <Filter>FrameWork</Filter>
-    </ClInclude>
+    <ClInclude Include="FrameWork\FrameWork.h" />
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
       <Filter>FrameWork\Animation</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Animation\AnimationController.h">
       <Filter>FrameWork\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Animation\rapidcsv.h">
-      <Filter>FrameWork\Animation</Filter>
+    <ClInclude Include="FrameWork\Mgr\InputManager.h">
+      <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Mgr\SceneManager.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Mgr\WeaponManager.h">
+    <ClInclude Include="FrameWork\Mgr\TextureHolder.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Mgr\UIManager.h">
@@ -97,23 +111,23 @@
     <ClInclude Include="FrameWork\Mgr\Utils.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Mgr\TextureHolder.h">
+    <ClInclude Include="FrameWork\Mgr\WeaponManager.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Mgr\InputManager.h">
-      <Filter>FrameWork\Mgr</Filter>
+    <ClInclude Include="FrameWork\Animation\rapidcsv.h">
+      <Filter>FrameWork\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Scene\Scene.h">
-      <Filter>FrameWork\Scene</Filter>
+    <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TestScene.h">
-      <Filter>FrameWork\Scene</Filter>
+    <ClInclude Include="FrameWork\Object\Monster\Monster.h">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
-      <Filter>FrameWork\Scene</Filter>
+    <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TestSceneTT.h">
-      <Filter>FrameWork\Scene</Filter>
+    <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TitleScene.h">
       <Filter>FrameWork\Scene</Filter>
@@ -133,8 +147,8 @@
     <ClInclude Include="FrameWork\Object\Monster\Monster.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h">
-      <Filter>FrameWork\Object\Monster</Filter>
+    <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
+      <Filter>FrameWork\Scene</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h">
       <Filter>FrameWork\Object\TestBlock</Filter>
@@ -148,22 +162,22 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="FrameWork">
-      <UniqueIdentifier>{49e58f32-bd9f-4ca0-8251-a93fcd6ba025}</UniqueIdentifier>
+      <UniqueIdentifier>{8576f68c-de4f-4a70-8c6c-8fba4bd2630f}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Animation">
-      <UniqueIdentifier>{65524eb8-4955-42a8-aef6-63004191f30b}</UniqueIdentifier>
+      <UniqueIdentifier>{df68bc3d-d8cb-49fa-8fe6-a6ec2d7570ad}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Mgr">
-      <UniqueIdentifier>{4b647aad-9364-4fd5-8004-ee95e9dce5ff}</UniqueIdentifier>
+      <UniqueIdentifier>{cb714a7c-cb46-464a-8cb4-b2d71c2337e2}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Object">
-      <UniqueIdentifier>{0a2ab74c-f373-40c1-8b73-47b48e204542}</UniqueIdentifier>
+      <UniqueIdentifier>{29c3a1d6-31d3-4901-9bb3-613f1f164974}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Scene">
-      <UniqueIdentifier>{392c1de7-d222-484b-b3a3-7f9bf2ea595d}</UniqueIdentifier>
+    <Filter Include="FrameWork\Object\Monster">
+      <UniqueIdentifier>{cee84e45-d89e-4be7-90bd-40d7bc78fe4b}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Object\Player">
-      <UniqueIdentifier>{ace27fd6-5c2d-4285-91b9-123bc1e48687}</UniqueIdentifier>
+      <UniqueIdentifier>{361ed65b-8c44-485d-b87a-615acd9b6832}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Object\Weapon">
       <UniqueIdentifier>{96a1b361-faa4-4cf2-a6a4-670a5bc3a67c}</UniqueIdentifier>
