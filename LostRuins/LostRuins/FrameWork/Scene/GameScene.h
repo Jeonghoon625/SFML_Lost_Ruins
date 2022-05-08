@@ -34,7 +34,6 @@ class GameScene : public Scene
 	//Dummy Map
 	Texture texBackground;
 	VertexArray tileMap;
-	RectangleShape ViewRect;
 
 public:
 	virtual void Init(SceneManager* sceneManager);

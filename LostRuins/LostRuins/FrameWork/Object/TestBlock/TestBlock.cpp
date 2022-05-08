@@ -8,7 +8,6 @@ TestBlock::TestBlock(float xpos, float ypos, float width, float height)
 	blockRect.left = xpos - width * 0.5f;
 	blockRect.width = width;
 	blockRect.height = height;
-
 	blockShape.setFillColor(Color(153, 153, 153));
 	blockShape.setSize(Vector2f(width, height));
 	blockShape.setOrigin(Vector2f(width * 0.5f, height * 0.5f));

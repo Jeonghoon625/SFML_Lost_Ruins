@@ -28,23 +28,43 @@ void GameScene::Init(SceneManager* sceneManager)
 void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
 	player.Update(dt, blocks);
-	
-	
+
 	// test
 	zombieWalker.Update(player, dt, blocks);
-
-	/*
-	ViewRect = player.GetHitBox();
-	ViewRect.setSize(Vector2f(200.f, 200.f));
-	ViewRect.setFillColor(Color(153, 13, 203, 80));
-	ViewRect.move((ViewRect.getGlobalBounds().width * - 0.5f) + 
-	(player.GetGobalBound().width * 0.25f), ViewRect.getGlobalBounds().height * -0.25f);*/
 }
 
 void GameScene::Draw(RenderWindow* window, View* mainView)
 {
+	/* View 설정*/
+	mainView->setCenter(player.GetPosition());
+
+	//좌측 조정
+	if ((mainView->getCenter().x) - (mainView->getSize().x * 0.5f) < gameMap.left)
+	{
+		mainView->move((mainView->getSize().x * 0.5f) - (mainView->getCenter().x), 0);
+	}
+
+	//우측 조정
+	if ((mainView->getCenter().x) + (mainView->getSize().x * 0.5f) > gameMap.left + gameMap.width)
+	{
+		mainView->move((gameMap.left + gameMap.width) - ((mainView->getCenter().x) + (mainView->getSize().x * 0.5f)), 0);
+	}
+
+	//위측 조정
+	if ((mainView->getCenter().y) - (mainView->getSize().y * 0.5f) < gameMap.top)
+	{
+		mainView->move(0, (mainView->getSize().y * 0.5f) - (mainView->getCenter().y));
+	}
+
+	//아래측 조정
+	if ((mainView->getCenter().y) + (mainView->getSize().y * 0.5f) > gameMap.top + gameMap.height)
+	{
+		mainView->move(0, (gameMap.top + gameMap.height) - ((mainView->getCenter().y) + (mainView->getSize().y * 0.5f)));
+	}
+
+
 	window->draw(tileMap, &texBackground);
-	window->draw(ViewRect);
+
 	for (auto blockShape : blocks)
 	{
 		window->draw(blockShape->GetBlockShape());
@@ -114,9 +134,9 @@ int GameScene::CreateBackGround()
 			int vertexIndex = index * VERTS_IN_QUAD;
 
 			tileMap[vertexIndex + 0].position = Vector2f(x, y);
-			tileMap[vertexIndex + 1].position = Vector2f(x + TILE_SIZE, y);
-			tileMap[vertexIndex + 2].position = Vector2f(x + TILE_SIZE, y + TILE_SIZE);
-			tileMap[vertexIndex + 3].position = Vector2f(x, y + TILE_SIZE);
+			tileMap[vertexIndex + 1].position = Vector2f(x + TILE_SIZE * 2.f, y);
+			tileMap[vertexIndex + 2].position = Vector2f(x + TILE_SIZE * 2.f, y + TILE_SIZE * 2.f);
+			tileMap[vertexIndex + 3].position = Vector2f(x, y + TILE_SIZE * 2.f);
 
 			int texIndex = 0;
 
