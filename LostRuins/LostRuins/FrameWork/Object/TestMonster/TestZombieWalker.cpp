@@ -27,9 +27,9 @@ void TestZombieWalker::Update(float dt, Vector2f playerPos, std::vector <TestBlo
 	{
 		position.x += 1.f * speed * dt;
 	}
-	else
+	else if (sprite.getScale().x < 0.f)
 	{
-		position.x += -1.f * speed * dt;
+		position.x -= 1.f * speed * dt;
 	}
 	sprite.setPosition(position);
 	hitBox.setPosition(position);
@@ -219,14 +219,16 @@ void TestZombieWalker::UpdateCollision(std::vector<TestBlock*> blocks)
 	if (isCollided == false)
 	{
 		float revers = sprite.getScale().x * -1.f;
+		sprite.setScale(Vector2f(revers, sprite.getScale().y));
 		if (sprite.getScale().x > 0.f)
 		{
-			sprite.setPosition(position.x + 3.f, position.y);
+			position.x += 3.f;
+			sprite.setPosition(position);
 		}
 		else if (sprite.getScale().x < 0.f)
 		{
-			sprite.setPosition(position.x - 3.f, position.y);
+			position.x -= 3.f;
+			sprite.setPosition(position);
 		}
-		sprite.setScale(Vector2f(revers, sprite.getScale().y));
 	}
 }
