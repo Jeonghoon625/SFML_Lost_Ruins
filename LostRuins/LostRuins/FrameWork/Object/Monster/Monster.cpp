@@ -195,7 +195,6 @@ void Monster::FindPlayer(Player& player)
 		if (findPlayerBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 		{
 			isFindPlayer = true;
-					//고블린 뛸때 발 좌표가 23.f, 47임
 			animation.Play(strRun);
 		}
 	}
