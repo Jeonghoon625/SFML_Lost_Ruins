@@ -31,15 +31,25 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	position.x = this->gameMap.width * 0.5f;
 	position.y = resolustion.y - 200.f;
 
-	hitBox.setFillColor(Color(153, 153, 153, 80));
+	hitBox.setFillColor(Color(153, 153, 153, 0));
 	hitBox.setSize(Vector2f(20.f, 48.f));
 	hitBox.setOrigin(hitBoxOrigin);
 	hitBox.setScale(scale);
 	hitBox.setPosition(position);
 }
 
-bool Player::OnHitted(Time timeHit)
+bool Player::OnHitted(int damage, Time timeHit)
 {
+	if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
+	{
+		lastHit = timeHit;
+		health -= damage;
+		if (health < 0)
+		{
+			health = 0;
+		}
+		return true;
+	}
 	return false;
 }
 
@@ -105,6 +115,14 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			{
 				weaponMgr.ResetFps();
 				isAttack = false;
+			}
+			else
+			{
+				/*if (weaponMgr.GetSprite().getGlobalBounds().intersects(Goblin.GetHitBox().getGlobalBounds()))
+				{
+					std::cout << "Hit" << std::endl;
+					Goblin.OnHitted(10, dt);
+				}*/
 			}
 		}
 	}
@@ -359,6 +377,7 @@ void Player::AnimationUpdate()
 		}
 	}
 
+	// 유한 상태 기계(FSM)
 	switch (currentStatus)
 	{
 	case Status::STATUS_IDLE:

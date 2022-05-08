@@ -74,6 +74,11 @@ void WeaponManager::ResetFps()
 	isFps = 0;
 }
 
+Sprite WeaponManager::GetSprite()
+{
+	return sprite;
+}
+
 void WeaponManager::TwohandWeaponInit()
 {
 	for (auto wp : twoHanded)

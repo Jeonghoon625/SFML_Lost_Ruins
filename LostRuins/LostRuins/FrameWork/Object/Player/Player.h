@@ -11,7 +11,7 @@
 #include "../TestBlock/TestBlock.h"
 #include "../../Mgr/WeaponManager.h"
 
-class WeaponManager;
+class ZombieWalker;
 
 using namespace sf;
 
@@ -37,7 +37,7 @@ private:
 	const float START_JUMP_SPEED = 1000.f;
 	const float GRAVITY_POWER = 2000.f;
 	const float ATTACK_FPS = 0.025f;
-	const float START_IMMUNE_MS = 200.f;
+	const float START_IMMUNE_MS = 1000.f;
 
 	AnimationController animation;
 	WeaponManager weaponMgr;
@@ -78,7 +78,7 @@ private:
 public:
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
 
-	bool OnHitted(Time timeHit);
+	bool OnHitted(int damage, Time timeHit);
 
 	Time GetLastTime() const;
 	FloatRect GetGobalBound() const;
