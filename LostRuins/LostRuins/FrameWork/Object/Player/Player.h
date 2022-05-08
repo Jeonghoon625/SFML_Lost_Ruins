@@ -36,7 +36,6 @@ private:
 	const float START_SPEED = 600.f;
 	const float START_JUMP_SPEED = 1000.f;
 	const float GRAVITY_POWER = 2000.f;
-	const float ATTACK_FPS = 0.025f;
 	const float START_IMMUNE_MS = 1000.f;
 
 	AnimationController animation;

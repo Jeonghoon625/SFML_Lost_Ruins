@@ -8,7 +8,7 @@ void Player::Init()
 	maxHealth = START_HEALTH;
 	immuneMs = START_IMMUNE_MS;
 	fallingSpeed = 0.f;
-	attackFps = ATTACK_FPS;
+	attackFps = 0.f;
 	isFloor = false;
 	isJump = false;
 
@@ -99,7 +99,8 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	if (InputManager::GetKeyDown(Keyboard::X) && isFloor == true && isJump == false && isAttack == false)
 	{
 		weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
-		weaponMgr.SetSpritePosition(WeaponType::TWO_HANDED, sprite);
+		attackFps = weaponMgr.GetAttackFps();
+		weaponMgr.SetWeaponPosition(sprite);
 		isAttack = true;
 	}
 
@@ -110,7 +111,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		if (attackFps < 0.f)
 		{
 			weaponMgr.NextFps();
-			attackFps = ATTACK_FPS;
+			attackFps = weaponMgr.GetAttackFps();
 			if (weaponMgr.CheckFps() == false)
 			{
 				weaponMgr.ResetFps();
