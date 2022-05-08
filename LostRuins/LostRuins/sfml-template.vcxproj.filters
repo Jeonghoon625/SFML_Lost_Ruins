@@ -44,18 +44,15 @@
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
-<<<<<<<<< Temporary merge branch 1
-      <Filter>Framework\Object\Player</Filter>
-      <Filter>FrameWork\Object\Player</Filter>
-      <Filter>Framework\Object\Monster</Filter>
-=========
     <ClCompile Include="FrameWork\Object\Player\Player.cpp">
-      <Filter>Framework\Object\Player</Filter>
+      <Filter>FrameWork\Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp">
       <Filter>FrameWork\Object\Weapon</Filter>
-    <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp">
-      <Filter>Framework\Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
     <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
@@ -67,17 +64,13 @@
     </ClCompile>
     <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp">
       <Filter>FrameWork\Object\TestBlock</Filter>
-      <Filter>FrameWork\Object\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp">
-      <Filter>Framework\Object\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp">
       <Filter>FrameWork\Scene\TestSceneUI</Filter>
+    </ClCompile>
     <ClCompile Include="FrameWork\Scene\GameScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
->>>>>>>>> Temporary merge branch 2
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\FrameWork.h">
@@ -122,20 +115,21 @@
     <ClInclude Include="FrameWork\Scene\TestSceneTT.h">
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
-      <Filter>Framework\Object\Player</Filter>
-      <Filter>FrameWork\Object\Player</Filter>
+    <ClInclude Include="FrameWork\Scene\TitleScene.h">
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Player\Player.h">
-      <Filter>Framework\Object\Player</Filter>
+      <Filter>FrameWork\Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Weapon\TwohandWeapon.h">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h">
       <Filter>FrameWork\Object\Monster</Filter>
-    <ClInclude Include="FrameWork\Object\Weapon\TwohandWeapon.h">
-      <Filter>Framework\Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClInclude>
     <ClInclude Include="FrameWork\Object\Monster\Monster.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
@@ -144,17 +138,13 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h">
       <Filter>FrameWork\Object\TestBlock</Filter>
-      <Filter>FrameWork\Object\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Object\Weapon\TwohandWeapon.h">
-      <Filter>Framework\Object\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h">
       <Filter>FrameWork\Scene\TestSceneUI</Filter>
+    </ClInclude>
     <ClInclude Include="FrameWork\Scene\GameScene.h">
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
->>>>>>>>> Temporary merge branch 2
   </ItemGroup>
   <ItemGroup>
     <Filter Include="FrameWork">
@@ -177,19 +167,15 @@
     </Filter>
     <Filter Include="FrameWork\Object\Weapon">
       <UniqueIdentifier>{96a1b361-faa4-4cf2-a6a4-670a5bc3a67c}</UniqueIdentifier>
-    <Filter Include="Framework\Object\Player">
-      <UniqueIdentifier>{3818eb2c-f8f2-41b0-af8f-06ddc4641a35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\Monster">
+      <UniqueIdentifier>{c61f3fd8-fdd2-4927-bea5-7481777f35ac}</UniqueIdentifier>
+    </Filter>
     <Filter Include="FrameWork\Object\TestBlock">
       <UniqueIdentifier>{bea93276-62d3-4225-831a-a52d5590aede}</UniqueIdentifier>
-      <UniqueIdentifier>{c61f3fd8-fdd2-4927-bea5-7481777f35ac}</UniqueIdentifier>
-    <Filter Include="Framework\Object\Weapon">
-      <UniqueIdentifier>{5ffa8d20-d269-4836-adfb-e3026cf26196}</UniqueIdentifier>
+    </Filter>
     <Filter Include="FrameWork\Scene\TestSceneUI">
       <UniqueIdentifier>{9f890bc9-83b5-491a-8d03-549a5a19f7e2}</UniqueIdentifier>
-      <UniqueIdentifier>{3818eb2c-f8f2-41b0-af8f-06ddc4641a35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Object\Weapon">
-      <UniqueIdentifier>{5ffa8d20-d269-4836-adfb-e3026cf26196}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
