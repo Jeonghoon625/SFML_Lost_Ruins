@@ -35,6 +35,8 @@ public:
 	bool CheckFps();
 	void NextFps();
 	void ResetFps();
+	Sprite GetSprite();
+
 	void TwohandWeaponInit();
 	~WeaponManager();
 };

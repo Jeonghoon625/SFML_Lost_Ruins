@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "../../Mgr/TextureHolder.h"
 
 using namespace sf;
 
@@ -9,7 +10,7 @@ private:
 	Vector2f position;
 	FloatRect blockRect;
 	RectangleShape blockShape;
-
+	Texture texture;
 public:
 	TestBlock(float left, float top, float width, float hight);
 	const Vector2f GetPosition();

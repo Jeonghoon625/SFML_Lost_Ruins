@@ -31,12 +31,17 @@ class GameScene : public Scene
 	ZombieWalker zombieWalker;
 	TestUi testUI;
 
+	//Dummy Map
+	Texture texBackground;
+	VertexArray tileMap;
+
 public:
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView);
 	virtual void Draw(RenderWindow* window, View* mainView);
 	virtual ~GameScene();
 
-	void CreateBlock();
+	void CreateBlock(); 
+	int CreateBackGround();
 };
 

@@ -60,13 +60,31 @@
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Player\Player.cpp">
+      <Filter>FrameWork\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp">
+      <Filter>FrameWork\Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\Monster.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp">
+      <Filter>FrameWork\Object\TestBlock</Filter>
+    </ClCompile>
     <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp">
       <Filter>FrameWork\Scene\TestSceneUI</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Scene\GameScene.cpp">
-      <Filter>FrameWork\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Scene\Scene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -111,34 +129,34 @@
     <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TitleScene.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="FrameWork\Object\Player\Player.h">
       <Filter>FrameWork\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h">
-      <Filter>FrameWork\Object\TestBlock</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Weapon\TwohandWeapon.h">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TestScene.h">
-      <Filter>FrameWork\Scene</Filter>
+    <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\Monster.h">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TestSceneTT.h">
-      <Filter>FrameWork\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TitleScene.h">
-      <Filter>FrameWork\Scene</Filter>
+    <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h">
+      <Filter>FrameWork\Object\TestBlock</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h">
       <Filter>FrameWork\Scene\TestSceneUI</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\GameScene.h">
-      <Filter>FrameWork\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Scene\Scene.h">
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
   </ItemGroup>
@@ -162,16 +180,16 @@
       <UniqueIdentifier>{361ed65b-8c44-485d-b87a-615acd9b6832}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Object\Weapon">
-      <UniqueIdentifier>{ccc404f0-7794-4365-bd8b-56638c52260d}</UniqueIdentifier>
+      <UniqueIdentifier>{96a1b361-faa4-4cf2-a6a4-670a5bc3a67c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\Monster">
+      <UniqueIdentifier>{c61f3fd8-fdd2-4927-bea5-7481777f35ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Object\TestBlock">
-      <UniqueIdentifier>{e93c738f-d7d9-48a9-8263-57e771645630}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Scene">
-      <UniqueIdentifier>{a5b0e20a-bb1c-4a90-92db-f462c16922cc}</UniqueIdentifier>
+      <UniqueIdentifier>{bea93276-62d3-4225-831a-a52d5590aede}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Scene\TestSceneUI">
-      <UniqueIdentifier>{23b24ed1-42d7-49e7-9e0b-95a8c43f929b}</UniqueIdentifier>
+      <UniqueIdentifier>{9f890bc9-83b5-491a-8d03-549a5a19f7e2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
