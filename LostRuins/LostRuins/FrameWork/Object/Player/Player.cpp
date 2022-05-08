@@ -28,8 +28,8 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	resolustion = res;
 	this->tileSize = tileSize;
 
-	position.x = this->gameMap.width * 0.5f;
-	position.y = resolustion.y - 200.f;
+	position.x = this->gameMap.left + 200.f;
+	position.y = this->gameMap.top;
 
 	hitBox.setFillColor(Color(153, 153, 153, 0));
 	hitBox.setSize(Vector2f(20.f, 48.f));
@@ -176,7 +176,6 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 
 void Player::Draw(RenderWindow* window, View* mainView)
 {
-	mainView->setCenter(position.x, position.y);
 	window->setView(*mainView);
 	window->draw(sprite);
 	window->draw(hitBox);
