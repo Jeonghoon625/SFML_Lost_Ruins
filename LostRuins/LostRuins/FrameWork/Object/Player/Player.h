@@ -78,7 +78,7 @@ private:
 public:
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
 
-	bool OnHitted(int damage, Time timeHit);
+	bool OnHitted(int damage);
 
 	Time GetLastTime() const;
 	FloatRect GetGobalBound() const;

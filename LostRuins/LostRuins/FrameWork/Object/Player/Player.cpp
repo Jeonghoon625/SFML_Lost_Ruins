@@ -38,18 +38,15 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	hitBox.setPosition(position);
 }
 
-bool Player::OnHitted(int damage, Time timeHit)
+bool Player::OnHitted(int damage)
 {
-	if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
+	std::cout << health << std::endl;
+	health -= damage;
+	if (health < 0)
 	{
-		lastHit = timeHit;
-		health -= damage;
-		if (health < 0)
-		{
-			health = 0;
-		}
-		return true;
+		health = 0;
 	}
+	return true;
 	return false;
 }
 
