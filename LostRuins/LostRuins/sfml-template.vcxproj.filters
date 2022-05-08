@@ -177,5 +177,8 @@
     <Filter Include="FrameWork\Scene\TestSceneUI">
       <UniqueIdentifier>{9f890bc9-83b5-491a-8d03-549a5a19f7e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\Map">
+      <UniqueIdentifier>{8375b908-087e-488e-a92d-e5a51eb0b3be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

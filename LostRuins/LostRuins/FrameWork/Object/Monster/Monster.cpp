@@ -263,7 +263,7 @@ void Monster::Attack(float dt, int atk, Player& player)
 
 		if (attackDelay > 1.5f)
 		{
-			if(attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()));
+			if(attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 			{
 				// ¿©±â¿¡ player.onhitted
 			}
