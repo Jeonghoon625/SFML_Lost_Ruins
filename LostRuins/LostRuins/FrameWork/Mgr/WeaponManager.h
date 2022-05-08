@@ -18,6 +18,8 @@ class WeaponManager
 private:
 	const int MAX_TWO_HANDED_FPS = 16;
 
+	const float TWO_HANDED_ATTACK_FPS = 0.025f;
+
 	WeaponType currentWeapon;
 	Sprite sprite;
 
@@ -28,16 +30,17 @@ private:
 
 public:
 	void Init();
-	void SetSpritePosition(WeaponType weaponType, Sprite sprite);
 	void AttackWeapon(WeaponType weaponType);
+	void SetWeaponPosition(Sprite sprite);
 	void Draw(RenderWindow* window, View* mainView);
 
+	float GetAttackFps();
 	bool CheckFps();
 	void NextFps();
 	void ResetFps();
 	Sprite GetSprite();
 
-	void TwohandWeaponInit();
 	~WeaponManager();
+	void TwohandWeaponInit();
 };
 
