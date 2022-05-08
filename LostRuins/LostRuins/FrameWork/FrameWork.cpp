@@ -2,13 +2,15 @@
 
 bool FrameWork::Initialize()
 {
-	resolution.x = VideoMode::getDesktopMode().width * 0.8f;
-	resolution.y = VideoMode::getDesktopMode().height * 0.8f;
+	resolution.x = VideoMode::getDesktopMode().width;
+	resolution.y = VideoMode::getDesktopMode().height;
 
-	window = new RenderWindow(VideoMode(resolution.x, resolution.y), "Lost Ruins", Style::Default);
+	window = new RenderWindow(VideoMode(resolution.x, resolution.y), "Lost Ruins", Style::Default); 
 
 	objectView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	objectView->setCenter(resolution.x * 0.5f, resolution.y * 0.5f);
+	objectView->setSize(1600.f, 900.f);
+
 	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	uiView->setCenter(resolution.x * 0.5f, resolution.y * 0.5f);
 
@@ -94,4 +96,5 @@ FrameWork::~FrameWork()
 {
 	delete window;
 	delete objectView;
+	delete uiView;
 }
