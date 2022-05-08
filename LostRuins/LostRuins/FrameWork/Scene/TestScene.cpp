@@ -18,7 +18,7 @@ void TestScene::Init(SceneManager* sceneManager)
 	float wpYpos = resolution.y * 0.5f;
 
 	// test
-	zombieWalker.MonsterInit();
+	Goblin.MonsterInit();
 }
 
 void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
@@ -26,7 +26,7 @@ void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* main
 	player.Update(dt, blocks);
 
 	// test
-	zombieWalker.Update(player, dt, blocks);
+	Goblin.Update(player, dt, blocks);
 }
 
 void TestScene::Draw(RenderWindow* window, View* mainView)
@@ -38,7 +38,7 @@ void TestScene::Draw(RenderWindow* window, View* mainView)
 	player.Draw(window, mainView);
 
 	// test
-	zombieWalker.Draw(window);
+	Goblin.Draw(window);
 }
 
 TestScene::~TestScene()

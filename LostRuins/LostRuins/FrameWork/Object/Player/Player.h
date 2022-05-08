@@ -11,7 +11,7 @@
 #include "../TestBlock/TestBlock.h"
 #include "../../Mgr/WeaponManager.h"
 
-class WeaponManager;
+class ZombieWalker;
 
 using namespace sf;
 

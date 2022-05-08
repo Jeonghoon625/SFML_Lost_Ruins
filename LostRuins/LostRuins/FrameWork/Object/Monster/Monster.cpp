@@ -69,27 +69,27 @@ void Monster::MonsterInit()
 	AnimationInit(&sprite);
 
 	sprite.setOrigin(23.f, 30);		//고블린 발 끝 좌표 23,30
-	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
+	sprite.setPosition(resolution.x * 0.5f, resolution.y * 0.5f);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
 
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
-	findPlayerBox.setFillColor(Color(255, 255, 255, 80));
+	findPlayerBox.setFillColor(Color(153, 153, 0, 80));
 	findPlayerBox.setOrigin(200, 40);
 	findPlayerBox.setPosition(sprite.getOrigin());
 
 	attackRangeBox.setSize(Vector2f(30.f, 30.f));
 	attackRangeBox.setScale(scale);
-	attackRangeBox.setFillColor(Color(153, 0, 0, 80));
+	attackRangeBox.setFillColor(Color(155, 0, 0, 80));
 	attackRangeBox.setOrigin(30, 30);
 	attackRangeBox.setPosition(sprite.getOrigin());
 
 	hitBox.setSize(Vector2f(43.f, 30.f));
 	hitBox.setScale(scale);
 	hitBox.setOrigin(21.5f, 30.f);
-	hitBox.setFillColor(Color(50, 50, 25, 70));
+	hitBox.setFillColor(Color(155, 0, 255, 80));
 	hitBox.setPosition(sprite.getOrigin());
 }
 

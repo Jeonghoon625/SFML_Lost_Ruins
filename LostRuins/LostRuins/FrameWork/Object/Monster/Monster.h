@@ -48,7 +48,7 @@ protected:
 public:
 	Monster();
 	FloatRect GetGlobalBound();
-	Sprite GetSprite();
+	virtual Sprite GetSprite();
 	Vector2f GetPosition();
 	int GetHealth();
 	void SetHealth(int damage);

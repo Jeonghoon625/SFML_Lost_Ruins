@@ -106,6 +106,14 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 				weaponMgr.ResetFps();
 				isAttack = false;
 			}
+			else
+			{
+				/*if (weaponMgr.GetSprite().getGlobalBounds().intersects(Goblin.GetHitBox().getGlobalBounds()))
+				{
+					std::cout << "Hit" << std::endl;
+					Goblin.OnHitted(10, dt);
+				}*/
+			}
 		}
 	}
 	// ÀÌµ¿
