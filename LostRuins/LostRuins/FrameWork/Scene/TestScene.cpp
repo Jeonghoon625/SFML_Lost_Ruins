@@ -7,7 +7,7 @@ void TestScene::Init(SceneManager* sceneManager)
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 
-	player.Init();
+	player.Init(nullptr);
 	gameMap = IntRect(0, 0, resolution.x, resolution.y);
 
 	CreateBlock();

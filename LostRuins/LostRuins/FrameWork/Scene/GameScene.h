@@ -28,7 +28,7 @@ class GameScene : public Scene
 	Sprite testWeapon;
 
 	// test
-	ZombieWalker zombieWalker;
+	ZombieWalker* zombieWalker;
 	TestUi testUI;
 
 	//Dummy Map

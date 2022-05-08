@@ -41,7 +41,7 @@ void FrameWork::Update()
 			if (event.key.code == Keyboard::Escape)
 			{
 				window->close();
-			}*/
+			}
 			break;
 		*/
 

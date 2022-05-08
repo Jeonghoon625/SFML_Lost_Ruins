@@ -1,7 +1,8 @@
 #include "Player.h"
+#include "../Monster/ZombieWalker.h"
 #include <iostream>
 
-void Player::Init()
+void Player::Init(ZombieWalker* zombie)
 {
 	speed = START_SPEED;
 	health = START_HEALTH;
@@ -20,6 +21,8 @@ void Player::Init()
 	animation.Play("Idle");
 
 	weaponMgr.Init();
+
+	this->zombie = zombie;
 }
 
 void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
@@ -119,11 +122,11 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			}
 			else
 			{
-				/*if (weaponMgr.GetSprite().getGlobalBounds().intersects(Goblin.GetHitBox().getGlobalBounds()))
+				if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
 				{
-					std::cout << "Hit" << std::endl;
-					Goblin.OnHitted(10, dt);
-				}*/
+					std::cout << "Hit" << zombie->GetHealth() << std::endl;
+					zombie->OnHitted(10, dt);
+				}
 			}
 		}
 	}
