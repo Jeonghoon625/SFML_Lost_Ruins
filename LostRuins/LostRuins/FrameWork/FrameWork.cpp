@@ -20,7 +20,7 @@ void FrameWork::Update()
 	InputManager::ClearInput();
 
 	Event event;
-	while (window->pollEvent(event));
+	while (window->pollEvent(event))
 	{
 		switch (event.type)
 		{
@@ -28,10 +28,10 @@ void FrameWork::Update()
 			window->close();
 			break;
 		case Event::KeyPressed:
-			if (event.key.code == Keyboard::Escape)
+			/*if (event.key.code == Keyboard::Escape)
 			{
 				window->close();
-			}
+			}*/
 			break;
 		default:
 			break;
