@@ -148,16 +148,17 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	// 충돌 처리
 	UpdateCollision(blocks);
 
-	// 테스트용
-	//std::cout << isDirection << std::endl;
-	//if (isFloor == false)
-	//{
-	//	std::cout << "떨어짐" << "  " << fallingSpeed << std::endl;
-	//}
-	//else
-	//{
-	//	std::cout << "지면" << "  " << fallingSpeed << std::endl;
-	//}
+	/* 충돌 처리 테스트용
+	std::cout << isDirection << std::endl;
+	if (isFloor == false)
+	{
+		std::cout << "떨어짐" << "  " << fallingSpeed << std::endl;
+	}
+	else
+	{
+		std::cout << "지면" << "  " << fallingSpeed << std::endl;
+	}
+	*/
 
 	AnimationUpdate();
 	animation.Update(dt);
@@ -165,6 +166,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 
 void Player::Draw(RenderWindow* window, View* mainView)
 {
+	mainView->setCenter(position.x, position.y);
 	window->setView(*mainView);
 	window->draw(sprite);
 	window->draw(hitBox);
