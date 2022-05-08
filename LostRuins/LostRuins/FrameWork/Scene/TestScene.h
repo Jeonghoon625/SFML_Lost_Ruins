@@ -5,9 +5,7 @@
 #include "../Mgr/TextureHolder.h"
 #include "../Object/Player/Player.h"
 #include "../Object/TestBlock/TestBlock.h"
-
-// test
-#include "../Object/Monster/Monster.h"
+#include "../Object/TestMonster/TestZombieWalker.h"
 
 class TestScene : public Scene
 {
@@ -23,12 +21,10 @@ class TestScene : public Scene
 	Sprite heroineAction;
 
 	vector <TestBlock*> blocks;
+	vector <TestZombieWalker*> zombieWalkers;
 
 	Sprite testSprite;
 	Sprite testWeapon;
-
-	// test
-	Monster Goblin;
 
 public:
 	virtual void Init(SceneManager* sceneManager);
@@ -37,5 +33,6 @@ public:
 	virtual ~TestScene();
 
 	void CreateBlock();
+	void CreateMonster();
 };
 
