@@ -22,7 +22,7 @@ private:
 	const int MAX_DAGGER_FPS = 12;
 	const int DAGGER_DELAY = 3;
 
-	const float TWO_HANDED_ATTACK_FPS = 0.05f;
+	const float TWO_HANDED_ATTACK_FPS = 0.04f;
 	const float DAGGER_ATTACK_FPS = 0.03f;
 
 	WeaponType currentWeapon;

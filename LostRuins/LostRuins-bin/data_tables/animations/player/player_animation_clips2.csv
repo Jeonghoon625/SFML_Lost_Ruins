@@ -6,7 +6,7 @@ Falling,15,1,data_tables/animations/player/player_animation_Falling.csv
 Landing,12,0,data_tables/animations/player/player_animation_Landing.csv
 IdletoRun,12,0,data_tables/animations/player/player_animation_IdletoRun.csv
 RuntoIdle,12,0,data_tables/animations/player/player_animation_RuntoIdle.csv
-Attack_Twohanded_Standing,20,0,data_tables/animations/player/player_animation_Attack_Twohanded_Standing.csv
+Attack_Twohanded_Standing,25,0,data_tables/animations/player/player_animation_Attack_Twohanded_Standing.csv
 Crouch,10,0,data_tables/animations/player/player_animation_Crouch.csv
 Crouching,10,0,data_tables/animations/player/player_animation_Crouching.csv
 CrouchingtoIdle,10,0,data_tables/animations/player/player_animation_CrouchingtoIdle.csv
