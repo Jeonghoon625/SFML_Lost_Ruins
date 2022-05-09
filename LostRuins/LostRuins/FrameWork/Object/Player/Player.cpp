@@ -93,7 +93,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 
 	Utils::Normalize(dir);
 
-	if (InputManager::GetKeyDown(Keyboard::C) && isFloor == true && isJump == false)
+	if (InputManager::GetKeyDown(Keyboard::C) && isFloor == true && isJump == false && isCrouch == false)
 	{
 		isFloor = false;
 		isJump = true;
@@ -425,6 +425,10 @@ void Player::AnimationUpdate()
 		else if (InputManager::GetKeyDown(Keyboard::X))
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
+		}
+		else if (isCrouch == true)
+		{
+			SetStatus(Status::STATUS_CROUCH);
 		}
 		else if (isFloor == false)
 		{
