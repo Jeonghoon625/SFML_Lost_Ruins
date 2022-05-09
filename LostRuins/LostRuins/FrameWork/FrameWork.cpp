@@ -1,5 +1,6 @@
 #include "FrameWork.h"
 
+
 bool FrameWork::Initialize()
 {
 	resolution.x = VideoMode::getDesktopMode().width;
@@ -20,6 +21,10 @@ bool FrameWork::Initialize()
 	InputManager::Init();
 	sceneMgr.Init();
 
+	//light
+	light.setRange(150);
+	edges.emplace_back(sf::Vector2f(200.f, 100.f), sf::Vector2f(200.f, 300.f));
+	
 	return true;
 }
 
@@ -45,6 +50,11 @@ void FrameWork::Update()
 			break;
 		*/
 
+		case Event::MouseMoved: 
+			light.setPosition(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
+			light.castLight(edges.begin(), edges.end());
+			break;
+
 		default:
 			break;
 		}
@@ -59,7 +69,9 @@ void FrameWork::Update()
 void FrameWork::Draw()
 {
 	window->clear();
+	
 	sceneMgr.Draw(window, objectView);
+	window->draw(light);
 	window->display();
 }
 
@@ -79,6 +91,7 @@ int FrameWork::Run()
 		{
 			// std::cout << 1.f / frameTimer << std::endl; //Output FPS
 			Update();
+			
 			Draw();
 
 			frameTimer = 0.f;

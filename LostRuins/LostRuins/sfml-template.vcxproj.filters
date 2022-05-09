@@ -95,6 +95,33 @@
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="SFML-2.5.1\include\SFML\LightSource.cpp">
+      <Filter>FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML-2.5.1\include\SFML\Line.cpp">
+      <Filter>FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML-2.5.1\include\SFML\Polygon.cpp">
+      <Filter>FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML-2.5.1\include\SFML\RadialLight.cpp">
+      <Filter>FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML-2.5.1\include\SFML\VertexArray.cpp">
+      <Filter>FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML-2.5.1\include\SFML\Color.cpp">
+      <Filter>FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML-2.5.1\include\SFML\Constants.cpp">
+      <Filter>FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML-2.5.1\include\SFML\DirectedLight.cpp">
+      <Filter>FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML-2.5.1\include\SFML\LightingArea.cpp">
+      <Filter>FrameWork</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">

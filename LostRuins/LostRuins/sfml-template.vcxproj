@@ -44,6 +44,15 @@
     <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp" />
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="SFML-2.5.1\include\SFML\Color.cpp" />
+    <ClCompile Include="SFML-2.5.1\include\SFML\Constants.cpp" />
+    <ClCompile Include="SFML-2.5.1\include\SFML\DirectedLight.cpp" />
+    <ClCompile Include="SFML-2.5.1\include\SFML\LightingArea.cpp" />
+    <ClCompile Include="SFML-2.5.1\include\SFML\LightSource.cpp" />
+    <ClCompile Include="SFML-2.5.1\include\SFML\Line.cpp" />
+    <ClCompile Include="SFML-2.5.1\include\SFML\Polygon.cpp" />
+    <ClCompile Include="SFML-2.5.1\include\SFML\RadialLight.cpp" />
+    <ClCompile Include="SFML-2.5.1\include\SFML\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h" />

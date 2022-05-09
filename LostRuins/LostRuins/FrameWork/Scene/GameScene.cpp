@@ -25,7 +25,7 @@ void GameScene::Init(SceneManager* sceneManager)
 
 	//Dummy Map
 	CreateBackGround();
-	texBackground = TextureHolder::GetTexture("maps/ShedWallMossLightMap.png");
+	texBackground = TextureHolder::GetTexture("maps/Another/SewerWall.png");
 	
 }
 
