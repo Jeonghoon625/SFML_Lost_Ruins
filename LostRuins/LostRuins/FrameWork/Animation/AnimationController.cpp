@@ -61,7 +61,7 @@ void AnimationController::Update(float dt)
 		}
 	}
 
-	sprite->setTexture(currentClip->frames[currentFrame].texture);
+	sprite->setTexture(*currentClip->frames[currentFrame].texture);
 	sprite->setTextureRect(currentClip->frames[currentFrame].texCoord);
 }
 
