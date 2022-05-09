@@ -27,7 +27,7 @@ void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* main
 	{
 		zombieWalker->Update(dt, player.GetPosition(), blocks);
 	}
-	player.Update(dt, blocks);
+	player.Update(dt, blocks, playTime);
 }
 
 void TestScene::Draw(RenderWindow* window, View* mainView)

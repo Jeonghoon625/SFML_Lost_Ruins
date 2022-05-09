@@ -77,7 +77,7 @@ private:
 
 public:
 	void Init(ZombieWalker* zombie);
-	void Update(float dt, std::vector <TestBlock*> blocks);
+	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
 	void Draw(RenderWindow* window, View* mainView);
 	
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
