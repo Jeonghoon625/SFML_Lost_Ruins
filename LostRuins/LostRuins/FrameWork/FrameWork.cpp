@@ -69,7 +69,6 @@ void FrameWork::Update()
 void FrameWork::Draw()
 {
 	window->clear();
-	
 	sceneMgr.Draw(window, objectView);
 	window->draw(light);
 	window->display();

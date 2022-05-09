@@ -37,6 +37,7 @@
     <ClCompile Include="FrameWork\Object\TestMonster\TestZombieWalker.cpp" />
     <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp" />
     <ClCompile Include="FrameWork\Scene\GameScene.cpp" />
+    <ClCompile Include="FrameWork\Scene\MapScene.cpp" />
     <ClCompile Include="FrameWork\Scene\Scene.cpp" />
     <ClCompile Include="FrameWork\Scene\TestScene.cpp" />
     <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="FrameWork\Object\TestMonster\TestZombieWalker.h" />
     <ClInclude Include="FrameWork\Object\Weapon\TwohandWeapon.h" />
     <ClInclude Include="FrameWork\Scene\GameScene.h" />
+    <ClInclude Include="FrameWork\Scene\MapScene.h" />
     <ClInclude Include="FrameWork\Scene\Scene.h" />
     <ClInclude Include="FrameWork\Scene\TestScene.h" />
     <ClInclude Include="FrameWork\Scene\TestSceneKK.h" />
