@@ -10,3 +10,4 @@ Attack_Twohanded_Standing,40,0,data_tables/animations/player/player_animation_At
 Crouch,10,0,data_tables/animations/player/player_animation_Crouch.csv
 Crouching,10,0,data_tables/animations/player/player_animation_Crouching.csv
 CrouchingtoIdle,10,0,data_tables/animations/player/player_animation_CrouchingtoIdle.csv
+Roll,13,0,data_tables/animations/player/player_animation_Roll.csv

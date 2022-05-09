@@ -26,4 +26,3 @@ struct AnimationClip
 	AnimationLoopType loopType;
 	int fps;
 };
-
