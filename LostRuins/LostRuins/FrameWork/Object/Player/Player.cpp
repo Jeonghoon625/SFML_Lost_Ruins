@@ -12,6 +12,8 @@ void Player::Init(ZombieWalker* zombie)
 	attackFps = 0.f;
 	isFloor = false;
 	isJump = false;
+	isAttack = false;
+	isCrouch = false;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -103,6 +105,14 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		weaponMgr.SetWeaponPosition(sprite);
 		isAttack = true;
 	}
+	if (InputManager::GetKey(Keyboard::Down) && isFloor == true && isJump == false && isAttack == false)
+	{
+		isCrouch = true;
+	}
+	if (InputManager::GetKeyUp(Keyboard::Down) && isCrouch == true)
+	{
+		isCrouch = false;
+	}
 
 	// 공격
 	if (isAttack == true)
@@ -130,7 +140,10 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	// 이동
 	else
 	{
-		position.x += dir.x * speed * dt;
+		if (isCrouch == false)
+		{
+			position.x += dir.x * speed * dt;
+		}
 		if (isJump == false)
 		{
 			fallingSpeed += GRAVITY_POWER * dt;
@@ -392,6 +405,10 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
+		else if (isCrouch == true)
+		{
+			SetStatus(Status::STATUS_CROUCH);
+		}
 		else if (isFloor == false)
 		{
 			SetStatus(Status::STATUS_FALLING);
@@ -427,6 +444,12 @@ void Player::AnimationUpdate()
 			SetStatus(Status::STATUS_IDLE);
 		}
 		break;
+	case Status::STATUS_CROUCH:
+		if (isCrouch == false)
+		{
+			SetStatus(Status::STATUS_IDLE);
+		}
+		break;
 	case Status::STATUS_ATK_TWO_STAND:
 		if (isAttack == false)
 		{
@@ -456,6 +479,11 @@ void Player::SetStatus(Status newStatus)
 			animation.Play("Landing");
 			animation.PlayQueue("Idle");
 		}
+		else if (prevStatus == Status::STATUS_CROUCH)
+		{
+			animation.Play("CrouchingtoIdle");
+			animation.PlayQueue("Idle");
+		}
 		else
 		{
 			animation.Play("Idle");
@@ -477,6 +505,10 @@ void Player::SetStatus(Status newStatus)
 		break;
 	case Status::STATUS_FALLING:
 		animation.Play("Falling");
+		break;
+	case Status::STATUS_CROUCH:
+		animation.Play("Crouch");
+		animation.PlayQueue("Crouching");
 		break;
 	case Status::STATUS_ATK_TWO_STAND:
 		animation.Play("Attack_Twohanded_Standing");
