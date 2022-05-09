@@ -31,14 +31,14 @@ void TestUi::Init(SceneManager* sceneManager)
 	weaponpng = TextureHolder::GetTexture("graphics/Weapon.png");
 
 	wea.setTexture(weaponpng);
-	wea.setTextureRect(IntRect(235, 74, 14, 45));
+	wea.setTextureRect(IntRect(13, 148, 14, 53));
 	wea.setScale(Vector2f(1.1f, 1.1f));
 	wea.setPosition(1767, 27);
 
 	shi.setTexture(weaponpng);
-	shi.setTextureRect(IntRect(3, 229, 17, 17));
-	shi.setScale(Vector2f(1.7f, 1.7f));
-	shi.setPosition(1851, 40);
+	shi.setTextureRect(IntRect(3, 17, 4, 25));
+	shi.setScale(Vector2f(1.9f, 1.9f));
+	shi.setPosition(1863, 33);
 
 	amr1.setTexture(scrollpng);
 	amr1.setTextureRect(IntRect(3, 226, 12, 15));
