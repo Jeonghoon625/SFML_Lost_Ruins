@@ -36,6 +36,10 @@ protected:
 	bool isFindPlayer;
 	bool isAttackPlayer;
 	bool alive;
+	bool isCollideHitBox;
+	bool isCollideAttackRangeBox;
+
+	
 
 	float attackDelay;
 	float hitDelay;
@@ -44,7 +48,7 @@ protected:
 
 	Sprite sprite;
 	Vector2f position;
-	Vector2f prevPosition;
+	
 
 	RectangleShape findPlayerBox;		// Find Player
 	RectangleShape attackRangeBox;
@@ -83,6 +87,7 @@ public:
 
 	void Gravity(float dt, std::vector<TestBlock*> blocks);
 	void UpdateCollision(std::vector <TestBlock*> blocks);
+	void UpdateCollisionAttackRangeBox(std::vector <TestBlock*> blocks);
 
 	void Update(Player& player, float dt, std::vector<TestBlock*> blocks);
 
