@@ -23,15 +23,42 @@ void TestScene::Init(SceneManager* sceneManager)
 
 void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
-	player.Update(dt, blocks);
 	for (auto zombieWalker : zombieWalkers)
 	{
 		zombieWalker->Update(dt, player.GetPosition(), blocks);
 	}
+	player.Update(dt, blocks, playTime);
 }
 
 void TestScene::Draw(RenderWindow* window, View* mainView)
 {
+	/* View 설정*/
+	mainView->setCenter(player.GetPosition());
+
+	//좌측 조정
+	if ((mainView->getCenter().x) - (mainView->getSize().x * 0.5f) < gameMap.left)
+	{
+		mainView->move((mainView->getSize().x * 0.5f) - (mainView->getCenter().x), 0);
+	}
+
+	//우측 조정
+	if ((mainView->getCenter().x) + (mainView->getSize().x * 0.5f) > gameMap.left + gameMap.width)
+	{
+		mainView->move((gameMap.left + gameMap.width) - ((mainView->getCenter().x) + (mainView->getSize().x * 0.5f)), 0);
+	}
+
+	//위측 조정
+	if ((mainView->getCenter().y) - (mainView->getSize().y * 0.5f) < gameMap.top)
+	{
+		mainView->move(0, (mainView->getSize().y * 0.5f) - (mainView->getCenter().y));
+	}
+
+	//아래측 조정
+	if ((mainView->getCenter().y) + (mainView->getSize().y * 0.5f) > gameMap.top + gameMap.height)
+	{
+		mainView->move(0, (gameMap.top + gameMap.height) - ((mainView->getCenter().y) + (mainView->getSize().y * 0.5f)));
+	}
+
 	for (auto blockShape : blocks)
 	{
 		window->draw(blockShape->GetBlockShape());

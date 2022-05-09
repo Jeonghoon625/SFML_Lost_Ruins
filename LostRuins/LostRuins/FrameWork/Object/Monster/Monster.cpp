@@ -267,7 +267,7 @@ void Monster::Attack(float dt, int atk, Player& player)
 				player.OnHitted(atk);
 				// 여기에 player.onhitted
 			}
-			
+		
 			attackDelay = 0.f;
 			isAttackPlayer = false;
 			animation.Play(strRun);
@@ -287,6 +287,7 @@ bool Monster::OnHitted(int atk, float dt, Time timeHit)
 			isFindPlayer = true;
 			isAttackPlayer = false;	//맞으면 공격하려던거 취소
 			health -= atk;
+			std::cout << "HP : " << GetHealth() << std::endl;
 			return true;
 		}
 		else

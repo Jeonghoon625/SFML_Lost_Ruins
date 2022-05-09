@@ -12,6 +12,8 @@ void Player::Init(ZombieWalker* zombie)
 	attackFps = 0.f;
 	isFloor = false;
 	isJump = false;
+	isAttack = false;
+	isCrouch = false;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -83,7 +85,7 @@ RectangleShape Player::GetHitBox()
 	return hitBox;
 }
 
-void Player::Update(float dt, std::vector <TestBlock*> blocks)
+void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
 	float v = InputManager::GetAxisRaw(Axis::Vertical);
@@ -91,7 +93,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 
 	Utils::Normalize(dir);
 
-	if (InputManager::GetKeyDown(Keyboard::C) && isFloor == true && isJump == false)
+	if (InputManager::GetKeyDown(Keyboard::C) && isFloor == true && isJump == false && isCrouch == false)
 	{
 		isFloor = false;
 		isJump = true;
@@ -102,6 +104,14 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		attackFps = weaponMgr.GetAttackFps();
 		weaponMgr.SetWeaponPosition(sprite);
 		isAttack = true;
+	}
+	if (InputManager::GetKey(Keyboard::Down) && isFloor == true && isJump == false && isAttack == false)
+	{
+		isCrouch = true;
+	}
+	if (InputManager::GetKeyUp(Keyboard::Down) && isCrouch == true)
+	{
+		isCrouch = false;
 	}
 
 	// 공격
@@ -121,8 +131,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			{
 				if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
 				{
-					std::cout << "Hit" << zombie->GetHealth() << std::endl;
-					zombie->OnHitted(10, dt);
+					zombie->OnHitted(10, dt, playTime);
 				}
 			}
 		}
@@ -130,7 +139,10 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	// 이동
 	else
 	{
-		position.x += dir.x * speed * dt;
+		if (isCrouch == false)
+		{
+			position.x += dir.x * speed * dt;
+		}
 		if (isJump == false)
 		{
 			fallingSpeed += GRAVITY_POWER * dt;
@@ -392,6 +404,10 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
+		else if (isCrouch == true)
+		{
+			SetStatus(Status::STATUS_CROUCH);
+		}
 		else if (isFloor == false)
 		{
 			SetStatus(Status::STATUS_FALLING);
@@ -410,6 +426,10 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
+		else if (isCrouch == true)
+		{
+			SetStatus(Status::STATUS_CROUCH);
+		}
 		else if (isFloor == false)
 		{
 			SetStatus(Status::STATUS_FALLING);
@@ -423,6 +443,12 @@ void Player::AnimationUpdate()
 		break;
 	case Status::STATUS_FALLING:
 		if (isFloor == true)
+		{
+			SetStatus(Status::STATUS_IDLE);
+		}
+		break;
+	case Status::STATUS_CROUCH:
+		if (isCrouch == false)
 		{
 			SetStatus(Status::STATUS_IDLE);
 		}
@@ -446,16 +472,46 @@ void Player::SetStatus(Status newStatus)
 	switch (currentStatus)
 	{
 	case Status::STATUS_IDLE:
-		animation.Play("Idle");
+		if (prevStatus == Status::STATUS_RUN)
+		{
+			animation.Play("RuntoIdle");
+			animation.PlayQueue("Idle");
+		}
+		else if (prevStatus == Status::STATUS_FALLING)
+		{
+			animation.Play("Landing");
+			animation.PlayQueue("Idle");
+		}
+		else if (prevStatus == Status::STATUS_CROUCH)
+		{
+			animation.Play("CrouchingtoIdle");
+			animation.PlayQueue("Idle");
+		}
+		else
+		{
+			animation.Play("Idle");
+		}
 		break;
 	case Status::STATUS_RUN:
-		animation.Play("Run");
+		if (prevStatus == Status::STATUS_IDLE)
+		{
+			animation.Play("IdletoRun");
+			animation.PlayQueue("Run");
+		}
+		else
+		{
+			animation.Play("Run");
+		}
 		break;
 	case Status::STATUS_JUMP:
 		animation.Play("Jump");
 		break;
 	case Status::STATUS_FALLING:
 		animation.Play("Falling");
+		break;
+	case Status::STATUS_CROUCH:
+		animation.Play("Crouch");
+		animation.PlayQueue("Crouching");
 		break;
 	case Status::STATUS_ATK_TWO_STAND:
 		animation.Play("Attack_Twohanded_Standing");

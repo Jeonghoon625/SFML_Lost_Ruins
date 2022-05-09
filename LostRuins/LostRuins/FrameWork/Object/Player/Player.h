@@ -21,6 +21,7 @@ enum class Status
 	STATUS_RUN,
 	STATUS_JUMP,
 	STATUS_FALLING,
+	STATUS_CROUCH,
 	STATUS_ATK_TWO_STAND,
 };
 
@@ -66,6 +67,7 @@ private:
 	bool isFloor;
 	bool isJump;
 	bool isAttack;
+	bool isCrouch;
 
 	Time lastHit;
 
@@ -77,7 +79,7 @@ private:
 
 public:
 	void Init(ZombieWalker* zombie);
-	void Update(float dt, std::vector <TestBlock*> blocks);
+	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
 	void Draw(RenderWindow* window, View* mainView);
 	
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
