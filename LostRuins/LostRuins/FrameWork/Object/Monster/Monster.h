@@ -44,6 +44,7 @@ protected:
 
 	Sprite sprite;
 	Vector2f position;
+	Vector2f prevPosition;
 
 	RectangleShape findPlayerBox;		// Find Player
 	RectangleShape attackRangeBox;
