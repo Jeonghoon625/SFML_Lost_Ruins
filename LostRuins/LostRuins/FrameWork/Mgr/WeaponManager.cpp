@@ -19,6 +19,8 @@ void WeaponManager::AttackWeapon(WeaponType weaponType)
 		currentWeapon = WeaponType::ONE_HANDED;
 		break;
 	case WeaponType::TWO_HANDED:
+		maxFps = MAX_TWO_HANDED_FPS;
+		delay = TWO_HANDED_DELAY;
 		currentWeapon = WeaponType::TWO_HANDED;
 		break;
 	}
@@ -33,7 +35,6 @@ void WeaponManager::SetWeaponPosition(Sprite sprite)
 	case WeaponType::ONE_HANDED:
 		break;
 	case WeaponType::TWO_HANDED:
-		maxFps = MAX_TWO_HANDED_FPS;
 		for (auto spriteWeapon : twoHanded)
 		{
 			spriteWeapon->SetPosition(sprite);
@@ -101,6 +102,11 @@ bool WeaponManager::CheckFps()
 	return isFps < maxFps ? true : false;
 }
 
+bool WeaponManager::CheckDelay()
+{
+	return isFps < delay ? true : false;
+}
+
 void WeaponManager::NextFps()
 {
 	isFps++;
@@ -127,9 +133,9 @@ WeaponManager::~WeaponManager()
 
 void WeaponManager::TwohandWeaponInit()
 {
-	for (auto wp : twoHanded)
+	for (auto spriteWeapon : twoHanded)
 	{
-		delete wp;
+		delete spriteWeapon;
 	}
 	twoHanded.clear();
 
@@ -155,14 +161,16 @@ void WeaponManager::TwohandWeaponInit()
 	twoHanded.push_back(twoHanded_10fps);
 	TwohandWeapon* twoHanded_11fps = new TwohandWeapon(90.f, 90.f, 20.f);
 	twoHanded.push_back(twoHanded_11fps);
-	TwohandWeapon* twoHanded_12fps = new TwohandWeapon(65.f, 80.f, 50.f);
+	TwohandWeapon* twoHanded_12fps = new TwohandWeapon(65.f, 80.f, 60.f);
 	twoHanded.push_back(twoHanded_12fps);
-	TwohandWeapon* twoHanded_13fps = new TwohandWeapon(65.f, 80.f, 80.f);
+	TwohandWeapon* twoHanded_13fps = new TwohandWeapon(65.f, 80.f, 90.f);
 	twoHanded.push_back(twoHanded_13fps);
-	TwohandWeapon* twoHanded_14fps = new TwohandWeapon(65.f, 80.f, 100.f);
+	TwohandWeapon* twoHanded_14fps = new TwohandWeapon(65.f, 80.f, 110.f);
 	twoHanded.push_back(twoHanded_14fps);
 	TwohandWeapon* twoHanded_15fps = new TwohandWeapon(65.f, 80.f, 120.f);
 	twoHanded.push_back(twoHanded_15fps);
 	TwohandWeapon* twoHanded_16fps = new TwohandWeapon(65.f, 80.f, 120.f);
 	twoHanded.push_back(twoHanded_16fps);
+	TwohandWeapon* twoHanded_17fps = new TwohandWeapon(65.f, 80.f, 120.f);
+	twoHanded.push_back(twoHanded_17fps);
 }

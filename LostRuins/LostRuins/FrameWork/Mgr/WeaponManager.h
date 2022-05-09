@@ -16,15 +16,17 @@ enum class WeaponType
 class WeaponManager
 {
 private:
-	const int MAX_TWO_HANDED_FPS = 16;
+	const int MAX_TWO_HANDED_FPS = 17;
+	const int TWO_HANDED_DELAY = 3;
 
-	const float TWO_HANDED_ATTACK_FPS = 0.025f;
+	const float TWO_HANDED_ATTACK_FPS = 0.05f;
 
 	WeaponType currentWeapon;
 	Sprite sprite;
 
 	int isFps;
 	int maxFps;
+	int delay;
 
 	vector <TwohandWeapon*> twoHanded;
 
@@ -37,6 +39,7 @@ public:
 	int GetAttackPoint();
 	float GetAttackFps();
 	bool CheckFps();
+	bool CheckDelay();
 	void NextFps();
 	void ResetFps();
 	Sprite GetSprite();

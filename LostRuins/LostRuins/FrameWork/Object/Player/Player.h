@@ -72,6 +72,7 @@ private:
 	bool isFloor;
 	bool isJump;
 	bool isAttack;
+	bool isDelay;
 	bool isCrouch;
 	bool isRoll;
 

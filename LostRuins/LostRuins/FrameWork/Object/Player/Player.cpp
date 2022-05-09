@@ -17,6 +17,7 @@ void Player::Init(ZombieWalker* zombie)
 	isAttack = false;
 	isCrouch = false;
 	isRoll = false;
+	isDelay = false;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -140,22 +141,37 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		attackFps -= dt;
 		if (attackFps < 0.f)
 		{
-			weaponMgr.NextFps();
-			attackFps = weaponMgr.GetAttackFps();
-			if (weaponMgr.CheckFps() == false)
+			if (isDelay == false)
 			{
-				weaponMgr.ResetFps();
-				isAttack = false;
-			}
-			else
-			{
-				if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+				weaponMgr.NextFps();
+				attackFps = weaponMgr.GetAttackFps();
+				if (weaponMgr.CheckFps() == false)
 				{
-					std::cout << "Hit" << zombie->GetHealth() << std::endl;
-					zombie->OnHitted(weaponMgr.GetAttackPoint(), dt);
+					weaponMgr.ResetFps();
+					isDelay = true;
+				}
+				else
+				{
+					if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+					{
+						std::cout << "Hit" << zombie->GetHealth() << std::endl;
+						zombie->OnHitted(weaponMgr.GetAttackPoint(), dt);
+					}
+				}
+			}
+			else if (isDelay == true)
+			{
+				weaponMgr.NextFps();
+				attackFps = weaponMgr.GetAttackFps();
+				if (weaponMgr.CheckDelay() == false)
+				{
+					weaponMgr.ResetFps();
+					isDelay = false;
+					isAttack = false;
 				}
 			}
 		}
+		
 	}
 	// ÀÌµ¿
 	else
@@ -231,7 +247,7 @@ void Player::Draw(RenderWindow* window, View* mainView)
 	window->setView(*mainView);
 	window->draw(sprite);
 	window->draw(hitBox);
-	if (isAttack == true)
+	if (isAttack == true && isDelay == false)
 	{
 		weaponMgr.Draw(window, mainView);
 	}
@@ -432,37 +448,33 @@ void Player::AnimationUpdate()
 	switch (currentStatus)
 	{
 	case Status::STATUS_IDLE:
-		if (InputManager::GetKey(Keyboard::Left) || InputManager::GetKey(Keyboard::Right))
+		if (InputManager::GetKeyDown(Keyboard::C))
+		{
+			SetStatus(Status::STATUS_JUMP);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::Z))
+		{
+			SetStatus(Status::STATUS_ATK_TWO_STAND);
+		}
+		else if (isCrouch == true)
+		{
+			SetStatus(Status::STATUS_CROUCH);
+		}
+		else if (isFloor == false)
+		{
+			SetStatus(Status::STATUS_FALLING);
+		}
+		else if (isRoll == true)
+		{
+			SetStatus(Status::STATUS_ROLL);
+		}
+		else if (InputManager::GetKey(Keyboard::Left) || InputManager::GetKey(Keyboard::Right))
 		{
 			SetStatus(Status::STATUS_RUN);
 		}
-		else if (InputManager::GetKeyDown(Keyboard::C))
-		{
-			SetStatus(Status::STATUS_JUMP);
-		}
-		else if (InputManager::GetKeyDown(Keyboard::Z))
-		{
-			SetStatus(Status::STATUS_ATK_TWO_STAND);
-		}
-		else if (isCrouch == true)
-		{
-			SetStatus(Status::STATUS_CROUCH);
-		}
-		else if (isFloor == false)
-		{
-			SetStatus(Status::STATUS_FALLING);
-		}
-		else if (isRoll == true)
-		{
-			SetStatus(Status::STATUS_ROLL);
-		}
 		break;
 	case Status::STATUS_RUN:
-		if (InputManager::GetKeyUp(Keyboard::Left) || InputManager::GetKeyUp(Keyboard::Right))
-		{
-			SetStatus(Status::STATUS_IDLE);
-		}
-		else if (InputManager::GetKeyDown(Keyboard::C))
+		if (InputManager::GetKeyDown(Keyboard::C))
 		{
 			SetStatus(Status::STATUS_JUMP);
 		}
@@ -481,6 +493,10 @@ void Player::AnimationUpdate()
 		else if (isRoll == true)
 		{
 			SetStatus(Status::STATUS_ROLL);
+		}
+		else if (InputManager::GetKeyUp(Keyboard::Left) || InputManager::GetKeyUp(Keyboard::Right))
+		{
+			SetStatus(Status::STATUS_IDLE);
 		}
 		break;
 	case Status::STATUS_JUMP:
