@@ -37,7 +37,7 @@ private:
 	const int START_MANA = 20;
 	const float START_SPEED = 600.f;
 	const float START_JUMP_SPEED = 1000.f;
-	const float START_ROLL_SPEED = 600.f;
+	const float START_ROLL_SPEED = 450.f;
 	const float START_ROLL_TIME = 0.5f;
 	const float GRAVITY_POWER = 2000.f;
 	const float START_IMMUNE_MS = 1000.f;
