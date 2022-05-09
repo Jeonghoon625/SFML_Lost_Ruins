@@ -8,12 +8,15 @@ void Player::Init(ZombieWalker* zombie)
 	maxHealth = START_HEALTH;
 	speed = START_SPEED;
 	immuneMs = START_IMMUNE_MS;
+	rollSpeed = START_ROLL_SPEED;
+	rollTime = START_ROLL_TIME;
 	fallingSpeed = 0.f;
 	attackFps = 0.f;
 	isFloor = false;
 	isJump = false;
 	isAttack = false;
 	isCrouch = false;
+	isRoll = false;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -45,13 +48,16 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 
 bool Player::OnHitted(int damage)
 {
-	std::cout << health << std::endl;
-	health -= damage;
-	if (health < 0)
+	if (isRoll == false)
 	{
-		health = 0;
+		std::cout << health << std::endl;
+		health -= damage;
+		if (health < 0)
+		{
+			health = 0;
+		}
+		return true;
 	}
-	return true;
 	return false;
 }
 
@@ -93,21 +99,35 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 
 	Utils::Normalize(dir);
 
-	if (InputManager::GetKeyDown(Keyboard::C) && isFloor == true && isJump == false && isCrouch == false)
+	if (isFloor == true && isJump == false && isRoll == false)
 	{
-		isFloor = false;
-		isJump = true;
-	}
-	if (InputManager::GetKeyDown(Keyboard::X) && isFloor == true && isJump == false && isAttack == false)
-	{
-		weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
-		attackFps = weaponMgr.GetAttackFps();
-		weaponMgr.SetWeaponPosition(sprite);
-		isAttack = true;
-	}
-	if (InputManager::GetKey(Keyboard::Down) && isFloor == true && isJump == false && isAttack == false)
-	{
-		isCrouch = true;
+		if (isCrouch == false)
+		{
+			if (InputManager::GetKeyDown(Keyboard::C))
+			{
+				isFloor = false;
+				isJump = true;
+			}
+			if (isAttack == false)
+			{
+				if (InputManager::GetKeyDown(Keyboard::Z))
+				{
+					weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
+					attackFps = weaponMgr.GetAttackFps();
+					weaponMgr.SetWeaponPosition(sprite);
+					isAttack = true;
+				}
+				if (InputManager::GetKeyDown(Keyboard::Space))
+				{
+					isRoll = true;
+				}
+			}
+		}
+
+		if (InputManager::GetKey(Keyboard::Down) && isAttack == false)
+		{
+			isCrouch = true;
+		}
 	}
 	if (InputManager::GetKeyUp(Keyboard::Down) && isCrouch == true)
 	{
@@ -140,10 +160,29 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	// 이동
 	else
 	{
-		if (isCrouch == false)
+		if (isRoll == true)
+		{
+			rollTime -= dt;
+			if (sprite.getScale().x > 0.f)
+			{
+				position.x += 1.f * rollSpeed * dt;
+			}
+			else if (sprite.getScale().x < 0.f)
+			{
+				position.x -= 1.f * rollSpeed * dt;
+			}
+
+			if (rollTime < 0.f)
+			{
+				rollTime = START_ROLL_TIME;
+				isRoll = false;
+			}
+		}
+		else if (isCrouch == false)
 		{
 			position.x += dir.x * speed * dt;
 		}
+
 		if (isJump == false)
 		{
 			fallingSpeed += GRAVITY_POWER * dt;
@@ -377,7 +416,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 void Player::AnimationUpdate()
 {
 	// 스프라이트 반전
-	if (isAttack == false)
+	if (isAttack == false && isRoll == false)
 	{
 		if (InputManager::GetKey(Keyboard::Left))
 		{
@@ -401,7 +440,7 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_JUMP);
 		}
-		else if (InputManager::GetKeyDown(Keyboard::X))
+		else if (InputManager::GetKeyDown(Keyboard::Z))
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
@@ -412,6 +451,10 @@ void Player::AnimationUpdate()
 		else if (isFloor == false)
 		{
 			SetStatus(Status::STATUS_FALLING);
+		}
+		else if (isRoll == true)
+		{
+			SetStatus(Status::STATUS_ROLL);
 		}
 		break;
 	case Status::STATUS_RUN:
@@ -423,7 +466,7 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_JUMP);
 		}
-		else if (InputManager::GetKeyDown(Keyboard::X))
+		else if (InputManager::GetKeyDown(Keyboard::Z))
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
@@ -434,6 +477,10 @@ void Player::AnimationUpdate()
 		else if (isFloor == false)
 		{
 			SetStatus(Status::STATUS_FALLING);
+		}
+		else if (isRoll == true)
+		{
+			SetStatus(Status::STATUS_ROLL);
 		}
 		break;
 	case Status::STATUS_JUMP:
@@ -450,6 +497,12 @@ void Player::AnimationUpdate()
 		break;
 	case Status::STATUS_CROUCH:
 		if (isCrouch == false)
+		{
+			SetStatus(Status::STATUS_IDLE);
+		}
+		break;
+	case Status::STATUS_ROLL:
+		if (isRoll == false)
 		{
 			SetStatus(Status::STATUS_IDLE);
 		}
@@ -513,6 +566,9 @@ void Player::SetStatus(Status newStatus)
 	case Status::STATUS_CROUCH:
 		animation.Play("Crouch");
 		animation.PlayQueue("Crouching");
+		break;
+	case Status::STATUS_ROLL:
+		animation.Play("Roll");
 		break;
 	case Status::STATUS_ATK_TWO_STAND:
 		animation.Play("Attack_Twohanded_Standing");
