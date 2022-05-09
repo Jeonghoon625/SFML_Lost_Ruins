@@ -42,6 +42,7 @@ private:
 public:
 	TestZombieWalker(float xpos, float ypos);
 	void Update(float dt, Vector2f playerPos, std::vector <TestBlock*> blocks);
+	void Draw(RenderWindow* window);
 
 	bool OnHitted();
 	bool GetAlive();

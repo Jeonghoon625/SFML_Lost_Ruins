@@ -13,6 +13,8 @@
 
 using namespace sf;
 
+class ZombieWalker;
+
 enum class Status
 {
 	STATUS_IDLE,
@@ -74,12 +76,12 @@ private:
 	ZombieWalker* zombie;
 
 public:
-	void Init();
+	void Init(ZombieWalker* zombie);
 	void Update(float dt, std::vector <TestBlock*> blocks);
 	void Draw(RenderWindow* window, View* mainView);
 	
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
-	bool OnHitted(int damage, Time timeHit);
+	bool OnHitted(int damage);
 
 	Time GetLastTime() const;
 	FloatRect GetGobalBound() const;
@@ -87,10 +89,6 @@ public:
 	Sprite GetSprite() const;
 	int GetHealth() const;
 	RectangleShape GetHitBox();
-
-	void Init(ZombieWalker* zombie);
-	void Update(float dt, std::vector <TestBlock*> blocks);
-	void Draw(RenderWindow* window, View* mainView);
 
 	void AnimationInit();
 	void UpdateCollision(std::vector <TestBlock*> blocks);

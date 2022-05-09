@@ -37,8 +37,7 @@ void TestScene::Draw(RenderWindow* window, View* mainView)
 	}
 	for (auto zombieWalker : zombieWalkers)
 	{
-		window->draw(zombieWalker->GetSprite());
-		window->draw(zombieWalker->GetHitBox());
+		zombieWalker->Draw(window);
 	}
 	player.Draw(window, mainView);
 }
