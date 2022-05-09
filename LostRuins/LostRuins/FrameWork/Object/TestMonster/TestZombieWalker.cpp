@@ -35,7 +35,13 @@ void TestZombieWalker::Update(float dt, Vector2f playerPos, std::vector <TestBlo
 	hitBox.setPosition(position);
 
 	UpdateCollision(blocks);
-	animation.Play("Zw_Idle");
+	animation.Update(dt);
+}
+
+void TestZombieWalker::Draw(RenderWindow* window)
+{
+	window->draw(sprite);
+	window->draw(hitBox);
 }
 
 bool TestZombieWalker::OnHitted()
