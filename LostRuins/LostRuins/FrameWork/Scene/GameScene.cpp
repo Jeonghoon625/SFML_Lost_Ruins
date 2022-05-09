@@ -7,7 +7,9 @@ void GameScene::Init(SceneManager* sceneManager)
 	resolution.x = 1920.f;
 	resolution.y = 1080.f;
 
-	player.Init();
+	zombieWalker = new ZombieWalker();
+
+	player.Init(zombieWalker);
 	gameMap = IntRect(0, 0, resolution.x, resolution.y);
 
 	CreateBlock();
@@ -17,12 +19,14 @@ void GameScene::Init(SceneManager* sceneManager)
 	float wpXpos = 500.f;
 	float wpYpos = resolution.y * 0.5f;
 
+	
 	// test
-	zombieWalker.MonsterInit();
+	zombieWalker->MonsterInit();
 
 	//Dummy Map
 	CreateBackGround();
 	texBackground = TextureHolder::GetTexture("maps/ShedWallMossLightMap.png");
+	
 }
 
 void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
@@ -30,7 +34,12 @@ void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* main
 	player.Update(dt, blocks);
 
 	// test
-	zombieWalker.Update(player, dt, blocks);
+	zombieWalker->Update(player, dt, blocks);
+
+	if (zombieWalker->GetHealth() == 0)
+	{
+		zombieWalker->SetPosition(9999.f, 9999.f);
+	}
 }
 
 void GameScene::Draw(RenderWindow* window, View* mainView)
@@ -73,7 +82,7 @@ void GameScene::Draw(RenderWindow* window, View* mainView)
 	player.Draw(window, mainView);
 
 	// test
-	zombieWalker.Draw(window);
+	zombieWalker->Draw(window);
 	
 	//testUI.Draw(window, mainView);
 }

@@ -7,6 +7,12 @@ ZombieWalker::ZombieWalker()
 
 }
 
+void ZombieWalker::SetPosition(float x, float y)
+{
+	this->position.x = x;
+	this->position.y = y;
+}
+
 void ZombieWalker::MonsterInit()
 {
 	strWalk = ("ZombieWalkerWalk");

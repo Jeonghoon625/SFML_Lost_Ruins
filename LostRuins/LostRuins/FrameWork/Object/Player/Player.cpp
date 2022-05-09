@@ -1,14 +1,15 @@
 #include "Player.h"
+#include "../Monster/ZombieWalker.h"
 #include <iostream>
 
-void Player::Init()
+void Player::Init(ZombieWalker* zombie)
 {
-	speed = START_SPEED;
 	health = START_HEALTH;
 	maxHealth = START_HEALTH;
+	speed = START_SPEED;
 	immuneMs = START_IMMUNE_MS;
 	fallingSpeed = 0.f;
-	attackFps = ATTACK_FPS;
+	attackFps = 0.f;
 	isFloor = false;
 	isJump = false;
 
@@ -20,6 +21,8 @@ void Player::Init()
 	animation.Play("Idle");
 
 	weaponMgr.Init();
+
+	this->zombie = zombie;
 }
 
 void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
@@ -96,7 +99,8 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	if (InputManager::GetKeyDown(Keyboard::X) && isFloor == true && isJump == false && isAttack == false)
 	{
 		weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
-		weaponMgr.SetSpritePosition(WeaponType::TWO_HANDED, sprite);
+		attackFps = weaponMgr.GetAttackFps();
+		weaponMgr.SetWeaponPosition(sprite);
 		isAttack = true;
 	}
 
@@ -107,7 +111,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 		if (attackFps < 0.f)
 		{
 			weaponMgr.NextFps();
-			attackFps = ATTACK_FPS;
+			attackFps = weaponMgr.GetAttackFps();
 			if (weaponMgr.CheckFps() == false)
 			{
 				weaponMgr.ResetFps();
@@ -115,11 +119,11 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			}
 			else
 			{
-				/*if (weaponMgr.GetSprite().getGlobalBounds().intersects(Goblin.GetHitBox().getGlobalBounds()))
+				if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
 				{
-					std::cout << "Hit" << std::endl;
-					Goblin.OnHitted(10, dt);
-				}*/
+					std::cout << "Hit" << zombie->GetHealth() << std::endl;
+					zombie->OnHitted(10, dt);
+				}
 			}
 		}
 	}
@@ -146,7 +150,6 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			}
 		}
 		position.y += fallingSpeed * dt;
-		lastDir = dir;
 
 		sprite.setPosition(position);
 		hitBox.setPosition(position);
@@ -180,6 +183,67 @@ void Player::Draw(RenderWindow* window, View* mainView)
 	{
 		weaponMgr.Draw(window, mainView);
 	}
+}
+
+void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
+{
+	this->gameMap = gameMap;
+	resolustion = res;
+	this->tileSize = tileSize;
+
+	position.x = this->gameMap.width * 0.5f;
+	position.y = resolustion.y - 200.f;
+
+	hitBox.setFillColor(Color(153, 153, 153, 0));
+	hitBox.setSize(Vector2f(20.f, 48.f));
+	hitBox.setOrigin(hitBoxOrigin);
+	hitBox.setScale(scale);
+	hitBox.setPosition(position);
+}
+
+bool Player::OnHitted(int damage, Time timeHit)
+{
+	if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
+	{
+		lastHit = timeHit;
+		health -= damage;
+		if (health < 0)
+		{
+			health = 0;
+		}
+		return true;
+	}
+	return false;
+}
+
+Time Player::GetLastTime() const
+{
+	return lastHit;
+}
+
+FloatRect Player::GetGobalBound() const
+{
+	return sprite.getGlobalBounds();
+}
+
+Vector2f Player::GetPosition() const
+{
+	return position;
+}
+
+Sprite Player::GetSprite() const
+{
+	return sprite;
+}
+
+int Player::GetHealth() const
+{
+	return health;
+}
+
+RectangleShape Player::GetHitBox()
+{
+	return hitBox;
 }
 
 void Player::AnimationInit()

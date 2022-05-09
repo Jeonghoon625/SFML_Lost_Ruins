@@ -11,8 +11,6 @@
 #include "../TestBlock/TestBlock.h"
 #include "../../Mgr/WeaponManager.h"
 
-class ZombieWalker;
-
 using namespace sf;
 
 enum class Status
@@ -36,14 +34,12 @@ private:
 	const float START_SPEED = 600.f;
 	const float START_JUMP_SPEED = 1000.f;
 	const float GRAVITY_POWER = 2000.f;
-	const float ATTACK_FPS = 0.025f;
 	const float START_IMMUNE_MS = 1000.f;
 
 	AnimationController animation;
 	WeaponManager weaponMgr;
 
 	Vector2f position;
-	Vector2f lastDir;
 
 	Texture texture;
 	Sprite sprite;
@@ -75,10 +71,15 @@ private:
 
 	RectangleShape hitBox;
 
-public:
-	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
+	ZombieWalker* zombie;
 
-	bool OnHitted(int damage);
+public:
+	void Init();
+	void Update(float dt, std::vector <TestBlock*> blocks);
+	void Draw(RenderWindow* window, View* mainView);
+	
+	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
+	bool OnHitted(int damage, Time timeHit);
 
 	Time GetLastTime() const;
 	FloatRect GetGobalBound() const;
@@ -87,7 +88,7 @@ public:
 	int GetHealth() const;
 	RectangleShape GetHitBox();
 
-	void Init();
+	void Init(ZombieWalker* zombie);
 	void Update(float dt, std::vector <TestBlock*> blocks);
 	void Draw(RenderWindow* window, View* mainView);
 

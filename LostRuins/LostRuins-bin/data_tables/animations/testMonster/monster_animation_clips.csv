@@ -1,0 +1,4 @@
+ID,FPS,"LOOP TYPE(0:Single, 1:Loop)",CLIP PATH
+Zw_Idle,10,1,data_tables/animations/testMonster/monster_animation_zombie_walker_idle.csv
+Zw_Walk,15,1,data_tables/animations/testMonster/monster_animation_zombie_walker_walk.csv
+Zw_Attack,10,0,data_tables/animations/testMonster/monster_animation_zombie_walker_attack.csv

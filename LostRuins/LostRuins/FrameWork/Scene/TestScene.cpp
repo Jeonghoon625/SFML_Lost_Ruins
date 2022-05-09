@@ -7,26 +7,26 @@ void TestScene::Init(SceneManager* sceneManager)
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 
-	player.Init();
+	player.Init(nullptr);
 	gameMap = IntRect(0, 0, resolution.x, resolution.y);
 
 	CreateBlock();
+	CreateMonster();
 
 	player.Spawn(gameMap, resolution, 0.5f);
 
 	float wpXpos = 500.f;
 	float wpYpos = resolution.y * 0.5f;
 
-	// test
-	Goblin.MonsterInit();
 }
 
 void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
 	player.Update(dt, blocks);
-
-	// test
-	Goblin.Update(player, dt, blocks);
+	for (auto zombieWalker : zombieWalkers)
+	{
+		zombieWalker->Update(dt, player.GetPosition(), blocks);
+	}
 }
 
 void TestScene::Draw(RenderWindow* window, View* mainView)
@@ -35,10 +35,12 @@ void TestScene::Draw(RenderWindow* window, View* mainView)
 	{
 		window->draw(blockShape->GetBlockShape());
 	}
+	for (auto zombieWalker : zombieWalkers)
+	{
+		window->draw(zombieWalker->GetSprite());
+		window->draw(zombieWalker->GetHitBox());
+	}
 	player.Draw(window, mainView);
-
-	// test
-	Goblin.Draw(window);
 }
 
 TestScene::~TestScene()
@@ -48,6 +50,12 @@ TestScene::~TestScene()
 		delete blockShape;
 	}
 	blocks.clear();
+
+	for (auto zombieWalker : zombieWalkers)
+	{
+		delete zombieWalker;
+	}
+	zombieWalkers.clear();
 }
 
 void TestScene::CreateBlock()
@@ -56,7 +64,6 @@ void TestScene::CreateBlock()
 	{
 		delete bk;
 	}
-
 	blocks.clear();
 
 	Vector2i res = resolution;
@@ -73,4 +80,18 @@ void TestScene::CreateBlock()
 	blocks.push_back(block5);
 	TestBlock* block6 = new TestBlock(res.x * 0.5f + 1550.f, res.y - 200.f, 100.f, 400.f);
 	blocks.push_back(block6);
+}
+
+void TestScene::CreateMonster()
+{
+	for (auto zw : zombieWalkers)
+	{
+		delete zw;
+	}
+	zombieWalkers.clear();
+
+	Vector2i res = resolution;
+
+	TestZombieWalker* zombieWalker1 = new TestZombieWalker(res.x * 0.5f, res.y * 0.5f);
+	zombieWalkers.push_back(zombieWalker1);
 }

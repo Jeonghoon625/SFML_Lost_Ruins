@@ -9,7 +9,7 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 
-	player.Init();
+	player.Init(nullptr);
 	IntRect gameMap(resolution.x * 0.f, resolution.y * 0.5f, 500, 500);
 	player.Spawn(gameMap, resolution, 0.5f);
 

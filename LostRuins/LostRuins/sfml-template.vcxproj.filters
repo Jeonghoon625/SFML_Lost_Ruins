@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="FrameWork\FrameWork.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="FrameWork\Animation\AnimationClip.cpp">
       <Filter>FrameWork\Animation</Filter>
@@ -48,18 +47,6 @@
     <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Scene\TestScene.cpp">
-      <Filter>FrameWork\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp">
-      <Filter>FrameWork\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Scene\TestSceneTT.cpp">
-      <Filter>FrameWork\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Scene\TitleScene.cpp">
-      <Filter>FrameWork\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\Object\Player\Player.cpp">
       <Filter>FrameWork\Object\Player</Filter>
     </ClCompile>
@@ -81,15 +68,35 @@
     <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp">
       <Filter>FrameWork\Object\TestBlock</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp">
-      <Filter>FrameWork\Scene\TestSceneUI</Filter>
+    <ClCompile Include="FrameWork\Object\TestMonster\TestZombieWalker.cpp">
+      <Filter>FrameWork\Object\TestMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\FrameWork.cpp">
+      <Filter>FrameWork</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Scene\GameScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Scene\Scene.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TestScene.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TestSceneTT.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TitleScene.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FrameWork\FrameWork.h" />
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
       <Filter>FrameWork\Animation</Filter>
     </ClInclude>
@@ -129,9 +136,6 @@
     <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TitleScene.h">
-      <Filter>FrameWork\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Object\Player\Player.h">
       <Filter>FrameWork\Object\Player</Filter>
     </ClInclude>
@@ -147,17 +151,35 @@
     <ClInclude Include="FrameWork\Object\Monster\Monster.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
-      <Filter>FrameWork\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h">
       <Filter>FrameWork\Object\TestBlock</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h">
-      <Filter>FrameWork\Scene\TestSceneUI</Filter>
+    <ClInclude Include="FrameWork\FrameWork.h">
+      <Filter>FrameWork</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\GameScene.h">
       <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\Scene.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TestScene.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TestSceneTT.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TitleScene.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\TestMonster\TestZombieWalker.h">
+      <Filter>FrameWork\Object\TestMonster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -188,8 +210,14 @@
     <Filter Include="FrameWork\Object\TestBlock">
       <UniqueIdentifier>{bea93276-62d3-4225-831a-a52d5590aede}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Scene\TestSceneUI">
-      <UniqueIdentifier>{9f890bc9-83b5-491a-8d03-549a5a19f7e2}</UniqueIdentifier>
+    <Filter Include="FrameWork\Map">
+      <UniqueIdentifier>{8375b908-087e-488e-a92d-e5a51eb0b3be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\TestMonster">
+      <UniqueIdentifier>{7b038bf1-d284-45fa-af93-57b466cfd4a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Scene">
+      <UniqueIdentifier>{1c78ff4b-7a1d-4a87-90fe-41f5998b7565}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

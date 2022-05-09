@@ -8,6 +8,7 @@ private:
 
 public:
 	ZombieWalker();
+	void SetPosition(float x, float y);
 	virtual void MonsterInit();
 };
 

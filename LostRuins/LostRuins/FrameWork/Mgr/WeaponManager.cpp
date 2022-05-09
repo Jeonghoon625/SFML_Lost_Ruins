@@ -8,24 +8,6 @@ void WeaponManager::Init()
 	TwohandWeaponInit();
 }
 
-void WeaponManager::SetSpritePosition(WeaponType weaponType, Sprite sprite)
-{
-	switch (weaponType)
-	{
-	case WeaponType::DAGGER:
-		break;
-	case WeaponType::ONE_HANDED:
-		break;
-	case WeaponType::TWO_HANDED:
-		maxFps = MAX_TWO_HANDED_FPS;
-		for (auto spriteWeapon : twoHanded)
-		{
-			spriteWeapon->SetPosition(sprite);
-		}
-		break;
-	}
-}
-
 void WeaponManager::AttackWeapon(WeaponType weaponType)
 {
 	switch (weaponType)
@@ -38,6 +20,24 @@ void WeaponManager::AttackWeapon(WeaponType weaponType)
 		break;
 	case WeaponType::TWO_HANDED:
 		currentWeapon = WeaponType::TWO_HANDED;
+		break;
+	}
+}
+
+void WeaponManager::SetWeaponPosition(Sprite sprite)
+{
+	switch (currentWeapon)
+	{
+	case WeaponType::DAGGER:
+		break;
+	case WeaponType::ONE_HANDED:
+		break;
+	case WeaponType::TWO_HANDED:
+		maxFps = MAX_TWO_HANDED_FPS;
+		for (auto spriteWeapon : twoHanded)
+		{
+			spriteWeapon->SetPosition(sprite);
+		}
 		break;
 	}
 }
@@ -59,6 +59,23 @@ void WeaponManager::Draw(RenderWindow* window, View* mainView)
 	}
 }
 
+float WeaponManager::GetAttackFps()
+{
+	float fps = 0.f;
+	switch (currentWeapon)
+	{
+	case WeaponType::DAGGER:
+		break;
+	case WeaponType::ONE_HANDED:
+		break;
+	case WeaponType::TWO_HANDED:
+		fps = TWO_HANDED_ATTACK_FPS;
+		break;
+	}
+
+	return fps;
+}
+
 bool WeaponManager::CheckFps()
 {
 	return isFps < maxFps ? true : false;
@@ -77,6 +94,15 @@ void WeaponManager::ResetFps()
 Sprite WeaponManager::GetSprite()
 {
 	return sprite;
+}
+
+WeaponManager::~WeaponManager()
+{
+	for (auto spriteWeapon : twoHanded)
+	{
+		delete spriteWeapon;
+	}
+	twoHanded.clear();
 }
 
 void WeaponManager::TwohandWeaponInit()
@@ -119,13 +145,4 @@ void WeaponManager::TwohandWeaponInit()
 	twoHanded.push_back(twoHanded_15fps);
 	TwohandWeapon* twoHanded_16fps = new TwohandWeapon(65.f, 80.f, 120.f);
 	twoHanded.push_back(twoHanded_16fps);
-}
-
-WeaponManager::~WeaponManager()
-{
-	for (auto spriteWeapon : twoHanded)
-	{
-		delete spriteWeapon;
-	}
-	twoHanded.clear();
 }
