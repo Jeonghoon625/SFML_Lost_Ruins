@@ -24,6 +24,7 @@ enum class Status
 	STATUS_CROUCH,
 	STATUS_ROLL,
 	STATUS_ATK_TWO_STAND,
+	STATUS_ATK_DAGGER,
 };
 
 class Player

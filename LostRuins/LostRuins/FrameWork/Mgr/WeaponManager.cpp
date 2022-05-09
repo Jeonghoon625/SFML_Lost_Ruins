@@ -6,6 +6,7 @@ void WeaponManager::Init()
 	maxFps = 0;
 
 	TwohandWeaponInit();
+	DaggerWeaponInit();
 }
 
 void WeaponManager::AttackWeapon(WeaponType weaponType)
@@ -13,6 +14,9 @@ void WeaponManager::AttackWeapon(WeaponType weaponType)
 	switch (weaponType)
 	{
 	case WeaponType::DAGGER:
+		currentWeapon = WeaponType::DAGGER;
+		maxFps = MAX_DAGGER_FPS;
+		delay = DAGGER_DELAY;
 		currentWeapon = WeaponType::DAGGER;
 		break;
 	case WeaponType::ONE_HANDED:
@@ -31,6 +35,10 @@ void WeaponManager::SetWeaponPosition(Sprite sprite)
 	switch (currentWeapon)
 	{
 	case WeaponType::DAGGER:
+		for (auto spriteWeapon : daggers)
+		{
+			spriteWeapon->SetPosition(sprite);
+		}
 		break;
 	case WeaponType::ONE_HANDED:
 		break;
@@ -50,6 +58,8 @@ void WeaponManager::Draw(RenderWindow* window, View* mainView)
 	switch (currentWeapon)
 	{
 	case WeaponType::DAGGER:
+		this->sprite = daggers.at(isFps)->GetSprite();
+		window->draw(sprite);
 		break;
 	case WeaponType::ONE_HANDED:
 		break;
@@ -86,6 +96,7 @@ float WeaponManager::GetAttackFps()
 	switch (currentWeapon)
 	{
 	case WeaponType::DAGGER:
+		fps = DAGGER_ATTACK_FPS;
 		break;
 	case WeaponType::ONE_HANDED:
 		break;
@@ -173,4 +184,38 @@ void WeaponManager::TwohandWeaponInit()
 	twoHanded.push_back(twoHanded_16fps);
 	TwohandWeapon* twoHanded_17fps = new TwohandWeapon(65.f, 80.f, 120.f);
 	twoHanded.push_back(twoHanded_17fps);
+}
+
+void WeaponManager::DaggerWeaponInit()
+{
+	for (auto spriteWeapon : daggers)
+	{
+		delete spriteWeapon;
+	}
+	daggers.clear();
+
+	Dagger* dagger_1fps = new Dagger(15.f, 88.f, 90.f);
+	daggers.push_back(dagger_1fps);
+	Dagger* dagger_2fps = new Dagger(10.f, 83.f, 90.f);
+	daggers.push_back(dagger_2fps);
+	Dagger* dagger_3fps = new Dagger(4.f, 70.f, 90.f);
+	daggers.push_back(dagger_3fps);
+	Dagger* dagger_4fps = new Dagger(4.f, 62.f, 90.f);
+	daggers.push_back(dagger_4fps);
+	Dagger* dagger_5fps = new Dagger(3.f, 52.f, 90.f);
+	daggers.push_back(dagger_5fps);
+	Dagger* dagger_6fps = new Dagger(15.f, 52.f, 90.f);
+	daggers.push_back(dagger_6fps);
+	Dagger* dagger_7fps = new Dagger(30.f, 65.f, 90.f);
+	daggers.push_back(dagger_7fps);
+	Dagger* dagger_8fps = new Dagger(57.f, 70.f, 90.f);
+	daggers.push_back(dagger_8fps);
+	Dagger* dagger_9fps = new Dagger(80.f, 77.f, 90.f);
+	daggers.push_back(dagger_9fps);
+	Dagger* dagger_10fps = new Dagger(105.f, 83.f, 90.f);
+	daggers.push_back(dagger_10fps);
+	Dagger* dagger_11fps = new Dagger(105.f, 83.f, 90.f);
+	daggers.push_back(dagger_11fps);
+	Dagger* dagger_12fps = new Dagger(105.f, 83.f, 90.f);
+	daggers.push_back(dagger_12fps);
 }

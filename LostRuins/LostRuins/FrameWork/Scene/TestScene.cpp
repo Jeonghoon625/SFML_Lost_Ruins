@@ -2,7 +2,7 @@
 
 void TestScene::Init(SceneManager* sceneManager)
 {
-	this->sceneMgr = sceneManager;
+	/*this->sceneMgr = sceneManager;
 
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
@@ -14,64 +14,79 @@ void TestScene::Init(SceneManager* sceneManager)
 	CreateMonster();
 
 	player.Spawn(gameMap, resolution, 0.5f);
+	*/
 
-	float wpXpos = 500.f;
-	float wpYpos = resolution.y * 0.5f;
+	testSprite.setTexture(TextureHolder::GetTexture("graphics/Attack_Dagger_Standing.png"));
+	testSprite.setTextureRect(IntRect(0 + (40 * 12), 0, 40, 50));
+	testSprite.setScale(3.f, 3.f);
+	testSprite.setPosition(Vector2f(800.f, resolution.y + 500.f));
 
+	testWeapon.setTexture(TextureHolder::GetTexture("graphics/weapon.png"));
+	testWeapon.setTextureRect(IntRect(3, 17, 4, 25));
+	testWeapon.setOrigin(2.f, 25.f);
+	testWeapon.setScale(3.f, 3.f);
+
+	float wpXpos = 800.f;
+	float wpYpos = resolution.y + 500;
+
+	testWeapon.setPosition(Vector2f(wpXpos+105, wpYpos+83));
+	testWeapon.setRotation(90.f);
 }
 
 void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
-	for (auto zombieWalker : zombieWalkers)
+	/*for (auto zombieWalker : zombieWalkers)
 	{
 		zombieWalker->Update(dt, player.GetPosition(), blocks);
 	}
-	player.Update(dt, blocks);
+	player.Update(dt, blocks);*/
 }
 
 void TestScene::Draw(RenderWindow* window, View* mainView)
 {
-	/* View 설정*/
-	mainView->setCenter(player.GetPosition());
+	window->draw(testSprite);
+	window->draw(testWeapon);
+	///* View 설정*/
+	//mainView->setCenter(player.GetPosition());
 
-	//좌측 조정
-	if ((mainView->getCenter().x) - (mainView->getSize().x * 0.5f) < gameMap.left)
-	{
-		mainView->move((mainView->getSize().x * 0.5f) - (mainView->getCenter().x), 0);
-	}
+	////좌측 조정
+	//if ((mainView->getCenter().x) - (mainView->getSize().x * 0.5f) < gameMap.left)
+	//{
+	//	mainView->move((mainView->getSize().x * 0.5f) - (mainView->getCenter().x), 0);
+	//}
 
-	//우측 조정
-	if ((mainView->getCenter().x) + (mainView->getSize().x * 0.5f) > gameMap.left + gameMap.width)
-	{
-		mainView->move((gameMap.left + gameMap.width) - ((mainView->getCenter().x) + (mainView->getSize().x * 0.5f)), 0);
-	}
+	////우측 조정
+	//if ((mainView->getCenter().x) + (mainView->getSize().x * 0.5f) > gameMap.left + gameMap.width)
+	//{
+	//	mainView->move((gameMap.left + gameMap.width) - ((mainView->getCenter().x) + (mainView->getSize().x * 0.5f)), 0);
+	//}
 
-	//위측 조정
-	if ((mainView->getCenter().y) - (mainView->getSize().y * 0.5f) < gameMap.top)
-	{
-		mainView->move(0, (mainView->getSize().y * 0.5f) - (mainView->getCenter().y));
-	}
+	////위측 조정
+	//if ((mainView->getCenter().y) - (mainView->getSize().y * 0.5f) < gameMap.top)
+	//{
+	//	mainView->move(0, (mainView->getSize().y * 0.5f) - (mainView->getCenter().y));
+	//}
 
-	//아래측 조정
-	if ((mainView->getCenter().y) + (mainView->getSize().y * 0.5f) > gameMap.top + gameMap.height)
-	{
-		mainView->move(0, (gameMap.top + gameMap.height) - ((mainView->getCenter().y) + (mainView->getSize().y * 0.5f)));
-	}
+	////아래측 조정
+	//if ((mainView->getCenter().y) + (mainView->getSize().y * 0.5f) > gameMap.top + gameMap.height)
+	//{
+	//	mainView->move(0, (gameMap.top + gameMap.height) - ((mainView->getCenter().y) + (mainView->getSize().y * 0.5f)));
+	//}
 
-	for (auto blockShape : blocks)
-	{
-		window->draw(blockShape->GetBlockShape());
-	}
-	for (auto zombieWalker : zombieWalkers)
-	{
-		zombieWalker->Draw(window);
-	}
-	player.Draw(window, mainView);
+	//for (auto blockShape : blocks)
+	//{
+	//	window->draw(blockShape->GetBlockShape());
+	//}
+	//for (auto zombieWalker : zombieWalkers)
+	//{
+	//	zombieWalker->Draw(window);
+	//}
+	//player.Draw(window, mainView);
 }
 
 TestScene::~TestScene()
 {
-	for (auto blockShape : blocks)
+	/*for (auto blockShape : blocks)
 	{
 		delete blockShape;
 	}
@@ -81,7 +96,7 @@ TestScene::~TestScene()
 	{
 		delete zombieWalker;
 	}
-	zombieWalkers.clear();
+	zombieWalkers.clear();*/
 }
 
 void TestScene::CreateBlock()

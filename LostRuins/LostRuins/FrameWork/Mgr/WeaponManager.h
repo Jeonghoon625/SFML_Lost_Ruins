@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include "../Object/Weapon/TwohandWeapon.h"
+#include "../Object/Weapon/Dagger.h"
 
 using namespace sf;
 using namespace std;
@@ -18,8 +19,11 @@ class WeaponManager
 private:
 	const int MAX_TWO_HANDED_FPS = 17;
 	const int TWO_HANDED_DELAY = 3;
+	const int MAX_DAGGER_FPS = 12;
+	const int DAGGER_DELAY = 3;
 
 	const float TWO_HANDED_ATTACK_FPS = 0.05f;
+	const float DAGGER_ATTACK_FPS = 0.03f;
 
 	WeaponType currentWeapon;
 	Sprite sprite;
@@ -29,6 +33,7 @@ private:
 	int delay;
 
 	vector <TwohandWeapon*> twoHanded;
+	vector <Dagger*> daggers;
 
 public:
 	void Init();
@@ -46,5 +51,6 @@ public:
 
 	~WeaponManager();
 	void TwohandWeaponInit();
+	void DaggerWeaponInit();
 };
 

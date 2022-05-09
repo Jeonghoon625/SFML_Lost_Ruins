@@ -111,7 +111,14 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			}
 			if (isAttack == false)
 			{
-				if (InputManager::GetKeyDown(Keyboard::Z))
+				if (InputManager::GetKeyDown(Keyboard::X))
+				{
+					weaponMgr.AttackWeapon(WeaponType::DAGGER);
+					attackFps = weaponMgr.GetAttackFps();
+					weaponMgr.SetWeaponPosition(sprite);
+					isAttack = true;
+				}
+				else if (InputManager::GetKeyDown(Keyboard::Z))
 				{
 					weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
 					attackFps = weaponMgr.GetAttackFps();
@@ -452,6 +459,10 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_JUMP);
 		}
+		else if (InputManager::GetKeyDown(Keyboard::X))
+		{
+			SetStatus(Status::STATUS_ATK_DAGGER);
+		}
 		else if (InputManager::GetKeyDown(Keyboard::Z))
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
@@ -477,6 +488,10 @@ void Player::AnimationUpdate()
 		if (InputManager::GetKeyDown(Keyboard::C))
 		{
 			SetStatus(Status::STATUS_JUMP);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::X))
+		{
+			SetStatus(Status::STATUS_ATK_DAGGER);
 		}
 		else if (InputManager::GetKeyDown(Keyboard::Z))
 		{
@@ -529,6 +544,11 @@ void Player::AnimationUpdate()
 			SetStatus(Status::STATUS_IDLE);
 		}
 		break;
+	case Status::STATUS_ATK_DAGGER:
+		if (isAttack == false)
+		{
+			SetStatus(Status::STATUS_IDLE);
+		}
 	default:
 		break;
 	}
@@ -588,6 +608,9 @@ void Player::SetStatus(Status newStatus)
 		break;
 	case Status::STATUS_ATK_TWO_STAND:
 		animation.Play("Attack_Twohanded_Standing");
+		break;
+	case Status::STATUS_ATK_DAGGER:
+		animation.Play("Attack_Dagger_Standing");
 		break;
 	}
 }
