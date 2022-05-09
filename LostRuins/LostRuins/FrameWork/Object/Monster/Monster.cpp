@@ -260,7 +260,7 @@ void Monster::Attack(float dt, int atk, Player& player)
 		attackRangeBox.setPosition(position);
 		hitBox.setPosition(position);
 
-		if (attackDelay > 1.f)
+		if (attackDelay > 0.75f)
 		{
 			if(attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 			{
