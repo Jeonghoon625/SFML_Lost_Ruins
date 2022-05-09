@@ -20,6 +20,7 @@ void TestScene::Init(SceneManager* sceneManager)
 
 }
 
+
 void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
 	player.Update(dt, blocks);

@@ -3,7 +3,7 @@
 #include "../../FrameWork/Mgr/TextureHolder.h"
 
 Monster::Monster()
-	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f),isFindPlayer(false),isAttackPlayer(false),attackDelay(0.f),isFalling(true),hitDelay(0.f),alive(true)
+	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f),isFindPlayer(false),isAttackPlayer(false),attackDelay(0.f),isFalling(true),hitDelay(0.f),alive(true),immuneMs(START_IMMUNE_MS)
 {
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
@@ -275,22 +275,26 @@ void Monster::Attack(float dt, int atk, Player& player)
 	}
 }
 
-bool Monster::OnHitted(int atk, float dt)
+bool Monster::OnHitted(int atk, float dt, Time timeHit)
 {
-	if (health > 0)
+	if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
 	{
-		animation.Play(strDemageTaken);
-		attackDelay = 0.f;
-		isFindPlayer = true;
-		isAttackPlayer = false;	//맞으면 공격하려던거 취소
-		health -= atk;
-		return true;
+		lastHit = timeHit;
+		if (health > 0)
+		{
+			animation.Play(strDemageTaken);
+			attackDelay = 0.f;
+			isFindPlayer = true;
+			isAttackPlayer = false;	//맞으면 공격하려던거 취소
+			health -= atk;
+			return true;
+		}
+		else
+		{
+			alive = false;
+		}
+		return false;
 	}
-	else
-	{
-		alive = false;
-	}
-	return false;
 }
 
 void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
