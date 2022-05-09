@@ -34,6 +34,7 @@ public:
 	void SetWeaponPosition(Sprite sprite);
 	void Draw(RenderWindow* window, View* mainView);
 
+	int GetAttackPoint();
 	float GetAttackFps();
 	bool CheckFps();
 	void NextFps();

@@ -149,11 +149,11 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			}
 			else
 			{
-				/*if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+				if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
 				{
 					std::cout << "Hit" << zombie->GetHealth() << std::endl;
-					zombie->OnHitted(10, dt);
-				}*/
+					zombie->OnHitted(weaponMgr.GetAttackPoint(), dt);
+				}
 			}
 		}
 	}

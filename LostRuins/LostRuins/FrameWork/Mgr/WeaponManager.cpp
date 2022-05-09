@@ -59,6 +59,26 @@ void WeaponManager::Draw(RenderWindow* window, View* mainView)
 	}
 }
 
+int WeaponManager::GetAttackPoint()
+{
+	int damage = 0;
+	switch (currentWeapon)
+	{
+	case WeaponType::DAGGER:
+		damage = 5;
+		break;
+	case WeaponType::ONE_HANDED:
+		break;
+	case WeaponType::TWO_HANDED:
+		damage = 10;
+		break;
+	default:
+		break;
+	}
+
+	return damage;
+}
+
 float WeaponManager::GetAttackFps()
 {
 	float fps = 0.f;
