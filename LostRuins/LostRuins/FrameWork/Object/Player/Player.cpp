@@ -119,11 +119,11 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			}
 			else
 			{
-				if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+				/*if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
 				{
 					std::cout << "Hit" << zombie->GetHealth() << std::endl;
 					zombie->OnHitted(10, dt);
-				}
+				}*/
 			}
 		}
 	}
@@ -446,10 +446,31 @@ void Player::SetStatus(Status newStatus)
 	switch (currentStatus)
 	{
 	case Status::STATUS_IDLE:
-		animation.Play("Idle");
+		if (prevStatus == Status::STATUS_RUN)
+		{
+			animation.Play("RuntoIdle");
+			animation.PlayQueue("Idle");
+		}
+		else if (prevStatus == Status::STATUS_FALLING)
+		{
+			animation.Play("Landing");
+			animation.PlayQueue("Idle");
+		}
+		else
+		{
+			animation.Play("Idle");
+		}
 		break;
 	case Status::STATUS_RUN:
-		animation.Play("Run");
+		if (prevStatus == Status::STATUS_IDLE)
+		{
+			animation.Play("IdletoRun");
+			animation.PlayQueue("Run");
+		}
+		else
+		{
+			animation.Play("Run");
+		}
 		break;
 	case Status::STATUS_JUMP:
 		animation.Play("Jump");
