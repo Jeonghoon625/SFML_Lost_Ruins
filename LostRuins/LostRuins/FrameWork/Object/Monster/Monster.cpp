@@ -80,20 +80,20 @@ void Monster::MonsterInit()
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
-	findPlayerBox.setFillColor(Color(153, 153, 0, 80));
+	findPlayerBox.setFillColor(Color(255, 255, 255, 80));
 	findPlayerBox.setOrigin(200, 40);
 	findPlayerBox.setPosition(sprite.getOrigin());
 
 	attackRangeBox.setSize(Vector2f(30.f, 30.f));
 	attackRangeBox.setScale(scale);
-	attackRangeBox.setFillColor(Color(155, 0, 0, 80));
+	attackRangeBox.setFillColor(Color(153, 0, 0, 80));
 	attackRangeBox.setOrigin(30, 30);
 	attackRangeBox.setPosition(sprite.getOrigin());
 
 	hitBox.setSize(Vector2f(43.f, 30.f));
 	hitBox.setScale(scale);
 	hitBox.setOrigin(21.5f, 30.f);
-	hitBox.setFillColor(Color(155, 0, 255, 80));
+	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());
 }
 
@@ -260,10 +260,11 @@ void Monster::Attack(float dt, int atk, Player& player)
 		attackRangeBox.setPosition(position);
 		hitBox.setPosition(position);
 
-		if (attackDelay > 1.5f)
+		if (attackDelay > 1.f)
 		{
 			if(attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 			{
+				player.OnHitted(atk);
 				// 여기에 player.onhitted
 			}
 			
@@ -279,6 +280,9 @@ bool Monster::OnHitted(int atk, float dt)
 	if (health > 0)
 	{
 		animation.Play(strDemageTaken);
+		attackDelay = 0.f;
+		isFindPlayer = true;
+		isAttackPlayer = false;	//맞으면 공격하려던거 취소
 		health -= atk;
 		return true;
 	}
@@ -448,6 +452,5 @@ void Monster::Draw(RenderWindow* window)
 	window->draw(attackRangeBox);
 	window->draw(hitBox);
 	window->draw(sprite);
-
 }
 
