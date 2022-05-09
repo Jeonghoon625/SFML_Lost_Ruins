@@ -185,67 +185,6 @@ void Player::Draw(RenderWindow* window, View* mainView)
 	}
 }
 
-void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
-{
-	this->gameMap = gameMap;
-	resolustion = res;
-	this->tileSize = tileSize;
-
-	position.x = this->gameMap.width * 0.5f;
-	position.y = resolustion.y - 200.f;
-
-	hitBox.setFillColor(Color(153, 153, 153, 0));
-	hitBox.setSize(Vector2f(20.f, 48.f));
-	hitBox.setOrigin(hitBoxOrigin);
-	hitBox.setScale(scale);
-	hitBox.setPosition(position);
-}
-
-bool Player::OnHitted(int damage, Time timeHit)
-{
-	if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
-	{
-		lastHit = timeHit;
-		health -= damage;
-		if (health < 0)
-		{
-			health = 0;
-		}
-		return true;
-	}
-	return false;
-}
-
-Time Player::GetLastTime() const
-{
-	return lastHit;
-}
-
-FloatRect Player::GetGobalBound() const
-{
-	return sprite.getGlobalBounds();
-}
-
-Vector2f Player::GetPosition() const
-{
-	return position;
-}
-
-Sprite Player::GetSprite() const
-{
-	return sprite;
-}
-
-int Player::GetHealth() const
-{
-	return health;
-}
-
-RectangleShape Player::GetHitBox()
-{
-	return hitBox;
-}
-
 void Player::AnimationInit()
 {
 	animation.SetTarget(&sprite);
