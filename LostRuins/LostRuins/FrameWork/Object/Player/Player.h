@@ -21,6 +21,7 @@ enum class Status
 	STATUS_RUN,
 	STATUS_JUMP,
 	STATUS_FALLING,
+	STATUS_CROUCH,
 	STATUS_ATK_TWO_STAND,
 };
 
@@ -66,6 +67,7 @@ private:
 	bool isFloor;
 	bool isJump;
 	bool isAttack;
+	bool isCrouch;
 
 	Time lastHit;
 
