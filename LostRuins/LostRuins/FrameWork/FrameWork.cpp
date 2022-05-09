@@ -50,11 +50,11 @@ void FrameWork::Update()
 			break;
 		*/
 
-		case Event::MouseMoved: 
+		/*case Event::MouseMoved:
 			light.setPosition(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
 			light.castLight(edges.begin(), edges.end());
 			break;
-
+		*/
 		default:
 			break;
 		}
