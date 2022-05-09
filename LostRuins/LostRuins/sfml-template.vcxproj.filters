@@ -87,6 +87,9 @@
     <ClCompile Include="FrameWork\Scene\GameScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\TestMonster\TestZombieWalker.cpp">
+      <Filter>FrameWork\Object\TestMonster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\FrameWork.h" />
@@ -193,6 +196,9 @@
     </Filter>
     <Filter Include="FrameWork\Map">
       <UniqueIdentifier>{8375b908-087e-488e-a92d-e5a51eb0b3be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\TestMonster">
+      <UniqueIdentifier>{7b038bf1-d284-45fa-af93-57b466cfd4a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

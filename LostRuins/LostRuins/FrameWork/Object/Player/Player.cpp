@@ -4,9 +4,9 @@
 
 void Player::Init(ZombieWalker* zombie)
 {
-	speed = START_SPEED;
 	health = START_HEALTH;
 	maxHealth = START_HEALTH;
+	speed = START_SPEED;
 	immuneMs = START_IMMUNE_MS;
 	fallingSpeed = 0.f;
 	attackFps = 0.f;
@@ -153,7 +153,6 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 			}
 		}
 		position.y += fallingSpeed * dt;
-		lastDir = dir;
 
 		sprite.setPosition(position);
 		hitBox.setPosition(position);
@@ -187,6 +186,67 @@ void Player::Draw(RenderWindow* window, View* mainView)
 	{
 		weaponMgr.Draw(window, mainView);
 	}
+}
+
+void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
+{
+	this->gameMap = gameMap;
+	resolustion = res;
+	this->tileSize = tileSize;
+
+	position.x = this->gameMap.width * 0.5f;
+	position.y = resolustion.y - 200.f;
+
+	hitBox.setFillColor(Color(153, 153, 153, 0));
+	hitBox.setSize(Vector2f(20.f, 48.f));
+	hitBox.setOrigin(hitBoxOrigin);
+	hitBox.setScale(scale);
+	hitBox.setPosition(position);
+}
+
+bool Player::OnHitted(int damage, Time timeHit)
+{
+	if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
+	{
+		lastHit = timeHit;
+		health -= damage;
+		if (health < 0)
+		{
+			health = 0;
+		}
+		return true;
+	}
+	return false;
+}
+
+Time Player::GetLastTime() const
+{
+	return lastHit;
+}
+
+FloatRect Player::GetGobalBound() const
+{
+	return sprite.getGlobalBounds();
+}
+
+Vector2f Player::GetPosition() const
+{
+	return position;
+}
+
+Sprite Player::GetSprite() const
+{
+	return sprite;
+}
+
+int Player::GetHealth() const
+{
+	return health;
+}
+
+RectangleShape Player::GetHitBox()
+{
+	return hitBox;
 }
 
 void Player::AnimationInit()
