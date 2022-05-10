@@ -134,6 +134,9 @@
     <ClCompile Include="FrameWork\Object\TitleObject\Rofe2.cpp">
       <Filter>Framework\Object\TitleObject</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Weapon\Dagger.cpp">
+      <Filter>FrameWork\Object\Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -231,6 +234,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Object\TitleObject\Rofe2.h">
       <Filter>Framework\Object\TitleObject</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Weapon\Dagger.h">
+      <Filter>FrameWork\Object\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
