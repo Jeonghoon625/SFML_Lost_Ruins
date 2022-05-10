@@ -2,12 +2,12 @@
 #include "../Mgr/InputManager.h"
 #include <sstream>
 
-MapScene::MapScene() : gridSizeF(16.f), gridSizeU(static_cast<unsigned>(gridSizeF)), shape(Vector2f(gridSizeF, gridSizeF)), tileSelector(Vector2f(gridSizeF, gridSizeF))
+MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSizeF)), shape(Vector2f(gridSizeF, gridSizeF)), tileSelector(Vector2f(gridSizeF, gridSizeF))
 {
 	tileSelector.setFillColor(Color::Transparent);
 	tileSelector.setOutlineThickness(5.f);
 	tileSelector.setOutlineColor(Color::Red);
-	texBackground = TextureHolder::GetTexture("maps/Stage1/SewerWall.png");
+	texBackground = TextureHolder::GetTexture("maps/Stage1/test.png");
 }
 
 void MapScene::Init(SceneManager* sceneManager)
@@ -119,6 +119,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 		}
 
 		int i = 0;
+
 		for (auto it : finalGrid)
 		{
 			CreateBackGround(it.x, it.y);
@@ -191,46 +192,44 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 			window->draw(tileMap[i][j]);
 		}
 	}
-	
-	window->draw(tileSelector);
+
 	window->draw(vertexMap, &texBackground);
+	window->draw(tileSelector);
 	window->setView(*uiView);
 	window->draw(text);
 
 	window->setView(*mapView);
 }
 
-int MapScene::CreateBackGround(int c, int r)
+int MapScene::CreateBackGround(int r, int c)
 {
-	const int TILE_SIZE = 128;
-	const int TILE_TYPES = 0;
-	const int VERTS_IN_QUAD = 4;
+	int TILE_SIZE = 32;
+	int TILE_TYPES = 0;
+	int VERTS_IN_QUAD = 4;
 
-	int cols = mapSize * gridSizeU / TILE_SIZE;
-	int rows = mapSize * gridSizeU / TILE_SIZE;
+	int cols = mapSize;
+	int rows = mapSize;
 
 	vertexMap.setPrimitiveType(Quads);
 	vertexMap.resize(cols * rows * VERTS_IN_QUAD);
 
-	int index = r * cols + c;
-
-	float x = c * TILE_SIZE;
-	float y = r * TILE_SIZE;
-	std::cout << x << y << std::endl;
+	int index = r + c * cols;
 	int vertexIndex = index * VERTS_IN_QUAD;
 
+	float x = c * gridSizeF;
+	float y = r * gridSizeF;
+	 
+	std::cout << vertexMap[vertexIndex + 0].position.y << std::endl;
 	vertexMap[vertexIndex + 0].position = Vector2f(x, y);
-	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_SIZE / gridSizeU, y);
-	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_SIZE / gridSizeU, y + TILE_SIZE / gridSizeU);
-	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_SIZE / gridSizeU);
+	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_SIZE, y);
+	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_SIZE, y + TILE_SIZE);
+	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_SIZE);
 
-	int texIndex = 0;
-
-	float offset = texIndex * TILE_SIZE;
-	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, offset);
-	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_SIZE, offset);
-	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_SIZE, offset + TILE_SIZE);
-	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, offset + TILE_SIZE);
+	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, 0);
+	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_SIZE, 0);
+	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
+	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, TILE_SIZE);
+	
 
 	return cols * rows;
 }
