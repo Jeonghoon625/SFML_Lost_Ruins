@@ -5,8 +5,9 @@ Falling L0, T681, W33, H50, C3, R1
 Landing L0, T750, W33, H50, C3, R1
 IdletoRun L0, T182, W40, H50, C2, R1
 RuntoIdle L0, T311, W31, H50, C4, R1
-Attack_Twohanded_Standing L0, T1185, W40, H50, C19, R1
+Attack_Twohanded_Standing L0, T1185, W43, H50, C19, R1
 Crouch L0, T375, W30, H50, C4 R1 MC4
 Crouching L49, T429, W30, H50, C1, R1, MC1
 CrouchingtoIdle L0, T490, W30, H50, C1, R1, MC1
+Attack_Dagger_Standing L0, W43, H50, C15, R1, MC1
 DamageTaken L0, T2533, W31, H50, C1, R1, MC1

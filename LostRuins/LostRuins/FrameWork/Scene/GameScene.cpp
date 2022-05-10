@@ -31,8 +31,6 @@ void GameScene::Init(SceneManager* sceneManager)
 
 void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
-	player.Update(dt, blocks, playTime);
-
 	// test
 	zombieWalker->Update(player, dt, blocks, playTime);
 
@@ -40,6 +38,8 @@ void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* main
 	{
 		zombieWalker->SetPosition(9999.f, 9999.f);
 	}
+
+	player.Update(dt, blocks, playTime);
 }
 
 void GameScene::Draw(RenderWindow* window, View* mainView)

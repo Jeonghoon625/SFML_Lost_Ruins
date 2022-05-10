@@ -43,6 +43,7 @@ private:
 	const float START_ROLL_TIME = 0.5f;
 	const float GRAVITY_POWER = 2000.f;
 	const float START_IMMUNE_MS = 500.f;
+	const float START_KNOCK_BACK_SPEED = 550.f;
 
 	AnimationController animation;
 	WeaponManager weaponMgr;
@@ -64,6 +65,7 @@ private:
 	float JumpingSpeed;
 	float fallingSpeed;
 	float rollSpeed;
+	float knockBackSpeed;
 
 	float attackFps;
 	float rollTime;
