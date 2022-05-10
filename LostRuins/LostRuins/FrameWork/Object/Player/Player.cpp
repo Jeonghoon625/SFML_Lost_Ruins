@@ -15,6 +15,7 @@ void Player::Init(ZombieWalker* zombie)
 	attackFps = 0.f;
 	rollTime = START_ROLL_TIME;
 	immuneMs = START_IMMUNE_MS;
+	deadTime = DEAD_TIME_COUNT;
 
 	isFloor = false;
 	isJump = false;
@@ -48,9 +49,9 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	position.x = this->gameMap.left + 200.f;
 	position.y = this->gameMap.top;
 
-	hitBox.setFillColor(Color(153, 153, 153, 0));
+	hitBox.setFillColor(Color(153, 153, 153, 80));
 	hitBox.setSize(Vector2f(20.f, 48.f));
-	hitBox.setOrigin(hitBoxOrigin);
+	hitBox.setOrigin(hitBoxStand);
 	hitBox.setScale(scale);
 	hitBox.setPosition(position);
 }
@@ -176,6 +177,9 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 					}
 					else if (InputManager::GetKey(Keyboard::Down))
 					{
+						hitBox.setSize(Vector2f(20.f, 23.f));
+						hitBox.setOrigin(hitBoxCrouch);
+						hitBox.setPosition(position);
 						isCrouch = true;
 					}
 				}
@@ -183,6 +187,9 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 
 			if (InputManager::GetKeyUp(Keyboard::Down) && isCrouch == true)
 			{
+				hitBox.setSize(Vector2f(20.f, 48.f));
+				hitBox.setOrigin(hitBoxStand);
+				hitBox.setPosition(position);
 				isCrouch = false;
 			}
 		}
@@ -329,6 +336,13 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 			}
 		}
 		position.y += fallingSpeed * dt;
+
+		deadTime -= dt;
+		if (deadTime < 0.f)
+		{
+			deadTime = DEAD_TIME_COUNT;
+			isPause = true;
+		}
 	}
 
 	sprite.setPosition(position);
