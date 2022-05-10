@@ -2,79 +2,86 @@
 #include "../Mgr/InputManager.h"
 #include <sstream>
 
-MapScene::MapScene() : gridSizeF(300.f), gridSizeU(static_cast<unsigned>(gridSizeF)), shape(Vector2f(gridSizeF, gridSizeF))
+MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSizeF)), shape(Vector2f(gridSizeF, gridSizeF))
 {
-	
 }
 
 void MapScene::Init(SceneManager* sceneManager)
 {
 	this->sceneMgr = sceneManager;
 
-	resolution.x = 1920.f;
-	resolution.y = 1080.f;
+	resolution.x = VideoMode::getDesktopMode().width;
+	resolution.y = VideoMode::getDesktopMode().height;
 
-	font.loadFromFile("fonts/LiberationSans-Regular.ttf");
-	text.setCharacterSize(10);
-	text.setFillColor(Color::Blue);
+	mapView = new View(FloatRect(0, 0, resolution.x, resolution.y));
+	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
+
+	font.loadFromFile("fonts/LiberationSans-Bold.ttf");
+	text.setCharacterSize(30);
+	text.setFillColor(Color::Red);
 	text.setFont(font);
-	text.setPosition(500.f, 100.f);
+	text.setPosition(0.f, 0.f);
 	text.setString("TEST");
 }
 
 void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
+	window->setView(*mapView);
 	mousePosScreen = Mouse::getPosition();
 	mousePosWindow = Mouse::getPosition(*window);
 	mousePosView = window->mapPixelToCoords(mousePosWindow);
-	if (mousePosView.x >= 0.f)
+
+	if (mousePosView.x >= 0.f && mousePosView.y >= 0.f)
 	{
 		mousePosGrid.x = mousePosView.x / gridSizeU;
-	}
-	if (mousePosView.y >= 0.f)
-	{
 		mousePosGrid.y = mousePosView.y / gridSizeU;
+	}
+	else
+	{
+		mousePosGrid.x = 0;
+		mousePosGrid.y = 0;
 	}
 
 	std::stringstream ss;
 	ss << "Screen : " << mousePosScreen.x << " " << mousePosScreen.y << "\n"
 		<< "Window : " << mousePosWindow.x << " " << mousePosWindow.y << "\n"
-		<< "View : " << mousePosView.x << " " << mousePosView.y << "\n"
-		<< "Grid : " << mousePosGrid.x << " " << mousePosGrid.y << "\n";
+		<< "Map : " << mousePosView.x << " " << mousePosView.y << "\n"
+		<< "Grid : " << mousePosGrid.y << " " << mousePosGrid.x << "\n";
 
 	text.setString(ss.str());
 
 	if (InputManager::GetKey(Keyboard::A))
 	{
-		mainView->move(-VIEW_SPEED * dt, 0.f);
-
+		mapView->move(-VIEW_SPEED * dt, 0.f);
 	}
 
 	if (InputManager::GetKey(Keyboard::D))
 	{
-		mainView->move(VIEW_SPEED * dt, 0.f);
+		mapView->move(VIEW_SPEED * dt, 0.f);
 
 	}
 
 	if (InputManager::GetKey(Keyboard::W))
 	{
-		mainView->move(0, -VIEW_SPEED * dt);
+		mapView->move(0, -VIEW_SPEED * dt);
 	}
 
 	if (InputManager::GetKey(Keyboard::S))
 	{
-		mainView->move(0, VIEW_SPEED * dt);
-
+		mapView->move(0, VIEW_SPEED * dt);
 	}
 }
 
 void MapScene::Draw(RenderWindow* window, View* mainView)
 {
-	window->setView(*mainView);
+	window->setView(*mapView);
 	window->draw(shape);
+	window->setView(*uiView);
 	window->draw(text);
 }
 
 MapScene::~MapScene()
 {
+	delete mapView;
+	delete uiView;
 }

@@ -24,6 +24,7 @@ class MapScene : public Scene
 
 	Texture texBackground;
 	VertexArray tileMap;
+	View* mapView;
 	View* uiView;
 	RectangleShape shape;
 

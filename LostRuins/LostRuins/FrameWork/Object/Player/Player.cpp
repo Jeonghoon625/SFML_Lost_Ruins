@@ -162,7 +162,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 					if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
 					{
 						std::cout << "Hit" << zombie->GetHealth() << std::endl;
-						zombie->OnHitted(weaponMgr.GetAttackPoint(), dt);
+						zombie->OnHitted(weaponMgr.GetAttackPoint(), dt, playTime);
 					}
 				}
 			}
