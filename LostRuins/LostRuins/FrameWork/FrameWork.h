@@ -3,6 +3,8 @@
 #include "Mgr/InputManager.h"
 #include "Mgr/SceneManager.h"
 #include "Mgr/TextureHolder.h"
+#include "Candle/Candle.hpp"
+#include "Candle/RadialLight.hpp"
 
 using namespace sf;
 
@@ -25,6 +27,9 @@ private:
 
 	float frameLimit;
 	float frameTimer;
+
+	candle::RadialLight light;
+	candle::EdgeVector edges;
 	
 public:
 	bool Initialize();

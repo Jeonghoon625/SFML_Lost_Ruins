@@ -45,7 +45,7 @@ void ZombieWalker::MonsterInit()
 	attackRangeBox.setPosition(sprite.getOrigin());
 
 	hitBox.setSize(Vector2f(43.f, 40.f));
-	hitBox.setOrigin(21.5f, 40.f);
+	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y);
 	hitBox.setScale(scale);
 	hitBox.setFillColor(Color(155, 0, 255, 80));
 	hitBox.setPosition(sprite.getOrigin());

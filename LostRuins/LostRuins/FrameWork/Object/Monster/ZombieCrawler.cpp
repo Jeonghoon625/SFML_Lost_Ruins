@@ -39,7 +39,7 @@ void ZombieCrawler::MonsterInit()
 
 	hitBox.setSize(Vector2f(43.f, 30.f));
 	hitBox.setScale(scale);
-	hitBox.setOrigin(21.5f, 30.f);
+	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y);
 	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());
 

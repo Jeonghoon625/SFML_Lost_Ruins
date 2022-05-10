@@ -8,6 +8,7 @@ using namespace sf;
 class Monster
 {
 protected:
+	const float START_IMMUNE_MS = 500;
 	const Vector2f scale = Vector2f(3.f, 3.f);
 	const float GRAVITY_POWER = 2000.f;
 	float fallingSpeed;
@@ -18,6 +19,7 @@ protected:
 	int health;
 	int atk;
 	float speed;
+	float immuneMs;
 
 	string strIdle;
 	string strWalk;
@@ -34,12 +36,19 @@ protected:
 	bool isFindPlayer;
 	bool isAttackPlayer;
 	bool alive;
+	bool isCollideHitBox;
+	bool isCollideAttackRangeBox;
+
+	
 
 	float attackDelay;
 	float hitDelay;
 
+	Time lastHit;
+
 	Sprite sprite;
 	Vector2f position;
+	
 
 	RectangleShape findPlayerBox;		// Find Player
 	RectangleShape attackRangeBox;
@@ -74,10 +83,11 @@ public:
 	virtual void Run(float dt);
 	virtual void Attack(float dt, int atk, Player& player, Time timeHit);
 
-	virtual bool OnHitted(int atk, float dt);
+	virtual bool OnHitted(int atk, float dt,Time timeHit);
 
 	void Gravity(float dt, std::vector<TestBlock*> blocks);
 	void UpdateCollision(std::vector <TestBlock*> blocks);
+	void UpdateCollisionAttackRangeBox(std::vector <TestBlock*> blocks);
 
 	void Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playtime);
 

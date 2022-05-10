@@ -33,6 +33,7 @@ void TestScene::Init(SceneManager* sceneManager)
 	testWeapon.setRotation(90.f);
 }
 
+
 void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
 	/*for (auto zombieWalker : zombieWalkers)

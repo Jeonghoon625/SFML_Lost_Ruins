@@ -3,7 +3,8 @@
 #include "../../FrameWork/Mgr/TextureHolder.h"
 
 Monster::Monster()
-	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f),isFindPlayer(false),isAttackPlayer(false),attackDelay(0.f),isFalling(true),hitDelay(0.f),alive(true)
+	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f), isFindPlayer(false), isAttackPlayer(false), attackDelay(0.f), isFalling(true), hitDelay(0.f), alive(true), immuneMs(START_IMMUNE_MS)
+	, isCollideHitBox(false), isCollideAttackRangeBox(false)
 {
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
@@ -31,7 +32,7 @@ int Monster::GetHealth()
 
 void Monster::SetHealth(int healthNum)
 {
-	health=healthNum;
+	health = healthNum;
 }
 
 int Monster::GetAtk()
@@ -41,7 +42,7 @@ int Monster::GetAtk()
 
 void Monster::SetAtk(int atkNum)
 {
-	atk=atkNum;
+	atk = atkNum;
 }
 
 float Monster::GetSpeed()
@@ -51,7 +52,7 @@ float Monster::GetSpeed()
 
 void Monster::SetSpeed(float speedNum)
 {
-	speed=speedNum;
+	speed = speedNum;
 }
 
 RectangleShape Monster::GetHitBox()
@@ -61,13 +62,13 @@ RectangleShape Monster::GetHitBox()
 
 void Monster::MonsterInit()
 {
-	strWalk=("GoblinAttackerWalk");
-	strIdle=("GoblinAttackerIdle");
-	strRun=("GoblinAttackerRun");
-	strDead=("GoblinAttackerDead");
-	strAttack=("GoblinAttackerAttack");
-	strAttackBlocked=("GoblinAttackerAttackBlocked");
-	strDemageTaken=("GoblinAttackerDemageTaken");
+	strWalk = ("GoblinAttackerWalk");
+	strIdle = ("GoblinAttackerIdle");
+	strRun = ("GoblinAttackerRun");
+	strDead = ("GoblinAttackerDead");
+	strAttack = ("GoblinAttackerAttack");
+	strAttackBlocked = ("GoblinAttackerAttackBlocked");
+	strDemageTaken = ("GoblinAttackerDemageTaken");
 	AnimationInit(&sprite);
 
 	animation.Play(strIdle);
@@ -76,7 +77,7 @@ void Monster::MonsterInit()
 	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
-
+	
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
@@ -92,7 +93,7 @@ void Monster::MonsterInit()
 
 	hitBox.setSize(Vector2f(43.f, 30.f));
 	hitBox.setScale(scale);
-	hitBox.setOrigin(21.5f, 30.f);
+	hitBox.setOrigin(hitBox.getSize().x*0.5f, hitBox.getSize().y);
 	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());
 }
@@ -158,7 +159,7 @@ void Monster::Walk(float dt)
 				sprite.setScale(3.f, 3.f);
 				animation.Play(strWalk);
 				findPlayerBox.setOrigin(200.f, 40.f);
-				attackRangeBox.setOrigin(30, 30);
+				attackRangeBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y * 0.95f);
 				break;
 			case 0:
 				animation.Play(strIdle);
@@ -167,22 +168,26 @@ void Monster::Walk(float dt)
 				sprite.setScale(-3.f, 3.f);
 				animation.Play(strWalk);
 				findPlayerBox.setOrigin(0.f, 40.f);
-				attackRangeBox.setOrigin(0, 30);
+				attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.95f);
 				break;
 			default:
 				break;
 			}
 		}
 
-		float h = (float)nextMove;
-		float v = 0.f;
-		Vector2f dir(h, v);
+		if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
+		{
+			float h = (float)nextMove;
+			float v = 0.f;
+			Vector2f dir(h, v);
+			position += Utils::Normalize(dir) * speed * dt;
 
-		position += Utils::Normalize(dir) * speed * dt;
-		sprite.setPosition(position);
-		findPlayerBox.setPosition(position);
-		attackRangeBox.setPosition(position);
-		hitBox.setPosition(position);
+			sprite.setPosition(position);
+			findPlayerBox.setPosition(position);
+			attackRangeBox.setPosition(position);
+			hitBox.setPosition(position);
+		}
+
 	}
 }
 
@@ -216,29 +221,31 @@ void Monster::ChasePlayer(Player& player, float dt)
 			float v = 0.f;
 			Vector2f dir(h, v);
 
-			position += Utils::Normalize(dir) * speed * dt;
-			sprite.setPosition(position);
-
-			findPlayerBox.setPosition(position);
-			attackRangeBox.setPosition(position);
-			hitBox.setPosition(position);
-
 			if (h > 0)
 			{
 				sprite.setScale(-3.f, 3.f);	//플레이어가 몬스터 왼쪽에 있을때
-				attackRangeBox.setOrigin(0, 30);
+				attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.95f);
 				findPlayerBox.setOrigin(0.f, 40.f);
 			}
 			else
 			{
 				sprite.setScale(3.f, 3.f);	//플레이어가 몬스터 오른쪽에 있을때
-				attackRangeBox.setOrigin(30, 30);
+				attackRangeBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y * 0.95f);
 				findPlayerBox.setOrigin(200.f, 40.f);
 			}
 
-			if (h * h > 500.f * 500.f)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
+			if (h * h > 600.f * 600.f || (sprite.getPosition().y - player.GetPosition().y) > 260 || sprite.getPosition().y - player.GetPosition().y < -150)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
 			{
 				isFindPlayer = false;
+			}
+			if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
+			{
+				position += Utils::Normalize(dir) * speed * dt;
+				sprite.setPosition(position);
+
+				findPlayerBox.setPosition(position);
+				attackRangeBox.setPosition(position);
+				hitBox.setPosition(position);
 			}
 		}
 	}
@@ -260,14 +267,14 @@ void Monster::Attack(float dt, int atk, Player& player, Time timeHit)
 		attackRangeBox.setPosition(position);
 		hitBox.setPosition(position);
 
-		if (attackDelay > 1.f)
+		if (attackDelay > 0.75f)
 		{
-			if(attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 			{
 				player.OnHitted(atk, timeHit);
 				// 여기에 player.onhitted
 			}
-			
+
 			attackDelay = 0.f;
 			isAttackPlayer = false;
 			animation.Play(strRun);
@@ -275,42 +282,50 @@ void Monster::Attack(float dt, int atk, Player& player, Time timeHit)
 	}
 }
 
-bool Monster::OnHitted(int atk, float dt)
+bool Monster::OnHitted(int atk, float dt, Time timeHit)
 {
-	if (health > 0)
+	if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
 	{
-		animation.Play(strDemageTaken);
-		attackDelay = 0.f;
-		isFindPlayer = true;
-		isAttackPlayer = false;	//맞으면 공격하려던거 취소
-		health -= atk;
-		return true;
+		lastHit = timeHit;
+		if (health > 0)
+		{
+			animation.Play(strDemageTaken);
+			attackDelay = 0.f;
+			isFindPlayer = true;
+			isAttackPlayer = false;	//맞으면 공격하려던거 취소
+			health -= atk;
+			std::cout << "HP : " << GetHealth() << std::endl;
+			return true;
+		}
+		else
+		{
+			alive = false;
+		}
+		return false;
 	}
-	else
-	{
-		alive = false;
-	}
-	return false;
 }
 
 void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
 {
-	if (isFalling)
+	if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
 	{
-		fallingSpeed += GRAVITY_POWER * dt;
-		if (fallingSpeed > 3000.f)
+		if (isFalling)
 		{
-			fallingSpeed = 3000.f;
+			fallingSpeed += GRAVITY_POWER * dt;
+			if (fallingSpeed > 3000.f)
+			{
+				fallingSpeed = 3000.f;
+			}
+			position.y += fallingSpeed * dt;
 		}
-		position.y += fallingSpeed * dt;
 	}
 	UpdateCollision(blocks);
 }
 
 void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 {
-
 	isFalling = true;
+	isCollideHitBox = false;
 	for (auto bk : blocks)
 	{
 		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
@@ -329,6 +344,8 @@ void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
 
 			Vector2f pos = hitBox.getPosition();
+
+			isCollideHitBox = true;
 
 			// 블럭 CB에 플레이어가 충돌
 			if (blockDown < playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
@@ -430,14 +447,27 @@ void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 			position = pos;
 			sprite.setPosition(pos);
 		}
-
 	}
 
+}
+
+void Monster::UpdateCollisionAttackRangeBox(std::vector<TestBlock*> blocks)
+{
+	isCollideAttackRangeBox = false;
+	for (auto bk : blocks)
+	{
+		if (attackRangeBox.getGlobalBounds().intersects(bk->GetBlockRect()))
+		{
+			isCollideAttackRangeBox = true;
+		}
+	}
 }
 
 void Monster::Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playtime)
 {
 	animation.Update(dt);
+	UpdateCollisionAttackRangeBox(blocks);
+	Gravity(dt, blocks);
 	Walk(dt);
 	FindPlayer(player);
 	ChasePlayer(player, dt);
