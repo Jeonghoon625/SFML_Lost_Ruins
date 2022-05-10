@@ -31,14 +31,14 @@ void TestUi::Init(SceneManager* sceneManager)
 	weaponpng = TextureHolder::GetTexture("graphics/Weapon.png");
 
 	wea.setTexture(weaponpng);
-	wea.setTextureRect(IntRect(235, 74, 14, 45));
+	wea.setTextureRect(IntRect(13, 148, 14, 53));
 	wea.setScale(Vector2f(1.1f, 1.1f));
 	wea.setPosition(1767, 27);
 
 	shi.setTexture(weaponpng);
-	shi.setTextureRect(IntRect(3, 229, 17, 17));
-	shi.setScale(Vector2f(1.7f, 1.7f));
-	shi.setPosition(1851, 40);
+	shi.setTextureRect(IntRect(3, 17, 4, 25));
+	shi.setScale(Vector2f(1.9f, 1.9f));
+	shi.setPosition(1863, 33);
 
 	amr1.setTexture(scrollpng);
 	amr1.setTextureRect(IntRect(3, 226, 12, 15));
@@ -214,8 +214,6 @@ void TestUi::Init(SceneManager* sceneManager)
 	Escset = false;
 	Esckey = false;
 }
-
-
 
 void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
@@ -510,7 +508,6 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 
 }
 
-
 void TestUi::Draw(RenderWindow* window, View* mainView)
 {
 	window->draw(spriteback); // 테스트배경
@@ -686,10 +683,10 @@ void TestUi::Draw(RenderWindow* window, View* mainView)
 		window->draw(KeyboardDownBox);
 		window->draw(KeyboardDownDire);
 		window->draw(KeyboardSpace);
-		window->draw(KeyboardSpaceBox);
-		window->draw(KeyboardSpaceDire);
+		window->draw(KeyboardSpaceBox);		
 		window->draw(KeyboardC);
 		window->draw(KeyboardCBox);
+		window->draw(KeyboardSpaceDire);
 		window->draw(KeyboardCDire);
 		window->draw(KeyboardZ);
 		window->draw(KeyboardZBox);
@@ -874,14 +871,14 @@ void TestUi::EscKeyboard() // ESC -> Setting -> Keyboard
 
 	KeyboardSpaceBox.setTexture(textureUI);
 	KeyboardSpaceBox.setTextureRect(IntRect(62, 605, 42, 40));
-	KeyboardSpaceBox.setPosition(1126, 313);
+	KeyboardSpaceBox.setPosition(1126, 363);
 	KeyboardSpaceBox.setScale(2.4f, 1.0f);
 
 	KeyboardSpaceDire.setFont(fontLostRuins);
-	KeyboardSpaceDire.setString("Space");
+	KeyboardSpaceDire.setString("C");
 	KeyboardSpaceDire.setCharacterSize(20);
 	KeyboardSpaceDire.setFillColor(Color::White);
-	KeyboardSpaceDire.setPosition(1147, 319);
+	KeyboardSpaceDire.setPosition(1162, 319); // 1162
 
 	////////////////////////////////////
 
@@ -893,13 +890,14 @@ void TestUi::EscKeyboard() // ESC -> Setting -> Keyboard
 
 	KeyboardCBox.setTexture(textureUI);
 	KeyboardCBox.setTextureRect(IntRect(62, 605, 42, 40));
-	KeyboardCBox.setPosition(1150, 363);
+	KeyboardCBox.setPosition(1150, 313); // 1126 313
+	KeyboardSpaceBox.setScale(2.4f, 1.0f);
 
 	KeyboardCDire.setFont(fontLostRuins);
-	KeyboardCDire.setString("C");
+	KeyboardCDire.setString("Space");
 	KeyboardCDire.setCharacterSize(20);
 	KeyboardCDire.setFillColor(Color::White);
-	KeyboardCDire.setPosition(1162, 369);
+	KeyboardCDire.setPosition(1147, 369); //1147
 
 	////////////////////////////////////
 
@@ -1571,3 +1569,4 @@ void TestUi::SeeInven()
 	textInven.setPosition(728, 150);
 	textMap.setPosition(1010, 150);
 }
+

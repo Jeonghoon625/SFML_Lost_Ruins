@@ -6,6 +6,7 @@
 #include "../Animation/AnimationController.h"
 #include "../Animation/rapidcsv.h"
 #include "TestSceneUI/TestSceneUi.h"
+#include "../Object/Npc/Npc.h"
 #include <map>
 
 class TestSceneTT : public Scene
@@ -15,6 +16,7 @@ private:
 	Vector2i resolution;
 
 	TestUi testUI;
+	Npc testNpc;
 
 public:
 	virtual void Init(SceneManager* sceneManager);

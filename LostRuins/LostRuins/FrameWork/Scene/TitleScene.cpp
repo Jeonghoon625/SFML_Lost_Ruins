@@ -51,12 +51,17 @@ void TitleScene::Init(SceneManager* sceneManager)
 	heroine.setScale(3.5f, 3.5f);
 	AnimationInit(&heroine);
 	animation.Play("heroine");
+
+	rofe1.Init();
+	rofe2.Init();
 }
 
 void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
 	animation.SetSpeed(3.5f);
 	animation.Update(dt);
+	rofe1.Update(dt);
+	rofe2.Update(dt);
 }
 
 void TitleScene::Draw(RenderWindow* window, View* mainView)
@@ -69,7 +74,10 @@ void TitleScene::Draw(RenderWindow* window, View* mainView)
 	window->draw(ForeGround);
 	window->draw(heroine);
 	window->draw(topBar);
+	rofe1.Draw(window);
+	rofe2.Draw(window);
 	window->draw(bottomBar);
+	
 }
 
 TitleScene::~TitleScene()
@@ -80,8 +88,8 @@ TitleScene::~TitleScene()
 void TitleScene::AnimationInit(Sprite* sprite)
 {
 	animation.SetTarget(sprite);
-
-	rapidcsv::Document clips("data_tables/animations/player/player_animation_clips.csv");
+	
+	rapidcsv::Document clips("data_tables/animations/title/Title_animation_clips1.csv");
 	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
 	std::vector<int> colFps = clips.GetColumn<int>("FPS");
 	std::vector<int> colLoop = clips.GetColumn<int>("LOOP TYPE(0:Single, 1:Loop)");
