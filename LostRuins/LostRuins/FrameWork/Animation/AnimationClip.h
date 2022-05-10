@@ -13,10 +13,10 @@ enum class AnimationLoopType
 
 struct AnimationFrame
 {
-	Texture texture;
+	Texture* texture;
 	IntRect texCoord;
 
-	AnimationFrame(const Texture& tex, const IntRect& coord);
+	AnimationFrame(Texture& tex, const IntRect& coord);
 };
 
 struct AnimationClip
@@ -26,4 +26,3 @@ struct AnimationClip
 	AnimationLoopType loopType;
 	int fps;
 };
-

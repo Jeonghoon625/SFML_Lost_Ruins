@@ -22,7 +22,9 @@ enum class Status
 	STATUS_JUMP,
 	STATUS_FALLING,
 	STATUS_CROUCH,
+	STATUS_ROLL,
 	STATUS_ATK_TWO_STAND,
+	STATUS_ATK_DAGGER,
 };
 
 class Player
@@ -36,6 +38,8 @@ private:
 	const int START_MANA = 20;
 	const float START_SPEED = 600.f;
 	const float START_JUMP_SPEED = 1000.f;
+	const float START_ROLL_SPEED = 450.f;
+	const float START_ROLL_TIME = 0.5f;
 	const float GRAVITY_POWER = 2000.f;
 	const float START_IMMUNE_MS = 1000.f;
 
@@ -58,8 +62,10 @@ private:
 	float speed;
 	float JumpingSpeed;
 	float fallingSpeed;
-	float attackFps;
+	float rollSpeed;
 
+	float attackFps;
+	float rollTime;
 	float immuneMs;
 	bool immune;
 
@@ -67,7 +73,9 @@ private:
 	bool isFloor;
 	bool isJump;
 	bool isAttack;
+	bool isDelay;
 	bool isCrouch;
+	bool isRoll;
 
 	Time lastHit;
 

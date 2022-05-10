@@ -139,7 +139,7 @@ int GameScene::CreateBackGround()
 
 			float x = c * TILE_SIZE;
 			float y = r * TILE_SIZE;
-			std::cout << x << y << std::endl;
+			//std::cout << x << y << std::endl;
 			int vertexIndex = index * VERTS_IN_QUAD;
 
 			tileMap[vertexIndex + 0].position = Vector2f(x, y);
