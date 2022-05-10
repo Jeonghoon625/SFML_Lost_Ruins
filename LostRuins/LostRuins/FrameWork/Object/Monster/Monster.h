@@ -27,7 +27,7 @@ protected:
 	string strDead;
 	string strAttack;
 	string strAttackBlocked;
-	string strDemageTaken;
+	string strDamageTaken;
 
 
 	int nextMove;
@@ -38,7 +38,7 @@ protected:
 	bool alive;
 	bool isCollideHitBox;
 	bool isCollideAttackRangeBox;
-
+	bool monsterSide;
 	
 
 	float attackDelay;
