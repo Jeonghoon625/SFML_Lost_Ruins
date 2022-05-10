@@ -1,20 +1,20 @@
-#include "TwohandWeapon.h"
+#include "Dagger.h"
 
-TwohandWeapon::TwohandWeapon(float xpos, float ypos, float angle)
+Dagger::Dagger(float xpos, float ypos, float angle)
 {
 	position = Vector2f(xpos, ypos);
 	rotation = angle;
 
 	spriteWeapon.setTexture(TextureHolder::GetTexture("graphics/weapon.png"));
-	spriteWeapon.setTextureRect(IntRect(13, 148, 14, 53));
-	spriteWeapon.setOrigin(7.f, 53.f);
-	spriteWeapon.setScale(3.f, 3.f);
+	spriteWeapon.setTextureRect(IntRect(3, 17, 4, 25));
+	spriteWeapon.setOrigin(2.f, 25.f);
+	spriteWeapon.setScale(scale);
 
 	spriteWeapon.setPosition(position);
 	spriteWeapon.setRotation(rotation);
 }
 
-void TwohandWeapon::SetPosition(Sprite sprite)
+void Dagger::SetPosition(Sprite sprite)
 {
 	float xpos = 0.f;
 	float ypos = 0.f;
@@ -35,17 +35,17 @@ void TwohandWeapon::SetPosition(Sprite sprite)
 	spriteWeapon.setPosition(Vector2f(xpos, ypos));
 }
 
-const Sprite TwohandWeapon::GetSprite()
+const Sprite Dagger::GetSprite()
 {
 	return spriteWeapon;
 }
 
-const Vector2f TwohandWeapon::GetPosition()
+const Vector2f Dagger::GetPosition()
 {
 	return position;
 }
 
-const float TwohandWeapon::GetRotation()
+const float Dagger::GetRotation()
 {
 	return rotation;
 }

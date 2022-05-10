@@ -24,6 +24,7 @@ enum class Status
 	STATUS_CROUCH,
 	STATUS_ROLL,
 	STATUS_ATK_TWO_STAND,
+	STATUS_ATK_DAGGER,
 };
 
 class Player
@@ -72,6 +73,7 @@ private:
 	bool isFloor;
 	bool isJump;
 	bool isAttack;
+	bool isDelay;
 	bool isCrouch;
 	bool isRoll;
 

@@ -4,7 +4,7 @@
 
 using namespace sf;
 
-class TwohandWeapon
+class Dagger
 {
 private:
 	const Vector2f scale = Vector2f(3.f, 3.f);
@@ -15,7 +15,7 @@ private:
 	float rotation;
 
 public:
-	TwohandWeapon(float xpos, float ypos, float angle);
+	Dagger(float xpos, float ypos, float angle);
 	void SetPosition(Sprite sprite);
 	const Sprite GetSprite();
 	const Vector2f GetPosition();
