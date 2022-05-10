@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <map>
+#include <list>
 #include <cstdlib>
 #include "../../Mgr/TextureHolder.h"
 #include "../../Animation/AnimationController.h"
@@ -10,6 +11,7 @@
 #include "../../Mgr/InputManager.h"
 #include "../TestBlock/TestBlock.h"
 #include "../../Mgr/WeaponManager.h"
+#include "../Player/DamageAndRecovery.h"
 
 using namespace sf;
 
@@ -37,7 +39,7 @@ private:
 	const Vector2f hitBoxStand = Vector2f(10.f, 48.f);
 	const Vector2f hitBoxCrouch = Vector2f(10.f, 23.f);
 
-	const int START_HEALTH = 1;
+	const int START_HEALTH = 20;
 	const int START_MANA = 20;
 	const float START_SPEED = 600.f;
 	const float START_JUMP_SPEED = 1000.f;
@@ -48,6 +50,7 @@ private:
 	const float START_KNOCK_BACK_SPEED = 550.f;
 	const float DEAD_FALLING_SPEED = 600.f;
 	const float DEAD_TIME_COUNT = 1.f;
+	const int MAX_DAMAGE_TEXT = 30;
 
 	AnimationController animation;
 	WeaponManager weaponMgr;
@@ -90,6 +93,8 @@ private:
 	Time lastHit;
 
 	std::map<std::string, Texture> texmap;
+	std::list<DamageAndRecovery*> unuseDorR;
+	std::list<DamageAndRecovery*> useDorR;
 
 	RectangleShape hitBox;
 
@@ -100,6 +105,7 @@ public:
 	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
 	void Draw(RenderWindow* window, View* mainView);
 	
+	void PlayerAction(float dt, Time playTime);
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
 	bool OnHitted(int damage, Time timeHit);
 

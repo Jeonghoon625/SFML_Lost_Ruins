@@ -38,105 +38,58 @@ void Player::Init(ZombieWalker* zombie)
 	weaponMgr.Init();
 
 	this->zombie = zombie;
-}
 
-void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
-{
-	this->gameMap = gameMap;
-	resolustion = res;
-	this->tileSize = tileSize;
-
-	position.x = this->gameMap.left + 200.f;
-	position.y = this->gameMap.top;
-
-	hitBox.setFillColor(Color(153, 153, 153, 80));
-	hitBox.setSize(Vector2f(20.f, 48.f));
-	hitBox.setOrigin(hitBoxStand);
-	hitBox.setScale(scale);
-	hitBox.setPosition(position);
-}
-
-bool Player::OnHitted(int damage, Time timeHit)
-{
-	if (isRoll == false && isAlive == true)
+	for (int i = 0; i < MAX_DAMAGE_TEXT; i++)
 	{
-		if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
-		{
-			lastHit = timeHit;
-			health -= damage;
-			if (health > 0)
-			{
-				isHit = true;
-			}
-			if (isAttack == true)
-			{
-				attackFps = weaponMgr.GetAttackFps();
-				weaponMgr.ResetFps();
-				isDelay = false;
-				isAttack = false;
-			}
-			if (isJump == true)
-			{
-				isJump = false;
-				JumpingSpeed = START_JUMP_SPEED;
-			}
-
-			// Dead
-			if (health < 0)
-			{
-				health = 0;
-				JumpingSpeed = DEAD_FALLING_SPEED;
-				isAlive = false;
-				isJump = true;
-			}
-			std::cout << health << std::endl;
-			return true;
-		}
+		unuseDorR.push_back(new DamageAndRecovery());
 	}
-	return false;
-}
-
-Time Player::GetLastTime() const
-{
-	return lastHit;
-}
-
-FloatRect Player::GetGobalBound() const
-{
-	return sprite.getGlobalBounds();
-}
-
-Vector2f Player::GetPosition() const
-{
-	return position;
-}
-
-Sprite Player::GetSprite() const
-{
-	return sprite;
-}
-
-int Player::GetHealth() const
-{
-	return health;
-}
-
-RectangleShape Player::GetHitBox()
-{
-	return hitBox;
-}
-
-bool Player::GetAlive()
-{
-	return isAlive;
-}
-
-bool Player::GetPause()
-{
-	return isPause;
 }
 
 void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
+{
+	// 敲饭捞绢 青悼
+	PlayerAction(dt, playTime);
+
+	// 面倒 贸府
+	UpdateCollision(blocks);
+
+	// 局聪皋捞记
+	AnimationUpdate();
+	animation.Update(dt);
+
+	auto DorR = useDorR.begin();
+	while (DorR != useDorR.end())
+	{
+		DamageAndRecovery* isDorR = *DorR;
+		isDorR->Update(dt);
+
+		if (!isDorR->IsActive())
+		{
+			DorR = useDorR.erase(DorR);
+		}
+		else
+		{
+			++DorR;
+		}
+	}
+}
+
+void Player::Draw(RenderWindow* window, View* mainView)
+{
+	window->setView(*mainView);
+	window->draw(sprite);
+	window->draw(hitBox);
+	if (isAttack == true && isDelay == false)
+	{
+		weaponMgr.Draw(window, mainView);
+	}
+	for (auto DorR : useDorR)
+	{
+		window->draw(DorR->GetText());
+	}
+}
+
+void Player::PlayerAction(float dt, Time playTime)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
 	float v = InputManager::GetAxisRaw(Axis::Vertical);
@@ -347,23 +300,115 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 
 	sprite.setPosition(position);
 	hitBox.setPosition(position);
-
-	// 面倒 贸府
-	UpdateCollision(blocks);
-
-	AnimationUpdate();
-	animation.Update(dt);
 }
 
-void Player::Draw(RenderWindow* window, View* mainView)
+void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 {
-	window->setView(*mainView);
-	window->draw(sprite);
-	window->draw(hitBox);
-	if (isAttack == true && isDelay == false)
+	this->gameMap = gameMap;
+	resolustion = res;
+	this->tileSize = tileSize;
+
+	position.x = this->gameMap.left + 200.f;
+	position.y = this->gameMap.top;
+
+	hitBox.setFillColor(Color(153, 153, 153, 0));
+	hitBox.setSize(Vector2f(20.f, 48.f));
+	hitBox.setOrigin(hitBoxStand);
+	hitBox.setScale(scale);
+	hitBox.setPosition(position);
+}
+
+bool Player::OnHitted(int damage, Time timeHit)
+{
+	if (isRoll == false && isAlive == true)
 	{
-		weaponMgr.Draw(window, mainView);
+		if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
+		{
+			lastHit = timeHit;
+			health -= damage;
+
+			Vector2f spawnPos(position.x, sprite.getGlobalBounds().top);
+			if (unuseDorR.empty())
+			{
+				for (int i = 0; i < MAX_DAMAGE_TEXT; ++i)
+				{
+					unuseDorR.push_back(new DamageAndRecovery());
+				}
+			}
+			DamageAndRecovery* DorR = unuseDorR.front();
+			unuseDorR.pop_front();
+			useDorR.push_back(DorR);
+			DorR->HitPlayer(spawnPos, damage);
+
+			if (health > 0)
+			{
+				isHit = true;
+			}
+			if (isAttack == true)
+			{
+				attackFps = weaponMgr.GetAttackFps();
+				weaponMgr.ResetFps();
+				isDelay = false;
+				isAttack = false;
+			}
+			if (isJump == true)
+			{
+				isJump = false;
+				JumpingSpeed = START_JUMP_SPEED;
+			}
+
+			if (health < 0)
+			{
+				health = 0;
+				JumpingSpeed = DEAD_FALLING_SPEED;
+				isAlive = false;
+				isJump = true;
+			}
+			std::cout << health << std::endl;
+			return true;
+		}
 	}
+	return false;
+}
+
+Time Player::GetLastTime() const
+{
+	return lastHit;
+}
+
+FloatRect Player::GetGobalBound() const
+{
+	return sprite.getGlobalBounds();
+}
+
+Vector2f Player::GetPosition() const
+{
+	return position;
+}
+
+Sprite Player::GetSprite() const
+{
+	return sprite;
+}
+
+int Player::GetHealth() const
+{
+	return health;
+}
+
+RectangleShape Player::GetHitBox()
+{
+	return hitBox;
+}
+
+bool Player::GetAlive()
+{
+	return isAlive;
+}
+
+bool Player::GetPause()
+{
+	return isPause;
 }
 
 void Player::AnimationInit()

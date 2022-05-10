@@ -32,6 +32,7 @@
     <ClCompile Include="FrameWork\Object\Monster\Monster.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp" />
+    <ClCompile Include="FrameWork\Object\Player\DamageAndRecovery.cpp" />
     <ClCompile Include="FrameWork\Object\Player\Player.cpp" />
     <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp" />
     <ClCompile Include="FrameWork\Object\TestMonster\TestZombieWalker.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="FrameWork\Object\Monster\Monster.h" />
     <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h" />
     <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h" />
+    <ClInclude Include="FrameWork\Object\Player\DamageAndRecovery.h" />
     <ClInclude Include="FrameWork\Object\Player\Player.h" />
     <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h" />
     <ClInclude Include="FrameWork\Object\TestMonster\TestZombieWalker.h" />

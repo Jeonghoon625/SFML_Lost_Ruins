@@ -125,6 +125,12 @@
     <ClCompile Include="FrameWork\Scene\MapScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Weapon\Dagger.cpp">
+      <Filter>FrameWork\Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Player\DamageAndRecovery.cpp">
+      <Filter>FrameWork\Object\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -213,6 +219,12 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\MapScene.h">
       <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Weapon\Dagger.h">
+      <Filter>FrameWork\Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Player\DamageAndRecovery.h">
+      <Filter>FrameWork\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
