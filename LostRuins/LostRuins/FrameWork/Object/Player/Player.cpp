@@ -18,6 +18,7 @@ void Player::Init(ZombieWalker* zombie)
 	isCrouch = false;
 	isRoll = false;
 	isDelay = false;
+	isHit = false;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
@@ -55,7 +56,11 @@ bool Player::OnHitted(int damage, Time timeHit)
 		{
 			lastHit = timeHit;
 			health -= damage;
-			if (health < 0)
+			if (health > 0)
+			{
+				isHit = true;
+			}
+			else if (health < 0)
 			{
 				health = 0;
 			}
@@ -104,7 +109,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 
 	Utils::Normalize(dir);
 
-	if (isFloor == true && isJump == false && isRoll == false)
+	if (isFloor == true && isJump == false && isRoll == false && isHit == false)
 	{
 		if (isCrouch == false)
 		{
@@ -129,22 +134,23 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 					weaponMgr.SetWeaponPosition(sprite);
 					isAttack = true;
 				}
-				if (InputManager::GetKeyDown(Keyboard::Space))
+				else if (InputManager::GetKeyDown(Keyboard::Space))
 				{
 					isRoll = true;
+				}
+				else if (InputManager::GetKey(Keyboard::Down))
+				{
+					isCrouch = true;
 				}
 			}
 		}
 
-		if (InputManager::GetKey(Keyboard::Down) && isAttack == false)
+		if (InputManager::GetKeyUp(Keyboard::Down) && isCrouch == true)
 		{
-			isCrouch = true;
+			isCrouch = false;
 		}
 	}
-	if (InputManager::GetKeyUp(Keyboard::Down) && isCrouch == true)
-	{
-		isCrouch = false;
-	}
+
 
 	// 공격
 	if (isAttack == true)
@@ -163,10 +169,13 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 				}
 				else
 				{
-					if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+					if (weaponMgr.GetFps() > weaponMgr.GetHitFrame())
 					{
-						std::cout << "Hit" << zombie->GetHealth() << std::endl;
-						zombie->OnHitted(weaponMgr.GetAttackPoint(), dt);
+						if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+						{
+							std::cout << "Hit" << zombie->GetHealth() << std::endl;
+							zombie->OnHitted(weaponMgr.GetAttackPoint(), dt);
+						}
 					}
 				}
 			}
@@ -182,7 +191,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 				}
 			}
 		}
-		
+
 	}
 	// 이동
 	else
@@ -443,7 +452,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 void Player::AnimationUpdate()
 {
 	// 스프라이트 반전
-	if (isAttack == false && isRoll == false)
+	if (isAttack == false && isRoll == false && isHit == false)
 	{
 		if (InputManager::GetKey(Keyboard::Left))
 		{

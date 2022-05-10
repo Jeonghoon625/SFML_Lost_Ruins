@@ -25,6 +25,7 @@ enum class Status
 	STATUS_ROLL,
 	STATUS_ATK_TWO_STAND,
 	STATUS_ATK_DAGGER,
+	STATUS_HIT,
 };
 
 class Player
@@ -76,6 +77,7 @@ private:
 	bool isDelay;
 	bool isCrouch;
 	bool isRoll;
+	bool isHit;
 
 	Time lastHit;
 
