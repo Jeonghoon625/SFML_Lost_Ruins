@@ -4,6 +4,7 @@
 
 Monster::Monster()
 	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f), isFindPlayer(false), isAttackPlayer(false), attackDelay(0.f), isFalling(true), hitDelay(0.f), alive(true), immuneMs(START_IMMUNE_MS)
+	, isCollideHitBox(false), isCollideAttackRangeBox(false)
 {
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
@@ -76,7 +77,7 @@ void Monster::MonsterInit()
 	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
-	prevPosition = position;
+	
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
@@ -92,7 +93,7 @@ void Monster::MonsterInit()
 
 	hitBox.setSize(Vector2f(43.f, 30.f));
 	hitBox.setScale(scale);
-	hitBox.setOrigin(21.5f, 30.f);
+	hitBox.setOrigin(hitBox.getSize().x*0.5f, hitBox.getSize().y);
 	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());
 }
@@ -174,18 +175,19 @@ void Monster::Walk(float dt)
 			}
 		}
 
-		
+		if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
+		{
 			float h = (float)nextMove;
 			float v = 0.f;
 			Vector2f dir(h, v);
-			prevPosition = position;
 			position += Utils::Normalize(dir) * speed * dt;
 
 			sprite.setPosition(position);
 			findPlayerBox.setPosition(position);
 			attackRangeBox.setPosition(position);
 			hitBox.setPosition(position);
-		
+		}
+
 	}
 }
 
@@ -236,15 +238,15 @@ void Monster::ChasePlayer(Player& player, float dt)
 			{
 				isFindPlayer = false;
 			}
-
-				prevPosition = position;
+			if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
+			{
 				position += Utils::Normalize(dir) * speed * dt;
 				sprite.setPosition(position);
 
 				findPlayerBox.setPosition(position);
 				attackRangeBox.setPosition(position);
 				hitBox.setPosition(position);
-			
+			}
 		}
 	}
 }
@@ -305,14 +307,17 @@ bool Monster::OnHitted(int atk, float dt, Time timeHit)
 
 void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
 {
-	if (isFalling)
+	if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
 	{
-		fallingSpeed += GRAVITY_POWER * dt;
-		if (fallingSpeed > 3000.f)
+		if (isFalling)
 		{
-			fallingSpeed = 3000.f;
+			fallingSpeed += GRAVITY_POWER * dt;
+			if (fallingSpeed > 3000.f)
+			{
+				fallingSpeed = 3000.f;
+			}
+			position.y += fallingSpeed * dt;
 		}
-		position.y += fallingSpeed * dt;
 	}
 	UpdateCollision(blocks);
 }
@@ -320,6 +325,7 @@ void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
 void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 {
 	isFalling = true;
+	isCollideHitBox = false;
 	for (auto bk : blocks)
 	{
 		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
@@ -338,6 +344,8 @@ void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
 
 			Vector2f pos = hitBox.getPosition();
+
+			isCollideHitBox = true;
 
 			// 블럭 CB에 플레이어가 충돌
 			if (blockDown < playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
@@ -443,14 +451,27 @@ void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 
 }
 
+void Monster::UpdateCollisionAttackRangeBox(std::vector<TestBlock*> blocks)
+{
+	isCollideAttackRangeBox = false;
+	for (auto bk : blocks)
+	{
+		if (attackRangeBox.getGlobalBounds().intersects(bk->GetBlockRect()))
+		{
+			isCollideAttackRangeBox = true;
+		}
+	}
+}
+
 void Monster::Update(Player& player, float dt, std::vector<TestBlock*> blocks)
 {
 	animation.Update(dt);
+	UpdateCollisionAttackRangeBox(blocks);
+	Gravity(dt, blocks);
 	Walk(dt);
 	FindPlayer(player);
 	ChasePlayer(player, dt);
 	Attack(dt, atk, player);
-	Gravity(dt, blocks);
 }
 
 
