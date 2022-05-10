@@ -10,26 +10,34 @@
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
 #include "TestSceneUI/TestSceneUi.h"
+#include <vector>
 
 class MapScene : public Scene
 {
-	const float VIEW_SPEED = 200.f;
+	const int mapSize = 50;
+
+	const float VIEW_SPEED = 400.f;
 	float gridSizeF;
 	unsigned gridSizeU;
-
+	
 	SceneManager* sceneMgr;
 	Vector2i resolution;
 
 	IntRect gameMap;
 
 	Texture texBackground;
-	VertexArray tileMap;
 
 	View* mapView;
 	View* uiView;
-
+	
 	RectangleShape shape;
 	RectangleShape tileSelector;
+	vector<vector <RectangleShape>> tileMap;
+
+	int fromX;
+	int toX;
+	int fromY;
+	int toY;
 
 	Vector2i mousePosScreen;
 	Vector2i mousePosWindow;
