@@ -14,7 +14,7 @@ void ZombieCrawler::MonsterInit()
 	strDead = ("ZombieCrawlerDead");
 	strAttack = ("ZombieCrawlerAttack");
 	strAttackBlocked = ("ZombieCrawlerAttackBlocked");
-	strDemageTaken = ("ZombieCrawlerDemageTaken");
+	strDamageTaken = ("ZombieCrawlerDamageTaken");
 
 	SetHealth(20);
 	SetAtk(3);
@@ -39,7 +39,7 @@ void ZombieCrawler::MonsterInit()
 
 	hitBox.setSize(Vector2f(43.f, 30.f));
 	hitBox.setScale(scale);
-	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y);
+	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y * 0.99f);
 	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());
 
