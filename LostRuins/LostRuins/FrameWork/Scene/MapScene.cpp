@@ -7,6 +7,7 @@ MapScene::MapScene() : gridSizeF(16.f), gridSizeU(static_cast<unsigned>(gridSize
 	tileSelector.setFillColor(Color::Transparent);
 	tileSelector.setOutlineThickness(5.f);
 	tileSelector.setOutlineColor(Color::Red);
+	texBackground = TextureHolder::GetTexture("maps/Stage1/SewerWall.png");
 }
 
 void MapScene::Init(SceneManager* sceneManager)
@@ -120,6 +121,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 		int i = 0;
 		for (auto it : finalGrid)
 		{
+			CreateBackGround(it.x, it.y);
 			std::cout << ++i << "Fgrid : " << it.x << " " << it.y  << "\n";
 		}
 	}
@@ -190,13 +192,47 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 		}
 	}
 	
-
 	window->draw(tileSelector);
-
+	window->draw(vertexMap, &texBackground);
 	window->setView(*uiView);
 	window->draw(text);
 
 	window->setView(*mapView);
+}
+
+int MapScene::CreateBackGround(int c, int r)
+{
+	const int TILE_SIZE = 128;
+	const int TILE_TYPES = 0;
+	const int VERTS_IN_QUAD = 4;
+
+	int cols = mapSize * gridSizeU / TILE_SIZE;
+	int rows = mapSize * gridSizeU / TILE_SIZE;
+
+	vertexMap.setPrimitiveType(Quads);
+	vertexMap.resize(cols * rows * VERTS_IN_QUAD);
+
+	int index = r * cols + c;
+
+	float x = c * TILE_SIZE;
+	float y = r * TILE_SIZE;
+	std::cout << x << y << std::endl;
+	int vertexIndex = index * VERTS_IN_QUAD;
+
+	vertexMap[vertexIndex + 0].position = Vector2f(x, y);
+	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_SIZE / gridSizeU, y);
+	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_SIZE / gridSizeU, y + TILE_SIZE / gridSizeU);
+	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_SIZE / gridSizeU);
+
+	int texIndex = 0;
+
+	float offset = texIndex * TILE_SIZE;
+	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, offset);
+	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_SIZE, offset);
+	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_SIZE, offset + TILE_SIZE);
+	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, offset + TILE_SIZE);
+
+	return cols * rows;
 }
 
 MapScene::~MapScene()
@@ -204,3 +240,4 @@ MapScene::~MapScene()
 	delete mapView;
 	delete uiView;
 }
+

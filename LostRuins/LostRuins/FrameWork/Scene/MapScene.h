@@ -23,8 +23,6 @@ class MapScene : public Scene
 	SceneManager* sceneMgr;
 	Vector2i resolution;
 
-	IntRect gameMap;
-
 	Texture texBackground;
 
 	View* mapView;
@@ -52,9 +50,12 @@ class MapScene : public Scene
 	Vector2u downGrid;
 	Vector2u upGrid;
 	vector<Vector2u> finalGrid;
+	
+	VertexArray vertexMap;
 
 public:
 	MapScene();
+	int CreateBackGround(int c, int r);
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView);
 	virtual void Draw(RenderWindow* window, View* mainView);
