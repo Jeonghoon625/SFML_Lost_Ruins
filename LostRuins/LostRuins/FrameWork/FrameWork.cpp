@@ -22,7 +22,7 @@ bool FrameWork::Initialize()
 	sceneMgr.Init();
 
 	//light
-	light.setRange(150);
+	light.setRange(0);
 	edges.emplace_back(sf::Vector2f(200.f, 100.f), sf::Vector2f(200.f, 300.f));
 	
 	return true;

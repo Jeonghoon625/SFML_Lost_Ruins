@@ -24,9 +24,12 @@ class MapScene : public Scene
 
 	Texture texBackground;
 	VertexArray tileMap;
+
 	View* mapView;
 	View* uiView;
+
 	RectangleShape shape;
+	RectangleShape tileSelector;
 
 	Vector2i mousePosScreen;
 	Vector2i mousePosWindow;

@@ -2,8 +2,11 @@
 #include "../Mgr/InputManager.h"
 #include <sstream>
 
-MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSizeF)), shape(Vector2f(gridSizeF, gridSizeF))
+MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSizeF)), shape(Vector2f(gridSizeF, gridSizeF)), tileSelector(Vector2f(gridSizeF, gridSizeF))
 {
+	tileSelector.setFillColor(Color::Transparent);
+	tileSelector.setOutlineThickness(5.f);
+	tileSelector.setOutlineColor(Color::Red);
 }
 
 void MapScene::Init(SceneManager* sceneManager)
@@ -26,7 +29,6 @@ void MapScene::Init(SceneManager* sceneManager)
 
 void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
-	window->setView(*mapView);
 	mousePosScreen = Mouse::getPosition();
 	mousePosWindow = Mouse::getPosition(*window);
 	mousePosView = window->mapPixelToCoords(mousePosWindow);
@@ -42,6 +44,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 		mousePosGrid.y = 0;
 	}
 
+	tileSelector.setPosition(mousePosGrid.x * gridSizeF, mousePosGrid.y * gridSizeF);
 	std::stringstream ss;
 	ss << "Screen : " << mousePosScreen.x << " " << mousePosScreen.y << "\n"
 		<< "Window : " << mousePosWindow.x << " " << mousePosWindow.y << "\n"
@@ -58,7 +61,6 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	if (InputManager::GetKey(Keyboard::D))
 	{
 		mapView->move(VIEW_SPEED * dt, 0.f);
-
 	}
 
 	if (InputManager::GetKey(Keyboard::W))
@@ -76,8 +78,12 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 {
 	window->setView(*mapView);
 	window->draw(shape);
+	window->draw(tileSelector);
+
 	window->setView(*uiView);
 	window->draw(text);
+
+	window->setView(*mapView);
 }
 
 MapScene::~MapScene()
