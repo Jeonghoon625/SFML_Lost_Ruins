@@ -32,7 +32,7 @@ void GameScene::Init(SceneManager* sceneManager)
 void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
 	player.Update(dt, blocks, playTime);
-
+	
 	// test
 	zombieWalker->Update(player, dt, blocks);
 

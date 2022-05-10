@@ -38,6 +38,7 @@ void AnimationController::Update(float dt)
 
 	if (currentFrame >= totalFrame)
 	{
+		isEnd = true;
 		if (playQueue.empty())
 		{
 			switch (currentClip->loopType)
@@ -73,6 +74,7 @@ void AnimationController::Play(std::string clipId, bool clear)
 	}
 
 	isPlaying = true;
+	isEnd = false;
 	currentClip = &clips[clipId];
 	currentFrame = 0;
 	totalFrame = currentClip->frames.size();
@@ -81,6 +83,8 @@ void AnimationController::Play(std::string clipId, bool clear)
 
 void AnimationController::PlayQueue(std::string clipId)
 {
+	isPlaying = true;
+	isEnd = false;
 	playQueue.push(clipId);
 }
 
@@ -103,6 +107,11 @@ float AnimationController::GetSpeed()
 void AnimationController::SetSpeed(float speed)
 {
 	this->speed = speed;
+}
+
+bool AnimationController::GetIsEnd()
+{
+	return isEnd;
 }
 
 void AnimationController::ClearPlayQueue()

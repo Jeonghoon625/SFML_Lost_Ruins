@@ -22,7 +22,7 @@ Lami1Idle,25,1,data_tables/animations/monster/boss_lami_phase1_idle.csv
 Lami1Walk,8,1,data_tables/animations/monster/boss_lami_phase1_walk.csv
 Lami1Punch,5,0,data_tables/animations/monster/boss_lami_phase1_punch.csv
 Lami1Uppercut,9,0,data_tables/animations/monster/boss_lami_phase1_uppercut.csv
-Lami1AttackBlocked,5,0,data_tables/animations/monster/boss_lami_phase1_attack.blocked.csv
+Lami1AttackBlocked,5,0,data_tables/animations/monster/boss_lami_phase1_attack_blocked.csv
 Lami1DamageTaken,6,0,data_tables/animations/monster/boss_lami_phase1_damage_taken.csv
 Lami1Dead,8,0,data_tables/animations/monster/boss_lami_phase1_dead.csv
 Lami1Giblets,1,0,data_tables/animations/monster/boss_lami_phase1_giblets.csv

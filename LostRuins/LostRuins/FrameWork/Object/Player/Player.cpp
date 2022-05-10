@@ -40,7 +40,7 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	position.x = this->gameMap.left + 200.f;
 	position.y = this->gameMap.top;
 
-	hitBox.setFillColor(Color(153, 153, 153, 0));
+	hitBox.setFillColor(Color(153, 153, 153, 80));
 	hitBox.setSize(Vector2f(20.f, 48.f));
 	hitBox.setOrigin(hitBoxOrigin);
 	hitBox.setScale(scale);
@@ -94,6 +94,7 @@ RectangleShape Player::GetHitBox()
 
 void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 {
+	std::cout << animation.GetIsEnd() << std::endl;
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
 	float v = InputManager::GetAxisRaw(Axis::Vertical);
 	Vector2f dir(h, v);
