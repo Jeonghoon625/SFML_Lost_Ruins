@@ -125,9 +125,6 @@
     <ClCompile Include="FrameWork\Scene\MapScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\Npc\Npc.cpp">
-      <Filter>Framework\Object\Npc</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\Object\TitleObject\Rofe1.cpp">
       <Filter>Framework\Object\TitleObject</Filter>
     </ClCompile>
@@ -142,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="FrameWork\Object\Player\DamageAndRecovery.cpp">
       <Filter>FrameWork\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Npc\Npc.cpp">
+      <Filter>Framework\Object\Npc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,9 +232,6 @@
     <ClInclude Include="FrameWork\Scene\MapScene.h">
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\Npc\Npc.h">
-      <Filter>Framework\Object\Npc</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Object\TitleObject\Rofe1.h">
       <Filter>Framework\Object\TitleObject</Filter>
     </ClInclude>
@@ -249,6 +246,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Player\DamageAndRecovery.h">
       <Filter>FrameWork\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Npc\Npc.h">
+      <Filter>Framework\Object\Npc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
