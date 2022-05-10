@@ -6,6 +6,7 @@
 
 using namespace sf;
 class Player;
+class Npc;
 
 class TestUi
 {

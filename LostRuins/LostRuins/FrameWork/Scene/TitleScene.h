@@ -6,6 +6,8 @@
 #include "../Animation/AnimationController.h"
 #include "../Animation/rapidcsv.h"
 #include <map>
+#include "../Object/TitleObject/Rofe1.h"
+#include "../Object/TitleObject/Rofe2.h"
 
 class TitleScene : public Scene
 {
@@ -28,6 +30,9 @@ private:
 	RectangleShape topBar;
 	RectangleShape bottomBar;
 
+	Rofe1 rofe1;
+	Rofe2 rofe2;
+
 	std::map<std::string, Texture> texmap;
 
 public:
@@ -37,5 +42,6 @@ public:
 	virtual ~TitleScene();
 
 	void AnimationInit(Sprite* sprite);
+
 };
 
