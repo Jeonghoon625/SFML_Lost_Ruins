@@ -57,7 +57,7 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 
 bool Player::OnHitted(int damage, Time timeHit)
 {
-	if (isRoll == false)
+	if (isRoll == false && isAlive == true)
 	{
 		if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
 		{
@@ -337,19 +337,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 	// 충돌 처리
 	UpdateCollision(blocks);
 
-	/* 충돌 처리 테스트용
-	std::cout << isDirection << std::endl;
-	if (isFloor == false)
-	{
-		std::cout << "떨어짐" << "  " << fallingSpeed << std::endl;
-	}
-	else
-	{
-		std::cout << "지면" << "  " << fallingSpeed << std::endl;
-	}
-	*/
-
-	AnimationUpdate(); // FSM
+	AnimationUpdate();
 	animation.Update(dt);
 }
 

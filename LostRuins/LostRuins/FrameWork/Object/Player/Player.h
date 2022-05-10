@@ -36,7 +36,7 @@ private:
 	const Vector2f scaleFlipX = Vector2f(-3.f, 3.f);
 	const Vector2f hitBoxOrigin = Vector2f(10.f, 48.f);
 
-	const int START_HEALTH = 20;
+	const int START_HEALTH = 1;
 	const int START_MANA = 20;
 	const float START_SPEED = 600.f;
 	const float START_JUMP_SPEED = 1000.f;
@@ -45,7 +45,7 @@ private:
 	const float GRAVITY_POWER = 2000.f;
 	const float START_IMMUNE_MS = 500.f;
 	const float START_KNOCK_BACK_SPEED = 550.f;
-	const float DEAD_FALLING_SPEED = 700.f;
+	const float DEAD_FALLING_SPEED = 600.f;
 
 	AnimationController animation;
 	WeaponManager weaponMgr;

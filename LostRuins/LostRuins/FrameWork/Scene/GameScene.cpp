@@ -31,9 +31,13 @@ void GameScene::Init(SceneManager* sceneManager)
 
 void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
-	// test
 	if (player.GetPause() == false)
 	{
+		if (player.GetAlive() == false)
+		{
+			dt *= 0.25f;
+		}
+		
 		zombieWalker->Update(player, dt, blocks, playTime);
 
 		if (zombieWalker->GetHealth() == 0)
