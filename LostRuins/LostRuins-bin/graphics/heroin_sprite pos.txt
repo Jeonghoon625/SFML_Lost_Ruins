@@ -11,3 +11,4 @@ Crouching L49, T429, W30, H50, C1, R1, MC1
 CrouchingtoIdle L0, T490, W30, H50, C1, R1, MC1
 Attack_Dagger_Standing L0, W43, H50, C15, R1, MC1
 DamageTaken L0, T2533, W31, H50, C1, R1, MC1
+Dead L0, T2595, W43, H50, C9, R1, MC9

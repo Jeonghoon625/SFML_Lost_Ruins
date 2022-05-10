@@ -13,3 +13,4 @@ CrouchingtoIdle,10,0,data_tables/animations/player/player_animation_CrouchingtoI
 Roll,13,0,data_tables/animations/player/player_animation_Roll.csv
 Attack_Dagger_Standing,30,0,data_tables/animations/player/player_animation_Attack_Dagger_Standing.csv
 DamageTaken,10,1,data_tables/animations/player/player_animation_DamageTaken.csv
+Dead,10,0,data_tables/animations/player/player_animation_Dead.csv

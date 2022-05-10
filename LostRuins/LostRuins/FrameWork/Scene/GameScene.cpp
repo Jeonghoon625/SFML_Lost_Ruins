@@ -32,14 +32,17 @@ void GameScene::Init(SceneManager* sceneManager)
 void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
 	// test
-	zombieWalker->Update(player, dt, blocks, playTime);
-
-	if (zombieWalker->GetHealth() == 0)
+	if (player.GetPause() == false)
 	{
-		zombieWalker->SetPosition(9999.f, 9999.f);
-	}
+		zombieWalker->Update(player, dt, blocks, playTime);
 
-	player.Update(dt, blocks, playTime);
+		if (zombieWalker->GetHealth() == 0)
+		{
+			zombieWalker->SetPosition(9999.f, 9999.f);
+		}
+
+		player.Update(dt, blocks, playTime);
+	}
 }
 
 void GameScene::Draw(RenderWindow* window, View* mainView)

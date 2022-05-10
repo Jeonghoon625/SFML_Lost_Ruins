@@ -7,12 +7,15 @@ void Player::Init(ZombieWalker* zombie)
 	health = START_HEALTH;
 	maxHealth = START_HEALTH;
 	speed = START_SPEED;
-	immuneMs = START_IMMUNE_MS;
-	rollSpeed = START_ROLL_SPEED;
-	rollTime = START_ROLL_TIME;
-	knockBackSpeed = START_KNOCK_BACK_SPEED;
+	JumpingSpeed = START_JUMP_SPEED;
 	fallingSpeed = 0.f;
+	rollSpeed = START_ROLL_SPEED;
+	knockBackSpeed = START_KNOCK_BACK_SPEED;
+
 	attackFps = 0.f;
+	rollTime = START_ROLL_TIME;
+	immuneMs = START_IMMUNE_MS;
+
 	isFloor = false;
 	isJump = false;
 	isAttack = false;
@@ -20,12 +23,15 @@ void Player::Init(ZombieWalker* zombie)
 	isRoll = false;
 	isDelay = false;
 	isHit = false;
+	isAlive = true;
+	isPause = false;
 
 	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
 
 	sprite.setOrigin(15.5f, 50.f);
 	sprite.setScale(scale);
 	AnimationInit();
+	currentStatus = Status::STATUS_IDLE;
 	animation.Play("Idle");
 
 	weaponMgr.Init();
@@ -61,12 +67,6 @@ bool Player::OnHitted(int damage, Time timeHit)
 			{
 				isHit = true;
 			}
-			else if (health < 0)
-			{
-				health = 0;
-			}
-			std::cout << health << std::endl;
-
 			if (isAttack == true)
 			{
 				attackFps = weaponMgr.GetAttackFps();
@@ -80,6 +80,15 @@ bool Player::OnHitted(int damage, Time timeHit)
 				JumpingSpeed = START_JUMP_SPEED;
 			}
 
+			// Dead
+			if (health < 0)
+			{
+				health = 0;
+				JumpingSpeed = DEAD_FALLING_SPEED;
+				isAlive = false;
+				isJump = true;
+			}
+			std::cout << health << std::endl;
 			return true;
 		}
 	}
@@ -116,6 +125,16 @@ RectangleShape Player::GetHitBox()
 	return hitBox;
 }
 
+bool Player::GetAlive()
+{
+	return isAlive;
+}
+
+bool Player::GetPause()
+{
+	return isPause;
+}
+
 void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
@@ -124,138 +143,162 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 
 	Utils::Normalize(dir);
 
-	if (isFloor == true && isJump == false && isRoll == false && isHit == false)
+	if (isAlive == true)
 	{
-		if (isCrouch == false)
+		if (isFloor == true && isJump == false && isRoll == false && isHit == false)
 		{
-			if (InputManager::GetKeyDown(Keyboard::C))
+			if (isCrouch == false)
 			{
-				isFloor = false;
-				isJump = true;
-			}
-			if (isAttack == false)
-			{
-				if (InputManager::GetKeyDown(Keyboard::X))
+				if (InputManager::GetKeyDown(Keyboard::C))
 				{
-					weaponMgr.AttackWeapon(WeaponType::DAGGER);
-					attackFps = weaponMgr.GetAttackFps();
-					weaponMgr.SetWeaponPosition(sprite);
-					isAttack = true;
+					isFloor = false;
+					isJump = true;
 				}
-				else if (InputManager::GetKeyDown(Keyboard::Z))
+				if (isAttack == false)
 				{
-					weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
-					attackFps = weaponMgr.GetAttackFps();
-					weaponMgr.SetWeaponPosition(sprite);
-					isAttack = true;
-				}
-				else if (InputManager::GetKeyDown(Keyboard::Space))
-				{
-					isRoll = true;
-				}
-				else if (InputManager::GetKey(Keyboard::Down))
-				{
-					isCrouch = true;
-				}
-			}
-		}
-
-		if (InputManager::GetKeyUp(Keyboard::Down) && isCrouch == true)
-		{
-			isCrouch = false;
-		}
-	}
-
-
-	// 공격
-	if (isAttack == true)
-	{
-		attackFps -= dt;
-		if (attackFps < 0.f)
-		{
-			if (isDelay == false)
-			{
-				weaponMgr.NextFps();
-				attackFps = weaponMgr.GetAttackFps();
-				if (weaponMgr.CheckFps() == false)
-				{
-					weaponMgr.ResetFps();
-					isDelay = true;
-				}
-				else
-				{
-					if (weaponMgr.GetFps() > weaponMgr.GetHitFrame())
+					if (InputManager::GetKeyDown(Keyboard::X))
 					{
-						if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
-						{
-							std::cout << "Hit" << zombie->GetHealth() << std::endl;
-							zombie->OnHitted(weaponMgr.GetAttackPoint(), dt, playTime);
-						}
+						weaponMgr.AttackWeapon(WeaponType::DAGGER);
+						attackFps = weaponMgr.GetAttackFps();
+						weaponMgr.SetWeaponPosition(sprite);
+						isAttack = true;
+					}
+					else if (InputManager::GetKeyDown(Keyboard::Z))
+					{
+						weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
+						attackFps = weaponMgr.GetAttackFps();
+						weaponMgr.SetWeaponPosition(sprite);
+						isAttack = true;
+					}
+					else if (InputManager::GetKeyDown(Keyboard::Space))
+					{
+						isRoll = true;
+					}
+					else if (InputManager::GetKey(Keyboard::Down))
+					{
+						isCrouch = true;
 					}
 				}
 			}
-			else if (isDelay == true)
+
+			if (InputManager::GetKeyUp(Keyboard::Down) && isCrouch == true)
 			{
-				weaponMgr.NextFps();
-				attackFps = weaponMgr.GetAttackFps();
-				if (weaponMgr.CheckDelay() == false)
+				isCrouch = false;
+			}
+		}
+
+
+		// 공격
+		if (isAttack == true)
+		{
+			attackFps -= dt;
+			if (attackFps < 0.f)
+			{
+				if (isDelay == false)
 				{
-					weaponMgr.ResetFps();
-					isDelay = false;
-					isAttack = false;
+					weaponMgr.NextFps();
+					attackFps = weaponMgr.GetAttackFps();
+					if (weaponMgr.CheckFps() == false)
+					{
+						weaponMgr.ResetFps();
+						isDelay = true;
+					}
+					else
+					{
+						if (weaponMgr.GetFps() > weaponMgr.GetHitFrame())
+						{
+							if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+							{
+								std::cout << "Hit" << zombie->GetHealth() << std::endl;
+								zombie->OnHitted(weaponMgr.GetAttackPoint(), dt, playTime);
+							}
+						}
+					}
+				}
+				else if (isDelay == true)
+				{
+					weaponMgr.NextFps();
+					attackFps = weaponMgr.GetAttackFps();
+					if (weaponMgr.CheckDelay() == false)
+					{
+						weaponMgr.ResetFps();
+						isDelay = false;
+						isAttack = false;
+					}
+				}
+			}
+		}
+		// 이동
+		else
+		{
+			if (isHit == false)
+			{
+				if (isRoll == true)
+				{
+					rollTime -= dt;
+					if (sprite.getScale().x > 0.f)
+					{
+						position.x += 1.f * rollSpeed * dt;
+					}
+					else if (sprite.getScale().x < 0.f)
+					{
+						position.x -= 1.f * rollSpeed * dt;
+					}
+
+					if (rollTime < 0.f)
+					{
+						rollTime = START_ROLL_TIME;
+						isRoll = false;
+					}
+				}
+				else if (isCrouch == false)
+				{
+					position.x += dir.x * speed * dt;
+				}
+
+				if (isJump == false)
+				{
+					fallingSpeed += GRAVITY_POWER * dt;
+					if (fallingSpeed > 3000.f)
+					{
+						fallingSpeed = 3000.f;
+					}
+				}
+				else if (isJump == true)
+				{
+					JumpingSpeed -= GRAVITY_POWER * dt;
+					position.y -= JumpingSpeed * dt;
+					if (JumpingSpeed < 0.f)
+					{
+						isJump = false;
+						JumpingSpeed = START_JUMP_SPEED;
+					}
+				}
+				position.y += fallingSpeed * dt;
+			}
+			else if (isHit == true)
+			{
+				if (sprite.getScale().x > 0.f)
+				{
+					position.x -= 1.f * knockBackSpeed * dt;
+				}
+				else if (sprite.getScale().x < 0.f)
+				{
+					position.x += 1.f * knockBackSpeed * dt;
+				}
+				knockBackSpeed -= GRAVITY_POWER * dt;
+				position.y -= 1.f * knockBackSpeed * dt;
+				if (knockBackSpeed < 0.f)
+				{
+					knockBackSpeed = START_KNOCK_BACK_SPEED;
+					isHit = false;
 				}
 			}
 		}
 	}
-	// 이동
-	else
+	else if (isAlive == false)
 	{
-		if (isHit == false)
-		{
-			if (isRoll == true)
-			{
-				rollTime -= dt;
-				if (sprite.getScale().x > 0.f)
-				{
-					position.x += 1.f * rollSpeed * dt;
-				}
-				else if (sprite.getScale().x < 0.f)
-				{
-					position.x -= 1.f * rollSpeed * dt;
-				}
-
-				if (rollTime < 0.f)
-				{
-					rollTime = START_ROLL_TIME;
-					isRoll = false;
-				}
-			}
-			else if (isCrouch == false)
-			{
-				position.x += dir.x * speed * dt;
-			}
-
-			if (isJump == false)
-			{
-				fallingSpeed += GRAVITY_POWER * dt;
-				if (fallingSpeed > 3000.f)
-				{
-					fallingSpeed = 3000.f;
-				}
-			}
-			else if (isJump == true)
-			{
-				JumpingSpeed -= GRAVITY_POWER * dt;
-				position.y -= JumpingSpeed * dt;
-				if (JumpingSpeed < 0.f)
-				{
-					isJump = false;
-					JumpingSpeed = START_JUMP_SPEED;
-				}
-			}
-			position.y += fallingSpeed * dt;
-		}
-		else if (isHit == true)
+		if (isFloor == false)
 		{
 			if (sprite.getScale().x > 0.f)
 			{
@@ -265,18 +308,31 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 			{
 				position.x += 1.f * knockBackSpeed * dt;
 			}
-			knockBackSpeed -= GRAVITY_POWER * dt;
-			position.y -= 1.f * knockBackSpeed * dt;
-			if (knockBackSpeed < 0.f)
-			{
-				knockBackSpeed = START_KNOCK_BACK_SPEED;
-				isHit = false;
-			}
 		}
 
-		sprite.setPosition(position);
-		hitBox.setPosition(position);
+		if (isJump == false)
+		{
+			fallingSpeed += GRAVITY_POWER * dt;
+			if (fallingSpeed > 3000.f)
+			{
+				fallingSpeed = 3000.f;
+			}
+		}
+		else if (isJump == true)
+		{
+			JumpingSpeed -= GRAVITY_POWER * dt;
+			position.y -= JumpingSpeed * dt;
+			if (JumpingSpeed < 0.f)
+			{
+				isJump = false;
+				JumpingSpeed = START_JUMP_SPEED;
+			}
+		}
+		position.y += fallingSpeed * dt;
 	}
+
+	sprite.setPosition(position);
+	hitBox.setPosition(position);
 
 	// 충돌 처리
 	UpdateCollision(blocks);
@@ -487,7 +543,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 void Player::AnimationUpdate()
 {
 	// 스프라이트 반전
-	if (isAttack == false && isRoll == false && isHit == false)
+	if (isAttack == false && isRoll == false && isHit == false && isAlive == true)
 	{
 		if (InputManager::GetKey(Keyboard::Left))
 		{
@@ -503,7 +559,11 @@ void Player::AnimationUpdate()
 	switch (currentStatus)
 	{
 	case Status::STATUS_IDLE:
-		if (isHit == true)
+		if (isAlive == false)
+		{
+			SetStatus(Status::STATUS_DEAD);
+		}
+		else if (isHit == true)
 		{
 			SetStatus(Status::STATUS_HIT);
 		}
@@ -537,7 +597,11 @@ void Player::AnimationUpdate()
 		}
 		break;
 	case Status::STATUS_RUN:
-		if (isHit == true)
+		if (isAlive == false)
+		{
+			SetStatus(Status::STATUS_DEAD);
+		}
+		else if (isHit == true)
 		{
 			SetStatus(Status::STATUS_HIT);
 		}
@@ -571,7 +635,11 @@ void Player::AnimationUpdate()
 		}
 		break;
 	case Status::STATUS_JUMP:
-		if (isHit == true)
+		if (isAlive == false)
+		{
+			SetStatus(Status::STATUS_DEAD);
+		}
+		else if (isHit == true)
 		{
 			SetStatus(Status::STATUS_HIT);
 		}
@@ -581,7 +649,11 @@ void Player::AnimationUpdate()
 		}
 		break;
 	case Status::STATUS_FALLING:
-		if (isHit == true)
+		if (isAlive == false)
+		{
+			SetStatus(Status::STATUS_DEAD);
+		}
+		else if (isHit == true)
 		{
 			SetStatus(Status::STATUS_HIT);
 		}
@@ -591,7 +663,11 @@ void Player::AnimationUpdate()
 		}
 		break;
 	case Status::STATUS_CROUCH:
-		if (isHit == true)
+		if (isAlive == false)
+		{
+			SetStatus(Status::STATUS_DEAD);
+		}
+		else if (isHit == true)
 		{
 			SetStatus(Status::STATUS_HIT);
 		}
@@ -607,7 +683,11 @@ void Player::AnimationUpdate()
 		}
 		break;
 	case Status::STATUS_ATK_TWO_STAND:
-		if (isHit == true)
+		if (isAlive == false)
+		{
+			SetStatus(Status::STATUS_DEAD);
+		}
+		else if (isHit == true)
 		{
 			SetStatus(Status::STATUS_HIT);
 		}
@@ -617,7 +697,11 @@ void Player::AnimationUpdate()
 		}
 		break;
 	case Status::STATUS_ATK_DAGGER:
-		if (isHit == true)
+		if (isAlive == false)
+		{
+			SetStatus(Status::STATUS_DEAD);
+		}
+		else if (isHit == true)
 		{
 			SetStatus(Status::STATUS_HIT);
 		}
@@ -631,6 +715,8 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_FALLING);
 		}
+	case Status::STATUS_DEAD:
+		break;
 	default:
 		break;
 	}
@@ -696,6 +782,9 @@ void Player::SetStatus(Status newStatus)
 		break;
 	case Status::STATUS_HIT:
 		animation.Play("DamageTaken");
+		break;
+	case Status::STATUS_DEAD:
+		animation.Play("Dead");
 		break;
 	}
 }

@@ -26,6 +26,7 @@ enum class Status
 	STATUS_ATK_TWO_STAND,
 	STATUS_ATK_DAGGER,
 	STATUS_HIT,
+	STATUS_DEAD,
 };
 
 class Player
@@ -44,6 +45,7 @@ private:
 	const float GRAVITY_POWER = 2000.f;
 	const float START_IMMUNE_MS = 500.f;
 	const float START_KNOCK_BACK_SPEED = 550.f;
+	const float DEAD_FALLING_SPEED = 700.f;
 
 	AnimationController animation;
 	WeaponManager weaponMgr;
@@ -80,6 +82,8 @@ private:
 	bool isCrouch;
 	bool isRoll;
 	bool isHit;
+	bool isAlive;
+	bool isPause;
 
 	Time lastHit;
 
@@ -103,6 +107,8 @@ public:
 	Sprite GetSprite() const;
 	int GetHealth() const;
 	RectangleShape GetHitBox();
+	bool GetAlive();
+	bool GetPause();
 
 	void AnimationInit();
 	void UpdateCollision(std::vector <TestBlock*> blocks);
