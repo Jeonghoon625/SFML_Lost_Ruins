@@ -249,7 +249,7 @@ void Monster::Run(float dt)
 }
 
 
-void Monster::Attack(float dt, int atk, Player& player)
+void Monster::Attack(float dt, int atk, Player& player, Time timeHit)
 {
 	if (isAttackPlayer)
 	{
@@ -264,7 +264,7 @@ void Monster::Attack(float dt, int atk, Player& player)
 		{
 			if(attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 			{
-				player.OnHitted(atk);
+				player.OnHitted(atk, timeHit);
 				// ¿©±â¿¡ player.onhitted
 			}
 			
@@ -435,13 +435,13 @@ void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 
 }
 
-void Monster::Update(Player& player, float dt, std::vector<TestBlock*> blocks)
+void Monster::Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playtime)
 {
 	animation.Update(dt);
 	Walk(dt);
 	FindPlayer(player);
 	ChasePlayer(player, dt);
-	Attack(dt, atk, player);
+	Attack(dt, atk, player, playtime);
 	Gravity(dt, blocks);
 }
 

@@ -72,14 +72,14 @@ public:
 	virtual void FindPlayer(Player& player);
 	virtual void ChasePlayer(Player& player, float dt);
 	virtual void Run(float dt);
-	virtual void Attack(float dt, int atk, Player& player);
+	virtual void Attack(float dt, int atk, Player& player, Time timeHit);
 
 	virtual bool OnHitted(int atk, float dt);
 
 	void Gravity(float dt, std::vector<TestBlock*> blocks);
 	void UpdateCollision(std::vector <TestBlock*> blocks);
 
-	void Update(Player& player, float dt, std::vector<TestBlock*> blocks);
+	void Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playtime);
 
 	void Draw(RenderWindow* window);
 };

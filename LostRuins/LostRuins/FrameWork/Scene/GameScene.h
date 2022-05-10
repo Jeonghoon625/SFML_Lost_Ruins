@@ -19,7 +19,6 @@ class GameScene : public Scene
 	IntRect gameMap;
 
 	Texture textureHeroine;
-
 	Sprite heroineAction;
 
 	vector <TestBlock*> blocks;

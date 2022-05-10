@@ -23,10 +23,10 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
 
-	player.Update(dt, blocks);
-	Goblin.Update(player,dt, blocks);
-	zombieCrawler.Update(player,dt, blocks);
-	zombieWalker.Update(player,dt, blocks);
+	player.Update(dt, blocks, playTime);
+	Goblin.Update(player,dt, blocks, playTime);
+	zombieCrawler.Update(player,dt, blocks, playTime);
+	zombieWalker.Update(player,dt, blocks, playTime);
 }
 
 void TestSceneKK::Draw(RenderWindow* window, View* mainView)

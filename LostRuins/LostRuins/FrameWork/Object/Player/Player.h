@@ -41,7 +41,7 @@ private:
 	const float START_ROLL_SPEED = 450.f;
 	const float START_ROLL_TIME = 0.5f;
 	const float GRAVITY_POWER = 2000.f;
-	const float START_IMMUNE_MS = 1000.f;
+	const float START_IMMUNE_MS = 500.f;
 
 	AnimationController animation;
 	WeaponManager weaponMgr;
@@ -87,11 +87,11 @@ private:
 
 public:
 	void Init(ZombieWalker* zombie);
-	void Update(float dt, std::vector <TestBlock*> blocks);
+	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
 	void Draw(RenderWindow* window, View* mainView);
 	
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
-	bool OnHitted(int damage);
+	bool OnHitted(int damage, Time timeHit);
 
 	Time GetLastTime() const;
 	FloatRect GetGobalBound() const;

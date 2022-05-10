@@ -47,17 +47,21 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	hitBox.setPosition(position);
 }
 
-bool Player::OnHitted(int damage)
+bool Player::OnHitted(int damage, Time timeHit)
 {
 	if (isRoll == false)
 	{
-		std::cout << health << std::endl;
-		health -= damage;
-		if (health < 0)
+		if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
 		{
-			health = 0;
+			lastHit = timeHit;
+			health -= damage;
+			if (health < 0)
+			{
+				health = 0;
+			}
+			std::cout << health << std::endl;
+			return true;
 		}
-		return true;
 	}
 	return false;
 }
@@ -92,7 +96,7 @@ RectangleShape Player::GetHitBox()
 	return hitBox;
 }
 
-void Player::Update(float dt, std::vector <TestBlock*> blocks)
+void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
 	float v = InputManager::GetAxisRaw(Axis::Vertical);
@@ -245,7 +249,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks)
 	}
 	*/
 
-	AnimationUpdate();
+	AnimationUpdate(); // FSM
 	animation.Update(dt);
 }
 
@@ -467,17 +471,17 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
-		else if (isCrouch == true)
+		else if (InputManager::GetKey(Keyboard::Down))
 		{
 			SetStatus(Status::STATUS_CROUCH);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::Space))
+		{
+			SetStatus(Status::STATUS_ROLL);
 		}
 		else if (isFloor == false)
 		{
 			SetStatus(Status::STATUS_FALLING);
-		}
-		else if (isRoll == true)
-		{
-			SetStatus(Status::STATUS_ROLL);
 		}
 		else if (InputManager::GetKey(Keyboard::Left) || InputManager::GetKey(Keyboard::Right))
 		{
@@ -497,17 +501,17 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
-		else if (isCrouch == true)
+		else if (InputManager::GetKey(Keyboard::Down))
 		{
 			SetStatus(Status::STATUS_CROUCH);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::Space))
+		{
+			SetStatus(Status::STATUS_ROLL);
 		}
 		else if (isFloor == false)
 		{
 			SetStatus(Status::STATUS_FALLING);
-		}
-		else if (isRoll == true)
-		{
-			SetStatus(Status::STATUS_ROLL);
 		}
 		else if (InputManager::GetKeyUp(Keyboard::Left) || InputManager::GetKeyUp(Keyboard::Right))
 		{
@@ -527,7 +531,7 @@ void Player::AnimationUpdate()
 		}
 		break;
 	case Status::STATUS_CROUCH:
-		if (isCrouch == false)
+		if (InputManager::GetKeyUp(Keyboard::Down))
 		{
 			SetStatus(Status::STATUS_IDLE);
 		}
