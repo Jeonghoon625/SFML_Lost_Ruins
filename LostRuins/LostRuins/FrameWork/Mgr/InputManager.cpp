@@ -9,6 +9,14 @@ list<Keyboard::Key> InputManager::downKeys;
 list<Keyboard::Key> InputManager::ingKeys;
 list<Keyboard::Key> InputManager::upKeys;
 
+list<Mouse::Button>  InputManager::downButtons;
+list<Mouse::Button>  InputManager::ingButtons;
+list<Mouse::Button>  InputManager::upButtons;
+
+Vector2i InputManager::mousePosition;
+Vector2f InputManager::mousePositionWorld;
+
+
 void InputManager::Init()
 {
 	mapAxis.clear();
@@ -56,6 +64,8 @@ void InputManager::ClearInput()
 {
 	downKeys.clear();
 	upKeys.clear();
+	downButtons.clear();
+	upButtons.clear();
 }
 
 void InputManager::ProcessInput(const Event& event)
@@ -74,6 +84,20 @@ void InputManager::ProcessInput(const Event& event)
 		ingKeys.remove(event.key.code);
 		upKeys.push_back(event.key.code);
 		break;
+
+	case Event::MouseButtonPressed:
+		if (!GetMouseButton(event.mouseButton.button))
+		{
+			downButtons.push_back(event.mouseButton.button);
+			ingButtons.push_back(event.mouseButton.button);
+		}
+		break;
+
+	case Event::MouseButtonReleased:
+		ingButtons.remove(event.mouseButton.button);
+		upButtons.push_back(event.mouseButton.button);
+		break;
+
 	default:
 		break;
 	}
@@ -106,6 +130,9 @@ void InputManager::Update(float dt, RenderWindow& window, View& worldView)
 			ref.value = -1.f;
 		}
 	}
+
+	mousePosition = Mouse::getPosition();
+	mousePositionWorld = window.mapPixelToCoords(mousePosition, worldView);
 }
 
 float InputManager::GetAxis(Axis axis)
@@ -183,4 +210,32 @@ bool InputManager::GetKeyUp(Keyboard::Key key)
 {
 	auto it = find(upKeys.begin(), upKeys.end(), key);
 	return it != upKeys.end();
+}
+
+Vector2i InputManager::GetMousePosition()
+{
+	return mousePosition;
+}
+
+Vector2f InputManager::GetMouseWorldPosition()
+{
+	return mousePositionWorld;
+}
+
+bool InputManager::GetMouseButtonDown(Mouse::Button button)
+{
+	auto it = find(downButtons.begin(), downButtons.end(), button);
+	return it != downButtons.end();
+}
+
+bool InputManager::GetMouseButton(Mouse::Button button)
+{
+	auto it = find(ingButtons.begin(), ingButtons.end(), button);
+	return it != ingButtons.end();
+}
+
+bool InputManager::GetMouseButtonUp(Mouse::Button button)
+{
+	auto it = find(upButtons.begin(), upButtons.end(), button);
+	return it != upButtons.end();
 }

@@ -52,11 +52,11 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 		mousePosGrid.x = mousePosView.x / gridSizeU;
 		mousePosGrid.y = mousePosView.y / gridSizeU;
 	}
-	else
+	/*else
 	{
 		mousePosGrid.x = 0;
 		mousePosGrid.y = 0;
-	}
+	}*/
 
 	tileSelector.setPosition(mousePosGrid.x * gridSizeF, mousePosGrid.y * gridSizeF);
 	std::stringstream ss;
@@ -86,6 +86,43 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	{
 		mapView->move(0, VIEW_SPEED * dt);
 	}
+
+	if (InputManager::GetKeyDown(Keyboard::Add))
+	{
+		mapView->zoom(0.5f);
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Subtract))
+	{
+		mapView->zoom(2.f);
+	}
+
+	if (InputManager::GetMouseButtonDown(Mouse::Button::Left))
+	{
+		finalGrid.clear();
+		downGrid = mousePosGrid;
+		std::cout << "DGrid : " << downGrid.y << " " << downGrid.x << "\n";
+	}
+
+	if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
+	{
+		upGrid = mousePosGrid;
+		std::cout << "UGrid : " << upGrid.y << " " << upGrid.x << "\n";
+		
+		for (unsigned int i = downGrid.y; i <= upGrid.y; i++)
+		{
+			for (unsigned int j = downGrid.x; j <= upGrid.x; j++)
+			{
+				finalGrid.push_back(Vector2u(i, j));
+			}
+		}
+
+		int i = 0;
+		for (auto it : finalGrid)
+		{
+			std::cout << ++i << "Fgrid : " << it.x << " " << it.y  << "\n";
+		}
+	}
 }
 
 void MapScene::Draw(RenderWindow* window, View* mainView)
@@ -93,10 +130,10 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 	window->setView(*mapView);
 	window->draw(shape);
 
-	fromX = mousePosGrid.x - 2;
+	fromX = mousePosGrid.x;
 	toX = mousePosGrid.x + 3;
 
-	fromY = mousePosGrid.y - 2;
+	fromY = mousePosGrid.y;
 	toY = mousePosGrid.y + 3;
 
 	/*
@@ -144,7 +181,7 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 		}
 	}
 	*/
-
+	
 	for (int i = 0; i < mapSize; i++)
 	{
 		for (int j = 0; j < mapSize; j++)
@@ -152,6 +189,7 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 			window->draw(tileMap[i][j]);
 		}
 	}
+	
 
 	window->draw(tileSelector);
 
