@@ -11,16 +11,17 @@ void TestSceneTT::Init(SceneManager* sceneManager)
 	testNpc.Init();
 }
 
-void TestSceneTT::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
+void TestSceneTT::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-	testUI.Update(dt, playTime, window, mainView);
+	this->uiView = uiView;
+	testUI.Update(dt, playTime, window, uiView);
 	testNpc.Update(dt);
 }
 
 void TestSceneTT::Draw(RenderWindow* window, View* mainView)
 {
-	window->setView(*mainView);
-	testUI.Draw(window, mainView);
+	window->setView(*uiView);
+	testUI.Draw(window, uiView);
 	testNpc.Draw(window);
 }
 
