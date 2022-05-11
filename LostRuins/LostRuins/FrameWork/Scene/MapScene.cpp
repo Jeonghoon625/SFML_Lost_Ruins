@@ -20,12 +20,12 @@ void MapScene::Init(SceneManager* sceneManager)
 	mapView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 
-	tileMap.resize(mapSize, vector<RectangleShape>());
+	tileMap.resize(mapWidth, vector<RectangleShape>());
 
-	for (int i = 0; i < mapSize; i++)
+	for (int i = 0; i < mapWidth; i++)
 	{
-		tileMap[i].resize(mapSize, RectangleShape());
-		for (int j = 0; j < mapSize; j++)
+		tileMap[i].resize(mapHeight, RectangleShape());
+		for (int j = 0; j < mapHeight; j++)
 		{
 			tileMap[i][j].setSize(Vector2f(gridSizeF, gridSizeF));
 			tileMap[i][j].setFillColor(Color::White);
@@ -48,7 +48,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	mousePosWindow = Mouse::getPosition(*window);
 	mousePosView = window->mapPixelToCoords(mousePosWindow);
 
-	if (mousePosView.x >= 0.f && mousePosView.y >= 0.f && mousePosView.x <= mapSize * gridSizeU && mousePosView.y <= mapSize * gridSizeU)
+	if (mousePosView.x >= 0.f && mousePosView.y >= 0.f && mousePosView.x <= mapWidth * gridSizeU && mousePosView.y <= mapHeight * gridSizeU)
 	{
 		mousePosGrid.x = mousePosView.x / gridSizeU;
 		mousePosGrid.y = mousePosView.y / gridSizeU;
@@ -133,13 +133,15 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 	window->setView(*mapView);
 	window->draw(shape);
 
+	
+
+	/*
 	fromX = mousePosGrid.x;
 	toX = mousePosGrid.x + 3;
 
 	fromY = mousePosGrid.y;
 	toY = mousePosGrid.y + 3;
 
-	/*
 	if (fromX < 0)
 	{
 		fromX = 0;
@@ -185,18 +187,32 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 	}
 	*/
 	
-	for (int i = 0; i < mapSize; i++)
+	for (int i = 0; i < mapWidth; i++)
 	{
-		for (int j = 0; j < mapSize; j++)
+		for (int j = 0; j < mapHeight; j++)
 		{
 			window->draw(tileMap[i][j]);
 		}
 	}
+	
+	RectangleShape textureShape;
 
+	fromX = mousePosGrid.x;
+	fromY = mousePosGrid.y;
+	textureShape.setFillColor({255, 255, 255, 125});
+	textureShape.setTexture(&texBackground);
+	textureShape.setPosition(fromX * gridSizeU, fromY * gridSizeU);
+	textureShape.setSize(Vector2f(1.f, 1.f));
+	textureShape.setScale(texBackground.getSize().x, texBackground.getSize().y);
+	//textureShape.setScale(texBackground.getSize().x, texBackground.getSize().y);
+	
 	window->draw(vertexMap, &texBackground);
+	window->draw(textureShape);
 	window->draw(tileSelector);
+	
 	window->setView(*uiView);
 	window->draw(text);
+
 
 	window->setView(*mapView);
 }
@@ -207,8 +223,8 @@ int MapScene::CreateBackGround(int r, int c)
 	int TILE_TYPES = 0;
 	int VERTS_IN_QUAD = 4;
 
-	int cols = mapSize;
-	int rows = mapSize;
+	int cols = mapHeight;
+	int rows = mapWidth;
 
 	vertexMap.setPrimitiveType(Quads);
 	vertexMap.resize(cols * rows * VERTS_IN_QUAD);
@@ -224,9 +240,9 @@ int MapScene::CreateBackGround(int r, int c)
 	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_SIZE, y);
 	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_SIZE, y + TILE_SIZE);
 	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_SIZE);
-
-	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, 0);
-	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_SIZE, 0);
+	
+	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, 0.f);
+	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_SIZE, 0.f);
 	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
 	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, TILE_SIZE);
 	

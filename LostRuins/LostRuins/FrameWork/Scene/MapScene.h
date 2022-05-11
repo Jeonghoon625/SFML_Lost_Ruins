@@ -14,9 +14,10 @@
 
 class MapScene : public Scene
 {
-	const int mapSize = 50;
+	const int mapWidth = 50;
+	const int mapHeight = 20;
 
-	const float VIEW_SPEED = mapSize * 10.f;
+	const float VIEW_SPEED = mapWidth * 10.f;
 	float gridSizeF;
 	unsigned gridSizeU;
 	
@@ -41,8 +42,6 @@ class MapScene : public Scene
 	Vector2i mousePosWindow;
 	Vector2f mousePosView;
 	Vector2u mousePosGrid;
-
-	//Vector2u mousePosGrid;
 
 	Text text;
 	Font font;
