@@ -36,7 +36,7 @@ void Player::Init(ZombieWalker* zombie)
 	currentStatus = Status::STATUS_IDLE;
 	animation.Play("Idle");
 
-	attackMgr.Init();
+	attackMgr.Init(zombie);
 
 	this->zombie = zombie;
 
@@ -57,6 +57,8 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 	// 애니메이션
 	AnimationUpdate();
 	animation.Update(dt);
+
+	attackMgr.Update(dt);
 
 	auto DorR = useDorR.begin();
 	while (DorR != useDorR.end())
@@ -113,22 +115,21 @@ void Player::PlayerAction(float dt, Time playTime)
 				{
 					if (InputManager::GetKeyDown(Keyboard::X))
 					{
-						attackMgr.SetAttackType(AttackType::DAGGER);
+						attackMgr.SetAttackType(WeaponType::DAGGER);
 						attackFps = attackMgr.GetAttackFps();
 						attackMgr.SetAttackPosition(sprite);
 						isAttack = true;
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Z))
 					{
-						attackMgr.SetAttackType(AttackType::TWO_HANDED);
+						attackMgr.SetAttackType(WeaponType::TWO_HANDED);
 						attackFps = attackMgr.GetAttackFps();
 						attackMgr.SetAttackPosition(sprite);
 						isAttack = true;
 					}
 					else if (InputManager::GetKeyDown(Keyboard::A))
 					{
-						attackMgr.SetAttackType(AttackType::FIRE_ARROW);
-						isSpell = true;
+
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Space))
 					{
@@ -152,7 +153,6 @@ void Player::PlayerAction(float dt, Time playTime)
 				isCrouch = false;
 			}
 		}
-
 
 		// 공격
 		if (isAttack == true)

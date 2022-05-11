@@ -1,28 +1,36 @@
 #include "AttackManager.h"
+#include "../Object/Monster/ZombieWalker.h"
 
-void AttackManager::Init()
+void AttackManager::Init(ZombieWalker* zombie)
 {
 	isFps = 0;
 	maxFps = 0;
 
+	this->zombie = zombie;
+
 	TwohandWeaponInit();
 	DaggerWeaponInit();
+
+	for (int i = 0; i < MAX_SPELL_CACHE_SIZE; i++)
+	{
+		unuseSpell.push_back(new FireArrow());
+	}
 }
 
-void AttackManager::SetAttackType(AttackType attackType)
+void AttackManager::SetAttackType(WeaponType attackType)
 {
 	switch (attackType)
 	{
-	case AttackType::DAGGER:
-		currentAtkType = AttackType::DAGGER;
+	case WeaponType::DAGGER:
+		currentAtkType = WeaponType::DAGGER;
 		maxFps = MAX_DAGGER_FPS;
 		delay = DAGGER_DELAY;
-		currentAtkType = AttackType::DAGGER;
+		currentAtkType = WeaponType::DAGGER;
 		break;
-	case AttackType::TWO_HANDED:
+	case WeaponType::TWO_HANDED:
 		maxFps = MAX_TWO_HANDED_FPS;
 		delay = TWO_HANDED_DELAY;
-		currentAtkType = AttackType::TWO_HANDED;
+		currentAtkType = WeaponType::TWO_HANDED;
 		break;
 	}
 }
@@ -31,18 +39,37 @@ void AttackManager::SetAttackPosition(Sprite sprite)
 {
 	switch (currentAtkType)
 	{
-	case AttackType::DAGGER:
+	case WeaponType::DAGGER:
 		for (auto spriteWeapon : daggers)
 		{
 			spriteWeapon->SetPosition(sprite);
 		}
 		break;
-	case AttackType::TWO_HANDED:
+	case WeaponType::TWO_HANDED:
 		for (auto spriteWeapon : twoHanded)
 		{
 			spriteWeapon->SetPosition(sprite);
 		}
 		break;
+	}
+}
+
+void AttackManager::Update(float dt)
+{
+	auto spell = useSpell.begin();
+	while (spell != useSpell.end())
+	{
+		FireArrow* isSpell = *spell;
+		isSpell->Update(dt);
+
+		if (!isSpell->IsActive())
+		{
+			spell = useSpell.erase(spell);
+		}
+		else
+		{
+			++spell;
+		}
 	}
 }
 
@@ -52,15 +79,17 @@ void AttackManager::Draw(RenderWindow* window, View* mainView)
 
 	switch (currentAtkType)
 	{
-	case AttackType::DAGGER:
+	case WeaponType::DAGGER:
 		this->sprite = daggers.at(isFps)->GetSprite();
 		window->draw(sprite);
 		break;
-	case AttackType::TWO_HANDED:
+	case WeaponType::TWO_HANDED:
 		this->sprite = twoHanded.at(isFps)->GetSprite();
 		window->draw(sprite);
 		break;
 	}
+
+
 }
 
 int AttackManager::GetAttackPoint()
@@ -68,13 +97,11 @@ int AttackManager::GetAttackPoint()
 	int damage = 0;
 	switch (currentAtkType)
 	{
-	case AttackType::DAGGER:
+	case WeaponType::DAGGER:
 		damage = 5;
 		break;
-	case AttackType::TWO_HANDED:
+	case WeaponType::TWO_HANDED:
 		damage = 10;
-		break;
-	default:
 		break;
 	}
 
@@ -86,10 +113,10 @@ int AttackManager::GetHitFrame()
 	int frame = 0;
 	switch (currentAtkType)
 	{
-	case AttackType::DAGGER:
+	case WeaponType::DAGGER:
 		frame = DAGGER_HIT_FRAME;
 		break;
-	case AttackType::TWO_HANDED:
+	case WeaponType::TWO_HANDED:
 		frame = TWO_HANDED_HIT_FRAME;
 		break;
 	}
@@ -102,10 +129,10 @@ float AttackManager::GetAttackFps()
 	float fps = 0.f;
 	switch (currentAtkType)
 	{
-	case AttackType::DAGGER:
+	case WeaponType::DAGGER:
 		fps = DAGGER_ATTACK_FPS;
 		break;
-	case AttackType::TWO_HANDED:
+	case WeaponType::TWO_HANDED:
 		fps = TWO_HANDED_ATTACK_FPS;
 		break;
 	}

@@ -143,6 +143,9 @@
     <ClCompile Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.cpp">
       <Filter>FrameWork\Object\DamageAndRecovery</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Spell\FireArrow.cpp">
+      <Filter>FrameWork\Object\Spell</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -250,6 +253,9 @@
     <ClInclude Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.h">
       <Filter>FrameWork\Object\DamageAndRecovery</Filter>
     </ClInclude>
+    <ClInclude Include="FrameWork\Object\Spell\FireArrow.h">
+      <Filter>FrameWork\Object\Spell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="FrameWork">
@@ -299,6 +305,9 @@
     </Filter>
     <Filter Include="FrameWork\Object\DamageAndRecovery">
       <UniqueIdentifier>{75e52427-22c3-41a2-be12-c7305e7afd54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\Spell">
+      <UniqueIdentifier>{32fca10a-0513-49cf-8983-140903bcf4a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -22,12 +22,12 @@ private:
 
 public:
 	DamageAndRecovery();
+	void Update(float dt);
 
 	void SetActive(bool active);
 	bool IsActive();
 	void HitPlayer(Vector2f pos, int damage);
 	void Stop();
 
-	void Update(float dt);
 	Text GetText();
 };

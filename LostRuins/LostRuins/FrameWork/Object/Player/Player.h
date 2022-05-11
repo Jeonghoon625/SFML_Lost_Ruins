@@ -51,7 +51,7 @@ private:
 	const float START_KNOCK_BACK_SPEED = 550.f;
 	const float DEAD_FALLING_SPEED = 600.f;
 	const float DEAD_TIME_COUNT = 1.f;
-	const int MAX_DAMAGE_TEXT = 30;
+	const int MAX_DAMAGE_TEXT = 10;
 
 	AnimationController animation;
 	AttackManager attackMgr;
