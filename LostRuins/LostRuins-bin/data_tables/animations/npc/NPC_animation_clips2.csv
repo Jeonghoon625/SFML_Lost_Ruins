@@ -1,0 +1,2 @@
+﻿ID,FPS,"LOOP TYPE(0:Single, 1:Loop)",CLIP PATH
+Idle,25,1,data_tables/animations/npc/NPC_animation_cout.csv

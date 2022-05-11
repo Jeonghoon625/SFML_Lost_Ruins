@@ -15,6 +15,8 @@ private:
 	AnimationClip* currentClip;
 
 	bool isPlaying;
+	bool isEnd;
+
 	int currentFrame;
 	int totalFrame;
 	float frameDurtion;
@@ -41,6 +43,8 @@ public:
 
 	float GetSpeed();
 	void SetSpeed(float speed);
+
+	bool GetIsEnd();
 
 	void ClearPlayQueue();
 };

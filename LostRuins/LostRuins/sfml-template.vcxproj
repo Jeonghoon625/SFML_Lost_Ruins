@@ -32,6 +32,7 @@
     <ClCompile Include="FrameWork\Object\Monster\Monster.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp" />
+    <ClCompile Include="FrameWork\Object\Npc\Npc.cpp" />
     <ClCompile Include="FrameWork\Object\Player\DamageAndRecovery.cpp" />
     <ClCompile Include="FrameWork\Object\Player\Player.cpp" />
     <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp" />
@@ -40,6 +41,8 @@
     <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp" />
     <ClCompile Include="FrameWork\Scene\GameScene.cpp" />
     <ClCompile Include="FrameWork\Scene\MapScene.cpp" />
+    <ClCompile Include="FrameWork\Object\TitleObject\Rofe1.cpp" />
+    <ClCompile Include="FrameWork\Object\TitleObject\Rofe2.cpp" />
     <ClCompile Include="FrameWork\Scene\Scene.cpp" />
     <ClCompile Include="FrameWork\Scene\TestScene.cpp" />
     <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp" />
@@ -72,6 +75,7 @@
     <ClInclude Include="FrameWork\Object\Monster\Monster.h" />
     <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h" />
     <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h" />
+    <ClInclude Include="FrameWork\Object\Npc\Npc.h" />
     <ClInclude Include="FrameWork\Object\Player\DamageAndRecovery.h" />
     <ClInclude Include="FrameWork\Object\Player\Player.h" />
     <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h" />
@@ -80,6 +84,8 @@
     <ClInclude Include="FrameWork\Object\Weapon\TwohandWeapon.h" />
     <ClInclude Include="FrameWork\Scene\GameScene.h" />
     <ClInclude Include="FrameWork\Scene\MapScene.h" />
+    <ClInclude Include="FrameWork\Object\TitleObject\Rofe1.h" />
+    <ClInclude Include="FrameWork\Object\TitleObject\Rofe2.h" />
     <ClInclude Include="FrameWork\Scene\Scene.h" />
     <ClInclude Include="FrameWork\Scene\TestScene.h" />
     <ClInclude Include="FrameWork\Scene\TestSceneKK.h" />

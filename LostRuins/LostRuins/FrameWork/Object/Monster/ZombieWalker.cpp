@@ -21,7 +21,7 @@ void ZombieWalker::MonsterInit()
 	strDead = ("ZombieWalkerDead");
 	strAttack = ("ZombieWalkerAttack");
 	strAttackBlocked = ("ZombieWalkerAttackBlocked");
-	strDemageTaken = ("ZombieWalkerDemageTaken");
+	strDamageTaken = ("ZombieWalkerDamageTaken");
 
 	SetHealth(20);
 	SetAtk(3);
@@ -44,8 +44,8 @@ void ZombieWalker::MonsterInit()
 	attackRangeBox.setFillColor(Color(155, 0, 0, 80));
 	attackRangeBox.setPosition(sprite.getOrigin());
 
-	hitBox.setSize(Vector2f(43.f, 40.f));
-	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y);
+	hitBox.setSize(Vector2f(43.f, 30.f));
+	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y*0.99f);
 	hitBox.setScale(scale);
 	hitBox.setFillColor(Color(155, 0, 255, 80));
 	hitBox.setPosition(sprite.getOrigin());
