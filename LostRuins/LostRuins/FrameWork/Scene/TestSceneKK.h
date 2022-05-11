@@ -34,6 +34,8 @@ private:
 	ZombieCrawler zombieCrawler;
 	ZombieWalker zombieWalker;
 
+	vector <Monster*> monsters;
+
 	vector <TestBlock*> blocks;
 public:
 	virtual void Init(SceneManager* sceneManager);

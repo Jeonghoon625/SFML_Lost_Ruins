@@ -95,20 +95,20 @@ void LamiPhaseOne::ChasePlayer(Player& player, float dt)
 	}
 }
 
-void LamiPhaseOne::Attack(float dt, int atk, Player& player)
+void LamiPhaseOne::Attack(float dt, int atk, Player& player, Time timeHit)
 {
 	if (isAttackPlayer)
 	{
 		animation.Play(strAttack);
 
-		attackDelay += dt;
+		attackHitDelay += dt;
 
 		sprite.setPosition(position);
 		findPlayerBox.setPosition(position);
 		attackRangeBox.setPosition(position);
 		hitBox.setPosition(position);
 
-		if (attackDelay > 0.75f)
+		if (attackHitDelay > 0.75f)
 		{
 			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 			{
@@ -120,11 +120,11 @@ void LamiPhaseOne::Attack(float dt, int atk, Player& player)
 				{
 					monsterSide = false;
 				}
-				player.OnHitted(atk);
+				player.OnHitted(atk, timeHit);
 				// ¿©±â¿¡ player.onhitted
 			}
 
-			attackDelay = 0.f;
+			attackHitDelay = 0.f;
 			isAttackPlayer = false;
 			animation.Play(strRun);
 		}

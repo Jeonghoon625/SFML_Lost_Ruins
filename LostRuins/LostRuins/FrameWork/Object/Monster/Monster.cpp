@@ -3,8 +3,8 @@
 #include "../../FrameWork/Mgr/TextureHolder.h"
 
 Monster::Monster()
-	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f), isFindPlayer(false), isAttackPlayer(false), attackDelay(0.f), isFalling(true), hitDelay(0.f), alive(true), immuneMs(START_IMMUNE_MS)
-	, isCollideHitBox(false), isCollideAttackRangeBox(false)
+	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f), isFindPlayer(false), isAttackPlayer(false), attackHitDelay(0.f), isFalling(true), hitDelay(0.f), isAlive(true), immuneMs(START_IMMUNE_MS)
+	, isCollideHitBox(false), isCollideAttackRangeBox(false), attackDelay(0.f)
 {
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
@@ -62,6 +62,13 @@ RectangleShape Monster::GetHitBox()
 
 void Monster::MonsterInit()
 {
+	isAttackPlayer = false;
+	isHit = false;
+	isAlive = true;
+	isFindPlayer = false;
+	isIdle = true;
+	isWalk = false;
+	isRun = false;
 	strWalk = ("GoblinAttackerWalk");
 	strIdle = ("GoblinAttackerIdle");
 	strRun = ("GoblinAttackerRun");
@@ -96,6 +103,8 @@ void Monster::MonsterInit()
 	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y * 0.99f);
 	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());
+
+	currentStatus = MonsterStatus::STATUS_IDLE;
 }
 
 
@@ -141,53 +150,171 @@ void Monster::AnimationInit(Sprite* sprite)
 
 }
 
+void Monster::AnimationUpdate()
+{
+	switch (currentStatus)
+	{
+	case MonsterStatus::STATUS_IDLE:
+		if (isAlive == false)
+		{
+			SetStatus(MonsterStatus::STATUS_DEAD);
+		}
+		else if (isHit == true)
+		{
+			SetStatus(MonsterStatus::STATUS_HIT);
+		}
+		else if (isAttackPlayer == true)
+		{
+			SetStatus(MonsterStatus::STATUS_ATTACK);
+		}
+		else if (isWalk == true)
+		{
+			SetStatus(MonsterStatus::STATUS_WALK);
+		}
+		else if (isFindPlayer == true)
+		{
+			SetStatus(MonsterStatus::STATUS_RUN);
+		}
+		break;
+	case MonsterStatus::STATUS_WALK:
+		if (isAlive == false)
+		{
+			SetStatus(MonsterStatus::STATUS_DEAD);
+		}
+		else if (isHit == true)
+		{
+			SetStatus(MonsterStatus::STATUS_HIT);
+		}
+		else if (isFindPlayer == true)
+		{
+			SetStatus(MonsterStatus::STATUS_RUN);
+		}
+		else if (isIdle == true)
+		{
+			SetStatus(MonsterStatus::STATUS_IDLE);
+		}
+	case MonsterStatus::STATUS_RUN:
+		if (isAlive == false)
+		{
+			SetStatus(MonsterStatus::STATUS_DEAD);
+		}
+		else if (isHit == true)
+		{
+			SetStatus(MonsterStatus::STATUS_HIT);
+		}
+		else if (isAttackPlayer)
+		{
+			SetStatus(MonsterStatus::STATUS_ATTACK);
+		}
+		break;
+	case MonsterStatus::STATUS_ATTACK:
+		if (isAlive == false)
+		{
+			SetStatus(MonsterStatus::STATUS_DEAD);
+		}
+		else if (isHit == true)
+		{
+			SetStatus(MonsterStatus::STATUS_HIT);
+		}
+		else if (isAttackPlayer == false)
+		{
+			SetStatus(MonsterStatus::STATUS_RUN);
+		}
+		break;
+	case MonsterStatus::STATUS_HIT:
+		if (isHit == false)
+		{
+			SetStatus(MonsterStatus::STATUS_RUN);
+		}
+	case MonsterStatus::STATUS_DEAD:
+		break;
+	default:
+		break;
+	}
+}
+
+void Monster::SetStatus(MonsterStatus newStatus)
+{
+	MonsterStatus prevStatus = currentStatus;
+	currentStatus = newStatus;
+
+	switch (currentStatus)
+	{
+	case MonsterStatus::STATUS_IDLE:
+		animation.Play(strIdle);
+		break;
+	case MonsterStatus::STATUS_WALK:
+		animation.Play(strWalk);
+		break;
+	case MonsterStatus::STATUS_RUN:
+		animation.Play(strRun);
+		break;
+	case MonsterStatus::STATUS_ATTACK:
+		animation.Play(strAttack);
+		break;
+	case MonsterStatus::STATUS_HIT:
+		animation.Play(strDamageTaken);
+		break;
+	case MonsterStatus::STATUS_DEAD:
+		animation.Play(strDead);
+		break;
+	}
+}
+
 void Monster::Walk(float dt)
 {
 	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);	//sprite의 origin 수정
-
-	if (!isFindPlayer)
+	if (isAlive)
 	{
-		checkTime += dt;
-		if (checkTime > 3.f)
+		if (!isFindPlayer && !isHit && !isAttackPlayer)
 		{
-			checkTime = 0;
-			nextMove = Utils::RandomRange(-1, 2);	//-1이면 오른쪽 0이면 멈춤 1이면 왼쪽
-
-			switch (nextMove)
+			checkTime += dt;
+			if (checkTime > 3.f)
 			{
-			case -1:
-				sprite.setScale(3.f, 3.f);
-				animation.Play(strWalk);
-				findPlayerBox.setOrigin(200.f, 40.f);
-				attackRangeBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y * 0.99f);
-				break;
-			case 0:
-				animation.Play(strIdle);
-				break;
-			case 1:
-				sprite.setScale(-3.f, 3.f);
-				animation.Play(strWalk);
-				findPlayerBox.setOrigin(0.f, 40.f);
-				attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.99f);
-				break;
-			default:
-				break;
+				checkTime = 0;
+				nextMove = Utils::RandomRange(-1, 2);	//-1이면 오른쪽 0이면 멈춤 1이면 왼쪽
+
+				switch (nextMove)
+				{
+				case -1:
+					sprite.setScale(3.f, 3.f);
+					isIdle = false;
+					isWalk = true;
+					/*animation.Play(strWalk);*/
+					findPlayerBox.setOrigin(200.f, 40.f);
+					attackRangeBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y * 0.99f);
+					break;
+				case 0:
+					/*animation.Play(strIdle);*/
+					isIdle = true;
+					isWalk - false;
+					break;
+				case 1:
+					sprite.setScale(-3.f, 3.f);
+					isIdle = false;
+					isWalk = true;
+				/*	animation.Play(strWalk);*/
+					findPlayerBox.setOrigin(0.f, 40.f);
+					attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.99f);
+					break;
+				default:
+					break;
+				}
+			}
+
+			if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
+			{
+				float h = (float)nextMove;
+				float v = 0.f;
+				Vector2f dir(h, v);
+				position += Utils::Normalize(dir) * speed * dt;
+
+				sprite.setPosition(position);
+				findPlayerBox.setPosition(position);
+				attackRangeBox.setPosition(position);
+				hitBox.setPosition(position);
 			}
 		}
-
-		if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
-		{
-			float h = (float)nextMove;
-			float v = 0.f;
-			Vector2f dir(h, v);
-			position += Utils::Normalize(dir) * speed * dt;
-
-			sprite.setPosition(position);
-			findPlayerBox.setPosition(position);
-			attackRangeBox.setPosition(position);
-			hitBox.setPosition(position);
-		}
-
 	}
 }
 
@@ -195,58 +322,69 @@ void Monster::Walk(float dt)
 
 void Monster::FindPlayer(Player& player)
 {
-	if (!isFindPlayer)
+	if (isAlive)
 	{
-		if (findPlayerBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+		if (!isFindPlayer)
 		{
-			isFindPlayer = true;
-			animation.Play(strRun);
+			if (findPlayerBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+			{
+				isIdle = false;
+				isWalk = false;
+				isFindPlayer = true;
+			/*	animation.Play(strRun);*/
+			}
 		}
 	}
 }
 
 void Monster::ChasePlayer(Player& player	, float dt)
 {
-	animation.PlayQueue(strRun);
-	if (isFindPlayer && !isAttackPlayer)
+	if (isAlive)
 	{
-		if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+		/*animation.PlayQueue(strRun);*/
+		if (isFindPlayer && !isAttackPlayer)
 		{
-			animation.Play(strAttack);
-			isAttackPlayer = true;
-		}
-
-		if (!isAttackPlayer)
-		{
-			float h = player.GetPosition().x - sprite.getPosition().x;
-			float v = 0.f;
-			Vector2f dir(h, v);
-
-			if (h > 0)
+			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay>0.5f)
 			{
-				sprite.setScale(-3.f, 3.f);	//플레이어가 몬스터 왼쪽에 있을때
-				attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.99f);
-				findPlayerBox.setOrigin(0.f, 40.f);
-			}
-			else
-			{
-				sprite.setScale(3.f, 3.f);	//플레이어가 몬스터 오른쪽에 있을때
-				attackRangeBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y * 0.99f);
-				findPlayerBox.setOrigin(200.f, 40.f);
-			}
-
-			if (h * h > 600.f * 600.f || (sprite.getPosition().y - player.GetPosition().y) > 260 || sprite.getPosition().y - player.GetPosition().y < -150)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
-			{
+				attackDelay = 0.f;
+				/*animation.Play(strAttack);*/
 				isFindPlayer = false;
+				isAttackPlayer = true;
 			}
-			if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
-			{
-				position += Utils::Normalize(dir) * speed * dt;
-				sprite.setPosition(position);
 
-				findPlayerBox.setPosition(position);
-				attackRangeBox.setPosition(position);
-				hitBox.setPosition(position);
+			if (!isAttackPlayer)
+			{
+				float h = player.GetPosition().x - sprite.getPosition().x;
+				float v = 0.f;
+				Vector2f dir(h, v);
+
+				if (h > 0)
+				{
+					sprite.setScale(-3.f, 3.f);	//플레이어가 몬스터 왼쪽에 있을때
+					attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.99f);
+					findPlayerBox.setOrigin(0.f, 40.f);
+				}
+				else
+				{
+					sprite.setScale(3.f, 3.f);	//플레이어가 몬스터 오른쪽에 있을때
+					attackRangeBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y * 0.99f);
+					findPlayerBox.setOrigin(200.f, 40.f);
+				}
+
+				if (h * h > 600.f * 600.f || (sprite.getPosition().y - player.GetPosition().y) > 260 || sprite.getPosition().y - player.GetPosition().y < -150)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
+				{
+					isFindPlayer = false;
+					isIdle = true;
+				}
+				if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
+				{
+					position += Utils::Normalize(dir) * speed * dt;
+					sprite.setPosition(position);
+
+					findPlayerBox.setPosition(position);
+					attackRangeBox.setPosition(position);
+					hitBox.setPosition(position);
+				}
 			}
 		}
 	}
@@ -259,58 +397,66 @@ void Monster::Run(float dt)
 
 void Monster::Attack(float dt, int atk, Player& player, Time timeHit)
 {
-	if (isAttackPlayer)
+	if (isAlive)
 	{
-		attackDelay += dt;
-
-		sprite.setPosition(position);
-		findPlayerBox.setPosition(position);
-		attackRangeBox.setPosition(position);
-		hitBox.setPosition(position);
-
-		if (attackDelay > 0.75f)
+		if (isAttackPlayer)
 		{
-			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
-			{
-				if (sprite.getPosition().x > player.GetSprite().getPosition().x)
-				{
-					monsterSide = true;
-				}
-				else
-				{
-					monsterSide = false;
-				}
-				player.OnHitted(atk, timeHit);
-				// 여기에 player.onhitted
-			}
+			attackHitDelay += dt;
 
-			attackDelay = 0.f;
-			isAttackPlayer = false;
-			animation.Play(strRun);
+			sprite.setPosition(position);
+			findPlayerBox.setPosition(position);
+			attackRangeBox.setPosition(position);
+			hitBox.setPosition(position);
+
+			if (attackHitDelay > 0.75f)
+			{
+				if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+				{
+					if (sprite.getPosition().x > player.GetSprite().getPosition().x)
+					{
+						monsterSide = true;
+					}
+					else
+					{
+						monsterSide = false;
+					}
+					player.OnHitted(atk, timeHit);
+					// 여기에 player.onhitted
+				}
+
+				attackHitDelay = 0.f;
+				isAttackPlayer = false;
+				isFindPlayer = true;
+				/*animation.Play(strRun);*/
+			}
 		}
 	}
 }
 
 bool Monster::OnHitted(int atk, float dt, Time timeHit)
 {
-	if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
+	if (isAlive)
 	{
-		lastHit = timeHit;
-		if (health > 0)
+		if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
 		{
-			animation.Play(strDamageTaken);
-			attackDelay = 0.f;
-			isFindPlayer = true;
-			isAttackPlayer = false;	//맞으면 공격하려던거 취소
-			health -= atk;
-			std::cout << "HP : " << GetHealth() << std::endl;
-			return true;
+			lastHit = timeHit;
+			if (health > 0)
+			{
+				/*animation.Play(strDamageTaken);*/
+				isFindPlayer = false;
+				isHit = true;
+				attackHitDelay = 0.f;
+				isAttackPlayer = false;	//맞으면 공격하려던거 취소
+				health -= atk;
+				std::cout << "HP : " << GetHealth() << std::endl;
+				return true;
+			}
+			else
+			{
+				isAlive = false;
+			}
+			return false;
 		}
-		else
-		{
-			alive = false;
-		}
-		return false;
 	}
 }
 
@@ -479,6 +625,29 @@ void Monster::Update(Player& player, float dt, std::vector<TestBlock*> blocks, T
 	FindPlayer(player);
 	ChasePlayer(player, dt);
 	Attack(dt, atk, player, playTime);
+	AnimationUpdate();
+	UpdateDelayAndStatus(dt);
+}
+
+void Monster::UpdateDelayAndStatus(float dt)
+{
+	if (isHit)
+	{
+		hitDelay += dt;
+		if (hitDelay > 0.3f)
+		{
+			hitDelay = 0.f;
+			isHit = false; 
+			isFindPlayer = true;
+		}
+	}
+
+	if (GetHealth()<0)
+	{
+		isAlive = false;
+	}
+
+	attackDelay += dt;
 }
 
 

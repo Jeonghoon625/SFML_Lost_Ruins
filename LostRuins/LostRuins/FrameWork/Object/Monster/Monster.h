@@ -5,6 +5,18 @@
 #include "../Player/Player.h"
 using namespace sf;
 
+enum class MonsterStatus
+{
+	STATUS_IDLE,
+	STATUS_WALK,
+	STATUS_RUN,
+	STATUS_CHASE,
+	STATUS_HIT,
+	STATUS_ATTACK,
+	STATUS_DEAD,
+	STATUS_UPPERCUT,
+};
+
 class Monster
 {
 protected:
@@ -29,18 +41,24 @@ protected:
 	string strAttackBlocked;
 	string strDamageTaken;
 
+	MonsterStatus currentStatus;
 
 	int nextMove;
 	float checkTime;
 
 	bool isFindPlayer;
 	bool isAttackPlayer;
-	bool alive;
+	bool isAlive;
+	bool isIdle;
+	bool isWalk;
+	bool isRun;
+	bool isHit;
 	bool isCollideHitBox;
 	bool isCollideAttackRangeBox;
 	bool monsterSide;
 	
 
+	float attackHitDelay;
 	float attackDelay;
 	float hitDelay;
 
@@ -76,6 +94,9 @@ public:
 
 	void AnimationInit(Sprite* sprite);
 
+	void AnimationUpdate();
+	void SetStatus(MonsterStatus newStatus);
+
 	virtual void Walk(float dt);
 
 	virtual void FindPlayer(Player& player);
@@ -90,6 +111,7 @@ public:
 	void UpdateCollisionAttackRangeBox(std::vector <TestBlock*> blocks);
 
 	void Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playtime);
+	void UpdateDelayAndStatus(float dt);
 
 	void Draw(RenderWindow* window);
 };
