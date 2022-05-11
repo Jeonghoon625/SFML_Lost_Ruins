@@ -91,6 +91,7 @@ private:
 
 	Font fontLostRuins;
 	Vector2f healthBarsize;
+	Vector2f mpBarsize;
 	Text textHPbar;
 	Text textMPbar;
 	Text textButtonTab; // TAB

@@ -10,19 +10,59 @@ void Coin::Init()
 	AnimationInit();
 	Spawn(gameMapCoin, resolustionCoin, tileSizeCoin);
 	animationCoin.Play("Gold");
+	coinTimer = 2.f;
 }
 
-void Coin::Update(float dt, std::vector<TestBlock*> blocks)
+void Coin::Update(float dt, std::vector<TestBlock*> blocks, Player &player)
 {
 	animationCoin.Update(dt);
 	animationCoin.PlayQueue("Gold");
 	spriteCoin.setPosition(spriteCoin.getPosition().x, positionCoin.y);
 	Gravity(dt, blocks);
+
+	if (Coindelete)
+	{
+		coinTimer -= dt;
+	}
+	
+	if(coinTimer <= 0)
+	{
+		textGold.setString("");
+	}
+
+	if (Coindelete == false)
+	{
+		if (spriteCoin.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+		{
+			Coindelete = true;
+
+			if (Coindelete == true)
+			{
+				fontGold.loadFromFile("fonts/LiberationSans-Regular.ttf");
+				textGold.setFont(fontGold);
+				textGold.setString("Get 10 Gold!");
+				textGold.setCharacterSize(17);
+				textGold.setFillColor(Color::White);
+				textGold.setPosition(20, 800);
+			}
+		}
+	}
 }
 
-void Coin::Draw(RenderWindow* window)
+void Coin::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
-	window->draw(spriteCoin);
+	window->setView(*mainView);
+	if (Coindelete == false)
+	{
+		window->draw(spriteCoin);
+	}
+
+	window->setView(*uiView);
+
+	if (Coindelete == true)
+	{
+		window->draw(textGold);
+	}
 }
 
 void Coin::Gravity(float dt, std::vector<TestBlock*> blocks)

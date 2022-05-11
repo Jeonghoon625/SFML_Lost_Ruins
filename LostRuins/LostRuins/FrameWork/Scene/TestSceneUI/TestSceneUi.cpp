@@ -197,6 +197,7 @@ void TestUi::Init(SceneManager* sceneManager)
 
 
 	HPbar.setScale(1.f, 1.f);
+	MPbar.setScale(1.f, 1.f);
 
 	menuNum = 1;
 	escNum = 1;
@@ -220,6 +221,11 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 	float HPbarHeight = 17;
 	healthBarsize = Vector2f(HPbarwidth, HPbarHeight);
 	HPbar.setScale(player.GetHealth() / 20.f, 1.f); //player.GetMaxHealth()
+
+	/*float MPwidth = 314;
+	float MPbarHeight = 17;
+	mpBarsize = Vector2f(MPwidth, HPbarHeight);
+	MPbar.setScale(player.get)*/
 
 	if (InputManager::GetKeyDown(Keyboard::Key::Escape) && inventory == false && MAP == false)
 	{

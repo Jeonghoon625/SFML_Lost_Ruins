@@ -38,7 +38,7 @@ void TestSceneTT::Update(float dt, Time playTime, RenderWindow* window, View* ma
 	this->uiView = uiView;
 	testUI.Update(dt, playTime, window, uiView, player);
 	testNpc.Update(dt);
-	coin.Update(dt, blocks);
+	coin.Update(dt, blocks, player);
 	if (player.GetPause() == false)
 	{
 		if (player.GetAlive() == false)
@@ -101,7 +101,7 @@ void TestSceneTT::Draw(RenderWindow* window, View* mainView)
 	zombieWalker->Draw(window);
 
 	testNpc.Draw(window);
-	coin.Draw(window);
+	coin.Draw(window, mainView, uiView);
 
 	window->setView(*uiView);
 	testUI.Draw(window, uiView);
