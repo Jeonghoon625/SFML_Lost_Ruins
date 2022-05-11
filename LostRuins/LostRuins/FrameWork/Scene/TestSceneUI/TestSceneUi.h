@@ -3,9 +3,10 @@
 #include "../Scene.h"
 #include "../../Mgr/TextureHolder.h"
 #include "../../Mgr/UIManager.h"
+#include "../../Object/Player/Player.h"
 
 using namespace sf;
-class Player;
+
 class Npc;
 
 class TestUi
@@ -262,7 +263,7 @@ private:
 public:
 
 	virtual void Init(SceneManager* sceneManager);
-	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView);
+	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, Player& player);
 	virtual void Draw(RenderWindow* window, View* mainView);
 	void SeeInven();
 	void SeeMap();
