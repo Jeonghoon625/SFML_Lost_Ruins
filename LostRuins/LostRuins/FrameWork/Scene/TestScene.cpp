@@ -16,26 +16,27 @@ void TestScene::Init(SceneManager* sceneManager)
 	player.Spawn(gameMap, resolution, 0.5f);
 	*/
 
-	testSprite.setTexture(TextureHolder::GetTexture("graphics/Attack_Dagger_Standing.png"));
-	testSprite.setTextureRect(IntRect(0 + (40 * 12), 0, 40, 50));
+	testSprite.setTexture(TextureHolder::GetTexture("graphics/heroin_sprite.png"));
+	AnimationInit1(&testSprite);
+	testSprite.setOrigin(15.5f, 50.f);
 	testSprite.setScale(3.f, 3.f);
 	testSprite.setPosition(Vector2f(800.f, resolution.y + 500.f));
 
-	testWeapon.setTexture(TextureHolder::GetTexture("graphics/weapon.png"));
-	testWeapon.setTextureRect(IntRect(3, 17, 4, 25));
-	testWeapon.setOrigin(2.f, 25.f);
-	testWeapon.setScale(3.f, 3.f);
+	testMagic.setTexture(TextureHolder::GetTexture("graphics/fire.png"));
+	AnimationInit(&testMagic);
+	testMagic.setOrigin(16.f, 0.f);
+	testMagic.setRotation(-90.f);
+	animation.Play("FireArrow");
 
-	float wpXpos = 800.f;
-	float wpYpos = resolution.y + 500;
-
-	testWeapon.setPosition(Vector2f(wpXpos+105, wpYpos+83));
-	testWeapon.setRotation(90.f);
+	float xpos = testSprite.getGlobalBounds().left + testSprite.getGlobalBounds().width;
+	float ypos = testSprite.getPosition().y - testSprite.getGlobalBounds().height * 0.5f;
+	testMagic.setPosition(Vector2f(xpos, ypos));
 }
 
 
 void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
 {
+	animation.Update(dt);
 	/*for (auto zombieWalker : zombieWalkers)
 	{
 		zombieWalker->Update(dt, player.GetPosition(), blocks);
@@ -46,7 +47,7 @@ void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* main
 void TestScene::Draw(RenderWindow* window, View* mainView)
 {
 	window->draw(testSprite);
-	window->draw(testWeapon);
+	window->draw(testMagic);
 	///* View ¼³Á¤*/
 	//mainView->setCenter(player.GetPosition());
 
@@ -136,4 +137,86 @@ void TestScene::CreateMonster()
 
 	TestZombieWalker* zombieWalker1 = new TestZombieWalker(res.x * 0.5f, res.y * 0.5f);
 	zombieWalkers.push_back(zombieWalker1);
+}
+
+void TestScene::AnimationInit(Sprite* sprite)
+{
+	animation.SetTarget(sprite);
+
+	rapidcsv::Document clips("data_tables/animations/magic/magic_animation_clips.csv");
+	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
+	std::vector<int> colFps = clips.GetColumn<int>("FPS");
+	std::vector<int> colLoop = clips.GetColumn<int>("LOOP TYPE(0:Single, 1:Loop)");
+	std::vector<std::string> colPath = clips.GetColumn<std::string>("CLIP PATH");
+
+	int totalClips = colId.size();
+	for (int i = 0; i < totalClips; ++i)
+	{
+		AnimationClip clip;
+		clip.id = colId[i];
+		clip.fps = colFps[i];
+		clip.loopType = (AnimationLoopType)colLoop[i];
+
+		rapidcsv::Document frames(colPath[i]);
+		std::vector<std::string> colTexture = frames.GetColumn<std::string>("TEXTURE PATH");
+		std::vector<int> colL = frames.GetColumn<int>("L");
+		std::vector<int> colT = frames.GetColumn<int>("T");
+		std::vector<int> colW = frames.GetColumn<int>("W");
+		std::vector<int> colH = frames.GetColumn<int>("H");
+
+		int totalFrames = colTexture.size();
+		for (int j = 0; j < totalFrames; ++j)
+		{
+			if (texmap.find(colTexture[j]) == texmap.end())
+			{
+				auto& ref = texmap[colTexture[j]];
+				ref.loadFromFile(colTexture[j]);
+			}
+
+			clip.frames.push_back(AnimationFrame(texmap[colTexture[j]],
+				IntRect(colL[j], colT[j], colW[j], colH[j])));
+		}
+		animation.AddClip(clip);
+	}
+}
+
+void TestScene::AnimationInit1(Sprite* sprite)
+{
+	animation.SetTarget(sprite);
+
+	rapidcsv::Document clips("data_tables/animations/player/player_animation_clips2.csv");
+	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
+	std::vector<int> colFps = clips.GetColumn<int>("FPS");
+	std::vector<int> colLoop = clips.GetColumn<int>("LOOP TYPE(0:Single, 1:Loop)");
+	std::vector<std::string> colPath = clips.GetColumn<std::string>("CLIP PATH");
+
+	int totalClips = colId.size();
+	for (int i = 0; i < totalClips; ++i)
+	{
+		AnimationClip clip;
+		clip.id = colId[i];
+		clip.fps = colFps[i];
+		clip.loopType = (AnimationLoopType)colLoop[i];
+
+		rapidcsv::Document frames(colPath[i]);
+		std::vector<std::string> colTexture = frames.GetColumn<std::string>("TEXTURE PATH");
+		std::vector<int> colL = frames.GetColumn<int>("L");
+		std::vector<int> colT = frames.GetColumn<int>("T");
+		std::vector<int> colW = frames.GetColumn<int>("W");
+		std::vector<int> colH = frames.GetColumn<int>("H");
+
+		int totalFrames = colTexture.size();
+		for (int j = 0; j < totalFrames; ++j)
+		{
+			if (texmap.find(colTexture[j]) == texmap.end())
+			{
+				auto& ref = texmap[colTexture[j]];
+				ref.loadFromFile(colTexture[j]);
+			}
+
+			clip.frames.push_back(AnimationFrame(texmap[colTexture[j]],
+				IntRect(colL[j], colT[j], colW[j], colH[j])));
+		}
+		animation.AddClip(clip);
+	}
 }

@@ -9,8 +9,8 @@ class DamageAndRecovery
 {
 private:
 	Font fontLostRuins;
-	const float MASSAGE_SPEED = 50.f;
-	const float DEFAULT_DISTANCE = 50.f;
+	const float MASSAGE_SPEED = 100.f;
+	const float DEFAULT_DISTANCE = 70.f;
 
 	bool isActive;
 

@@ -112,17 +112,21 @@ void Player::PlayerAction(float dt, Time playTime)
 				{
 					if (InputManager::GetKeyDown(Keyboard::X))
 					{
-						weaponMgr.AttackWeapon(WeaponType::DAGGER);
+						weaponMgr.SetAttackType(AttackType::DAGGER);
 						attackFps = weaponMgr.GetAttackFps();
-						weaponMgr.SetWeaponPosition(sprite);
+						weaponMgr.SetAttackPosition(sprite);
 						isAttack = true;
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Z))
 					{
-						weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
+						weaponMgr.SetAttackType(AttackType::TWO_HANDED);
 						attackFps = weaponMgr.GetAttackFps();
-						weaponMgr.SetWeaponPosition(sprite);
+						weaponMgr.SetAttackPosition(sprite);
 						isAttack = true;
+					}
+					else if (InputManager::GetKeyDown(Keyboard::A))
+					{
+						
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Space))
 					{
@@ -309,7 +313,7 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	position.x = this->gameMap.left + 200.f;
-	position.y = this->gameMap.top;
+	position.y = this->gameMap.height * 0.5f;
 
 	hitBox.setFillColor(Color(153, 153, 153, 0));
 	hitBox.setSize(Vector2f(20.f, 48.f));
@@ -364,7 +368,6 @@ bool Player::OnHitted(int damage, Time timeHit)
 				isAlive = false;
 				isJump = true;
 			}
-			std::cout << health << std::endl;
 			return true;
 		}
 	}
@@ -626,6 +629,10 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
+		else if (InputManager::GetKeyDown(Keyboard::A))
+		{
+			SetStatus(Status::STATUS_SPELL);
+		}
 		else if (InputManager::GetKey(Keyboard::Down))
 		{
 			SetStatus(Status::STATUS_CROUCH);
@@ -663,6 +670,10 @@ void Player::AnimationUpdate()
 		else if (InputManager::GetKeyDown(Keyboard::Z))
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::A))
+		{
+			SetStatus(Status::STATUS_SPELL);
 		}
 		else if (InputManager::GetKey(Keyboard::Down))
 		{
@@ -757,6 +768,20 @@ void Player::AnimationUpdate()
 			SetStatus(Status::STATUS_IDLE);
 		}
 		break;
+	case Status::STATUS_SPELL:
+		if (isAlive == false)
+		{
+			SetStatus(Status::STATUS_DEAD);
+		}
+		else if (isHit == true)
+		{
+			SetStatus(Status::STATUS_HIT);
+		}
+		else if(isAttack == false)
+		{
+			SetStatus(Status::STATUS_IDLE);
+		}
+		break;
 	case Status::STATUS_HIT:
 		if (isHit == false)
 		{
@@ -826,6 +851,10 @@ void Player::SetStatus(Status newStatus)
 		break;
 	case Status::STATUS_ATK_DAGGER:
 		animation.Play("Attack_Dagger_Standing");
+		break;
+	case Status::STATUS_SPELL:
+		animation.Play("CastingSpell1");
+		animation.PlayQueue("CastingSpell3");
 		break;
 	case Status::STATUS_HIT:
 		animation.Play("DamageTaken");

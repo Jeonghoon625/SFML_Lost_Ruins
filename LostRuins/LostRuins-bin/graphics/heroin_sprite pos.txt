@@ -12,3 +12,5 @@ CrouchingtoIdle L0, T490, W30, H50, C1, R1, MC1
 Attack_Dagger_Standing L0, W43, H50, C15, R1, MC1
 DamageTaken L0, T2533, W31, H50, C1, R1, MC1
 Dead L0, T2595, W43, H50, C9, R1, MC9
+CastingSpell1 L0, T1860, W40, H50, C8, R1 MC8
+CastingSpell3 L0, T2229, W40, H50, C7, R1 MC7

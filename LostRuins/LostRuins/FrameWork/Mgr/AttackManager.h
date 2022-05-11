@@ -7,14 +7,14 @@
 using namespace sf;
 using namespace std;
 
-enum class WeaponType
+enum class AttackType
 {
 	DAGGER,
-	ONE_HANDED,
 	TWO_HANDED,
+	FIRE_ARROW,
 };
 
-class WeaponManager
+class AttackManager
 {
 private:
 	const int MAX_DAGGER_FPS = 12;
@@ -28,7 +28,7 @@ private:
 	const float DAGGER_ATTACK_FPS = 0.03f;
 	const float TWO_HANDED_ATTACK_FPS = 0.04f;
 
-	WeaponType currentWeapon;
+	AttackType currentWeapon;
 	Sprite sprite;
 
 	int isFps;
@@ -40,8 +40,8 @@ private:
 
 public:
 	void Init();
-	void AttackWeapon(WeaponType weaponType);
-	void SetWeaponPosition(Sprite sprite);
+	void SetAttackType(AttackType attackType);
+	void SetAttackPosition(Sprite sprite);
 	void Draw(RenderWindow* window, View* mainView);
 
 	int GetAttackPoint();
@@ -54,7 +54,7 @@ public:
 	void ResetFps();
 	Sprite GetSprite();
 
-	~WeaponManager();
+	~AttackManager();
 	void TwohandWeaponInit();
 	void DaggerWeaponInit();
 };

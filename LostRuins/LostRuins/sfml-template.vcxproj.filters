@@ -23,7 +23,7 @@
     <ClCompile Include="FrameWork\Mgr\Utils.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Mgr\WeaponManager.cpp">
+    <ClCompile Include="FrameWork\Mgr\AttackManager.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp">
@@ -166,7 +166,7 @@
     <ClInclude Include="FrameWork\Mgr\Utils.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Mgr\WeaponManager.h">
+    <ClInclude Include="FrameWork\Mgr\AttackManager.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Animation\rapidcsv.h">

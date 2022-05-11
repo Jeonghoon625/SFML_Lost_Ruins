@@ -19,12 +19,8 @@ class GameScene : public Scene
 	IntRect gameMap;
 
 	Texture textureHeroine;
-	Sprite heroineAction;
 
 	vector <TestBlock*> blocks;
-
-	Sprite testSprite;
-	Sprite testWeapon;
 
 	// test
 	ZombieWalker* zombieWalker;

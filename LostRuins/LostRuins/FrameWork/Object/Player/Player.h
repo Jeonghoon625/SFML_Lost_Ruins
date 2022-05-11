@@ -10,7 +10,7 @@
 #include "../../Mgr/Utils.h"
 #include "../../Mgr/InputManager.h"
 #include "../TestBlock/TestBlock.h"
-#include "../../Mgr/WeaponManager.h"
+#include "../../Mgr/AttackManager.h"
 #include "../Player/DamageAndRecovery.h"
 
 using namespace sf;
@@ -27,6 +27,7 @@ enum class Status
 	STATUS_ROLL,
 	STATUS_ATK_TWO_STAND,
 	STATUS_ATK_DAGGER,
+	STATUS_SPELL,
 	STATUS_HIT,
 	STATUS_DEAD,
 };
@@ -53,7 +54,7 @@ private:
 	const int MAX_DAMAGE_TEXT = 30;
 
 	AnimationController animation;
-	WeaponManager weaponMgr;
+	AttackManager weaponMgr;
 
 	Vector2f position;
 

@@ -1,6 +1,6 @@
-#include "WeaponManager.h"
+#include "AttackManager.h"
 
-void WeaponManager::Init()
+void AttackManager::Init()
 {
 	isFps = 0;
 	maxFps = 0;
@@ -9,40 +9,35 @@ void WeaponManager::Init()
 	DaggerWeaponInit();
 }
 
-void WeaponManager::AttackWeapon(WeaponType weaponType)
+void AttackManager::SetAttackType(AttackType attackType)
 {
-	switch (weaponType)
+	switch (attackType)
 	{
-	case WeaponType::DAGGER:
-		currentWeapon = WeaponType::DAGGER;
+	case AttackType::DAGGER:
+		currentWeapon = AttackType::DAGGER;
 		maxFps = MAX_DAGGER_FPS;
 		delay = DAGGER_DELAY;
-		currentWeapon = WeaponType::DAGGER;
+		currentWeapon = AttackType::DAGGER;
 		break;
-	case WeaponType::ONE_HANDED:
-		currentWeapon = WeaponType::ONE_HANDED;
-		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		maxFps = MAX_TWO_HANDED_FPS;
 		delay = TWO_HANDED_DELAY;
-		currentWeapon = WeaponType::TWO_HANDED;
+		currentWeapon = AttackType::TWO_HANDED;
 		break;
 	}
 }
 
-void WeaponManager::SetWeaponPosition(Sprite sprite)
+void AttackManager::SetAttackPosition(Sprite sprite)
 {
 	switch (currentWeapon)
 	{
-	case WeaponType::DAGGER:
+	case AttackType::DAGGER:
 		for (auto spriteWeapon : daggers)
 		{
 			spriteWeapon->SetPosition(sprite);
 		}
 		break;
-	case WeaponType::ONE_HANDED:
-		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		for (auto spriteWeapon : twoHanded)
 		{
 			spriteWeapon->SetPosition(sprite);
@@ -51,36 +46,32 @@ void WeaponManager::SetWeaponPosition(Sprite sprite)
 	}
 }
 
-void WeaponManager::Draw(RenderWindow* window, View* mainView)
+void AttackManager::Draw(RenderWindow* window, View* mainView)
 {
 	window->setView(*mainView);
 
 	switch (currentWeapon)
 	{
-	case WeaponType::DAGGER:
+	case AttackType::DAGGER:
 		this->sprite = daggers.at(isFps)->GetSprite();
 		window->draw(sprite);
 		break;
-	case WeaponType::ONE_HANDED:
-		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		this->sprite = twoHanded.at(isFps)->GetSprite();
 		window->draw(sprite);
 		break;
 	}
 }
 
-int WeaponManager::GetAttackPoint()
+int AttackManager::GetAttackPoint()
 {
 	int damage = 0;
 	switch (currentWeapon)
 	{
-	case WeaponType::DAGGER:
+	case AttackType::DAGGER:
 		damage = 5;
 		break;
-	case WeaponType::ONE_HANDED:
-		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		damage = 10;
 		break;
 	default:
@@ -90,17 +81,15 @@ int WeaponManager::GetAttackPoint()
 	return damage;
 }
 
-int WeaponManager::GetHitFrame()
+int AttackManager::GetHitFrame()
 {
 	int frame = 0;
 	switch (currentWeapon)
 	{
-	case WeaponType::DAGGER:
+	case AttackType::DAGGER:
 		frame = DAGGER_HIT_FRAME;
 		break;
-	case WeaponType::ONE_HANDED:
-		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		frame = TWO_HANDED_HIT_FRAME;
 		break;
 	}
@@ -108,17 +97,15 @@ int WeaponManager::GetHitFrame()
 	return frame;
 }
 
-float WeaponManager::GetAttackFps()
+float AttackManager::GetAttackFps()
 {
 	float fps = 0.f;
 	switch (currentWeapon)
 	{
-	case WeaponType::DAGGER:
+	case AttackType::DAGGER:
 		fps = DAGGER_ATTACK_FPS;
 		break;
-	case WeaponType::ONE_HANDED:
-		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		fps = TWO_HANDED_ATTACK_FPS;
 		break;
 	}
@@ -126,37 +113,37 @@ float WeaponManager::GetAttackFps()
 	return fps;
 }
 
-bool WeaponManager::CheckFps()
+bool AttackManager::CheckFps()
 {
 	return isFps < maxFps ? true : false;
 }
 
-bool WeaponManager::CheckDelay()
+bool AttackManager::CheckDelay()
 {
 	return isFps < delay ? true : false;
 }
 
-int WeaponManager::GetFps()
+int AttackManager::GetFps()
 {
 	return isFps;
 }
 
-void WeaponManager::NextFps()
+void AttackManager::NextFps()
 {
 	isFps++;
 }
 
-void WeaponManager::ResetFps()
+void AttackManager::ResetFps()
 {
 	isFps = 0;
 }
 
-Sprite WeaponManager::GetSprite()
+Sprite AttackManager::GetSprite()
 {
 	return sprite;
 }
 
-WeaponManager::~WeaponManager()
+AttackManager::~AttackManager()
 {
 	for (auto spriteWeapon : twoHanded)
 	{
@@ -165,7 +152,7 @@ WeaponManager::~WeaponManager()
 	twoHanded.clear();
 }
 
-void WeaponManager::TwohandWeaponInit()
+void AttackManager::TwohandWeaponInit()
 {
 	for (auto spriteWeapon : twoHanded)
 	{
@@ -209,7 +196,7 @@ void WeaponManager::TwohandWeaponInit()
 	twoHanded.push_back(twoHanded_17fps);
 }
 
-void WeaponManager::DaggerWeaponInit()
+void AttackManager::DaggerWeaponInit()
 {
 	for (auto spriteWeapon : daggers)
 	{
