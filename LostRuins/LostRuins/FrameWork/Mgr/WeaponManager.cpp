@@ -90,6 +90,24 @@ int WeaponManager::GetAttackPoint()
 	return damage;
 }
 
+int WeaponManager::GetHitFrame()
+{
+	int frame = 0;
+	switch (currentWeapon)
+	{
+	case WeaponType::DAGGER:
+		frame = DAGGER_HIT_FRAME;
+		break;
+	case WeaponType::ONE_HANDED:
+		break;
+	case WeaponType::TWO_HANDED:
+		frame = TWO_HANDED_HIT_FRAME;
+		break;
+	}
+
+	return frame;
+}
+
 float WeaponManager::GetAttackFps()
 {
 	float fps = 0.f;
@@ -116,6 +134,11 @@ bool WeaponManager::CheckFps()
 bool WeaponManager::CheckDelay()
 {
 	return isFps < delay ? true : false;
+}
+
+int WeaponManager::GetFps()
+{
+	return isFps;
 }
 
 void WeaponManager::NextFps()

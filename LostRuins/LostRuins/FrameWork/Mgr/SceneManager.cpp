@@ -39,6 +39,10 @@ void SceneManager::SceneSwitch(SceneType sceneType)
 	case SceneType::GameScene:
 		currentScene = new GameScene();
 		break;
+
+	case SceneType::MapScene:
+		currentScene = new MapScene();
+		break;
 	}
 	sceneInit();
 }

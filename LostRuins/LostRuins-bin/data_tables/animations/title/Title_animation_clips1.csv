@@ -1,0 +1,4 @@
+﻿ID,FPS,"LOOP TYPE(0:Single, 1:Loop)",CLIP PATH
+heroine,12,1,data_tables/animations/title/Title_animation_heroine.csv
+TitleRF1,7,1,data_tables/animations/title/Title_animation_titlerf1.csv
+TitleRF2,7,1,data_tables/animations/title/Title_animation_titlerf2.csv
