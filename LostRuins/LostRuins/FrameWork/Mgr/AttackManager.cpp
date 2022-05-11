@@ -17,20 +17,23 @@ void AttackManager::Init(ZombieWalker* zombie)
 	}
 }
 
-void AttackManager::SetAttackType(WeaponType attackType)
+void AttackManager::SetAttackType(AttackType attackType)
 {
 	switch (attackType)
 	{
-	case WeaponType::DAGGER:
-		currentAtkType = WeaponType::DAGGER;
+	case AttackType::DAGGER:
+		currentAtkType = AttackType::DAGGER;
 		maxFps = MAX_DAGGER_FPS;
 		delay = DAGGER_DELAY;
-		currentAtkType = WeaponType::DAGGER;
+		currentAtkType = AttackType::DAGGER;
 		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		maxFps = MAX_TWO_HANDED_FPS;
 		delay = TWO_HANDED_DELAY;
-		currentAtkType = WeaponType::TWO_HANDED;
+		currentAtkType = AttackType::TWO_HANDED;
+		break;
+	case AttackType::FIRE_ARROW:
+		currentAtkType = AttackType::FIRE_ARROW;
 		break;
 	}
 }
@@ -39,13 +42,13 @@ void AttackManager::SetAttackPosition(Sprite sprite)
 {
 	switch (currentAtkType)
 	{
-	case WeaponType::DAGGER:
+	case AttackType::DAGGER:
 		for (auto spriteWeapon : daggers)
 		{
 			spriteWeapon->SetPosition(sprite);
 		}
 		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		for (auto spriteWeapon : twoHanded)
 		{
 			spriteWeapon->SetPosition(sprite);
@@ -79,11 +82,11 @@ void AttackManager::Draw(RenderWindow* window, View* mainView)
 
 	switch (currentAtkType)
 	{
-	case WeaponType::DAGGER:
+	case AttackType::DAGGER:
 		this->sprite = daggers.at(isFps)->GetSprite();
 		window->draw(sprite);
 		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		this->sprite = twoHanded.at(isFps)->GetSprite();
 		window->draw(sprite);
 		break;
@@ -97,10 +100,10 @@ int AttackManager::GetAttackPoint()
 	int damage = 0;
 	switch (currentAtkType)
 	{
-	case WeaponType::DAGGER:
+	case AttackType::DAGGER:
 		damage = 5;
 		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		damage = 10;
 		break;
 	}
@@ -113,10 +116,10 @@ int AttackManager::GetHitFrame()
 	int frame = 0;
 	switch (currentAtkType)
 	{
-	case WeaponType::DAGGER:
+	case AttackType::DAGGER:
 		frame = DAGGER_HIT_FRAME;
 		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		frame = TWO_HANDED_HIT_FRAME;
 		break;
 	}
@@ -129,11 +132,14 @@ float AttackManager::GetAttackFps()
 	float fps = 0.f;
 	switch (currentAtkType)
 	{
-	case WeaponType::DAGGER:
+	case AttackType::DAGGER:
 		fps = DAGGER_ATTACK_FPS;
 		break;
-	case WeaponType::TWO_HANDED:
+	case AttackType::TWO_HANDED:
 		fps = TWO_HANDED_ATTACK_FPS;
+		break;
+	case AttackType::FIRE_ARROW:
+		fps = FIRE_ARROW_CAST_TIME;
 		break;
 	}
 

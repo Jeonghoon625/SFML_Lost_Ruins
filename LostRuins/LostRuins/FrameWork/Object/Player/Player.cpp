@@ -115,21 +115,23 @@ void Player::PlayerAction(float dt, Time playTime)
 				{
 					if (InputManager::GetKeyDown(Keyboard::X))
 					{
-						attackMgr.SetAttackType(WeaponType::DAGGER);
+						attackMgr.SetAttackType(AttackType::DAGGER);
 						attackFps = attackMgr.GetAttackFps();
 						attackMgr.SetAttackPosition(sprite);
 						isAttack = true;
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Z))
 					{
-						attackMgr.SetAttackType(WeaponType::TWO_HANDED);
+						attackMgr.SetAttackType(AttackType::TWO_HANDED);
 						attackFps = attackMgr.GetAttackFps();
 						attackMgr.SetAttackPosition(sprite);
 						isAttack = true;
 					}
 					else if (InputManager::GetKeyDown(Keyboard::A))
 					{
-
+						attackMgr.SetAttackType(AttackType::FIRE_ARROW);
+						attackFps = attackMgr.GetAttackFps();
+						isSpell = true;
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Space))
 					{
@@ -196,7 +198,11 @@ void Player::PlayerAction(float dt, Time playTime)
 		}
 		else if (isSpell == true)
 		{
-			
+			attackFps -= dt;
+			if (attackFps < 0.f)
+			{
+				isSpell = false;
+			}
 		}
 		// ÀÌµ¿
 		else
@@ -784,7 +790,7 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_HIT);
 		}
-		else if(isAttack == false)
+		else if(isSpell == false)
 		{
 			SetStatus(Status::STATUS_IDLE);
 		}

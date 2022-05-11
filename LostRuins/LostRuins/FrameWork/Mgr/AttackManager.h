@@ -11,14 +11,10 @@ using namespace std;
 
 class ZombieWalker;
 
-enum class WeaponType
+enum class AttackType
 {
 	DAGGER,
 	TWO_HANDED,
-};
-
-enum class SpellType
-{
 	FIRE_ARROW,
 };
 
@@ -36,8 +32,9 @@ private:
 	const float TWO_HANDED_ATTACK_FPS = 0.04f;
 
 	const int MAX_SPELL_CACHE_SIZE = 10;
+	const float FIRE_ARROW_CAST_TIME = 1.f;
 
-	WeaponType currentAtkType;
+	AttackType currentAtkType;
 	Sprite sprite;
 
 	int isFps;
@@ -54,7 +51,7 @@ private:
 
 public:
 	void Init(ZombieWalker* zombie);
-	void SetAttackType(WeaponType attackType);
+	void SetAttackType(AttackType attackType);
 	void SetAttackPosition(Sprite sprite);
 
 	void Update(float dt);
