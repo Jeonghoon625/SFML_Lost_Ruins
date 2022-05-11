@@ -140,6 +140,9 @@
     <ClCompile Include="FrameWork\Object\Npc\Npc.cpp">
       <Filter>Framework\Object\Npc</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.cpp">
+      <Filter>FrameWork\Object\DamageAndRecovery</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -243,6 +246,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Npc\Npc.h">
       <Filter>Framework\Object\Npc</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.h">
+      <Filter>FrameWork\Object\DamageAndRecovery</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

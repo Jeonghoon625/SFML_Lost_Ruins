@@ -27,6 +27,7 @@
     <ClCompile Include="FrameWork\Mgr\TextureHolder.cpp" />
     <ClCompile Include="FrameWork\Mgr\UIManager.cpp" />
     <ClCompile Include="FrameWork\Mgr\Utils.cpp" />
+    <ClCompile Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp" />
     <ClCompile Include="FrameWork\Mgr\AttackManager.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\Monster.cpp" />
@@ -69,6 +70,7 @@
     <ClInclude Include="FrameWork\Mgr\TextureHolder.h" />
     <ClInclude Include="FrameWork\Mgr\UIManager.h" />
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
+    <ClInclude Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.h" />
     <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h" />
     <ClInclude Include="FrameWork\Mgr\AttackManager.h" />
     <ClInclude Include="FrameWork\Object\Monster\Monster.h" />
