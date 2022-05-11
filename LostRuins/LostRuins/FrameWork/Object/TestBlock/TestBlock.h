@@ -13,6 +13,7 @@ private:
 	Texture texture;
 public:
 	TestBlock(float left, float top, float width, float hight);
+	TestBlock(FloatRect getGlobalBounds, Vector2u mousePosGrid);
 	const Vector2f GetPosition();
 	const FloatRect GetBlockRect();
 	const RectangleShape GetBlockShape();
