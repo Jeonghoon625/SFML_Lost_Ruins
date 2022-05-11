@@ -7,6 +7,7 @@
 #include "../Animation/rapidcsv.h"
 #include "TestSceneUI/TestSceneUi.h"
 #include "../Object/Npc/Npc.h"
+#include "../Object/Coin/Coin.h"
 #include "../Object/Player/Player.h"
 #include "../Object/TestBlock/TestBlock.h"
 #include "../Object/Monster/Monster.h"
@@ -24,6 +25,7 @@ private:
 
 	TestUi testUI;
 	Npc testNpc;
+	Coin coin;
 
 	View* uiView;
 
