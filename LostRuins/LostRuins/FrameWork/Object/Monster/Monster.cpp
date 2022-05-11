@@ -205,7 +205,7 @@ void Monster::FindPlayer(Player& player)
 	}
 }
 
-void Monster::ChasePlayer(Player& player, float dt)
+void Monster::ChasePlayer(Player& player	, float dt)
 {
 	animation.PlayQueue(strRun);
 	if (isFindPlayer && !isAttackPlayer)

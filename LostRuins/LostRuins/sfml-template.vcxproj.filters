@@ -98,6 +98,9 @@
     <ClCompile Include="FrameWork\Object\Weapon\Dagger.cpp">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\LamiPhaseOne.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -186,6 +189,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Weapon\Dagger.h">
       <Filter>FrameWork\Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\LamiPhaseOne.h">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

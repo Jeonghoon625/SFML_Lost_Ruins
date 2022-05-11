@@ -29,6 +29,7 @@
     <ClCompile Include="FrameWork\Mgr\Utils.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp" />
     <ClCompile Include="FrameWork\Mgr\WeaponManager.cpp" />
+    <ClCompile Include="FrameWork\Object\Monster\LamiPhaseOne.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\Monster.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
     <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h" />
     <ClInclude Include="FrameWork\Mgr\WeaponManager.h" />
+    <ClInclude Include="FrameWork\Object\Monster\LamiPhaseOne.h" />
     <ClInclude Include="FrameWork\Object\Monster\Monster.h" />
     <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h" />
     <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h" />
