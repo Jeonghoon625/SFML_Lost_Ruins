@@ -49,47 +49,50 @@ void LamiPhaseOne::MonsterInit()
 
 void LamiPhaseOne::ChasePlayer(Player& player, float dt)
 {
-	animation.PlayQueue(strRun);
-	if (isFindPlayer && !isAttackPlayer)
+	if (isAlive)
 	{
-		if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+		if (isFindPlayer && !isAttackPlayer)
 		{
-			/*animation.Play(strAttack);*/
-			isAttackPlayer = true;
-			++attackCount;
-		}
-
-		if (!isAttackPlayer)
-		{
-			float h = player.GetPosition().x - sprite.getPosition().x;
-			float v = 0.f;
-			Vector2f dir(h, v);
-
-			if (h > 0)
+			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay > 0.5f)
 			{
-				sprite.setScale(-3.f, 3.f);	//플레이어가 몬스터 왼쪽에 있을때
-				attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.99f);
-				findPlayerBox.setOrigin(0.f, 40.f);
-			}
-			else
-			{
-				sprite.setScale(3.f, 3.f);	//플레이어가 몬스터 오른쪽에 있을때
-				attackRangeBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y * 0.99f);
-				findPlayerBox.setOrigin(200.f, 40.f);
-			}
-
-			if (h * h > 600.f * 600.f || (sprite.getPosition().y - player.GetPosition().y) > 260 || sprite.getPosition().y - player.GetPosition().y < -150)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
-			{
+				attackDelay = 0.f;
 				isFindPlayer = false;
+				isAttackPlayer = true;
 			}
-			if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
-			{
-				position += Utils::Normalize(dir) * speed * dt;
-				sprite.setPosition(position);
 
-				findPlayerBox.setPosition(position);
-				attackRangeBox.setPosition(position);
-				hitBox.setPosition(position);
+			if (!isAttackPlayer)
+			{
+				float h = player.GetPosition().x - sprite.getPosition().x;
+				float v = 0.f;
+				Vector2f dir(h, v);
+
+				if (h > 0)
+				{
+					sprite.setScale(-3.f, 3.f);	//플레이어가 몬스터 왼쪽에 있을때
+					attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.99f);
+					findPlayerBox.setOrigin(0.f, 40.f);
+				}
+				else
+				{
+					sprite.setScale(3.f, 3.f);	//플레이어가 몬스터 오른쪽에 있을때
+					attackRangeBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y * 0.99f);
+					findPlayerBox.setOrigin(200.f, 40.f);
+				}
+
+				if (h * h > 600.f * 600.f || (sprite.getPosition().y - player.GetPosition().y) > 260 || sprite.getPosition().y - player.GetPosition().y < -150)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
+				{
+					isFindPlayer = false;
+					isIdle = true;
+				}
+				if ((isCollideHitBox && !isCollideAttackRangeBox) == false)
+				{
+					position += Utils::Normalize(dir) * speed * dt;
+					sprite.setPosition(position);
+
+					findPlayerBox.setPosition(position);
+					attackRangeBox.setPosition(position);
+					hitBox.setPosition(position);
+				}
 			}
 		}
 	}
@@ -97,36 +100,36 @@ void LamiPhaseOne::ChasePlayer(Player& player, float dt)
 
 void LamiPhaseOne::Attack(float dt, int atk, Player& player, Time timeHit)
 {
-	if (isAttackPlayer)
+	if (isAlive)
 	{
-		animation.Play(strAttack);
-
-		attackHitDelay += dt;
-
-		sprite.setPosition(position);
-		findPlayerBox.setPosition(position);
-		attackRangeBox.setPosition(position);
-		hitBox.setPosition(position);
-
-		if (attackHitDelay > 0.75f)
+		if (isAttackPlayer)
 		{
-			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
-			{
-				if (sprite.getPosition().x > player.GetSprite().getPosition().x)
-				{
-					monsterSide = true;
-				}
-				else
-				{
-					monsterSide = false;
-				}
-				player.OnHitted(atk, timeHit);
-				// 여기에 player.onhitted
-			}
+			attackHitDelay += dt;
 
-			attackHitDelay = 0.f;
-			isAttackPlayer = false;
-			animation.Play(strRun);
+			sprite.setPosition(position);
+			findPlayerBox.setPosition(position);
+			attackRangeBox.setPosition(position);
+			hitBox.setPosition(position);
+
+			if (attackHitDelay > 0.75f)
+			{
+				if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+				{
+					if (sprite.getPosition().x > player.GetSprite().getPosition().x)
+					{
+						monsterSide = true;
+					}
+					else
+					{
+						monsterSide = false;
+					}
+					player.OnHitted(atk, timeHit);
+				}
+
+				attackHitDelay = 0.f;
+				isAttackPlayer = false;
+				isFindPlayer = true;
+			}
 		}
 	}
 }
