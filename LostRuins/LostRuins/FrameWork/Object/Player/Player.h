@@ -59,7 +59,6 @@ private:
 
 	Texture texture;
 	Sprite sprite;
-	Sprite spriteWeapon;
 	
 	Vector2i resolustion;
 	IntRect gameMap;
