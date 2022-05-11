@@ -3,34 +3,28 @@
 FireArrow::FireArrow()
 	: speed(DEFAULT_SPEED), isActive(false), isDirection(true)
 {
-	texture = TextureHolder::GetTexture("graphics/fire.png");
-	sprite.setTexture(texture);
 	AnimationInit();
 	sprite.setOrigin(16.f, 0.f);
 	animation.Play("FireArrow");
 }
 
-void FireArrow::Spell(Vector2f pos, Sprite sprite)
+void FireArrow::Spell(Vector2f pos, bool dir)
 {
 	SetActive(true);
 
 	distance = 0.f;
-	float xpos = 0.f;
-	float ypos = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height * 0.5f;
-	if (sprite.getScale().x > 0.f)
+	isDirection = dir;
+	position = pos;
+	if (isDirection == true)
 	{
-		this->sprite.setRotation(-90.f);
-		xpos = sprite.getGlobalBounds().left + sprite.getGlobalBounds().width;
-		isDirection = true;
+		sprite.setRotation(-90.f);
 	}
-	else if (sprite.getScale().x < 0.f)
+	else if (isDirection == false)
 	{
-		this->sprite.setRotation(90.f);
-		xpos = sprite.getGlobalBounds().left;
-		isDirection = false;
+		sprite.setRotation(90.f);
 	}
 
-	this->sprite.setPosition(Vector2f(xpos, ypos));
+	sprite.setPosition(position);
 }
 
 void FireArrow::Update(float dt)
@@ -50,6 +44,7 @@ void FireArrow::Update(float dt)
 	{
 		Stop();
 	}
+	animation.Update(dt);
 }
 
 void FireArrow::SetActive(bool active)
@@ -76,7 +71,7 @@ void FireArrow::AnimationInit()
 {
 	animation.SetTarget(&sprite);
 
-	rapidcsv::Document clips("data_tables/animations/player/player_animation_clips2.csv");
+	rapidcsv::Document clips("data_tables/animations/magic/magic_animation_clips.csv");
 	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
 	std::vector<int> colFps = clips.GetColumn<int>("FPS");
 	std::vector<int> colLoop = clips.GetColumn<int>("LOOP TYPE(0:Single, 1:Loop)");

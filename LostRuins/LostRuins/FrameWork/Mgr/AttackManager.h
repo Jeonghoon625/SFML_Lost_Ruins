@@ -41,6 +41,8 @@ private:
 	int maxFps;
 	int delay;
 
+	bool isDirection;
+
 	vector <TwohandWeapon*> twoHanded;
 	vector <Dagger*> daggers;
 
@@ -51,11 +53,13 @@ private:
 
 public:
 	void Init(ZombieWalker* zombie);
+	void Update(float dt);
+	void WeaponDraw(RenderWindow* window, View* mainView);
+	void SpellDraw(RenderWindow* window);
+
 	void SetAttackType(AttackType attackType);
 	void SetAttackPosition(Sprite sprite);
-
-	void Update(float dt);
-	void Draw(RenderWindow* window, View* mainView);
+	void CastingSpell(Sprite sprite);
 
 	int GetAttackPoint();
 	int GetHitFrame();

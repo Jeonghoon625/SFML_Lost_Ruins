@@ -84,8 +84,10 @@ void Player::Draw(RenderWindow* window, View* mainView)
 	window->draw(hitBox);
 	if (isAttack == true && isDelay == false)
 	{
-		attackMgr.Draw(window, mainView);
+		attackMgr.WeaponDraw(window, mainView);
 	}
+	attackMgr.SpellDraw(window);
+
 	for (auto DorR : useDorR)
 	{
 		window->draw(DorR->GetText());
@@ -196,11 +198,20 @@ void Player::PlayerAction(float dt, Time playTime)
 				}
 			}
 		}
+		// 주문
 		else if (isSpell == true)
 		{
 			attackFps -= dt;
-			if (attackFps < 0.f)
+			if (attackFps < 0.25f && isDelay == false)
 			{
+				//std::cout << "발사" << std::endl;
+				attackMgr.CastingSpell(sprite);
+				isDelay = true;
+			}
+			else if (attackFps < 0.f && isDelay == true)
+			{
+				//std::cout << "주문 완료" << std::endl;
+				isDelay = false;
 				isSpell = false;
 			}
 		}
@@ -790,7 +801,7 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_HIT);
 		}
-		else if(isSpell == false)
+		else if (isSpell == false)
 		{
 			SetStatus(Status::STATUS_IDLE);
 		}

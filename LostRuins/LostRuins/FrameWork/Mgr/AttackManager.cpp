@@ -17,6 +17,52 @@ void AttackManager::Init(ZombieWalker* zombie)
 	}
 }
 
+void AttackManager::Update(float dt)
+{
+	auto spell = useSpell.begin();
+	while (spell != useSpell.end())
+	{
+		FireArrow* isSpell = *spell;
+		isSpell->Update(dt);
+
+		if (!isSpell->IsActive())
+		{
+			spell = useSpell.erase(spell);
+		}
+		else
+		{
+			++spell;
+		}
+	}
+}
+
+void AttackManager::WeaponDraw(RenderWindow* window, View* mainView)
+{
+	window->setView(*mainView);
+
+	switch (currentAtkType)
+	{
+	case AttackType::DAGGER:
+		this->sprite = daggers.at(isFps)->GetSprite();
+		window->draw(sprite);
+		break;
+	case AttackType::TWO_HANDED:
+		this->sprite = twoHanded.at(isFps)->GetSprite();
+		window->draw(sprite);
+		break;
+	default:
+		break;
+	}
+}
+
+void AttackManager::SpellDraw(RenderWindow* window)
+{
+	for (auto spell : useSpell)
+	{
+		window->draw(spell->GetSprite());
+	}
+}
+
 void AttackManager::SetAttackType(AttackType attackType)
 {
 	switch (attackType)
@@ -57,42 +103,33 @@ void AttackManager::SetAttackPosition(Sprite sprite)
 	}
 }
 
-void AttackManager::Update(float dt)
+void AttackManager::CastingSpell(Sprite sprite)
 {
-	auto spell = useSpell.begin();
-	while (spell != useSpell.end())
+	float xpos = sprite.getPosition().x;
+	float ypos = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height * 0.5f;
+	Vector2f spawnPos = (Vector2f(xpos, ypos));
+	if (sprite.getScale().x > 0.f)
 	{
-		FireArrow* isSpell = *spell;
-		isSpell->Update(dt);
-
-		if (!isSpell->IsActive())
-		{
-			spell = useSpell.erase(spell);
-		}
-		else
-		{
-			++spell;
-		}
+		isDirection = true;
 	}
-}
-
-void AttackManager::Draw(RenderWindow* window, View* mainView)
-{
-	window->setView(*mainView);
-
-	switch (currentAtkType)
+	else if (sprite.getScale().x < 0.f)
 	{
-	case AttackType::DAGGER:
-		this->sprite = daggers.at(isFps)->GetSprite();
-		window->draw(sprite);
-		break;
-	case AttackType::TWO_HANDED:
-		this->sprite = twoHanded.at(isFps)->GetSprite();
-		window->draw(sprite);
-		break;
+		isDirection = false;
 	}
 
+	if (unuseSpell.empty())
+	{
+		for (int i = 0; i < MAX_SPELL_CACHE_SIZE; ++i)
+		{
+			unuseSpell.push_back(new FireArrow());
+		}
+	}
 
+	FireArrow* spell = unuseSpell.front();
+	unuseSpell.pop_front();
+
+	useSpell.push_back(spell);
+	spell->Spell(spawnPos, isDirection);
 }
 
 int AttackManager::GetAttackPoint()

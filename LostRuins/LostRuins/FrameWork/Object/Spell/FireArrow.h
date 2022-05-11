@@ -30,7 +30,7 @@ private:
 
 public:
 	FireArrow();
-	void Spell(Vector2f pos, Sprite sprite);
+	void Spell(Vector2f pos, bool dir);
 	void Update(float dt);
 	void SetActive(bool active);
 
