@@ -11,7 +11,7 @@
 #include "../../Mgr/InputManager.h"
 #include "../TestBlock/TestBlock.h"
 #include "../../Mgr/AttackManager.h"
-#include "../Player/DamageAndRecovery.h"
+#include "../DamageAndRecovery/DamageAndRecovery.h"
 
 using namespace sf;
 
@@ -54,7 +54,7 @@ private:
 	const int MAX_DAMAGE_TEXT = 30;
 
 	AnimationController animation;
-	AttackManager weaponMgr;
+	AttackManager attackMgr;
 
 	Vector2f position;
 
@@ -83,6 +83,7 @@ private:
 	bool isFloor;
 	bool isJump;
 	bool isAttack;
+	bool isSpell;
 	bool isDelay;
 	bool isCrouch;
 	bool isRoll;

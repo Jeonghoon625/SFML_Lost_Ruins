@@ -20,6 +20,7 @@ void Player::Init(ZombieWalker* zombie)
 	isFloor = false;
 	isJump = false;
 	isAttack = false;
+	isSpell = false;
 	isCrouch = false;
 	isRoll = false;
 	isDelay = false;
@@ -35,7 +36,7 @@ void Player::Init(ZombieWalker* zombie)
 	currentStatus = Status::STATUS_IDLE;
 	animation.Play("Idle");
 
-	weaponMgr.Init();
+	attackMgr.Init();
 
 	this->zombie = zombie;
 
@@ -81,7 +82,7 @@ void Player::Draw(RenderWindow* window, View* mainView)
 	window->draw(hitBox);
 	if (isAttack == true && isDelay == false)
 	{
-		weaponMgr.Draw(window, mainView);
+		attackMgr.Draw(window, mainView);
 	}
 	for (auto DorR : useDorR)
 	{
@@ -108,25 +109,26 @@ void Player::PlayerAction(float dt, Time playTime)
 					isFloor = false;
 					isJump = true;
 				}
-				if (isAttack == false)
+				if (isAttack == false && isSpell == false)
 				{
 					if (InputManager::GetKeyDown(Keyboard::X))
 					{
-						weaponMgr.SetAttackType(AttackType::DAGGER);
-						attackFps = weaponMgr.GetAttackFps();
-						weaponMgr.SetAttackPosition(sprite);
+						attackMgr.SetAttackType(AttackType::DAGGER);
+						attackFps = attackMgr.GetAttackFps();
+						attackMgr.SetAttackPosition(sprite);
 						isAttack = true;
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Z))
 					{
-						weaponMgr.SetAttackType(AttackType::TWO_HANDED);
-						attackFps = weaponMgr.GetAttackFps();
-						weaponMgr.SetAttackPosition(sprite);
+						attackMgr.SetAttackType(AttackType::TWO_HANDED);
+						attackFps = attackMgr.GetAttackFps();
+						attackMgr.SetAttackPosition(sprite);
 						isAttack = true;
 					}
 					else if (InputManager::GetKeyDown(Keyboard::A))
 					{
-						
+						attackMgr.SetAttackType(AttackType::FIRE_ARROW);
+						isSpell = true;
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Space))
 					{
@@ -160,37 +162,41 @@ void Player::PlayerAction(float dt, Time playTime)
 			{
 				if (isDelay == false)
 				{
-					weaponMgr.NextFps();
-					attackFps = weaponMgr.GetAttackFps();
-					if (weaponMgr.CheckFps() == false)
+					attackMgr.NextFps();
+					attackFps = attackMgr.GetAttackFps();
+					if (attackMgr.CheckFps() == false)
 					{
-						weaponMgr.ResetFps();
+						attackMgr.ResetFps();
 						isDelay = true;
 					}
 					else
 					{
-						if (weaponMgr.GetFps() > weaponMgr.GetHitFrame())
+						if (attackMgr.GetFps() > attackMgr.GetHitFrame())
 						{
-							if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+							if (attackMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
 							{
 								std::cout << "Hit" << zombie->GetHealth() << std::endl;
-								zombie->OnHitted(weaponMgr.GetAttackPoint(), dt, playTime);
+								zombie->OnHitted(attackMgr.GetAttackPoint(), dt, playTime);
 							}
 						}
 					}
 				}
 				else if (isDelay == true)
 				{
-					weaponMgr.NextFps();
-					attackFps = weaponMgr.GetAttackFps();
-					if (weaponMgr.CheckDelay() == false)
+					attackMgr.NextFps();
+					attackFps = attackMgr.GetAttackFps();
+					if (attackMgr.CheckDelay() == false)
 					{
-						weaponMgr.ResetFps();
+						attackMgr.ResetFps();
 						isDelay = false;
 						isAttack = false;
 					}
 				}
 			}
+		}
+		else if (isSpell == true)
+		{
+			
 		}
 		// ¿Ãµø
 		else
@@ -260,6 +266,7 @@ void Player::PlayerAction(float dt, Time playTime)
 			}
 		}
 	}
+	// ªÁ∏¡
 	else if (isAlive == false)
 	{
 		if (isFloor == false)
@@ -350,8 +357,8 @@ bool Player::OnHitted(int damage, Time timeHit)
 			}
 			if (isAttack == true)
 			{
-				attackFps = weaponMgr.GetAttackFps();
-				weaponMgr.ResetFps();
+				attackFps = attackMgr.GetAttackFps();
+				attackMgr.ResetFps();
 				isDelay = false;
 				isAttack = false;
 			}

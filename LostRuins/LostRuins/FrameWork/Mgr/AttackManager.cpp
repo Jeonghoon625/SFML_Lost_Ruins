@@ -14,22 +14,22 @@ void AttackManager::SetAttackType(AttackType attackType)
 	switch (attackType)
 	{
 	case AttackType::DAGGER:
-		currentWeapon = AttackType::DAGGER;
+		currentAtkType = AttackType::DAGGER;
 		maxFps = MAX_DAGGER_FPS;
 		delay = DAGGER_DELAY;
-		currentWeapon = AttackType::DAGGER;
+		currentAtkType = AttackType::DAGGER;
 		break;
 	case AttackType::TWO_HANDED:
 		maxFps = MAX_TWO_HANDED_FPS;
 		delay = TWO_HANDED_DELAY;
-		currentWeapon = AttackType::TWO_HANDED;
+		currentAtkType = AttackType::TWO_HANDED;
 		break;
 	}
 }
 
 void AttackManager::SetAttackPosition(Sprite sprite)
 {
-	switch (currentWeapon)
+	switch (currentAtkType)
 	{
 	case AttackType::DAGGER:
 		for (auto spriteWeapon : daggers)
@@ -50,7 +50,7 @@ void AttackManager::Draw(RenderWindow* window, View* mainView)
 {
 	window->setView(*mainView);
 
-	switch (currentWeapon)
+	switch (currentAtkType)
 	{
 	case AttackType::DAGGER:
 		this->sprite = daggers.at(isFps)->GetSprite();
@@ -66,7 +66,7 @@ void AttackManager::Draw(RenderWindow* window, View* mainView)
 int AttackManager::GetAttackPoint()
 {
 	int damage = 0;
-	switch (currentWeapon)
+	switch (currentAtkType)
 	{
 	case AttackType::DAGGER:
 		damage = 5;
@@ -84,7 +84,7 @@ int AttackManager::GetAttackPoint()
 int AttackManager::GetHitFrame()
 {
 	int frame = 0;
-	switch (currentWeapon)
+	switch (currentAtkType)
 	{
 	case AttackType::DAGGER:
 		frame = DAGGER_HIT_FRAME;
@@ -100,7 +100,7 @@ int AttackManager::GetHitFrame()
 float AttackManager::GetAttackFps()
 {
 	float fps = 0.f;
-	switch (currentWeapon)
+	switch (currentAtkType)
 	{
 	case AttackType::DAGGER:
 		fps = DAGGER_ATTACK_FPS;

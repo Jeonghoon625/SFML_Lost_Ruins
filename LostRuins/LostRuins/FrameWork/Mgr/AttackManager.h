@@ -21,14 +21,17 @@ private:
 	const int DAGGER_DELAY = 3;
 	const int MAX_TWO_HANDED_FPS = 17;
 	const int TWO_HANDED_DELAY = 3;
+	const int MAX_FIRE_ARROW_FPS = 12;
+	const int SPELL_DELAY = 3;
 
 	const int DAGGER_HIT_FRAME = 9;
 	const int TWO_HANDED_HIT_FRAME = 10;
 
 	const float DAGGER_ATTACK_FPS = 0.03f;
 	const float TWO_HANDED_ATTACK_FPS = 0.04f;
+	const float FIRE_ARROW_SPELL_FPS = 0.04f;
 
-	AttackType currentWeapon;
+	AttackType currentAtkType;
 	Sprite sprite;
 
 	int isFps;

@@ -137,9 +137,6 @@
     <ClCompile Include="FrameWork\Object\Weapon\Dagger.cpp">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\Player\DamageAndRecovery.cpp">
-      <Filter>FrameWork\Object\Player</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\Object\Npc\Npc.cpp">
       <Filter>Framework\Object\Npc</Filter>
     </ClCompile>
@@ -244,9 +241,6 @@
     <ClInclude Include="FrameWork\Object\Weapon\Dagger.h">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\Player\DamageAndRecovery.h">
-      <Filter>FrameWork\Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Object\Npc\Npc.h">
       <Filter>Framework\Object\Npc</Filter>
     </ClInclude>
@@ -296,6 +290,9 @@
     </Filter>
     <Filter Include="Framework\Object\TitleObject">
       <UniqueIdentifier>{357af2aa-5fb7-49fd-983d-35777ffead7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\DamageAndRecovery">
+      <UniqueIdentifier>{75e52427-22c3-41a2-be12-c7305e7afd54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
