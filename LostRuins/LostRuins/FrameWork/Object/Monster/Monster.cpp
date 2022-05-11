@@ -13,9 +13,6 @@ Monster::Monster()
 	isIdle = true;
 	isWalk = false;
 	isRun = false;
-
-	currentStatus = MonsterStatus::STATUS_IDLE;
-
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 }
@@ -72,6 +69,7 @@ RectangleShape Monster::GetHitBox()
 
 void Monster::MonsterInit()
 {
+
 	strWalk = ("GoblinAttackerWalk");
 	strIdle = ("GoblinAttackerIdle");
 	strRun = ("GoblinAttackerRun");
@@ -88,6 +86,7 @@ void Monster::MonsterInit()
 	sprite.setScale(scale);
 	position = sprite.getPosition();
 	
+
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
 	findPlayerBox.setFillColor(Color(255, 255, 255, 80));
@@ -105,6 +104,8 @@ void Monster::MonsterInit()
 	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y * 0.99f);
 	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());
+
+	currentStatus = MonsterStatus::STATUS_IDLE;
 }
 
 
@@ -331,6 +332,7 @@ void Monster::FindPlayer(Player& player)
 				isIdle = false;
 				isWalk = false;
 				isFindPlayer = true;
+			/*	animation.Play(strRun);*/
 			}
 		}
 	}
@@ -340,11 +342,13 @@ void Monster::ChasePlayer(Player& player	, float dt)
 {
 	if (isAlive)
 	{
+		/*animation.PlayQueue(strRun);*/
 		if (isFindPlayer && !isAttackPlayer)
 		{
 			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay>0.5f)
 			{
 				attackDelay = 0.f;
+				/*animation.Play(strAttack);*/
 				isFindPlayer = false;
 				isAttackPlayer = true;
 			}

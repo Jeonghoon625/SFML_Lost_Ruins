@@ -12,7 +12,7 @@
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
 #include "../Object/TestBlock/TestBlock.h"
-
+#include "../Object/Monster/LamiPhaseTwo.h"
 
 
 
@@ -34,7 +34,7 @@ private:
 	ZombieCrawler zombieCrawler;
 	ZombieWalker zombieWalker;
 
-	vector <Monster*> monsters;
+	LamiPhaseTwo Lami2;
 
 	vector <TestBlock*> blocks;
 public:

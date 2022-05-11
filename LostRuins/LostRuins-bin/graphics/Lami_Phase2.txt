@@ -13,3 +13,8 @@ HandAttackFar L0 T3313 W140 H180 C10 R1 AC10 origin 111 38
 HandAttackFarToIdle L0 T3534 W80 H170 C2 R1 AC2 origin 54 33
 HandReappearing L0 T3717 W140 H220 C11 R1 AC11 origin 113 95
 HandReappearingToIdle L0 T4018 W75 H145 C2 R1 AC2 origin 59 31
+
+https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Image.php
+
+left eye 49.5, 52.5
+right eye 74.5, 52.5

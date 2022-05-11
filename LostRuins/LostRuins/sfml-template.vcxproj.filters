@@ -146,6 +146,12 @@
     <ClCompile Include="FrameWork\Object\Npc\Npc.cpp">
       <Filter>Framework\Object\Npc</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\LamiPhaseTwo.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\LamiHand.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -255,6 +261,12 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Npc\Npc.h">
       <Filter>Framework\Object\Npc</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\LamiPhaseTwo.h">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\LamiHand.h">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
