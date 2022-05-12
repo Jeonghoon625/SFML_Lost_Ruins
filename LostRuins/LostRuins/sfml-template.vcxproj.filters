@@ -156,7 +156,10 @@
       <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Object\Coin\Coin.cpp">
-      <Filter>FrameWork\Object</Filter>
+      <Filter>FrameWork\Object\Coin</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\CollisionBlock\CollisionBlock.cpp">
+      <Filter>FrameWork\Object\CollisionBlock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -274,11 +277,14 @@
     <ClInclude Include="FrameWork\Object\Monster\LamiHand.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\Coin\Coin.h">
-      <Filter>FrameWork\Object</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h">
       <Filter>FrameWork\Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Coin\Coin.h">
+      <Filter>FrameWork\Object\Coin</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\CollisionBlock\CollisionBlock.h">
+      <Filter>FrameWork\Object\CollisionBlock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -332,6 +338,12 @@
     </Filter>
     <Filter Include="FrameWork\Object\Spell">
       <UniqueIdentifier>{32fca10a-0513-49cf-8983-140903bcf4a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\CollisionBlock">
+      <UniqueIdentifier>{66f68861-44a6-4166-9945-1f8eeec1ee20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\Coin">
+      <UniqueIdentifier>{ca6ace7e-b289-460c-b72c-f4e6a862768a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

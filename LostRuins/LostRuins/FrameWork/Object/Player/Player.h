@@ -11,6 +11,7 @@
 #include "../../Mgr/InputManager.h"
 #include "../TestBlock/TestBlock.h"
 #include "../../Mgr/AttackManager.h"
+#include "../CollisionBlock/CollisionBlock.h"
 #include "../DamageAndRecovery/DamageAndRecovery.h"
 
 using namespace sf;
@@ -35,18 +36,18 @@ enum class Status
 class Player
 {
 private:
-	const Vector2f scale = Vector2f(3.f, 3.f);
-	const Vector2f scaleFlipX = Vector2f(-3.f, 3.f);
+	const Vector2f scale = Vector2f(1.f, 1.f);
+	const Vector2f scaleFlipX = Vector2f(-1.f, 1.f);
 	const Vector2f hitBoxStand = Vector2f(10.f, 48.f);
 	const Vector2f hitBoxCrouch = Vector2f(10.f, 23.f);
 
 	const int START_HEALTH = 20;
 	const int START_MANA = 20;
-	const float START_SPEED = 600.f;
-	const float START_JUMP_SPEED = 1000.f;
-	const float START_ROLL_SPEED = 450.f;
+	const float START_SPEED = 200.f;
+	const float START_JUMP_SPEED = 300.f;
+	const float START_ROLL_SPEED = 150.f;
 	const float START_ROLL_TIME = 0.5f;
-	const float GRAVITY_POWER = 2000.f;
+	const float GRAVITY_POWER = 600.f;
 	const float START_IMMUNE_MS = 500.f;
 	const float START_KNOCK_BACK_SPEED = 550.f;
 	const float DEAD_FALLING_SPEED = 600.f;
@@ -104,10 +105,13 @@ private:
 public:
 	void Init(ZombieWalker* zombie);
 	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
+	void Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime);
 	void Draw(RenderWindow* window, View* mainView);
 	
 	void PlayerAction(float dt, Time playTime);
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
+	void Spawn(float x, float y);
+
 	bool OnHitted(int damage, Time timeHit);
 
 	Time GetLastTime() const;
@@ -125,5 +129,6 @@ public:
 	void AnimationUpdate();
 	void SetStatus(Status newStatus);
 
+	
 };
 

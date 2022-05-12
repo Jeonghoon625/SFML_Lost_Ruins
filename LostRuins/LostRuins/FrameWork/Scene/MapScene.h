@@ -10,7 +10,7 @@
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
 #include "TestSceneUI/TestSceneUi.h"
-#include "../Object/TestBlock/TestBlock.h"
+#include "../Object/CollisionBlock/CollisionBlock.h"
 #include <vector>
 
 enum class InputState
@@ -25,7 +25,7 @@ class MapScene : public Scene
 {
 	const int mapWidth = 50;
 	const int mapHeight = 20;
-
+	
 	const float VIEW_SPEED = mapWidth * 10.f;
 	float gridSizeF;
 	unsigned gridSizeU;
@@ -49,7 +49,7 @@ class MapScene : public Scene
 
 	Vector2i mousePosScreen;
 	Vector2i mousePosWindow;
-	Vector2f mousePosView;
+	Vector2f mousePosWorld;
 	Vector2u mousePosGrid;
 
 	Text text;
@@ -64,16 +64,22 @@ class MapScene : public Scene
 
 	RectangleShape* currentDrag;
 
-	vector <TestBlock*> blocks;
+	vector <CollisionBlock*> blocks;
+
+	//test
+	bool isDraw;
+	Player* player;
 
 public:
 	MapScene();
-	int CreateBackGround(int c, int r);
 
-	void CreateBlocks(int fromX, int toX, int fromY, int toY);
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
 	virtual void Draw(RenderWindow* window, View* mainView);
+
+	int CreateBackGround(int c, int r);
+	void CreateBlocks(int fromX, int toX, int fromY, int toY);
+
 	virtual ~MapScene();
 };
 

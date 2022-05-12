@@ -888,3 +888,177 @@ void Player::SetStatus(Status newStatus)
 		break;
 	}
 }
+
+
+void Player::Spawn(float x, float y)
+{
+	position.x = x;
+	position.y = y;
+
+	hitBox.setFillColor(Color(103, 103, 103, 125));
+	hitBox.setSize(Vector2f(20.f, 48.f));
+	hitBox.setOrigin(hitBoxStand);
+	hitBox.setScale(scale);
+	hitBox.setPosition(position);
+}
+
+void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime)
+{
+	// 플레이어 행동
+	PlayerAction(dt, playTime);
+
+	// 충돌 처리
+	bool isCollided = false;
+	for (auto bk : blocks)
+	{
+		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
+		{
+			float blockUp = bk->GetBlockRect().top;
+			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height; //t+h
+			float blockLeft = bk->GetBlockRect().left;
+			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width; //l+w
+
+			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height;
+			float playerDown = hitBox.getPosition().y;
+			float playerLeft = hitBox.getGlobalBounds().left;
+			float playerRight = hitBox.getPosition().x + hitBox.getGlobalBounds().width * 0.5f;
+
+			float playerXpos = hitBox.getPosition().x;
+			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
+			Vector2f pos = hitBox.getPosition();
+
+			// 블럭 CB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
+			{
+				pos.y = blockDown + hitBox.getGlobalBounds().height;
+				isJump = false;
+				JumpingSpeed = START_JUMP_SPEED;
+			}
+			// 블럭 LB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockLeft > playerXpos && blockDown < playerYpos)
+			{
+				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+					isJump = false;
+					JumpingSpeed = START_JUMP_SPEED;
+				}
+				else if (abs(blockLeft - playerRight) < abs(blockDown - playerUp))
+				{
+					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockLeft - playerRight);
+					pos.y -= abs(blockDown - playerUp);
+				}
+			}
+			// 블럭 RB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockRight < playerXpos && blockDown < playerYpos)
+			{
+				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+					isJump = false;
+					JumpingSpeed = START_JUMP_SPEED;
+				}
+				else if (abs(blockRight - playerLeft) < abs(blockDown - playerUp))
+				{
+					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x += abs(blockRight - playerLeft);
+					pos.y -= abs(blockDown - playerUp);
+				}
+			}
+			// 블럭 CT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
+			{
+				pos.y = blockUp + 1.f;
+				isFloor = true;
+				fallingSpeed = 0.f;
+			}
+			// 블럭 LT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockLeft > playerXpos && blockUp > playerYpos)
+			{
+				if (abs(blockLeft - playerRight) > abs(blockUp - playerDown))
+				{
+					pos.y = blockUp + 1.f;
+					isFloor = true;
+					fallingSpeed = 0.f;
+				}
+				else if (abs(blockLeft - playerRight) < abs(blockUp - playerDown))
+				{
+					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockLeft - playerRight);
+					pos.y -= abs(blockUp - playerDown);
+					pos.y += 1.f;
+				}
+			}
+			// 블럭 RT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockRight < playerXpos && blockUp > playerYpos)
+			{
+				if (abs(blockRight - playerLeft) > abs(blockUp - playerDown))
+				{
+					pos.y = blockUp + 1.f;
+					isFloor = true;
+					fallingSpeed = 0.f;
+				}
+				else if (abs(blockRight - playerLeft) < abs(blockUp - playerDown))
+				{
+					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockRight - playerLeft);
+					pos.y -= abs(blockUp - playerDown);
+					pos.y += 1.f;
+				}
+			}
+			// 블럭 LC에 플레이어가 충돌
+			if (blockLeft > playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			{
+				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+			}
+			// 블럭 RC에 플레이어가 충돌
+			if (blockRight < playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			{
+				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+			}
+
+			isCollided = true;
+			hitBox.setPosition(pos);
+			position = pos;
+		}
+	}
+	if (isCollided == false)
+	{
+		isFloor = false;
+	}
+
+	// 애니메이션
+	AnimationUpdate();
+	animation.Update(dt);
+
+	attackMgr.Update(dt);
+
+	auto DorR = useDorR.begin();
+	while (DorR != useDorR.end())
+	{
+		DamageAndRecovery* isDorR = *DorR;
+		isDorR->Update(dt);
+
+		if (!isDorR->IsActive())
+		{
+			DorR = useDorR.erase(DorR);
+		}
+		else
+		{
+			++DorR;
+		}
+	}
+}
