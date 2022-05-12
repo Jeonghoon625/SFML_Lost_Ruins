@@ -1,13 +1,16 @@
 #include "MapScene.h"
-#include "../Mgr/InputManager.h"
 #include <sstream>
 #include <iostream>
+#include "../Mgr/InputManager.h"
+
 MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSizeF)), shape(Vector2f(gridSizeF, gridSizeF)), tileSelector(Vector2f(gridSizeF, gridSizeF))
 {
 	tileSelector.setFillColor(Color::Transparent);
 	tileSelector.setOutlineThickness(5.f);
 	tileSelector.setOutlineColor(Color::Red);
-	texBackground = TextureHolder::GetTexture("maps/Stage1/test.png");
+
+	selectTexture = TextureHolder::GetTexture("maps/Stage1/test.png");
+
 	currentInputState = InputState::BLOCK;
 	isDraw = true;
 }
@@ -19,94 +22,36 @@ void MapScene::Init(SceneManager* sceneManager)
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 
-mapView = new View(FloatRect(0, 0, resolution.x, resolution.y));
-uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
+	mapView = new View(FloatRect(0, 0, resolution.x, resolution.y));
+	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 
-tileMap.resize(mapWidth, vector<RectangleShape>());
+	gridTileMap.resize(mapWidth, vector<RectangleShape>());
 
-for (int i = 0; i < mapWidth; i++)
-{
-	tileMap[i].resize(mapHeight, RectangleShape());
-	for (int j = 0; j < mapHeight; j++)
+	for (int i = 0; i < mapWidth; i++)
 	{
-		tileMap[i][j].setSize(Vector2f(gridSizeF, gridSizeF));
-		tileMap[i][j].setFillColor(Color::White);
-		tileMap[i][j].setOutlineThickness(1.f);
-		tileMap[i][j].setOutlineColor(Color::Black);
-		tileMap[i][j].setPosition(i * gridSizeF, j * gridSizeF);
+		gridTileMap[i].resize(mapHeight, RectangleShape());
+		for (int j = 0; j < mapHeight; j++)
+		{
+			gridTileMap[i][j].setSize(Vector2f(gridSizeF, gridSizeF));
+			gridTileMap[i][j].setFillColor(Color::White);
+			gridTileMap[i][j].setOutlineThickness(1.f);
+			gridTileMap[i][j].setOutlineColor(Color::Black);
+			gridTileMap[i][j].setPosition(i * gridSizeF, j * gridSizeF);
+		}
 	}
-}
-font.loadFromFile("fonts/LiberationSans-Bold.ttf");
-text.setCharacterSize(20);
-text.setFillColor(Color::Magenta);
-text.setFont(font);
-text.setPosition(0.f, 0.f);
-text.setString("TEST");
+
+	font.loadFromFile("fonts/LiberationSans-Bold.ttf");
+	text.setCharacterSize(20);
+	text.setFillColor(Color::Magenta);
+	text.setFont(font);
+	text.setPosition(0.f, 0.f);
+	text.setString("TEST");
 }
 
 void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-	if (player != nullptr)
-	{
-		if (InputManager::GetKeyDown(Keyboard::F9))
-		{
-			delete player;
-		}
-	}
-
-	mousePosScreen = Mouse::getPosition();
-	mousePosWindow = Mouse::getPosition(*window);
-	mousePosWorld = window->mapPixelToCoords(mousePosWindow);
-
-	if (mousePosWorld.x >= 0.f && mousePosWorld.y >= 0.f && mousePosWorld.x <= mapWidth * gridSizeU && mousePosWorld.y <= mapHeight * gridSizeU)
-	{
-		mousePosGrid.x = mousePosWorld.x / gridSizeU;
-		mousePosGrid.y = mousePosWorld.y / gridSizeU;
-	}
-	/*else
-	{
-		mousePosGrid.x = 0;
-		mousePosGrid.y = 0;
-	}*/
-
-	tileSelector.setPosition(mousePosGrid.x * gridSizeF, mousePosGrid.y * gridSizeF);
-	std::stringstream ss;
-	ss << "Screen : " << mousePosScreen.x << " " << mousePosScreen.y << "\n"
-		<< "Window : " << mousePosWindow.x << " " << mousePosWindow.y << "\n"
-		<< "World : " << mousePosWorld.x << " " << mousePosWorld.y << "\n"
-		<< "Grid : " << mousePosGrid.x << " " << mousePosGrid.y << "\n";
-
-	text.setString(ss.str());
-
-	if (InputManager::GetKey(Keyboard::A))
-	{
-		mapView->move(-VIEW_SPEED * dt, 0.f);
-	}
-
-	if (InputManager::GetKey(Keyboard::D))
-	{
-		mapView->move(VIEW_SPEED * dt, 0.f);
-	}
-
-	if (InputManager::GetKey(Keyboard::W))
-	{
-		mapView->move(0, -VIEW_SPEED * dt);
-	}
-
-	if (InputManager::GetKey(Keyboard::S))
-	{
-		mapView->move(0, VIEW_SPEED * dt);
-	}
-
-	if (InputManager::GetKeyDown(Keyboard::Add))
-	{
-		mapView->zoom(0.5f);
-	}
-
-	if (InputManager::GetKeyDown(Keyboard::Subtract))
-	{
-		mapView->zoom(2.f);
-	}
+	UpdateMousePos(window);
+	MoveView(dt);
 
 	if (InputManager::GetMouseButtonDown(Mouse::Button::Left))
 	{
@@ -166,7 +111,6 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	case::InputState::BLOCK:
 		if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
 		{
-			
 			CollisionBlock* block = new CollisionBlock(currentDrag->getGlobalBounds(), downGrid);
 			blocks.push_back(block);
 
@@ -174,13 +118,9 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 
 			upGrid = mousePosGrid;
 			std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
-
-			CreateBlocks(downGrid.x, upGrid.x, downGrid.y, upGrid.y);
 		}
 		break;
 	}
-
-	text.setPosition(mousePosWindow.x + 10.f, mousePosWindow.y + 10.f);
 
 	if (InputManager::GetKeyDown(Keyboard::F8))
 	{
@@ -188,7 +128,6 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 		player->Init(nullptr);
 		player->Spawn(mousePosWorld.x, mousePosWorld.y);
 	}
-
 	if (player != nullptr)
 	{
 		if (player->GetPause() == false)
@@ -199,10 +138,14 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 			}
 
 			player->Update(dt, blocks, playTime);
-			std::cout << player->GetPosition().x << ", " << player->GetPosition().y << std::endl;
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::F9))
+		{
+			delete player;
+			player = nullptr;
 		}
 	}
-
 	if (InputManager::GetKeyDown(Keyboard::Tab))
 	{
 		isDraw = !isDraw;
@@ -214,7 +157,156 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 	window->setView(*mapView);
 	window->draw(shape);
 
-	/*
+	for (int i = 0; i < mapWidth; i++)
+	{
+		for (int j = 0; j < mapHeight; j++)
+		{
+			window->draw(gridTileMap[i][j]);
+		}
+	}
+
+	RectangleShape textureShape;
+
+	fromX = mousePosGrid.x;
+	fromY = mousePosGrid.y;
+	textureShape.setFillColor({ 255, 255, 255, 125 });
+	textureShape.setTexture(&selectTexture);
+	textureShape.setPosition(fromX * gridSizeU, fromY * gridSizeU);
+	textureShape.setSize(Vector2f(0.f, 0.f));
+	textureShape.setScale(selectTexture.getSize().x, selectTexture.getSize().y);
+
+	window->draw(vertexMap, &selectTexture);
+	window->draw(textureShape);
+
+	if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == InputState::BLOCK)
+	{
+		window->draw(*currentDrag);
+	}
+
+	if (isDraw)
+	{
+		for (auto blockShape : blocks)
+		{
+			window->draw(blockShape->GetBlockShape());
+		}
+	}
+
+	window->draw(tileSelector);
+	if (player != nullptr)
+	{
+		player->Draw(window, mapView);
+	}
+	window->setView(*uiView);
+	window->draw(text);
+
+	window->setView(*mapView);
+}
+
+void MapScene::MoveView(float dt)
+{
+	if (InputManager::GetKey(Keyboard::A))
+	{
+		mapView->move(-VIEW_SPEED * dt, 0.f);
+	}
+	if (InputManager::GetKey(Keyboard::D))
+	{
+		mapView->move(VIEW_SPEED * dt, 0.f);
+	}
+	if (InputManager::GetKey(Keyboard::W))
+	{
+		mapView->move(0, -VIEW_SPEED * dt);
+	}
+	if (InputManager::GetKey(Keyboard::S))
+	{
+		mapView->move(0, VIEW_SPEED * dt);
+	}
+	if (InputManager::GetKeyDown(Keyboard::Add))
+	{
+		mapView->zoom(0.5f);
+	}
+	if (InputManager::GetKeyDown(Keyboard::Subtract))
+	{
+		mapView->zoom(2.f);
+	}
+}
+
+void MapScene::UpdateMousePos(RenderWindow* window)
+{
+	mousePosScreen = Mouse::getPosition();
+	mousePosWindow = Mouse::getPosition(*window);
+	mousePosWorld = window->mapPixelToCoords(mousePosWindow);
+
+	if (mousePosWorld.x >= 0.f && mousePosWorld.y >= 0.f && mousePosWorld.x <= mapWidth * gridSizeU && mousePosWorld.y <= mapHeight * gridSizeU)
+	{
+		mousePosGrid.x = mousePosWorld.x / gridSizeU;
+		mousePosGrid.y = mousePosWorld.y / gridSizeU;
+	}
+	/*else
+	{
+		mousePosGrid.x = 0;
+		mousePosGrid.y = 0;
+	}*/
+
+	tileSelector.setPosition(mousePosGrid.x * gridSizeF, mousePosGrid.y * gridSizeF);
+	std::stringstream ss;
+	ss << "Screen : " << mousePosScreen.x << " " << mousePosScreen.y << "\n"
+		<< "Window : " << mousePosWindow.x << " " << mousePosWindow.y << "\n"
+		<< "World : " << mousePosWorld.x << " " << mousePosWorld.y << "\n"
+		<< "Grid : " << mousePosGrid.x << " " << mousePosGrid.y << "\n";
+	text.setString(ss.str());
+	text.setPosition(mousePosWindow.x + 10.f, mousePosWindow.y + 10.f);
+}
+
+int MapScene::CreateBackGround(int r, int c)
+{
+	int TILE_SIZE = 32;
+	int TILE_TYPES = 0;
+	int VERTS_IN_QUAD = 4;
+
+	int cols = mapHeight;
+	int rows = mapWidth;
+
+	vertexMap.setPrimitiveType(Quads);
+	vertexMap.resize(cols * rows * VERTS_IN_QUAD);
+
+	int index = r + c * cols;
+	int vertexIndex = index * VERTS_IN_QUAD;
+
+	float x = c * gridSizeF;
+	float y = r * gridSizeF;
+	 
+	std::cout << vertexMap[vertexIndex + 0].position.y << std::endl;
+	vertexMap[vertexIndex + 0].position = Vector2f(x, y);
+	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_SIZE, y);
+	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_SIZE, y + TILE_SIZE);
+	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_SIZE);
+	
+	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, 0.f);
+	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_SIZE, 0.f);
+	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
+	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, TILE_SIZE);
+	
+	return cols * rows;
+}
+
+void MapScene::CreateBlocks(int fromX, int toX, int fromY, int toY)
+{
+}
+
+MapScene::~MapScene()
+{
+	delete mapView;
+	delete uiView;
+
+	for (auto it : blocks)
+	{
+		delete it;
+	}
+	blocks.clear();
+}
+
+//미리보기
+/*
 	fromX = mousePosGrid.x;
 	toX = mousePosGrid.x + 3;
 
@@ -265,101 +357,3 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 		}
 	}
 	*/
-
-	for (int i = 0; i < mapWidth; i++)
-	{
-		for (int j = 0; j < mapHeight; j++)
-		{
-			window->draw(tileMap[i][j]);
-		}
-	}
-
-	RectangleShape textureShape;
-
-	fromX = mousePosGrid.x;
-	fromY = mousePosGrid.y;
-	textureShape.setFillColor({ 255, 255, 255, 125 });
-	textureShape.setTexture(&texBackground);
-	textureShape.setPosition(fromX * gridSizeU, fromY * gridSizeU);
-	textureShape.setSize(Vector2f(0.f, 0.f));
-	textureShape.setScale(texBackground.getSize().x, texBackground.getSize().y);
-
-	window->draw(vertexMap, &texBackground);
-	window->draw(textureShape);
-
-	if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == InputState::BLOCK)
-	{
-		window->draw(*currentDrag);
-	}
-
-
-	if (isDraw)
-	{
-		for (auto blockShape : blocks)
-		{
-			window->draw(blockShape->GetBlockShape());
-		}
-	}
-
-	window->draw(tileSelector);
-	if (player != nullptr)
-	{
-		player->Draw(window, mapView);
-	}
-
-	window->setView(*uiView);
-	window->draw(text);
-
-
-	window->setView(*mapView);
-}
-
-int MapScene::CreateBackGround(int r, int c)
-{
-	int TILE_SIZE = 32;
-	int TILE_TYPES = 0;
-	int VERTS_IN_QUAD = 4;
-
-	int cols = mapHeight;
-	int rows = mapWidth;
-
-	vertexMap.setPrimitiveType(Quads);
-	vertexMap.resize(cols * rows * VERTS_IN_QUAD);
-
-	int index = r + c * cols;
-	int vertexIndex = index * VERTS_IN_QUAD;
-
-	float x = c * gridSizeF;
-	float y = r * gridSizeF;
-	 
-	std::cout << vertexMap[vertexIndex + 0].position.y << std::endl;
-	vertexMap[vertexIndex + 0].position = Vector2f(x, y);
-	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_SIZE, y);
-	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_SIZE, y + TILE_SIZE);
-	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_SIZE);
-	
-	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, 0.f);
-	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_SIZE, 0.f);
-	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
-	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, TILE_SIZE);
-	
-	return cols * rows;
-}
-
-
-void MapScene::CreateBlocks(int fromX, int toX, int fromY, int toY)
-{
-}
-
-MapScene::~MapScene()
-{
-	delete mapView;
-	delete uiView;
-
-	for (auto it : blocks)
-	{
-		delete it;
-	}
-	blocks.clear();
-}
-

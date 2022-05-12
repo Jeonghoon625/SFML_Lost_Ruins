@@ -1,12 +1,12 @@
 #include "CollisionBlock.h"
 #include <iostream>
 
-CollisionBlock::CollisionBlock(float xpos, float ypos, float width, float height)
+CollisionBlock::CollisionBlock(float centerX, float centerY, float width, float height)
 {
-	position = Vector2f(xpos, ypos);
+	position = Vector2f(centerX, centerY);
 
-	blockRect.top = ypos - height * 0.5f;
-	blockRect.left = xpos - width * 0.5f;
+	blockRect.top = centerY - height * 0.5f;
+	blockRect.left = centerX - width * 0.5f;
 	blockRect.width = width;
 	blockRect.height = height;
 	blockShape.setFillColor(Color(153, 153, 153));
@@ -17,7 +17,7 @@ CollisionBlock::CollisionBlock(float xpos, float ypos, float width, float height
 
 CollisionBlock::CollisionBlock(FloatRect getGlobalBounds, Vector2u mousePosGrid)
 {
-	position = Vector2f((float)mousePosGrid.x * 32.f, (float)mousePosGrid.y * 32.f);
+	position = Vector2f((float)getGlobalBounds.left, (float)getGlobalBounds.top);
 	blockRect.top = getGlobalBounds.top;
 	blockRect.left = getGlobalBounds.left;
 	blockRect.width = getGlobalBounds.width;
@@ -26,7 +26,6 @@ CollisionBlock::CollisionBlock(FloatRect getGlobalBounds, Vector2u mousePosGrid)
 	blockShape.setFillColor(Color(153, 153, 153));
 	blockShape.setSize(Vector2f(getGlobalBounds.width, getGlobalBounds.height));
 	blockShape.setPosition(position);
-	std::cout << blockRect.left << ", " << blockRect.top << ", " << blockRect.width << ", " <<  blockRect.height << std::endl;
 }
 
 const Vector2f CollisionBlock::GetPosition()
