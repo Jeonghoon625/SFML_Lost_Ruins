@@ -14,6 +14,16 @@ TestBlock::TestBlock(float xpos, float ypos, float width, float height)
 	blockShape.setPosition(position);
 }
 
+TestBlock::TestBlock(FloatRect getGlobalBounds, Vector2u mousePosGrid)
+{
+	position = Vector2f(mousePosGrid.x * 32.f, mousePosGrid.y * 32.f);
+	blockRect = getGlobalBounds;
+	blockShape.setFillColor(Color(153, 153, 153));
+	blockShape.setSize(Vector2f(getGlobalBounds.width, getGlobalBounds.height));
+	blockShape.setPosition(position);
+	//blockShape.setOrigin(Vector2f(getGlobalBounds.width * 0.5f, getGlobalBounds.height * 0.5f));
+}
+
 const Vector2f TestBlock::GetPosition()
 {
 	return position;

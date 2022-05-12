@@ -8,6 +8,7 @@ MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSize
 	tileSelector.setOutlineThickness(5.f);
 	tileSelector.setOutlineColor(Color::Red);
 	texBackground = TextureHolder::GetTexture("maps/Stage1/test.png");
+	currentInputState = InputState::BLOCK;
 }
 
 void MapScene::Init(SceneManager* sceneManager)
@@ -17,29 +18,29 @@ void MapScene::Init(SceneManager* sceneManager)
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 
-	mapView = new View(FloatRect(0, 0, resolution.x, resolution.y));
-	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
+mapView = new View(FloatRect(0, 0, resolution.x, resolution.y));
+uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 
-	tileMap.resize(mapSize, vector<RectangleShape>());
+tileMap.resize(mapWidth, vector<RectangleShape>());
 
-	for (int i = 0; i < mapSize; i++)
+for (int i = 0; i < mapWidth; i++)
+{
+	tileMap[i].resize(mapHeight, RectangleShape());
+	for (int j = 0; j < mapHeight; j++)
 	{
-		tileMap[i].resize(mapSize, RectangleShape());
-		for (int j = 0; j < mapSize; j++)
-		{
-			tileMap[i][j].setSize(Vector2f(gridSizeF, gridSizeF));
-			tileMap[i][j].setFillColor(Color::White);
-			tileMap[i][j].setOutlineThickness(1.f);
-			tileMap[i][j].setOutlineColor(Color::Black);
-			tileMap[i][j].setPosition(i * gridSizeF, j * gridSizeF);
-		}
+		tileMap[i][j].setSize(Vector2f(gridSizeF, gridSizeF));
+		tileMap[i][j].setFillColor(Color::White);
+		tileMap[i][j].setOutlineThickness(1.f);
+		tileMap[i][j].setOutlineColor(Color::Black);
+		tileMap[i][j].setPosition(i * gridSizeF, j * gridSizeF);
 	}
-	font.loadFromFile("fonts/LiberationSans-Bold.ttf");
-	text.setCharacterSize(30);
-	text.setFillColor(Color::Red);
-	text.setFont(font);
-	text.setPosition(0.f, 0.f);
-	text.setString("TEST");
+}
+font.loadFromFile("fonts/LiberationSans-Bold.ttf");
+text.setCharacterSize(20);
+text.setFillColor(Color::Blue);
+text.setFont(font);
+text.setPosition(0.f, 0.f);
+text.setString("TEST");
 }
 
 void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
@@ -48,7 +49,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	mousePosWindow = Mouse::getPosition(*window);
 	mousePosView = window->mapPixelToCoords(mousePosWindow);
 
-	if (mousePosView.x >= 0.f && mousePosView.y >= 0.f && mousePosView.x <= mapSize * gridSizeU && mousePosView.y <= mapSize * gridSizeU)
+	if (mousePosView.x >= 0.f && mousePosView.y >= 0.f && mousePosView.x <= mapWidth * gridSizeU && mousePosView.y <= mapHeight * gridSizeU)
 	{
 		mousePosGrid.x = mousePosView.x / gridSizeU;
 		mousePosGrid.y = mousePosView.y / gridSizeU;
@@ -64,7 +65,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	ss << "Screen : " << mousePosScreen.x << " " << mousePosScreen.y << "\n"
 		<< "Window : " << mousePosWindow.x << " " << mousePosWindow.y << "\n"
 		<< "Map : " << mousePosView.x << " " << mousePosView.y << "\n"
-		<< "Grid : " << mousePosGrid.y << " " << mousePosGrid.x << "\n";
+		<< "Grid : " << mousePosGrid.x << " " << mousePosGrid.y << "\n";
 
 	text.setString(ss.str());
 
@@ -102,30 +103,74 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	{
 		finalGrid.clear();
 		downGrid = mousePosGrid;
-		std::cout << "DGrid : " << downGrid.y << " " << downGrid.x << "\n";
+		std::cout << "DGrid : " << downGrid.x << " " << downGrid.y << "\n";
+
+		if (currentInputState == InputState::BLOCK)
+		{
+			currentDrag = new RectangleShape(Vector2f(0.f, 0.f));
+			currentDrag->setFillColor({ 100, 100, 200, 125 });
+			currentDrag->setPosition(downGrid.x * gridSizeF, downGrid.y * gridSizeF);
+		}
 	}
 
-	if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
+	if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == InputState::BLOCK)
 	{
-		upGrid = mousePosGrid;
-		std::cout << "UGrid : " << upGrid.y << " " << upGrid.x << "\n";
-		
-		for (unsigned int i = downGrid.y; i <= upGrid.y; i++)
+		currentDrag->setSize(Vector2f(((int)mousePosGrid.x - (int)downGrid.x) * gridSizeF, ((int)mousePosGrid.y - (int)downGrid.y) * gridSizeF));
+
+		if (((int)mousePosGrid.x - (int)downGrid.x) >= 0)
 		{
-			for (unsigned int j = downGrid.x; j <= upGrid.x; j++)
+			currentDrag->setSize(Vector2f(currentDrag->getSize().x + gridSizeF, currentDrag->getSize().y));
+		}
+
+		if (((int)mousePosGrid.y - (int)downGrid.y) >= 0)
+		{
+			currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y + gridSizeF));
+		}
+	}
+
+	switch (currentInputState)
+	{
+	case::InputState::TERRAIN:
+		if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
+		{
+			upGrid = mousePosGrid;
+			std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
+
+			for (unsigned int i = downGrid.x; i <= upGrid.x; i++)
 			{
-				finalGrid.push_back(Vector2u(i, j));
+				for (unsigned int j = downGrid.y; j <= upGrid.y; j++)
+				{
+					finalGrid.push_back(Vector2u(i, j));
+				}
+			}
+
+			int i = 0;
+
+			for (auto it : finalGrid)
+			{
+				CreateBackGround(it.x, it.y);
+				std::cout << ++i << "Fgrid : " << it.x << " " << it.y << "\n";
 			}
 		}
+		break;
 
-		int i = 0;
-
-		for (auto it : finalGrid)
+	case::InputState::BLOCK:
+		if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
 		{
-			CreateBackGround(it.x, it.y);
-			std::cout << ++i << "Fgrid : " << it.x << " " << it.y  << "\n";
+			TestBlock* block = new TestBlock(currentDrag->getGlobalBounds(), downGrid);
+			blocks.push_back(block);
+
+			delete currentDrag;
+
+			upGrid = mousePosGrid;
+			std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
+
+			CreateBlocks(downGrid.x, upGrid.x, downGrid.y, upGrid.y);
 		}
+		break;
 	}
+
+	text.setPosition(mousePosWindow.x + 10.f, mousePosWindow.y + 10.f);
 }
 
 void MapScene::Draw(RenderWindow* window, View* mainView)
@@ -133,13 +178,13 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 	window->setView(*mapView);
 	window->draw(shape);
 
+	/*
 	fromX = mousePosGrid.x;
 	toX = mousePosGrid.x + 3;
 
 	fromY = mousePosGrid.y;
 	toY = mousePosGrid.y + 3;
 
-	/*
 	if (fromX < 0)
 	{
 		fromX = 0;
@@ -185,18 +230,42 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 	}
 	*/
 	
-	for (int i = 0; i < mapSize; i++)
+	for (int i = 0; i < mapWidth; i++)
 	{
-		for (int j = 0; j < mapSize; j++)
+		for (int j = 0; j < mapHeight; j++)
 		{
 			window->draw(tileMap[i][j]);
 		}
 	}
+	
+	RectangleShape textureShape;
 
+	fromX = mousePosGrid.x;
+	fromY = mousePosGrid.y;
+	textureShape.setFillColor({255, 255, 255, 125});
+	textureShape.setTexture(&texBackground);
+	textureShape.setPosition(fromX * gridSizeU, fromY * gridSizeU);
+	textureShape.setSize(Vector2f(0.f, 0.f));
+	textureShape.setScale(texBackground.getSize().x, texBackground.getSize().y);
+	
 	window->draw(vertexMap, &texBackground);
+	window->draw(textureShape);
+
+	if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == InputState::BLOCK)
+	{
+		window->draw(*currentDrag);
+	}
+
+	for (auto blockShape : blocks)
+	{
+		window->draw(blockShape->GetBlockShape());
+	}
+
 	window->draw(tileSelector);
+	
 	window->setView(*uiView);
 	window->draw(text);
+
 
 	window->setView(*mapView);
 }
@@ -207,8 +276,8 @@ int MapScene::CreateBackGround(int r, int c)
 	int TILE_TYPES = 0;
 	int VERTS_IN_QUAD = 4;
 
-	int cols = mapSize;
-	int rows = mapSize;
+	int cols = mapHeight;
+	int rows = mapWidth;
 
 	vertexMap.setPrimitiveType(Quads);
 	vertexMap.resize(cols * rows * VERTS_IN_QUAD);
@@ -224,19 +293,29 @@ int MapScene::CreateBackGround(int r, int c)
 	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_SIZE, y);
 	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_SIZE, y + TILE_SIZE);
 	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_SIZE);
-
-	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, 0);
-	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_SIZE, 0);
+	
+	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, 0.f);
+	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_SIZE, 0.f);
 	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
 	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, TILE_SIZE);
 	
-
 	return cols * rows;
+}
+
+
+void MapScene::CreateBlocks(int fromX, int toX, int fromY, int toY)
+{
 }
 
 MapScene::~MapScene()
 {
 	delete mapView;
 	delete uiView;
+
+	for (auto it : blocks)
+	{
+		delete it;
+	}
+	blocks.clear();
 }
 

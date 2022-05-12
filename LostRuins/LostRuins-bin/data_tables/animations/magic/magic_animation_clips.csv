@@ -1,0 +1,2 @@
+ID,FPS,"LOOP TYPE(0:Single, 1:Loop)",CLIP PATH
+FireArrow,15,1,data_tables/animations/magic/magic_animation_FireArrow.csv

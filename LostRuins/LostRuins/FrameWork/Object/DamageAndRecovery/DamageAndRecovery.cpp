@@ -1,6 +1,5 @@
 #include "DamageAndRecovery.h"
 
-
 DamageAndRecovery::DamageAndRecovery()
 	: speed(MASSAGE_SPEED), isActive(false)
 {

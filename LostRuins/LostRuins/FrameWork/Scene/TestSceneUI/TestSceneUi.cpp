@@ -196,8 +196,8 @@ void TestUi::Init(SceneManager* sceneManager)
 	textButtonA.setPosition(1604, 17);
 
 
-	HPbar.setScale(4.f / 20.f, 1.f);
-	//위에꺼는 또 update, setScale안에 들어가는 매개변수는 (player.GetHealth()/player.GetMaxHealth(), 1.f);
+	HPbar.setScale(1.f, 1.f);
+	MPbar.setScale(1.f, 1.f);
 
 	menuNum = 1;
 	escNum = 1;
@@ -215,11 +215,17 @@ void TestUi::Init(SceneManager* sceneManager)
 	Esckey = false;
 }
 
-void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
+void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainView, Player& player)
 {
 	float HPbarwidth = 314;
 	float HPbarHeight = 17;
 	healthBarsize = Vector2f(HPbarwidth, HPbarHeight);
+	HPbar.setScale(player.GetHealth() / 20.f, 1.f); //player.GetMaxHealth()
+
+	/*float MPwidth = 314;
+	float MPbarHeight = 17;
+	mpBarsize = Vector2f(MPwidth, HPbarHeight);
+	MPbar.setScale(player.get)*/
 
 	if (InputManager::GetKeyDown(Keyboard::Key::Escape) && inventory == false && MAP == false)
 	{
@@ -510,7 +516,7 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 
 void TestUi::Draw(RenderWindow* window, View* mainView)
 {
-	window->draw(spriteback); // 테스트배경
+	//window->draw(spriteback); // 테스트배경
 
 	//////////////
 	window->draw(scr1);
