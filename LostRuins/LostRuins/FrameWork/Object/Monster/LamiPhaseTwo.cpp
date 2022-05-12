@@ -15,11 +15,17 @@ void LamiPhaseTwo::MonsterInit()
 	strReappearing = "Lami2Reappearing";
 	strReappearingToIdle = "Lami2Reappearing";
 
+	sprite.setPosition(resolution.x * 0.3f, resolution.y * 1.2f);
+	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);
+	
+	sprite.setScale(scale);
+
 	leftSclera.setTexture(TextureHolder::GetTexture("graphics/Lami_Phase2.png"));
 	leftSclera.setTextureRect(IntRect(3,17,15,15));
 	leftSclera.setScale(3.1f,3.1f);
-	leftSclera.setOrigin(9,16/*leftSclera.getTextureRect().width * 0.5f, leftSclera.getTextureRect().height * 0.5f*/);
-	leftSclera.setPosition(sprite.getGlobalBounds().left + (42.5f*3.f), sprite.getGlobalBounds().top + (52.5*3.f));
+	leftSclera.setOrigin(leftSclera.getTextureRect().width * 0.5f, leftSclera.getTextureRect().height * 0.5f);
+	leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f*3.f), sprite.getGlobalBounds().top + (52.*3.f));
+	
 	
 
 	leftEye.setTexture(TextureHolder::GetTexture("graphics/Lami_Phase2.png"));
@@ -38,8 +44,7 @@ void LamiPhaseTwo::MonsterInit()
 	SetAtk(3);
 	SetSpeed(50.f);
 
-	sprite.setPosition(resolution.x * 0.3f, resolution.y*1.2f);
-	sprite.setScale(scale);
+
 	position = sprite.getPosition();
 	AnimationInit(&sprite);
 
@@ -75,7 +80,8 @@ void LamiPhaseTwo::MonsterInit()
 	hitBox.setPosition(sprite.getOrigin());
 
 	animation.Play(strIdle);
-	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);
+	
+	a = 1;
 }
 
 void LamiPhaseTwo::Walk(float dt, Player& player)
@@ -159,18 +165,28 @@ void LamiPhaseTwo::Draw(RenderWindow* window)
 
 void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 {
-	leftSclera.setPosition(sprite.getGlobalBounds().left + (43.0f * 3.5f), sprite.getGlobalBounds().top + (52.5f * 3.5f));
-	if(Idle2.getPixel(sprite.getTextureRect().left+49, sprite.getTextureRect().top+50) == Idle.getPixel(48, 46))
+	upY = sprite.getGlobalBounds().top + (52. * 3.f) - 6;
+	downY = sprite.getGlobalBounds().top + (52. * 3.f) + 12;
+	prevY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
+	leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f * 3.f), sprite.getGlobalBounds().top + (52.f * 3.f));
+	
+	std::cout << prevY << std::endl;
+	if((Idle2.getPixel(sprite.getTextureRect().left+49, sprite.getTextureRect().top+50) == Idle.getPixel(48, 46)) && a == 1)
 	{
 		a *= -1;
-		std::cout<< a <<std::endl;
 	}
-	else
+	else if((Idle2.getPixel(sprite.getTextureRect().left + 49, sprite.getTextureRect().top + 43) == Idle.getPixel(48, 46)) && a ==-1)
 	{
-		std::cout << a << std::endl;
+		a *= -1;
 	}
-	leftSclera.setPosition(leftSclera.getPosition().x, leftSclera.getPosition().y + a);
-
+	std::cout << a << std::endl;
+	leftSclera.setPosition(leftSclera.getPosition().x, leftSclera.getPosition().y + a*1.7f);
+	
+	if (leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f) < upY || leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f) > downY)
+	{
+		leftSclera.setPosition(leftSclera.getPosition().x, prevY);
+		std::cout << a << "dd" << std::endl;
+	}
 	
 
 	leftSclera.getGlobalBounds().top; /*getGlobalBounds().top*/

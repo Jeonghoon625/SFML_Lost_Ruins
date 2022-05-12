@@ -24,6 +24,10 @@ private:
 	Image Idle;
 	Image Idle2;
 	int a = 1;
+
+	float upY;
+	float downY;
+	float prevY;
 public:
 	LamiPhaseTwo();
 	virtual void MonsterInit();
