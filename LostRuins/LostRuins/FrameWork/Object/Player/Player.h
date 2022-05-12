@@ -10,8 +10,8 @@
 #include "../../Mgr/Utils.h"
 #include "../../Mgr/InputManager.h"
 #include "../TestBlock/TestBlock.h"
-#include "../../Mgr/WeaponManager.h"
-#include "../Player/DamageAndRecovery.h"
+#include "../../Mgr/AttackManager.h"
+#include "../DamageAndRecovery/DamageAndRecovery.h"
 
 using namespace sf;
 
@@ -27,6 +27,7 @@ enum class Status
 	STATUS_ROLL,
 	STATUS_ATK_TWO_STAND,
 	STATUS_ATK_DAGGER,
+	STATUS_SPELL,
 	STATUS_HIT,
 	STATUS_DEAD,
 };
@@ -50,16 +51,15 @@ private:
 	const float START_KNOCK_BACK_SPEED = 550.f;
 	const float DEAD_FALLING_SPEED = 600.f;
 	const float DEAD_TIME_COUNT = 1.f;
-	const int MAX_DAMAGE_TEXT = 30;
+	const int MAX_DAMAGE_TEXT = 10;
 
 	AnimationController animation;
-	WeaponManager weaponMgr;
+	AttackManager attackMgr;
 
 	Vector2f position;
 
 	Texture texture;
 	Sprite sprite;
-	Sprite spriteWeapon;
 	
 	Vector2i resolustion;
 	IntRect gameMap;
@@ -83,6 +83,7 @@ private:
 	bool isFloor;
 	bool isJump;
 	bool isAttack;
+	bool isSpell;
 	bool isDelay;
 	bool isCrouch;
 	bool isRoll;

@@ -1,20 +1,24 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <algorithm>
+#include <list>
 #include "../Object/Weapon/TwohandWeapon.h"
 #include "../Object/Weapon/Dagger.h"
+#include "../Object/Spell/FireArrow.h"
 
 using namespace sf;
 using namespace std;
 
-enum class WeaponType
+class ZombieWalker;
+
+enum class AttackType
 {
 	DAGGER,
-	ONE_HANDED,
 	TWO_HANDED,
+	FIRE_ARROW,
 };
 
-class WeaponManager
+class AttackManager
 {
 private:
 	const int MAX_DAGGER_FPS = 12;
@@ -24,25 +28,38 @@ private:
 
 	const int DAGGER_HIT_FRAME = 9;
 	const int TWO_HANDED_HIT_FRAME = 10;
-
 	const float DAGGER_ATTACK_FPS = 0.03f;
 	const float TWO_HANDED_ATTACK_FPS = 0.04f;
 
-	WeaponType currentWeapon;
+	const int MAX_SPELL_CACHE_SIZE = 10;
+	const float FIRE_ARROW_CAST_TIME = 1.f;
+
+	AttackType currentAtkType;
 	Sprite sprite;
 
 	int isFps;
 	int maxFps;
 	int delay;
 
+	bool isDirection;
+
 	vector <TwohandWeapon*> twoHanded;
 	vector <Dagger*> daggers;
 
+	std::list<FireArrow*> unuseSpell;
+	std::list<FireArrow*> useSpell;
+
+	ZombieWalker* zombie;
+
 public:
-	void Init();
-	void AttackWeapon(WeaponType weaponType);
-	void SetWeaponPosition(Sprite sprite);
-	void Draw(RenderWindow* window, View* mainView);
+	void Init(ZombieWalker* zombie);
+	void Update(float dt);
+	void WeaponDraw(RenderWindow* window, View* mainView);
+	void SpellDraw(RenderWindow* window);
+
+	void SetAttackType(AttackType attackType);
+	void SetAttackPosition(Sprite sprite);
+	void CastingSpell(Sprite sprite);
 
 	int GetAttackPoint();
 	int GetHitFrame();
@@ -54,7 +71,7 @@ public:
 	void ResetFps();
 	Sprite GetSprite();
 
-	~WeaponManager();
+	~AttackManager();
 	void TwohandWeaponInit();
 	void DaggerWeaponInit();
 };

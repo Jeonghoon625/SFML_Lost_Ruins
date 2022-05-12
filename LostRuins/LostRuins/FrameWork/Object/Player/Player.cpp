@@ -20,6 +20,7 @@ void Player::Init(ZombieWalker* zombie)
 	isFloor = false;
 	isJump = false;
 	isAttack = false;
+	isSpell = false;
 	isCrouch = false;
 	isRoll = false;
 	isDelay = false;
@@ -35,7 +36,7 @@ void Player::Init(ZombieWalker* zombie)
 	currentStatus = Status::STATUS_IDLE;
 	animation.Play("Idle");
 
-	weaponMgr.Init();
+	attackMgr.Init(zombie);
 
 	this->zombie = zombie;
 
@@ -56,6 +57,8 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 	// 애니메이션
 	AnimationUpdate();
 	animation.Update(dt);
+
+	attackMgr.Update(dt);
 
 	auto DorR = useDorR.begin();
 	while (DorR != useDorR.end())
@@ -81,8 +84,10 @@ void Player::Draw(RenderWindow* window, View* mainView)
 	window->draw(hitBox);
 	if (isAttack == true && isDelay == false)
 	{
-		weaponMgr.Draw(window, mainView);
+		attackMgr.WeaponDraw(window, mainView);
 	}
+	attackMgr.SpellDraw(window);
+
 	for (auto DorR : useDorR)
 	{
 		window->draw(DorR->GetText());
@@ -108,21 +113,27 @@ void Player::PlayerAction(float dt, Time playTime)
 					isFloor = false;
 					isJump = true;
 				}
-				if (isAttack == false)
+				if (isAttack == false && isSpell == false)
 				{
 					if (InputManager::GetKeyDown(Keyboard::X))
 					{
-						weaponMgr.AttackWeapon(WeaponType::DAGGER);
-						attackFps = weaponMgr.GetAttackFps();
-						weaponMgr.SetWeaponPosition(sprite);
+						attackMgr.SetAttackType(AttackType::DAGGER);
+						attackFps = attackMgr.GetAttackFps();
+						attackMgr.SetAttackPosition(sprite);
 						isAttack = true;
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Z))
 					{
-						weaponMgr.AttackWeapon(WeaponType::TWO_HANDED);
-						attackFps = weaponMgr.GetAttackFps();
-						weaponMgr.SetWeaponPosition(sprite);
+						attackMgr.SetAttackType(AttackType::TWO_HANDED);
+						attackFps = attackMgr.GetAttackFps();
+						attackMgr.SetAttackPosition(sprite);
 						isAttack = true;
+					}
+					else if (InputManager::GetKeyDown(Keyboard::A))
+					{
+						attackMgr.SetAttackType(AttackType::FIRE_ARROW);
+						attackFps = attackMgr.GetAttackFps();
+						isSpell = true;
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Space))
 					{
@@ -147,7 +158,6 @@ void Player::PlayerAction(float dt, Time playTime)
 			}
 		}
 
-
 		// 공격
 		if (isAttack == true)
 		{
@@ -156,36 +166,53 @@ void Player::PlayerAction(float dt, Time playTime)
 			{
 				if (isDelay == false)
 				{
-					weaponMgr.NextFps();
-					attackFps = weaponMgr.GetAttackFps();
-					if (weaponMgr.CheckFps() == false)
+					attackMgr.NextFps();
+					attackFps = attackMgr.GetAttackFps();
+					if (attackMgr.CheckFps() == false)
 					{
-						weaponMgr.ResetFps();
+						attackMgr.ResetFps();
 						isDelay = true;
 					}
 					else
 					{
-						if (weaponMgr.GetFps() > weaponMgr.GetHitFrame())
+						if (attackMgr.GetFps() > attackMgr.GetHitFrame())
 						{
-							if (weaponMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+							if (attackMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
 							{
 								std::cout << "Hit" << zombie->GetHealth() << std::endl;
-								zombie->OnHitted(weaponMgr.GetAttackPoint(), dt, playTime);
+								zombie->OnHitted(attackMgr.GetAttackPoint(), dt, playTime);
 							}
 						}
 					}
 				}
 				else if (isDelay == true)
 				{
-					weaponMgr.NextFps();
-					attackFps = weaponMgr.GetAttackFps();
-					if (weaponMgr.CheckDelay() == false)
+					attackMgr.NextFps();
+					attackFps = attackMgr.GetAttackFps();
+					if (attackMgr.CheckDelay() == false)
 					{
-						weaponMgr.ResetFps();
+						attackMgr.ResetFps();
 						isDelay = false;
 						isAttack = false;
 					}
 				}
+			}
+		}
+		// 주문
+		else if (isSpell == true)
+		{
+			attackFps -= dt;
+			if (attackFps < 0.25f && isDelay == false)
+			{
+				//std::cout << "발사" << std::endl;
+				attackMgr.CastingSpell(sprite);
+				isDelay = true;
+			}
+			else if (attackFps < 0.f && isDelay == true)
+			{
+				//std::cout << "주문 완료" << std::endl;
+				isDelay = false;
+				isSpell = false;
 			}
 		}
 		// 이동
@@ -256,6 +283,7 @@ void Player::PlayerAction(float dt, Time playTime)
 			}
 		}
 	}
+	// 사망
 	else if (isAlive == false)
 	{
 		if (isFloor == false)
@@ -309,7 +337,7 @@ void Player::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->tileSize = tileSize;
 
 	position.x = this->gameMap.left + 200.f;
-	position.y = this->gameMap.top;
+	position.y = this->gameMap.height * 0.5f;
 
 	hitBox.setFillColor(Color(153, 153, 153, 0));
 	hitBox.setSize(Vector2f(20.f, 48.f));
@@ -346,8 +374,8 @@ bool Player::OnHitted(int damage, Time timeHit)
 			}
 			if (isAttack == true)
 			{
-				attackFps = weaponMgr.GetAttackFps();
-				weaponMgr.ResetFps();
+				attackFps = attackMgr.GetAttackFps();
+				attackMgr.ResetFps();
 				isDelay = false;
 				isAttack = false;
 			}
@@ -364,7 +392,6 @@ bool Player::OnHitted(int damage, Time timeHit)
 				isAlive = false;
 				isJump = true;
 			}
-			std::cout << health << std::endl;
 			return true;
 		}
 	}
@@ -626,6 +653,10 @@ void Player::AnimationUpdate()
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
+		else if (InputManager::GetKeyDown(Keyboard::A))
+		{
+			SetStatus(Status::STATUS_SPELL);
+		}
 		else if (InputManager::GetKey(Keyboard::Down))
 		{
 			SetStatus(Status::STATUS_CROUCH);
@@ -663,6 +694,10 @@ void Player::AnimationUpdate()
 		else if (InputManager::GetKeyDown(Keyboard::Z))
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
+		}
+		else if (InputManager::GetKeyDown(Keyboard::A))
+		{
+			SetStatus(Status::STATUS_SPELL);
 		}
 		else if (InputManager::GetKey(Keyboard::Down))
 		{
@@ -757,6 +792,20 @@ void Player::AnimationUpdate()
 			SetStatus(Status::STATUS_IDLE);
 		}
 		break;
+	case Status::STATUS_SPELL:
+		if (isAlive == false)
+		{
+			SetStatus(Status::STATUS_DEAD);
+		}
+		else if (isHit == true)
+		{
+			SetStatus(Status::STATUS_HIT);
+		}
+		else if (isSpell == false)
+		{
+			SetStatus(Status::STATUS_IDLE);
+		}
+		break;
 	case Status::STATUS_HIT:
 		if (isHit == false)
 		{
@@ -826,6 +875,10 @@ void Player::SetStatus(Status newStatus)
 		break;
 	case Status::STATUS_ATK_DAGGER:
 		animation.Play("Attack_Dagger_Standing");
+		break;
+	case Status::STATUS_SPELL:
+		animation.Play("CastingSpell1");
+		animation.PlayQueue("CastingSpell3");
 		break;
 	case Status::STATUS_HIT:
 		animation.Play("DamageTaken");

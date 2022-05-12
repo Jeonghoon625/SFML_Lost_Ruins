@@ -23,7 +23,7 @@
     <ClCompile Include="FrameWork\Mgr\Utils.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Mgr\WeaponManager.cpp">
+    <ClCompile Include="FrameWork\Mgr\AttackManager.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp">
@@ -137,11 +137,14 @@
     <ClCompile Include="FrameWork\Object\Weapon\Dagger.cpp">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\Player\DamageAndRecovery.cpp">
-      <Filter>FrameWork\Object\Player</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\Object\Npc\Npc.cpp">
       <Filter>Framework\Object\Npc</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.cpp">
+      <Filter>FrameWork\Object\DamageAndRecovery</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Spell\FireArrow.cpp">
+      <Filter>FrameWork\Object\Spell</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +169,7 @@
     <ClInclude Include="FrameWork\Mgr\Utils.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Mgr\WeaponManager.h">
+    <ClInclude Include="FrameWork\Mgr\AttackManager.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Animation\rapidcsv.h">
@@ -244,11 +247,14 @@
     <ClInclude Include="FrameWork\Object\Weapon\Dagger.h">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\Player\DamageAndRecovery.h">
-      <Filter>FrameWork\Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Object\Npc\Npc.h">
       <Filter>Framework\Object\Npc</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.h">
+      <Filter>FrameWork\Object\DamageAndRecovery</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Spell\FireArrow.h">
+      <Filter>FrameWork\Object\Spell</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -296,6 +302,12 @@
     </Filter>
     <Filter Include="Framework\Object\TitleObject">
       <UniqueIdentifier>{357af2aa-5fb7-49fd-983d-35777ffead7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\DamageAndRecovery">
+      <UniqueIdentifier>{75e52427-22c3-41a2-be12-c7305e7afd54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\Spell">
+      <UniqueIdentifier>{32fca10a-0513-49cf-8983-140903bcf4a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <algorithm>
+#include <map>
 #include "Scene.h"
 #include "../Mgr/TextureHolder.h"
 #include "../Object/Player/Player.h"
@@ -9,6 +10,8 @@
 
 class TestScene : public Scene
 {
+	AnimationController animation;
+
 	SceneManager* sceneMgr;
 
 	Vector2i resolution;
@@ -23,8 +26,10 @@ class TestScene : public Scene
 	vector <TestBlock*> blocks;
 	vector <TestZombieWalker*> zombieWalkers;
 
+	std::map<std::string, Texture> texmap;
+
 	Sprite testSprite;
-	Sprite testWeapon;
+	Sprite testMagic;
 
 public:
 	virtual void Init(SceneManager* sceneManager);
@@ -34,5 +39,7 @@ public:
 
 	void CreateBlock();
 	void CreateMonster();
+	void AnimationInit(Sprite* sprite);
+	void AnimationInit1(Sprite* sprite);
 };
 
