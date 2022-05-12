@@ -3,6 +3,7 @@
 #include "../../Animation/AnimationController.h"
 #include "../../Animation/rapidcsv.h"
 #include "../../Object/TestBlock/TestBlock.h"
+#include "../../Mgr/EffectManager.h"
 
 using namespace sf;
 
@@ -32,9 +33,10 @@ private:
 	static AnimationClip clip;
 
 	ZombieWalker* zombie;
+	EffectManager* effectMgr;
 
 public:
-	FireArrow(ZombieWalker* zombie);
+	FireArrow(ZombieWalker* zombie, EffectManager* effectMgr);
 	void Spell(Vector2f pos, bool dir);
 	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
 	void SetActive(bool active);

@@ -34,8 +34,8 @@ void Player::Init(ZombieWalker* zombie)
 	currentStatus = Status::STATUS_IDLE;
 	animation.Play("Idle");
 
-	attackMgr.Init(zombie);
 	effectMgr.Init();
+	attackMgr.Init(zombie, &effectMgr);
 
 	this->zombie = zombie;
 

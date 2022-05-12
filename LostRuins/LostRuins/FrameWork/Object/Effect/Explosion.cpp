@@ -1,38 +1,28 @@
-#include "Blood.h"
+#include "Explosion.h"
 
-bool Blood::isLoading = false;
-AnimationClip Blood::clip;
+bool Explosion::isLoading = false;
+AnimationClip Explosion::clip;
 
-Blood::Blood()
-	: time(DEFAULT_TIME), isActive(false), isDirection(true)
+Explosion::Explosion()
+	: time(DEFAULT_TIME), isActive(false)
 {
 	AnimationInit();
-	sprite.setOrigin(0.f, 25.f);
-	animation.Play("Blood");
+	sprite.setOrigin(16.f, 16.f);
+	sprite.setScale(4.f, 4.f);
+	animation.Play("Explosion");
 }
 
-void Blood::Bleeding(Vector2f pos, bool dir)
+void Explosion::Exploding(Vector2f pos)
 {
 	SetActive(true);
 
 	time = DEFAULT_TIME;
-	isDirection = dir;
-	if (isDirection == true)
-	{
-		position.x = pos.x - 15.f;
-		sprite.setScale(4.f, 4.f);
-	}
-	else if (isDirection == false)
-	{
-		position.x = pos.x + 15.f;
-		sprite.setScale(-4.f, 4.f);
-	}
-	position.y = pos.y;
+	position = pos;
 
 	sprite.setPosition(position);
 }
 
-void Blood::Update(float dt)
+void Explosion::Update(float dt)
 {
 	// 시간 제한
 	time -= dt;
@@ -43,32 +33,32 @@ void Blood::Update(float dt)
 	animation.Update(dt);
 }
 
-void Blood::SetActive(bool active)
+void Explosion::SetActive(bool active)
 {
 	isActive = active;
 }
 
-void Blood::Stop()
+void Explosion::Stop()
 {
 	SetActive(false);
 }
 
-bool Blood::IsActive()
+bool Explosion::IsActive()
 {
 	return isActive;
 }
 
-Sprite Blood::GetSprite()
+Sprite Explosion::GetSprite()
 {
 	return sprite;
 }
 
-void Blood::AnimationInit()
+void Explosion::AnimationInit()
 {
 	animation.SetTarget(&sprite);
 	if (!isLoading)
 	{
-		rapidcsv::Document clips("data_tables/animations/effect/effect_animation_Blood_clips.csv");
+		rapidcsv::Document clips("data_tables/animations/effect/effect_animation_Explosion_clips.csv");
 		std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
 		std::vector<int> colFps = clips.GetColumn<int>("FPS");
 		std::vector<int> colLoop = clips.GetColumn<int>("LOOP TYPE(0:Single, 1:Loop)");

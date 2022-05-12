@@ -31,6 +31,7 @@
     <ClCompile Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.cpp" />
     <ClCompile Include="FrameWork\Object\Coin\Coin.cpp" />
     <ClCompile Include="FrameWork\Object\Effect\Blood.cpp" />
+    <ClCompile Include="FrameWork\Object\Effect\Explosion.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp" />
     <ClCompile Include="FrameWork\Mgr\AttackManager.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\LamiHand.cpp" />
@@ -86,6 +87,7 @@
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
     <ClInclude Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.h" />
     <ClInclude Include="FrameWork\Object\Effect\Blood.h" />
+    <ClInclude Include="FrameWork\Object\Effect\Explosion.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiHand.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiPhaseOne.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiPhaseTwo.h" />

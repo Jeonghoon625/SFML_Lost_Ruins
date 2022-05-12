@@ -1,19 +1,20 @@
 #include "AttackManager.h"
 #include "../Object/Monster/ZombieWalker.h"
 
-void AttackManager::Init(ZombieWalker* zombie)
+void AttackManager::Init(ZombieWalker* zombie, EffectManager* effectMgr)
 {
 	isFps = 0;
 	maxFps = 0;
 
 	this->zombie = zombie;
+	this->effectMgr = effectMgr;
 
 	TwohandWeaponInit();
 	DaggerWeaponInit();
 
 	for (int i = 0; i < MAX_SPELL_CACHE_SIZE; i++)
 	{
-		unuseSpell.push_back(new FireArrow(zombie));
+		unuseSpell.push_back(new FireArrow(zombie, effectMgr));
 	}
 }
 
@@ -121,7 +122,7 @@ void AttackManager::CastingSpell(Sprite sprite)
 	{
 		for (int i = 0; i < MAX_SPELL_CACHE_SIZE; ++i)
 		{
-			unuseSpell.push_back(new FireArrow(zombie));
+			unuseSpell.push_back(new FireArrow(zombie, effectMgr));
 		}
 	}
 

@@ -162,6 +162,9 @@
     <ClCompile Include="FrameWork\Object\Effect\Blood.cpp">
       <Filter>FrameWork\Object\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Effect\Explosion.cpp">
+      <Filter>FrameWork\Object\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -286,6 +289,9 @@
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Effect\Blood.h">
+      <Filter>FrameWork\Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Effect\Explosion.h">
       <Filter>FrameWork\Object\Effect</Filter>
     </ClInclude>
   </ItemGroup>

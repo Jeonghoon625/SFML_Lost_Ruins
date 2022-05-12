@@ -4,10 +4,11 @@
 bool FireArrow::isLoading = false;
 AnimationClip FireArrow::clip;
 
-FireArrow::FireArrow(ZombieWalker* zombie)
+FireArrow::FireArrow(ZombieWalker* zombie, EffectManager* effectMgr)
 	: damage(SPELL_DAMAGE), speed(DEFAULT_SPEED), isActive(false), isDirection(true)
 {
 	this->zombie = zombie;
+	this->effectMgr = effectMgr;
 
 	AnimationInit();
 	sprite.setOrigin(16.f, 0.f);
@@ -50,6 +51,7 @@ void FireArrow::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 	{
 		if (sprite.getGlobalBounds().intersects(bk->GetBlockRect()))
 		{
+			effectMgr->HitExplosion(position);
 			Stop();
 		}
 	}
@@ -57,6 +59,7 @@ void FireArrow::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 	// Àû Ãæµ¹
 	if (sprite.getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
 	{
+		effectMgr->HitExplosion(position);
 		zombie->OnHitted(damage, dt, playTime);
 		Stop();
 	}

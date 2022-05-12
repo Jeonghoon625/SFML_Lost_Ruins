@@ -6,6 +6,7 @@
 #include "../Object/Weapon/TwohandWeapon.h"
 #include "../Object/Weapon/Dagger.h"
 #include "../Object/Spell/FireArrow.h"
+#include "../Mgr/EffectManager.h"
 
 using namespace sf;
 using namespace std;
@@ -52,9 +53,10 @@ private:
 	std::list<FireArrow*> useSpell;
 
 	ZombieWalker* zombie;
+	EffectManager* effectMgr;
 
 public:
-	void Init(ZombieWalker* zombie);
+	void Init(ZombieWalker* zombie, EffectManager* effectMgr);
 	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
 	void WeaponDraw(RenderWindow* window, View* mainView);
 	void SpellDraw(RenderWindow* window);

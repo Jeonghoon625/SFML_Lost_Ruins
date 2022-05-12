@@ -6,34 +6,59 @@ void EffectManager::Init()
 
 	for (int i = 0; i < MAX_BLOOD_CACHE_SIZE; i++)
 	{
-		unuseblood.push_back(new Blood());
+		unuseBlood.push_back(new Blood());
+	}
+	for (int i = 0; i < MAX_EXPLOSION_CACHE_SIZE; i++)
+	{
+		unuseExplosion.push_back(new Explosion());
 	}
 }
 
 void EffectManager::Update(float dt)
 {
-	auto blood = useblood.begin();
-	while (blood != useblood.end())
+	auto blood = useBlood.begin();
+	while (blood != useBlood.end())
 	{
 		Blood* isBlood = *blood;
 		isBlood->Update(dt);
 
 		if (!isBlood->IsActive())
 		{
-			blood = useblood.erase(blood);
+			blood = useBlood.erase(blood);
 		}
 		else
 		{
 			++blood;
 		}
 	}
+
+	auto explosion = useExplosion.begin();
+	while (explosion != useExplosion.end())
+	{
+		Explosion* isExplosion = *explosion;
+		isExplosion->Update(dt);
+
+		if (!isExplosion->IsActive())
+		{
+			explosion = useExplosion.erase(explosion);
+		}
+		else
+		{
+			++explosion;
+		}
+	}
 }
 
 void EffectManager::Draw(RenderWindow* window)
 {
-	for (auto blood : useblood)
+	for (auto blood : useBlood)
 	{
 		window->draw(blood->GetSprite());
+	}
+
+	for (auto explosion : useExplosion)
+	{
+		window->draw(explosion->GetSprite());
 	}
 }
 
@@ -51,15 +76,31 @@ void EffectManager::HitActor(Sprite sprite)
 		isDirection = false;
 	}
 
-	if (unuseblood.empty())
+	if (unuseBlood.empty())
 	{
 		for (int i = 0; i < MAX_BLOOD_CACHE_SIZE; ++i)
 		{
-			unuseblood.push_back(new Blood());
+			unuseBlood.push_back(new Blood());
 		}
 	}
-	Blood* blood = unuseblood.front();
-	unuseblood.pop_front();
-	useblood.push_back(blood);
+	Blood* blood = unuseBlood.front();
+	unuseBlood.pop_front();
+	useBlood.push_back(blood);
 	blood->Bleeding(spawnPos, isDirection);
+}
+
+void EffectManager::HitExplosion(Vector2f pos)
+{
+	Vector2f spawnPos = pos;
+	if (unuseExplosion.empty())
+	{
+		for (int i = 0; i < MAX_EXPLOSION_CACHE_SIZE; ++i)
+		{
+			unuseExplosion.push_back(new Explosion());
+		}
+	}
+	Explosion* explosion = unuseExplosion.front();
+	unuseExplosion.pop_front();
+	useExplosion.push_back(explosion);
+	explosion->Exploding(spawnPos);
 }
