@@ -11,7 +11,7 @@ FireArrow::FireArrow(ZombieWalker* zombie, EffectManager* effectMgr)
 	this->effectMgr = effectMgr;
 
 	AnimationInit();
-	sprite.setOrigin(16.f, 0.f);
+	sprite.setOrigin(16.f, 55.f);
 	animation.Play("FireArrow");
 }
 

@@ -165,6 +165,9 @@
     <ClCompile Include="FrameWork\Object\Effect\Explosion.cpp">
       <Filter>FrameWork\Object\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Mgr\SoundHolder.cpp">
+      <Filter>FrameWork\Mgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -293,6 +296,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Effect\Explosion.h">
       <Filter>FrameWork\Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Mgr\SoundHolder.h">
+      <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

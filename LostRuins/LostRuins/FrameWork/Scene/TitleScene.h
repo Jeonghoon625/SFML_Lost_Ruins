@@ -1,11 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <map>
 #include "Scene.h"
 #include "../Mgr/TextureHolder.h"
+#include "../Mgr/SoundHolder.h"
 #include "../Mgr/Utils.h"
 #include "../Animation/AnimationController.h"
 #include "../Animation/rapidcsv.h"
-#include <map>
 #include "../Object/TitleObject/Rofe1.h"
 #include "../Object/TitleObject/Rofe2.h"
 
@@ -16,7 +18,7 @@ private:
 
 	Vector2i resolution;
 
-	AnimationController animation;
+	AnimationController animation1;
 
 	Texture textureTitle;
 
@@ -33,6 +35,9 @@ private:
 	Rofe1 rofe1;
 	Rofe2 rofe2;
 
+	SoundHolder soundHlr;
+	Sound backGroundSound;
+
 	std::map<std::string, Texture> texmap;
 
 	View* uiView;
@@ -43,7 +48,7 @@ public:
 	virtual void Draw(RenderWindow* window, View* mainView);
 	virtual ~TitleScene();
 
-	void AnimationInit(Sprite* sprite);
+	void AnimationInit(AnimationController& animation, Sprite* sprite);
 
 };
 

@@ -203,7 +203,7 @@ void Player::PlayerAction(float dt, Time playTime)
 		else if (isSpell == true)
 		{
 			attackFps -= dt;
-			if (attackFps < 0.25f && isDelay == false)
+			if (attackFps < 0.2f && isDelay == false)
 			{
 				//std::cout << "น฿ป็" << std::endl;
 				attackMgr.CastingSpell(sprite);

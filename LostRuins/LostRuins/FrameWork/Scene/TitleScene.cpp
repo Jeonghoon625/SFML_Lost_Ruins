@@ -49,17 +49,20 @@ void TitleScene::Init(SceneManager* sceneManager)
 	heroine.setOrigin(0, 137);
 	heroine.setPosition(resolution.x * 0.7f, resolution.y + 30);
 	heroine.setScale(3.5f, 3.5f);
-	AnimationInit(&heroine);
-	animation.Play("heroine");
+	AnimationInit(animation1, &heroine);
+	animation1.Play("heroine");
 
 	rofe1.Init();
 	rofe2.Init();
+
+	backGroundSound.setBuffer(soundHlr.GetBuffer("sound/back_ground_sound.wav"));
+	backGroundSound.play();
 }
 
 void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-	animation.SetSpeed(3.5f);
-	animation.Update(dt);
+	animation1.SetSpeed(3.5f);
+	animation1.Update(dt);
 	rofe1.Update(dt);
 	rofe2.Update(dt);
 	this->uiView = uiView;
@@ -85,7 +88,7 @@ TitleScene::~TitleScene()
 
 }
 
-void TitleScene::AnimationInit(Sprite* sprite)
+void TitleScene::AnimationInit(AnimationController& animation, Sprite* sprite)
 {
 	animation.SetTarget(sprite);
 	

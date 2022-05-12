@@ -35,7 +35,7 @@ private:
 	const float TWO_HANDED_ATTACK_FPS = 0.04f;
 
 	const int MAX_SPELL_CACHE_SIZE = 50;
-	const float FIRE_ARROW_CAST_TIME = 1.f;
+	const float FIRE_ARROW_CAST_TIME = 0.8f;
 
 	AttackType currentAtkType;
 	Sprite sprite;

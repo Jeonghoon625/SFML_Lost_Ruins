@@ -25,6 +25,7 @@
     <ClCompile Include="FrameWork\Mgr\EffectManager.cpp" />
     <ClCompile Include="FrameWork\Mgr\InputManager.cpp" />
     <ClCompile Include="FrameWork\Mgr\SceneManager.cpp" />
+    <ClCompile Include="FrameWork\Mgr\SoundHolder.cpp" />
     <ClCompile Include="FrameWork\Mgr\TextureHolder.cpp" />
     <ClCompile Include="FrameWork\Mgr\UIManager.cpp" />
     <ClCompile Include="FrameWork\Mgr\Utils.cpp" />
@@ -82,6 +83,7 @@
     <ClInclude Include="FrameWork\Mgr\EffectManager.h" />
     <ClInclude Include="FrameWork\Mgr\InputManager.h" />
     <ClInclude Include="FrameWork\Mgr\SceneManager.h" />
+    <ClInclude Include="FrameWork\Mgr\SoundHolder.h" />
     <ClInclude Include="FrameWork\Mgr\TextureHolder.h" />
     <ClInclude Include="FrameWork\Mgr\UIManager.h" />
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
