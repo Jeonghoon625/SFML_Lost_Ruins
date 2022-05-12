@@ -34,7 +34,7 @@ void TestScene::Init(SceneManager* sceneManager)
 }
 
 
-void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
+void TestScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
 	animation.Update(dt);
 	/*for (auto zombieWalker : zombieWalkers)

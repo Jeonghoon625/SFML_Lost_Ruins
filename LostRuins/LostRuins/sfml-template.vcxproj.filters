@@ -155,7 +155,9 @@
     <ClCompile Include="FrameWork\Object\Monster\LamiHand.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\Coin\Coin.cpp" />
+    <ClCompile Include="FrameWork\Object\Coin\Coin.cpp">
+      <Filter>FrameWork\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -272,7 +274,9 @@
     <ClInclude Include="FrameWork\Object\Monster\LamiHand.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\Coin\Coin.h" />
+    <ClInclude Include="FrameWork\Object\Coin\Coin.h">
+      <Filter>FrameWork\Object</Filter>
+    </ClInclude>
     <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
