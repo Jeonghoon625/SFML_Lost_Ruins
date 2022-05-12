@@ -1,11 +1,14 @@
 #include "FireArrow.h"
+#include "../../Object/Monster/ZombieWalker.h"
 
 bool FireArrow::isLoading = false;
 AnimationClip FireArrow::clip;
 
-FireArrow::FireArrow()
-	: speed(DEFAULT_SPEED), isActive(false), isDirection(true)
+FireArrow::FireArrow(ZombieWalker* zombie)
+	: damage(SPELL_DAMAGE), speed(DEFAULT_SPEED), isActive(false), isDirection(true)
 {
+	this->zombie = zombie;
+
 	AnimationInit();
 	sprite.setOrigin(16.f, 0.f);
 	animation.Play("FireArrow");
@@ -30,7 +33,7 @@ void FireArrow::Spell(Vector2f pos, bool dir)
 	sprite.setPosition(position);
 }
 
-void FireArrow::Update(float dt)
+void FireArrow::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 {
 	if (isDirection == true)
 	{
@@ -41,6 +44,22 @@ void FireArrow::Update(float dt)
 		position.x -= 1.f * speed * dt;
 	}
 	sprite.setPosition(position);
+
+	// 벽 충돌
+	for (auto bk : blocks)
+	{
+		if (sprite.getGlobalBounds().intersects(bk->GetBlockRect()))
+		{
+			Stop();
+		}
+	}
+
+	// 적 충돌
+	if (sprite.getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+	{
+		zombie->OnHitted(damage, dt, playTime);
+		Stop();
+	}
 
 	distance += speed * dt;
 	if (distance > DEFAULT_DISTANCE)

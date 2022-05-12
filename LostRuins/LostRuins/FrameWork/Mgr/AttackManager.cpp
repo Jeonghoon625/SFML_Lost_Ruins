@@ -13,17 +13,17 @@ void AttackManager::Init(ZombieWalker* zombie)
 
 	for (int i = 0; i < MAX_SPELL_CACHE_SIZE; i++)
 	{
-		unuseSpell.push_back(new FireArrow());
+		unuseSpell.push_back(new FireArrow(zombie));
 	}
 }
 
-void AttackManager::Update(float dt)
+void AttackManager::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 {
 	auto spell = useSpell.begin();
 	while (spell != useSpell.end())
 	{
 		FireArrow* isSpell = *spell;
-		isSpell->Update(dt);
+		isSpell->Update(dt, blocks, playTime);
 
 		if (!isSpell->IsActive())
 		{
@@ -121,7 +121,7 @@ void AttackManager::CastingSpell(Sprite sprite)
 	{
 		for (int i = 0; i < MAX_SPELL_CACHE_SIZE; ++i)
 		{
-			unuseSpell.push_back(new FireArrow());
+			unuseSpell.push_back(new FireArrow(zombie));
 		}
 	}
 

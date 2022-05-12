@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include <list>
+#include "../Object/TestBlock/TestBlock.h"
 #include "../Object/Weapon/TwohandWeapon.h"
 #include "../Object/Weapon/Dagger.h"
 #include "../Object/Spell/FireArrow.h"
@@ -50,12 +51,11 @@ private:
 	std::list<FireArrow*> unuseSpell;
 	std::list<FireArrow*> useSpell;
 
-	TestBlock* testBlock;
 	ZombieWalker* zombie;
 
 public:
 	void Init(ZombieWalker* zombie);
-	void Update(float dt);
+	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
 	void WeaponDraw(RenderWindow* window, View* mainView);
 	void SpellDraw(RenderWindow* window);
 

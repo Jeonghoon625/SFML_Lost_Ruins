@@ -58,7 +58,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 	AnimationUpdate();
 	animation.Update(dt);
 
-	attackMgr.Update(dt);
+	attackMgr.Update(dt, blocks, playTime);
 
 	auto DorR = useDorR.begin();
 	while (DorR != useDorR.end())

@@ -3,13 +3,16 @@
 #include "../../Mgr/TextureHolder.h"
 #include "../../Animation/AnimationController.h"
 #include "../../Animation/rapidcsv.h"
-#include "../TestBlock/TestBlock.h"
+#include "../../Object/TestBlock/TestBlock.h"
 
 using namespace sf;
+
+class ZombieWalker;
 
 class FireArrow
 {
 private:
+	const int SPELL_DAMAGE = 10;
 	const float DEFAULT_SPEED = 700.f;
 	const float DEFAULT_DISTANCE = 1000.f;
 
@@ -22,6 +25,7 @@ private:
 	bool isDirection;
 	
 	Vector2f position;
+	int damage;
 	float speed;
 	float distance;
 
@@ -29,10 +33,12 @@ private:
 	static bool isLoading;
 	static AnimationClip clip;
 
+	ZombieWalker* zombie;
+
 public:
-	FireArrow();
+	FireArrow(ZombieWalker* zombie);
 	void Spell(Vector2f pos, bool dir);
-	void Update(float dt);
+	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
 	void SetActive(bool active);
 
 	void Stop();
