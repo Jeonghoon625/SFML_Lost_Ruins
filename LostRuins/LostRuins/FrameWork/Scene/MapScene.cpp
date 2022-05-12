@@ -80,6 +80,16 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 		{
 			currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y + gridSizeF));
 		}
+
+		if (((int)mousePosGrid.x - (int)downGrid.x) < 0)
+		{
+			currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y));
+		}
+
+		if (((int)mousePosGrid.y - (int)downGrid.y) < 0)
+		{
+			currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y));
+		}
 	}
 
 	switch (currentInputState)
@@ -124,6 +134,10 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 
 	if (InputManager::GetKeyDown(Keyboard::F8))
 	{
+		if (player != nullptr)
+		{
+			delete player;
+		}
 		player = new Player();
 		player->Init(nullptr);
 		player->Spawn(mousePosWorld.x, mousePosWorld.y);
