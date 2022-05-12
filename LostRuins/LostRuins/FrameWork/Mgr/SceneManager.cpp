@@ -5,9 +5,9 @@ void SceneManager::Init()
 	SceneSwitch(SceneType::MapScene);
 }
 
-void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
+void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-	currentScene->Update(dt, playTime, window, mainView);
+	currentScene->Update(dt, playTime, window, mainView, uiView);
 }
 
 void SceneManager::Draw(RenderWindow* window, View* mainView)

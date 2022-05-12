@@ -155,6 +155,9 @@
     <ClCompile Include="FrameWork\Object\Monster\LamiHand.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Coin\Coin.cpp">
+      <Filter>FrameWork\Object\Coin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">

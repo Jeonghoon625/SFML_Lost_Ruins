@@ -63,7 +63,7 @@ void FrameWork::Update()
 	}
 
 	InputManager::Update(frameTimer, *window, *objectView);
-	sceneMgr.Update(frameTimer, playTime, window, objectView);
+	sceneMgr.Update(frameTimer, playTime, window, objectView, uiView);
 }
 
 void FrameWork::Draw()

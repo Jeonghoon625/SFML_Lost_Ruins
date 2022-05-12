@@ -1,0 +1,2 @@
+﻿ID,FPS,"LOOP TYPE(0:Single, 1:Loop)",CLIP PATH
+Gold,14,1,data_tables/animations/coin/COIN_animation_gold.csv
