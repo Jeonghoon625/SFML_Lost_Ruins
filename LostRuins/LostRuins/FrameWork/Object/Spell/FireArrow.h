@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "../../Mgr/TextureHolder.h"
 #include "../../Animation/AnimationController.h"
 #include "../../Animation/rapidcsv.h"
 #include "../../Object/TestBlock/TestBlock.h"
@@ -14,11 +13,10 @@ class FireArrow
 private:
 	const int SPELL_DAMAGE = 10;
 	const float DEFAULT_SPEED = 700.f;
-	const float DEFAULT_DISTANCE = 1000.f;
+	const float DEFAULT_DISTANCE = 800.f;
 
 	AnimationController animation;
 
-	Texture texture;
 	Sprite sprite;
 
 	bool isActive;

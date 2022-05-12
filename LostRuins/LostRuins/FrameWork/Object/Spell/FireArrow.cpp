@@ -61,6 +61,7 @@ void FireArrow::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 		Stop();
 	}
 
+	// 거리 제한
 	distance += speed * dt;
 	if (distance > DEFAULT_DISTANCE)
 	{

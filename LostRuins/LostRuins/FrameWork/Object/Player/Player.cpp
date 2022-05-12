@@ -28,11 +28,9 @@ void Player::Init(ZombieWalker* zombie)
 	isAlive = true;
 	isPause = false;
 
-	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
-
+	AnimationInit(&sprite);
 	sprite.setOrigin(15.5f, 50.f);
 	sprite.setScale(scale);
-	AnimationInit();
 	currentStatus = Status::STATUS_IDLE;
 	animation.Play("Idle");
 
@@ -40,7 +38,7 @@ void Player::Init(ZombieWalker* zombie)
 
 	this->zombie = zombie;
 
-	for (int i = 0; i < MAX_DAMAGE_TEXT; i++)
+	for (int i = 0; i < MAX_TEXT_CACHE_SIZE; i++)
 	{
 		unuseDorR.push_back(new DamageAndRecovery());
 	}
@@ -358,7 +356,7 @@ bool Player::OnHitted(int damage, Time timeHit)
 			Vector2f spawnPos(position.x, sprite.getGlobalBounds().top);
 			if (unuseDorR.empty())
 			{
-				for (int i = 0; i < MAX_DAMAGE_TEXT; ++i)
+				for (int i = 0; i < MAX_TEXT_CACHE_SIZE; ++i)
 				{
 					unuseDorR.push_back(new DamageAndRecovery());
 				}
@@ -438,9 +436,9 @@ bool Player::GetPause()
 	return isPause;
 }
 
-void Player::AnimationInit()
+void Player::AnimationInit(Sprite* sprite)
 {
-	animation.SetTarget(&sprite);
+	animation.SetTarget(sprite);
 
 	rapidcsv::Document clips("data_tables/animations/player/player_animation_clips2.csv");
 	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");

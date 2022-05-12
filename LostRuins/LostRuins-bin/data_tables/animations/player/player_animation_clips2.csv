@@ -16,3 +16,4 @@ DamageTaken,10,1,data_tables/animations/player/player_animation_DamageTaken.csv
 Dead,10,0,data_tables/animations/player/player_animation_Dead.csv
 CastingSpell1,15,0,data_tables/animations/player/player_animation_CastingSpell1.csv
 CastingSpell3,15,0,data_tables/animations/player/player_animation_CastingSpell3.csv
+Blood,12,0,data_tables/animations/player/player_animation_Blood.csv

@@ -51,15 +51,14 @@ private:
 	const float START_KNOCK_BACK_SPEED = 550.f;
 	const float DEAD_FALLING_SPEED = 600.f;
 	const float DEAD_TIME_COUNT = 1.f;
-	const int MAX_DAMAGE_TEXT = 10;
+	const int MAX_TEXT_CACHE_SIZE = 100;
 
 	AnimationController animation;
 	AttackManager attackMgr;
 
-	Vector2f position;
-
-	Texture texture;
 	Sprite sprite;
+
+	Vector2f position;
 	
 	Vector2i resolustion;
 	IntRect gameMap;
@@ -119,7 +118,7 @@ public:
 	bool GetAlive();
 	bool GetPause();
 
-	void AnimationInit();
+	void AnimationInit(Sprite* sprite);
 	void UpdateCollision(std::vector <TestBlock*> blocks);
 
 	void AnimationUpdate();
