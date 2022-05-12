@@ -22,11 +22,12 @@ private:
 	bool isDirection;
 	
 	Vector2f position;
-	Vector2f direction;
 	float speed;
 	float distance;
 
 	std::map<std::string, Texture> texmap;
+	static bool isLoading;
+	static AnimationClip clip;
 
 public:
 	FireArrow();
@@ -39,5 +40,6 @@ public:
 	Sprite GetSprite();
 
 	void AnimationInit();
+
 };
 

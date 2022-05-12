@@ -9,6 +9,7 @@
 using namespace sf;
 using namespace std;
 
+class TestBlock;
 class ZombieWalker;
 
 enum class AttackType
@@ -49,6 +50,7 @@ private:
 	std::list<FireArrow*> unuseSpell;
 	std::list<FireArrow*> useSpell;
 
+	TestBlock* testBlock;
 	ZombieWalker* zombie;
 
 public:
@@ -74,5 +76,6 @@ public:
 	~AttackManager();
 	void TwohandWeaponInit();
 	void DaggerWeaponInit();
+
 };
 

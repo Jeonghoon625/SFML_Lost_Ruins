@@ -127,7 +127,6 @@ void AttackManager::CastingSpell(Sprite sprite)
 
 	FireArrow* spell = unuseSpell.front();
 	unuseSpell.pop_front();
-
 	useSpell.push_back(spell);
 	spell->Spell(spawnPos, isDirection);
 }

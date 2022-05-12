@@ -617,7 +617,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 void Player::AnimationUpdate()
 {
 	// 스프라이트 반전
-	if (isAttack == false && isRoll == false && isHit == false && isAlive == true)
+	if (isAttack == false && isRoll == false && isHit == false && isSpell == false && isAlive == true)
 	{
 		if (InputManager::GetKey(Keyboard::Left))
 		{
