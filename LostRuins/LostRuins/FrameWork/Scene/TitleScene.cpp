@@ -1,12 +1,109 @@
 #include "TitleScene.h"
+#include "../Mgr/SceneManager.h"
 
 void TitleScene::Init(SceneManager* sceneManager)
 {
 	this->sceneMgr = sceneManager;
+	isPosition = 1;
 
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 
+	SettingTextrue();
+	SettingText();
+
+	backGroundSound.setBuffer(SoundHolder::GetBuffer("sound/back_ground_sound.wav"));
+	backGroundSound.play();
+}
+
+void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
+{
+	if (InputManager::GetKeyDown(Keyboard::Up) && isPosition > 1)
+	{
+		isPosition--;
+	}
+	else if (InputManager::GetKeyDown(Keyboard::Down) && isPosition < 4)
+	{
+		isPosition++;
+	}
+
+	switch (isPosition)
+	{
+	case GAME_START:
+		textGameStart.setFillColor(Color::White);
+		textContinue.setFillColor(Color(100, 100, 100));
+		break;
+	case CONTINUE:
+		textContinue.setFillColor(Color::White);
+		textGameStart.setFillColor(Color(100, 100, 100));
+		textOption.setFillColor(Color(100, 100, 100));
+		break;
+	case OPTION:
+		textOption.setFillColor(Color::White);
+		textContinue.setFillColor(Color(100, 100, 100));
+		textExit.setFillColor(Color(100, 100, 100));
+		break;
+	case EXIT:
+		textExit.setFillColor(Color::White);
+		textOption.setFillColor(Color(100, 100, 100));
+		break;
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Space))
+	{
+		GetSelect(window);
+	}
+
+	aniHeroine.Update(dt);
+	aniRope1.Update(dt);
+	aniRope2.Update(dt);
+	this->uiView = uiView;
+}
+
+void TitleScene::Draw(RenderWindow* window, View* mainView)
+{
+	window->setView(*uiView);
+	window->draw(sky);
+	window->draw(backGround);
+	window->draw(midGround);
+	window->draw(title);
+	window->draw(rope1);
+	window->draw(rope2);
+	window->draw(ForeGround);
+	window->draw(heroine);
+	window->draw(topBar);
+	window->draw(bottomBar);
+
+	window->draw(textGameStart);
+	window->draw(textContinue);
+	window->draw(textOption);
+	window->draw(textExit);
+}
+
+TitleScene::~TitleScene()
+{
+
+}
+
+void TitleScene::GetSelect(RenderWindow* window)
+{
+	switch (isPosition)
+	{
+	case GAME_START:
+		sceneMgr->SceneSwitch(SceneType::GameScene);
+		break;
+	case CONTINUE:
+		break;
+	case OPTION:
+		break;
+	case EXIT:
+		window->close();
+		break;
+	}
+}
+
+void TitleScene::SettingTextrue()
+{
 	textureTitle = TextureHolder::GetTexture("graphics/title.png");
 
 	sky.setTexture(textureTitle);
@@ -27,8 +124,8 @@ void TitleScene::Init(SceneManager* sceneManager)
 	midGround.setPosition(-205, resolution.y + 140);
 
 	title.setTexture(textureTitle);
-	title.setTextureRect(IntRect(41, 56, 1052, 77));
-	title.setPosition(160, 220);
+	title.setTextureRect(IntRect(1, 1, 1162, 157));
+	title.setPosition(120, 180);
 
 	ForeGround.setTexture(textureTitle);
 	ForeGround.setTextureRect(IntRect(1, 697, 640, 180));
@@ -63,37 +160,39 @@ void TitleScene::Init(SceneManager* sceneManager)
 	rope2.setScale(3.5f, 3.5f);
 	AnimationInit(aniRope2, &rope2);
 	aniRope2.Play("rope2");
-
-	backGroundSound.setBuffer(soundHlr.GetBuffer("sound/back_ground_sound.wav"));
-	backGroundSound.play();
 }
 
-void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
+void TitleScene::SettingText()
 {
-	aniHeroine.Update(dt);
-	aniRope1.Update(dt);
-	aniRope2.Update(dt);
-	this->uiView = uiView;
-}
+	fontLostRuins.loadFromFile("fonts/LiberationSans-Bold.ttf");
 
-void TitleScene::Draw(RenderWindow* window, View* mainView)
-{
-	window->setView(*uiView);
-	window->draw(sky);
-	window->draw(backGround);
-	window->draw(midGround);
-	window->draw(title);
-	window->draw(rope1);
-	window->draw(rope2);
-	window->draw(ForeGround);
-	window->draw(heroine);
-	window->draw(topBar);
-	window->draw(bottomBar);
-}
+	textGameStart.setFont(fontLostRuins);
+	textGameStart.setString("Game Start");
+	textGameStart.setFillColor(Color::White);
+	textGameStart.setCharacterSize(40);
+	textGameStart.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 180.f);
+	Utils::SetOrigin(textGameStart, Pivots::LC);
 
-TitleScene::~TitleScene()
-{
+	textContinue.setFont(fontLostRuins);
+	textContinue.setString("Continue");
+	textContinue.setFillColor(Color(100, 100, 100));
+	textContinue.setCharacterSize(40);
+	textContinue.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 250.f);
+	Utils::SetOrigin(textContinue, Pivots::LC);
 
+	textOption.setFont(fontLostRuins);
+	textOption.setString("Option");
+	textOption.setFillColor(Color(100, 100, 100));
+	textOption.setCharacterSize(40);
+	textOption.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 320.f);
+	Utils::SetOrigin(textOption, Pivots::LC);
+
+	textExit.setFont(fontLostRuins);
+	textExit.setString("Exit");
+	textExit.setFillColor(Color(100, 100, 100));
+	textExit.setCharacterSize(40);
+	textExit.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 390.f);
+	Utils::SetOrigin(textExit, Pivots::LC);
 }
 
 void TitleScene::AnimationInit(AnimationController& animation, Sprite* sprite)

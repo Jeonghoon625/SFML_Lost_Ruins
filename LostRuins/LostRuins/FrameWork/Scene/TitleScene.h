@@ -6,13 +6,23 @@
 #include "../Mgr/TextureHolder.h"
 #include "../Mgr/SoundHolder.h"
 #include "../Mgr/Utils.h"
+#include "../Mgr/InputManager.h"
 #include "../Animation/AnimationController.h"
 #include "../Animation/rapidcsv.h"
+
+enum GameMenu
+{
+	GAME_START = 1,
+	CONTINUE,
+	OPTION,
+	EXIT,
+};
 
 class TitleScene : public Scene
 {
 private:
 	SceneManager* sceneMgr;
+	SoundHolder soundHlr;
 
 	Vector2i resolution;
 
@@ -20,6 +30,7 @@ private:
 	AnimationController aniRope1;
 	AnimationController aniRope2;
 
+	Font fontLostRuins;
 	Texture textureTitle;
 
 	Sprite sky;
@@ -34,8 +45,14 @@ private:
 	RectangleShape topBar;
 	RectangleShape bottomBar;
 
-	SoundHolder soundHlr;
+	Text textGameStart;
+	Text textContinue;
+	Text textOption;
+	Text textExit;
+
 	Sound backGroundSound;
+
+	int isPosition;
 
 	std::map<std::string, Texture> texmap;
 
@@ -47,6 +64,9 @@ public:
 	virtual void Draw(RenderWindow* window, View* mainView);
 	virtual ~TitleScene();
 
+	void GetSelect(RenderWindow* window);
+	void SettingTextrue();
+	void SettingText();
 	void AnimationInit(AnimationController& animation, Sprite* sprite);
 
 };
