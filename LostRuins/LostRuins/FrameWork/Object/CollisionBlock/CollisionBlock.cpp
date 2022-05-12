@@ -23,7 +23,7 @@ CollisionBlock::CollisionBlock(FloatRect getGlobalBounds, Vector2u mousePosGrid)
 	blockRect.width = getGlobalBounds.width;
 	blockRect.height = getGlobalBounds.height;
 
-	blockShape.setFillColor(Color(153, 153, 153));
+	blockShape.setFillColor(Color(255, 0, 0, 125));
 	blockShape.setSize(Vector2f(getGlobalBounds.width, getGlobalBounds.height));
 	blockShape.setPosition(position);
 }

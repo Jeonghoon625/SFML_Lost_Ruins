@@ -19,6 +19,13 @@ enum class InputState
 	NONE
 };
 
+struct Button
+{
+	RectangleShape buttonShape;
+	FloatRect buttonRect;
+	Text buttonText;
+};
+
 class MapScene : public Scene
 {
 	const int mapWidth = 50;
@@ -33,7 +40,8 @@ class MapScene : public Scene
 
 	View* mapView;
 	View* uiView;
-	
+	View* miniMapView;
+
 	RectangleShape shape;
 	RectangleShape tileSelector;
 	vector<vector <RectangleShape>> gridTileMap;
@@ -59,6 +67,10 @@ class MapScene : public Scene
 
 	InputState currentInputState;
 
+	vector <Button> buttons;
+	
+	string name;
+
 	//test
 	bool isDraw;
 	Player* player;
@@ -79,7 +91,10 @@ public:
 	void UpdateMousePos(RenderWindow* window);
 
 	int CreateBackGround(int c, int r);
-	void CreateBlocks(int fromX, int toX, int fromY, int toY);
+
+	void CreateButtonSet();
+	Button CreateButton(float left, float top, float width, float height, string name);
+	void UpdateButton();
 
 	virtual ~MapScene();
 };

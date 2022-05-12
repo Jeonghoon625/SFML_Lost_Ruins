@@ -5,6 +5,10 @@
 
 MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSizeF)), shape(Vector2f(gridSizeF, gridSizeF)), tileSelector(Vector2f(gridSizeF, gridSizeF))
 {
+}
+
+void MapScene::Init(SceneManager* sceneManager)
+{
 	tileSelector.setFillColor(Color::Transparent);
 	tileSelector.setOutlineThickness(5.f);
 	tileSelector.setOutlineColor(Color::Red);
@@ -13,10 +17,7 @@ MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSize
 
 	currentInputState = InputState::BLOCK;
 	isDraw = true;
-}
 
-void MapScene::Init(SceneManager* sceneManager)
-{
 	this->sceneMgr = sceneManager;
 
 	resolution.x = VideoMode::getDesktopMode().width;
@@ -46,13 +47,15 @@ void MapScene::Init(SceneManager* sceneManager)
 	text.setFont(font);
 	text.setPosition(0.f, 0.f);
 	text.setString("TEST");
+
+	CreateButtonSet();
 }
 
 void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
 	UpdateMousePos(window);
 	MoveView(dt);
-
+	UpdateButton();
 	if (InputManager::GetMouseButtonDown(Mouse::Button::Left))
 	{
 		finalGrid.clear();
@@ -212,6 +215,12 @@ void MapScene::Draw(RenderWindow* window, View* mainView)
 	}
 	window->setView(*uiView);
 	window->draw(text);
+	
+	for (auto button : buttons)
+	{
+		window->draw(button.buttonShape);
+		window->draw(button.buttonText);
+	}
 
 	window->setView(*mapView);
 }
@@ -303,8 +312,48 @@ int MapScene::CreateBackGround(int r, int c)
 	return cols * rows;
 }
 
-void MapScene::CreateBlocks(int fromX, int toX, int fromY, int toY)
+void MapScene::CreateButtonSet()
 {
+	name = "Terrian";
+	Button buttonTerrain = CreateButton(resolution.x * 0.9f, resolution.y * 0.5f, 100.f, 50.f, name);
+	buttons.push_back(buttonTerrain);
+
+	Button buttonBlock = CreateButton(resolution.x * 0.9f, resolution.y * 0.6f, 100.f, 50.f, "Collision\n  Block  ");
+	buttons.push_back(buttonBlock);
+}
+
+Button MapScene::CreateButton(float left, float top, float width, float height, string name)
+{
+	RectangleShape buttonShape(Vector2f(width, height));
+	buttonShape.setFillColor({15, 153, 153});
+	buttonShape.setPosition(left, top);
+
+	FloatRect buttonRect(left, top, width, height);
+
+	Text buttonText;
+	buttonText.setCharacterSize(10);
+	buttonText.setFillColor(Color::Black);
+	buttonText.setString(name);
+	buttonText.setOrigin(buttonText.getPosition().x * 0.5, buttonText.getPosition().y * 0.5);
+	buttonText.setPosition(left + width * 0.5, top + height * 0.5);
+
+	Button button;
+	button.buttonRect = buttonRect;
+	button.buttonShape = buttonShape;
+	button.buttonText = buttonText;
+
+	return button;
+}
+
+void MapScene::UpdateButton()
+{
+	for (Button& button : buttons)
+	{
+		if (button.buttonRect.contains(mousePosWindow.x, mousePosWindow.y))
+		{
+			button.buttonShape.setPosition(0.f, 0.f);
+		}
+	}
 }
 
 MapScene::~MapScene()
