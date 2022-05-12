@@ -13,7 +13,7 @@ void TitleScene::Init(SceneManager* sceneManager)
 	sky.setTextureRect(IntRect(1, 1233, 640, 360));
 	sky.setScale(Vector2f(3.f, 3.f));
 	sky.setPosition(0, 0);
-	
+
 	backGround.setTexture(textureTitle);
 	backGround.setTextureRect(IntRect(1, 1145, 480, 73));
 	backGround.setOrigin(240, 73);
@@ -49,11 +49,20 @@ void TitleScene::Init(SceneManager* sceneManager)
 	heroine.setOrigin(0, 137);
 	heroine.setPosition(resolution.x * 0.7f, resolution.y + 30);
 	heroine.setScale(3.5f, 3.5f);
-	AnimationInit(animation1, &heroine);
-	animation1.Play("heroine");
+	AnimationInit(aniHeroine, &heroine);
+	aniHeroine.Play("heroine");
 
-	rofe1.Init();
-	rofe2.Init();
+	rope1.setOrigin(0.f, 60.f);
+	rope1.setPosition(resolution.x * 0.5f - 230.f, resolution.y * 0.5f + 400.f);
+	rope1.setScale(3.5f, 3.5f);
+	AnimationInit(aniRope1, &rope1);
+	aniRope1.Play("rope1");
+
+	rope2.setOrigin(0.f, 80.f);
+	rope2.setPosition(resolution.x * 0.5f + 130.f, resolution.y * 0.5f + 480.f);
+	rope2.setScale(3.5f, 3.5f);
+	AnimationInit(aniRope2, &rope2);
+	aniRope2.Play("rope2");
 
 	backGroundSound.setBuffer(soundHlr.GetBuffer("sound/back_ground_sound.wav"));
 	backGroundSound.play();
@@ -61,10 +70,9 @@ void TitleScene::Init(SceneManager* sceneManager)
 
 void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-	animation1.SetSpeed(3.5f);
-	animation1.Update(dt);
-	rofe1.Update(dt);
-	rofe2.Update(dt);
+	aniHeroine.Update(dt);
+	aniRope1.Update(dt);
+	aniRope2.Update(dt);
 	this->uiView = uiView;
 }
 
@@ -75,11 +83,11 @@ void TitleScene::Draw(RenderWindow* window, View* mainView)
 	window->draw(backGround);
 	window->draw(midGround);
 	window->draw(title);
+	window->draw(rope1);
+	window->draw(rope2);
 	window->draw(ForeGround);
 	window->draw(heroine);
 	window->draw(topBar);
-	rofe1.Draw(window);
-	rofe2.Draw(window);
 	window->draw(bottomBar);
 }
 
@@ -91,8 +99,8 @@ TitleScene::~TitleScene()
 void TitleScene::AnimationInit(AnimationController& animation, Sprite* sprite)
 {
 	animation.SetTarget(sprite);
-	
-	rapidcsv::Document clips("data_tables/animations/title/Title_animation_clips1.csv");
+
+	rapidcsv::Document clips("data_tables/animations/title/Title_animation_clips.csv");
 	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
 	std::vector<int> colFps = clips.GetColumn<int>("FPS");
 	std::vector<int> colLoop = clips.GetColumn<int>("LOOP TYPE(0:Single, 1:Loop)");

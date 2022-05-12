@@ -18,7 +18,9 @@ private:
 
 	Vector2i resolution;
 
-	AnimationController animation1;
+	AnimationController aniHeroine;
+	AnimationController aniRope1;
+	AnimationController aniRope2;
 
 	Texture textureTitle;
 
@@ -28,12 +30,11 @@ private:
 	Sprite title;
 	Sprite ForeGround;
 	Sprite heroine;
+	Sprite rope1;
+	Sprite rope2;
 
 	RectangleShape topBar;
 	RectangleShape bottomBar;
-
-	Rofe1 rofe1;
-	Rofe2 rofe2;
 
 	SoundHolder soundHlr;
 	Sound backGroundSound;

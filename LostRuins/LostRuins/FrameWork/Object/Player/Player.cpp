@@ -511,7 +511,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				JumpingSpeed = START_JUMP_SPEED;
 			}
 			// 블럭 LB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockLeft > playerXpos && blockDown < playerYpos)
+			if (blockDown < playerYpos && blockLeft > playerXpos)
 			{
 				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
 				{
@@ -530,7 +530,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				}
 			}
 			// 블럭 RB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockRight < playerXpos && blockDown < playerYpos)
+			if (blockDown < playerYpos && blockRight < playerXpos)
 			{
 				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
 				{
@@ -556,7 +556,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				fallingSpeed = 0.f;
 			}
 			// 블럭 LT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockLeft > playerXpos && blockUp > playerYpos)
+			if (blockUp > playerYpos && blockLeft > playerXpos)
 			{
 				if (abs(blockLeft - playerRight) > abs(blockUp - playerDown))
 				{
@@ -576,7 +576,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				}
 			}
 			// 블럭 RT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockRight < playerXpos && blockUp > playerYpos)
+			if (blockUp > playerYpos && blockRight < playerXpos)
 			{
 				if (abs(blockRight - playerLeft) > abs(blockUp - playerDown))
 				{

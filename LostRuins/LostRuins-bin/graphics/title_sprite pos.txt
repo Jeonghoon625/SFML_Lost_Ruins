@@ -1,0 +1,3 @@
+heroine L0, T363, W100, H150, C24, R2
+rope1 L0, T1653, W60, H90, C32, R1, MC3
+rope2 L0, T1774, W80, H90, C24, R2, MC32
