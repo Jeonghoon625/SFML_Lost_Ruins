@@ -184,9 +184,6 @@
     <ClInclude Include="FrameWork\Animation\rapidcsv.h">
       <Filter>FrameWork\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h">
-      <Filter>FrameWork\Object\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Object\Monster\Monster.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>

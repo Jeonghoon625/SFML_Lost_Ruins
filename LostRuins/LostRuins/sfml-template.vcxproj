@@ -75,7 +75,6 @@
     <ClInclude Include="FrameWork\Mgr\UIManager.h" />
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
     <ClInclude Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.h" />
-    <ClInclude Include="FrameWork\Mgr\WeaponManager.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiHand.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiPhaseOne.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiPhaseTwo.h" />
