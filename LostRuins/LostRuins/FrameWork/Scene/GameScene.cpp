@@ -29,7 +29,7 @@ void GameScene::Init(SceneManager* sceneManager)
 	
 }
 
-void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
+void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
 	if (player.GetPause() == false)
 	{
