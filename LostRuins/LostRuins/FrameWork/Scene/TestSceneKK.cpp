@@ -21,7 +21,7 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 	CreateBlock();
 }
 
-void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
+void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
 
 	player.Update(dt, blocks, playTime);

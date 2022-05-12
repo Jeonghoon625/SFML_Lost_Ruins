@@ -56,17 +56,18 @@ void TitleScene::Init(SceneManager* sceneManager)
 	rofe2.Init();
 }
 
-void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
+void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
 	animation.SetSpeed(3.5f);
 	animation.Update(dt);
 	rofe1.Update(dt);
 	rofe2.Update(dt);
+	this->uiView = uiView;
 }
 
 void TitleScene::Draw(RenderWindow* window, View* mainView)
 {
-	window->setView(*mainView);
+	window->setView(*uiView);
 	window->draw(sky);
 	window->draw(backGround);
 	window->draw(midGround);
@@ -77,7 +78,6 @@ void TitleScene::Draw(RenderWindow* window, View* mainView)
 	rofe1.Draw(window);
 	rofe2.Draw(window);
 	window->draw(bottomBar);
-	
 }
 
 TitleScene::~TitleScene()

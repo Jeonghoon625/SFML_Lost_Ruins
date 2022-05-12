@@ -39,7 +39,7 @@ private:
 	vector <TestBlock*> blocks;
 public:
 	virtual void Init(SceneManager* sceneManager);
-	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView);
+	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
 	virtual void Draw(RenderWindow* window, View* mainView);
 	virtual ~TestSceneKK();
 

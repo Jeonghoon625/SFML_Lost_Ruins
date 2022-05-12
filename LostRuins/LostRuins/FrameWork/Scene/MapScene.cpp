@@ -43,7 +43,7 @@ text.setPosition(0.f, 0.f);
 text.setString("TEST");
 }
 
-void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView)
+void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
 	mousePosScreen = Mouse::getPosition();
 	mousePosWindow = Mouse::getPosition(*window);
