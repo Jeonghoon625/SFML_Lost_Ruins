@@ -19,7 +19,6 @@ void GameScene::Init(SceneManager* sceneManager)
 	float wpXpos = 500.f;
 	float wpYpos = resolution.y * 0.5f;
 
-	
 	// test
 	zombieWalker->MonsterInit();
 

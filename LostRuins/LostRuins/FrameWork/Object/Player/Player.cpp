@@ -35,6 +35,7 @@ void Player::Init(ZombieWalker* zombie)
 	animation.Play("Idle");
 
 	attackMgr.Init(zombie);
+	effectMgr.Init();
 
 	this->zombie = zombie;
 
@@ -57,6 +58,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 	animation.Update(dt);
 
 	attackMgr.Update(dt, blocks, playTime);
+	effectMgr.Update(dt);
 
 	auto DorR = useDorR.begin();
 	while (DorR != useDorR.end())
@@ -85,6 +87,7 @@ void Player::Draw(RenderWindow* window, View* mainView)
 		attackMgr.WeaponDraw(window, mainView);
 	}
 	attackMgr.SpellDraw(window);
+	effectMgr.Draw(window);
 
 	for (auto DorR : useDorR)
 	{
@@ -352,6 +355,8 @@ bool Player::OnHitted(int damage, Time timeHit)
 		{
 			lastHit = timeHit;
 			health -= damage;
+
+			effectMgr.HitActor(sprite);
 
 			Vector2f spawnPos(position.x, sprite.getGlobalBounds().top);
 			if (unuseDorR.empty())

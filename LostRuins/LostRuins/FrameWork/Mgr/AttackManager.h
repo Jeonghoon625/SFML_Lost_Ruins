@@ -33,7 +33,7 @@ private:
 	const float DAGGER_ATTACK_FPS = 0.03f;
 	const float TWO_HANDED_ATTACK_FPS = 0.04f;
 
-	const int MAX_SPELL_CACHE_SIZE = 100;
+	const int MAX_SPELL_CACHE_SIZE = 50;
 	const float FIRE_ARROW_CAST_TIME = 1.f;
 
 	AttackType currentAtkType;

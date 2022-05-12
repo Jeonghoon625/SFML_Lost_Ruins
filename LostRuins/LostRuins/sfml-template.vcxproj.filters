@@ -159,6 +159,9 @@
     <ClCompile Include="FrameWork\Mgr\EffectManager.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Effect\Blood.cpp">
+      <Filter>FrameWork\Object\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -282,6 +285,9 @@
     <ClInclude Include="FrameWork\Mgr\EffectManager.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
+    <ClInclude Include="FrameWork\Object\Effect\Blood.h">
+      <Filter>FrameWork\Object\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="FrameWork">
@@ -334,6 +340,9 @@
     </Filter>
     <Filter Include="FrameWork\Object\Spell">
       <UniqueIdentifier>{32fca10a-0513-49cf-8983-140903bcf4a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\Effect">
+      <UniqueIdentifier>{1458e2ce-4653-4df5-8ec4-dbea3d4a939e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
