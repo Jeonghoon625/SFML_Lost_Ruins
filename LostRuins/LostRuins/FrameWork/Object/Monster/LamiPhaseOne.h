@@ -14,6 +14,6 @@ public:
 
 	virtual void MonsterInit();
 	virtual void ChasePlayer(Player& player, float dt);
-	virtual void Attack(float dt, int atk, Player& player);
+	virtual void Attack(float dt, int atk, Player& player, Time timeHit);
 };
 

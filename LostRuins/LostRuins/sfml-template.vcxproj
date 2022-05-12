@@ -30,6 +30,9 @@
     <ClCompile Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp" />
     <ClCompile Include="FrameWork\Mgr\AttackManager.cpp" />
+    <ClCompile Include="FrameWork\Object\Monster\LamiHand.cpp" />
+    <ClCompile Include="FrameWork\Object\Monster\LamiPhaseOne.cpp" />
+    <ClCompile Include="FrameWork\Object\Monster\LamiPhaseTwo.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\Monster.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp" />
@@ -72,7 +75,10 @@
     <ClInclude Include="FrameWork\Mgr\UIManager.h" />
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
     <ClInclude Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.h" />
-    <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h" />
+    <ClInclude Include="FrameWork\Mgr\WeaponManager.h" />
+    <ClInclude Include="FrameWork\Object\Monster\LamiHand.h" />
+    <ClInclude Include="FrameWork\Object\Monster\LamiPhaseOne.h" />
+    <ClInclude Include="FrameWork\Object\Monster\LamiPhaseTwo.h" />
     <ClInclude Include="FrameWork\Mgr\AttackManager.h" />
     <ClInclude Include="FrameWork\Object\Monster\Monster.h" />
     <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h" />
