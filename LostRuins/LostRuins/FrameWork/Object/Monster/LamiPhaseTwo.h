@@ -30,6 +30,8 @@ private:
 
 	Image Idle;
 	Image Idle2;
+
+	Vector2f prevLeftEyePos;
 	float a = 1.f;
 
 	bool isNearAttackPlayer;
@@ -38,6 +40,9 @@ private:
 	bool isAlive;
 	bool isIdle;
 	bool isHit;
+	bool isLeft;
+	bool isRight;
+	bool isFar;
 	
 
 
@@ -45,6 +50,8 @@ private:
 	float downY;
 	float prevY;
 	float updateY;
+
+	int punchCount;
 public:
 	LamiPhaseTwo();
 	virtual void MonsterInit();

@@ -175,12 +175,14 @@ void LamiHand::SetStatus(Lami2Status newStatus)
 	case Lami2Status::STATUS_ATTACK_MIDDLE:
 		isAttacking = true;
 		sprite.setOrigin(110, 32);
-		animation.Play(strMiddleAttack);
+		/*animation.Play(strMiddleAttack);*/
+		animation.Play(strMiddleAttack, std::bind(&LamiHand::IsAttackingFalse, this));
 		break;
 	case Lami2Status::STATUS_ATTACK_FAR:
 		isAttacking = true;
 		sprite.setOrigin(111, 38);
-		animation.Play(strFarAttack);
+	/*	animation.Play(strFarAttack);*/
+		animation.Play(strFarAttack, std::bind(&LamiHand::IsAttackingFalse, this));
 		break;
 	case Lami2Status::STATUS_DIVING:
 		sprite.setOrigin(69, 32);
@@ -239,6 +241,11 @@ void LamiHand::AnimationInit(Sprite* sprite)
 		}
 		animation.AddClip(clip);
 	}
+}
+
+bool LamiHand::GetIsAttacking()
+{
+	return isAttacking;
 }
 
 void LamiHand::IsAttackingFalse()

@@ -13,8 +13,8 @@ Monster::Monster()
 	isIdle = true;
 	isWalk = false;
 	isRun = false;
-	resolution.x = VideoMode::getDesktopMode().width;
-	resolution.y = VideoMode::getDesktopMode().height;
+	resolution.x = 1920.f;
+	resolution.y = 1080.f;
 }
 
 FloatRect Monster::GetGlobalBound()

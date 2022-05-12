@@ -25,6 +25,7 @@ private:
 
 	Lami2Status currentStatus;
 
+
 	bool isAttacking;
 
 	String strIdle;
@@ -51,5 +52,7 @@ public:
 	void IdlePlay();
 	void IsAttackingFalse();
 	void AnimationInit(Sprite* sprite);
+
+	bool GetIsAttacking();
 };
 

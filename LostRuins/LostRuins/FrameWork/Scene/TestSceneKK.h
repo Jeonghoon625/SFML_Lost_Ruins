@@ -24,6 +24,7 @@ private:
 	Vector2i resolution;
 
 	AnimationController animation;
+	IntRect gameMap;
 
 	Player player;
 	Texture textureHeroine;
@@ -37,6 +38,9 @@ private:
 	LamiPhaseTwo Lami2;
 
 	vector <TestBlock*> blocks;
+	//Dummy Map
+	Texture texBackground;
+	VertexArray tileMap;
 public:
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
@@ -44,6 +48,7 @@ public:
 	virtual ~TestSceneKK();
 
 	void CreateBlock();
+	int CreateBackGround();
 };
 
 
