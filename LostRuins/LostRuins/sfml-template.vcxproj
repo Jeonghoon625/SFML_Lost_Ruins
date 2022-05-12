@@ -50,8 +50,6 @@
     <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp" />
     <ClCompile Include="FrameWork\Scene\GameScene.cpp" />
     <ClCompile Include="FrameWork\Scene\MapScene.cpp" />
-    <ClCompile Include="FrameWork\Object\TitleObject\Rofe1.cpp" />
-    <ClCompile Include="FrameWork\Object\TitleObject\Rofe2.cpp" />
     <ClCompile Include="FrameWork\Scene\Scene.cpp" />
     <ClCompile Include="FrameWork\Scene\TestScene.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -108,8 +106,6 @@
     <ClInclude Include="FrameWork\Object\Weapon\TwohandWeapon.h" />
     <ClInclude Include="FrameWork\Scene\GameScene.h" />
     <ClInclude Include="FrameWork\Scene\MapScene.h" />
-    <ClInclude Include="FrameWork\Object\TitleObject\Rofe1.h" />
-    <ClInclude Include="FrameWork\Object\TitleObject\Rofe2.h" />
     <ClInclude Include="FrameWork\Scene\Scene.h" />
     <ClInclude Include="FrameWork\Scene\TestScene.h" />
     <ClInclude Include="FrameWork\Scene\TestSceneKK.h">

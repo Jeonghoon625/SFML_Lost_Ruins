@@ -125,12 +125,6 @@
     <ClCompile Include="FrameWork\Scene\MapScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\TitleObject\Rofe1.cpp">
-      <Filter>Framework\Object\TitleObject</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Object\TitleObject\Rofe2.cpp">
-      <Filter>Framework\Object\TitleObject</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\Object\Weapon\Dagger.cpp">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClCompile>
@@ -254,12 +248,6 @@
     <ClInclude Include="FrameWork\Scene\MapScene.h">
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\TitleObject\Rofe1.h">
-      <Filter>Framework\Object\TitleObject</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Object\TitleObject\Rofe2.h">
-      <Filter>Framework\Object\TitleObject</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Object\Weapon\Dagger.h">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClInclude>
@@ -343,9 +331,6 @@
     </Filter>
     <Filter Include="Framework\Object\Npc">
       <UniqueIdentifier>{51fb6813-1bc0-4c1a-8488-2c8efba53977}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Object\TitleObject">
-      <UniqueIdentifier>{357af2aa-5fb7-49fd-983d-35777ffead7c}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Object\DamageAndRecovery">
       <UniqueIdentifier>{75e52427-22c3-41a2-be12-c7305e7afd54}</UniqueIdentifier>

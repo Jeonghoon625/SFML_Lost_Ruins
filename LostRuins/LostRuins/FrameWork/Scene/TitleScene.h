@@ -8,8 +8,6 @@
 #include "../Mgr/Utils.h"
 #include "../Animation/AnimationController.h"
 #include "../Animation/rapidcsv.h"
-#include "../Object/TitleObject/Rofe1.h"
-#include "../Object/TitleObject/Rofe2.h"
 
 class TitleScene : public Scene
 {
