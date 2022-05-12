@@ -93,6 +93,9 @@ void LamiPhaseTwo::MonsterInit()
 	rightHand.Init(Vector2f(sprite.getGlobalBounds().left + 89 * 3, sprite.getGlobalBounds().top + 17 * 3), 1);
 	a = 1.f;
 	updateY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
+	float a = sprite.getGlobalBounds().top;
+	std::cout << a << std::endl;
+	
 }
 
 void LamiPhaseTwo::Walk(float dt, Player& player)
@@ -275,16 +278,17 @@ void LamiPhaseTwo::Update(Player& player, float dt, std::vector<TestBlock*> bloc
 	animation.Update(dt);
 	Walk(dt, player);
 	Attack(dt, 1, player, playTime);
-	EyeUpdate(dt, player);
+	
 	leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 35 * 3, sprite.getGlobalBounds().top + 17 * 3));
 	rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 89 * 3, sprite.getGlobalBounds().top + 17 * 3));
 	AnimationUpdate();
+	EyeUpdate(dt, player);
 }
 
 void LamiPhaseTwo::Draw(RenderWindow* window)
 {
-	window->draw(leftSclera);
 	window->draw(sprite);
+	window->draw(leftSclera);
 	window->draw(leftEye);
 	window->draw(leftHand.GetSprite());
 	window->draw(rightHand.GetSprite());
@@ -320,9 +324,6 @@ void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 	}
 	std::cout << a << std::endl;
 
-
-
-	leftSclera.getGlobalBounds().top; /*getGlobalBounds().top*/
 	float h = player.GetPosition().x - leftEye.getPosition().x;
 	float v = player.GetPosition().y - leftEye.getPosition().y;
 	Vector2f dir(h, v);
