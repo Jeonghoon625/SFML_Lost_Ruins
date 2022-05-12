@@ -17,8 +17,8 @@ void Npc::Spawn(IntRect gameMap, Vector2i res, int tileSize)
 	this->gameMapNpc = gameMap;
 	resolustionNpc = res;
 	this->tileSizeNpc = tileSize;
-	positionNpc.x = 1000;
-	positionNpc.y = 1000;
+	positionNpc.x = 1680.f;
+	positionNpc.y = 736.f;
 	spriteNpc.setPosition(positionNpc);
 }
 

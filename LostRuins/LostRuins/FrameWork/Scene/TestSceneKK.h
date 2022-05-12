@@ -12,7 +12,7 @@
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
 #include "../Object/TestBlock/TestBlock.h"
-
+#include "../Object/Monster/LamiPhaseTwo.h"
 
 
 
@@ -33,6 +33,8 @@ private:
 	Monster Goblin;
 	ZombieCrawler zombieCrawler;
 	ZombieWalker zombieWalker;
+
+	LamiPhaseTwo Lami2;
 
 	vector <TestBlock*> blocks;
 public:

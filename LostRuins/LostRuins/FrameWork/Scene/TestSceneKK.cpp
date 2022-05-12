@@ -13,10 +13,11 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 	IntRect gameMap(resolution.x * 0.f, resolution.y * 0.5f, 500, 500);
 	player.Spawn(gameMap, resolution, 0.5f);
 
-	Goblin.MonsterInit();
-	zombieCrawler.MonsterInit();
-	zombieWalker.MonsterInit();
+	//Goblin.MonsterInit();
+	//zombieCrawler.MonsterInit();
+	//zombieWalker.MonsterInit();
 
+	Lami2.MonsterInit();
 	CreateBlock();
 }
 
@@ -24,9 +25,10 @@ void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* ma
 {
 
 	player.Update(dt, blocks, playTime);
-	Goblin.Update(player,dt, blocks, playTime);
-	zombieCrawler.Update(player,dt, blocks, playTime);
-	zombieWalker.Update(player,dt, blocks, playTime);
+	//Goblin.Update(player,dt, blocks, playTime);
+	//zombieCrawler.Update(player,dt, blocks, playTime);
+	//zombieWalker.Update(player,dt, blocks, playTime);
+	Lami2.Update(player, dt, blocks, playTime);
 }
 
 void TestSceneKK::Draw(RenderWindow* window, View* mainView)
@@ -34,11 +36,12 @@ void TestSceneKK::Draw(RenderWindow* window, View* mainView)
 	for (auto blockShape : blocks)
 	{
 		window->draw(blockShape->GetBlockShape());
-	}
+	}/*
 	Goblin.Draw(window);
 	zombieCrawler.Draw(window);
-	zombieWalker.Draw(window);
+	zombieWalker.Draw(window);*/
 	player.Draw(window, mainView);
+	Lami2.Draw(window);
 
 }
 

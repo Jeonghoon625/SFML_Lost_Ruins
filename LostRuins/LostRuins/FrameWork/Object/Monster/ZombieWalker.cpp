@@ -18,7 +18,7 @@ void ZombieWalker::MonsterInit()
 	strWalk = ("ZombieWalkerWalk");
 	strIdle = ("ZombieWalkerIdle");
 	strRun = ("ZombieWalkerWalk");
-	strDead = ("ZombieWalkerDead");
+	strDead = ("ZombieWalkerGiblets");
 	strAttack = ("ZombieWalkerAttack");
 	strAttackBlocked = ("ZombieWalkerAttackBlocked");
 	strDamageTaken = ("ZombieWalkerDamageTaken");
