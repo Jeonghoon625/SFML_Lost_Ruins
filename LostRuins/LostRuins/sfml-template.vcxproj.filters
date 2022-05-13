@@ -170,6 +170,9 @@
     <ClCompile Include="FrameWork\Mgr\SoundHolder.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\LamiEye.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -303,6 +306,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Mgr\SoundHolder.h">
       <Filter>FrameWork\Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\LamiEye.h">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

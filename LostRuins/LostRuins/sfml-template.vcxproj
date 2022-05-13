@@ -36,6 +36,7 @@
     <ClCompile Include="FrameWork\Object\Effect\Explosion.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp" />
     <ClCompile Include="FrameWork\Mgr\AttackManager.cpp" />
+    <ClCompile Include="FrameWork\Object\Monster\LamiEye.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\LamiHand.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\LamiPhaseOne.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\LamiPhaseTwo.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.h" />
     <ClInclude Include="FrameWork\Object\Effect\Blood.h" />
     <ClInclude Include="FrameWork\Object\Effect\Explosion.h" />
+    <ClInclude Include="FrameWork\Object\Monster\LamiEye.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiHand.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiPhaseOne.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiPhaseTwo.h" />

@@ -82,6 +82,8 @@ public:
 	int GetHealth();
 	void SetHealth(int damage);
 
+	void Spawn(Vector2f pos);
+
 	int GetAtk();
 	void SetAtk(int atk);
 

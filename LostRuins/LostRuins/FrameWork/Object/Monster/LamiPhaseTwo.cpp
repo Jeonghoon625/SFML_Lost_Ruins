@@ -74,17 +74,17 @@ void LamiPhaseTwo::MonsterInit()
 	attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.5, attackRangeBox.getSize().y);
 	attackRangeBox.setPosition(sprite.getOrigin());
 
-	attackRangeLeftBox.setSize(Vector2f(60.f, 150.f));
+	attackRangeLeftBox.setSize(Vector2f(40.f, 150.f));
 	attackRangeLeftBox.setScale(scale);
 	attackRangeLeftBox.setFillColor(Color(153, 0, 0, 80));
-	attackRangeLeftBox.setOrigin(attackRangeBox.getGlobalBounds().width, attackRangeBox.getSize().y);
-	attackRangeLeftBox.setPosition(sprite.getOrigin().x, sprite.getOrigin().y);
+	attackRangeLeftBox.setOrigin(attackRangeLeftBox.getSize().x * 1, attackRangeBox.getSize().y);
+	attackRangeLeftBox.setPosition(sprite.getOrigin().x - 90.f, sprite.getOrigin().y);
 
-	attackRangeRightBox.setSize(Vector2f(60.f, 150.f));
+	attackRangeRightBox.setSize(Vector2f(40.f, 150.f));
 	attackRangeRightBox.setScale(scale);
 	attackRangeRightBox.setFillColor(Color(153, 0, 0, 80));
-	attackRangeRightBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y);
-	attackRangeRightBox.setPosition(sprite.getOrigin().x, sprite.getOrigin().y);
+	attackRangeRightBox.setOrigin(attackRangeRightBox.getSize().x * 0, attackRangeBox.getSize().y);
+	attackRangeRightBox.setPosition(sprite.getOrigin().x + 90.f, sprite.getOrigin().y);
 
 
 	hitBox.setSize(Vector2f(60.f, 100.f));
@@ -115,8 +115,8 @@ void LamiPhaseTwo::Walk(float dt, Player& player)
 		sprite.setPosition(position);
 		findPlayerBox.setPosition(position);
 		attackRangeBox.setPosition(position);
-		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 5, position.y);
-		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 5, position.y);
+		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 1.5f, position.y);
+		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 1.5f, position.y);
 		hitBox.setPosition(position);
 	}
 }
@@ -401,8 +401,8 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 		sprite.setPosition(position);
 		findPlayerBox.setPosition(position);
 		attackRangeBox.setPosition(position);
-		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 5, position.y);
-		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 5, position.y);
+		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 1.5f, position.y);
+		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 1.5f, position.y);
 		hitBox.setPosition(position);
 	}
 
@@ -417,8 +417,8 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 		sprite.setPosition(position);
 		findPlayerBox.setPosition(position);
 		attackRangeBox.setPosition(position);
-		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 5, position.y);
-		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 5, position.y);
+		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 1.5f, position.y);
+		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 1.5f, position.y);
 		hitBox.setPosition(position);
 
 		if (diveDelay > 5.f)
@@ -440,8 +440,8 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 		sprite.setPosition(position);
 		findPlayerBox.setPosition(position);
 		attackRangeBox.setPosition(position);
-		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 5, position.y);
-		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 5, position.y);
+		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 1.5f, position.y);
+		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 1.5f, position.y);
 		hitBox.setPosition(position);
 
 
