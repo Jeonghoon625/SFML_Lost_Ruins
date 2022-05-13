@@ -9,6 +9,8 @@ LamiHand::LamiHand()
 void LamiHand::Init(Vector2f pos, int handSide)
 {
 	isAttacking = false;
+	isDiving = false;
+	isReappearing = false;
 
 	AnimationInit(&sprite);
 	
@@ -111,10 +113,16 @@ void LamiHand::AnimationUpdate()
 		}
 		break;
 	case Lami2Status::STATUS_DIVING:
-		SetStatus(Lami2Status::STATUS_DIVING);
+		if (isDiving == false)
+		{
+			SetStatus(Lami2Status::STATUS_IDLE);
+		}
 		break;
 	case Lami2Status::STATUS_REAPPEARING:
-		SetStatus(Lami2Status::STATUS_REAPPEARING);
+		if (isReappearing == false)
+		{
+			SetStatus(Lami2Status::STATUS_IDLE);
+		}
 		break;
 	case Lami2Status::STATUS_DEAD:
 		SetStatus(Lami2Status::STATUS_IDLE);
@@ -185,12 +193,16 @@ void LamiHand::SetStatus(Lami2Status newStatus)
 		animation.Play(strFarAttack, std::bind(&LamiHand::IsAttackingFalse, this));
 		break;
 	case Lami2Status::STATUS_DIVING:
+		isDiving = true;
 		sprite.setOrigin(69, 32);
-		animation.Play(strDiving);
+		/*animation.Play(strDiving);*/
+		animation.Play(strDiving, std::bind(&LamiHand::SetIsDiving, this));
 		break;
 	case Lami2Status::STATUS_REAPPEARING:
+		isReappearing = true;
 		sprite.setOrigin(113, 95);
-		animation.Play(strReappearing);
+		/*animation.Play(strReappearing);*/
+		animation.Play(strReappearing, std::bind(&LamiHand::SetIsReappearing, this));
 		break;
 	default:
 		break;
@@ -246,6 +258,16 @@ void LamiHand::AnimationInit(Sprite* sprite)
 bool LamiHand::GetIsAttacking()
 {
 	return isAttacking;
+}
+
+void LamiHand::SetIsDiving()
+{
+	isDiving = false;
+}
+
+void LamiHand::SetIsReappearing()
+{
+	isReappearing = false;
 }
 
 void LamiHand::IsAttackingFalse()

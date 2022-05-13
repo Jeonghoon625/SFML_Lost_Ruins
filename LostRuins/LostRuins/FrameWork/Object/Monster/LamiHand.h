@@ -27,6 +27,9 @@ private:
 
 
 	bool isAttacking;
+	bool isDiving;
+	bool isReappearing;
+
 
 	String strIdle;
 	String strNearAttack;
@@ -51,6 +54,9 @@ public:
 
 	void IdlePlay();
 	void IsAttackingFalse();
+	void SetIsDiving();
+	void SetIsReappearing();
+
 	void AnimationInit(Sprite* sprite);
 
 	bool GetIsAttacking();
