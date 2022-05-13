@@ -26,17 +26,30 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 	mpBarsize = Vector2f(MPwidth, HPbarHeight);
 	MPbar.setScale(player.get)*/
 
-	ESCsettag();	
+	ESCsettag();
 
 	if (InputManager::GetKeyDown(Keyboard::Z) && inventory == true && weaponNum == 1 && menuNum == 1)
 	{
 		Zweaponview = !Zweaponview;
 	}
-
 	if (InputManager::GetKeyDown(Keyboard::X) && inventory == true && weaponNum == 2 && menuNum == 1)
 	{
 		Xweaponview = !Xweaponview;
 	}
+
+
+
+	if (InputManager::GetKeyDown(Keyboard::Z) && inventory == true && orderNum == 1 && menuNum == 2)
+	{
+		Zscrollview = !Zscrollview;
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::X) && inventory == true && orderNum == 2 && menuNum == 2)
+	{
+		Xscrollview = !Xscrollview;
+	}
+
+
 
 	if (InputManager::GetKeyDown(Keyboard::Key::Escape) && inventory == false && MAP == false)
 	{
@@ -49,13 +62,22 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 		MAP = false;
 		inventory = true;
 		SeeInven();
-		weaponlist1();
+		weaponlist1();		
 	}
-
 	if (InputManager::GetKeyDown(Keyboard::Key::Down) && inventory == true && Zweapon == true && menuNum == 1 && Xweapon == true && weaponNum == 1)
 	{
 		weaponlist2();
 	}
+
+	if (InputManager::GetKeyDown(Keyboard::Key::Right) && inventory == true && menuNum == 2 && orderNum == 1 && Zscroll == true && Xscroll == true)
+	{
+		scrollList1();
+	}
+	if (InputManager::GetKeyDown(Keyboard::Key::Down) && inventory == true && menuNum == 2 && orderNum == 2 && Zscroll == true && Xscroll == true)
+	{
+		scrollList2();
+	}
+	
 	
 	if (InputManager::GetKeyDown(Keyboard::Escape) && inventory == true)
 	{
@@ -99,6 +121,20 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 		if (InputManager::GetKeyDown(Keyboard::Key::Down) && weaponNum != 2)
 		{
 			++weaponNum;
+			InvenallCS.setPosition(340, InvenallCS.getPosition().y + 50);
+		}
+	}
+
+	if (inventory == true && Zscroll == true && menuNum == 2 && Xscroll == true)
+	{
+		if (InputManager::GetKeyDown(Keyboard::Key::Up) && orderNum != 1)
+		{
+			--orderNum;
+			InvenallCS.setPosition(340, InvenallCS.getPosition().y - 50);
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Down) && orderNum != 2)
+		{
+			++orderNum;
 			InvenallCS.setPosition(340, InvenallCS.getPosition().y + 50);
 		}
 	}
@@ -297,8 +333,8 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 
 void TestUi::Draw(RenderWindow* window, View* mainView)
 {
-	window->draw(scr1);
-	window->draw(scr2);
+	//window->draw(scr1);
+	//window->draw(scr2);
 	window->draw(amr1);
 	window->draw(amr2);
 	window->draw(HPbarLine);
@@ -624,6 +660,113 @@ void TestUi::Draw(RenderWindow* window, View* mainView)
 
 		}
 	}
+
+	////////////////////////////////////////////////////////////////////
+	
+	if (Zscroll == true && menuNum == 2 && Xscroll == true && orderNum == 1)
+	{
+		if (inventory == true)
+		{
+			window->draw(Oitembackground1);
+			window->draw(InvenallCS);
+			window->draw(Orderblankrhombus1);
+			window->draw(Otextscrollname1);
+			window->draw(Orderblankrhombus2);
+			window->draw(Otextscrollname2);
+			window->draw(orderitemphotoframe1);
+			window->draw(OtextItemnamefield1);
+			window->draw(OdescriptionImage1);
+			window->draw(Omagictype1);
+			window->draw(Oattackspeed1);
+			window->draw(ODamage1);
+			window->draw(OItemDescription1);
+			window->draw(OItemDescription2);
+			window->draw(OItemDescription3);
+		}
+
+		if (Zscrollview)
+		{
+			if (inventory == true)
+			{
+				window->draw(Orderfullrhombus1);
+				window->draw(Orderfullrhombus2);
+			}
+
+			window->draw(scr1);
+		}
+		else
+		{
+
+		}
+
+		if (Xscrollview)
+		{
+			if (inventory == true)
+			{
+				window->draw(Orderfullrhombus1);
+				window->draw(Orderfullrhombus2);
+			}
+
+			window->draw(scr2);
+		}
+		else
+		{
+
+		}
+	}
+
+	
+
+	if (Zscroll == true && menuNum == 2 && Xscroll == true && orderNum == 2)
+	{
+		if (inventory == true)
+		{
+			window->draw(Oitembackground2);
+			window->draw(InvenallCS);
+			window->draw(Orderblankrhombus1);
+			window->draw(Otextscrollname1);
+			window->draw(Orderblankrhombus2);
+			window->draw(Otextscrollname2);
+			window->draw(orderitemphotoframe2);
+			window->draw(OtextItemnamefield2);
+			window->draw(OdescriptionImage2);
+			window->draw(Omagictype2);
+			window->draw(Oattackspeed2);
+			window->draw(ODamage2);
+			window->draw(OItemDescription01);
+			window->draw(OItemDescription02);
+			window->draw(OItemDescription03);
+			window->draw(OItemDescription04);
+		}
+		if (Zscrollview)
+		{
+			if (inventory == true)
+			{
+				window->draw(Orderfullrhombus1);
+				window->draw(Orderfullrhombus2);
+			}
+
+			window->draw(scr1);
+		}
+		else
+		{
+		}
+
+		if (Xscrollview)
+		{
+			if (inventory == true)
+			{
+				window->draw(Orderfullrhombus1);
+				window->draw(Orderfullrhombus2);
+			}
+
+			window->draw(scr2);
+		}
+		else
+		{
+
+		}
+	}
 }
 
 void TestUi::Initstartimg()
@@ -857,6 +1000,10 @@ void TestUi::Initstartimg()
 	FullCSsetview = false;
 	VsyCSSetview = false;
 	BattleCSSetview = false;
+	Zscroll = true;
+	Zscrollview = false;
+	Xscroll = true;
+	Xscrollview = false;
 }
 
 void TestUi::EscKeyboard() // ESC -> Setting -> Keyboard
@@ -1242,23 +1389,23 @@ void TestUi::weaponlist1()
 	fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");
 	weaponpng = TextureHolder::GetTexture("graphics/Weapon.png");
 
-	InvenWeaponZblock1.setTexture(textureSQ);
+	InvenWeaponZblock1.setTexture(textureSQ); //  1. 마름모 빈칸
 	InvenWeaponZblock1.setTextureRect(IntRect(33, 1016, 39, 31));
 	InvenWeaponZblock1.setScale(Vector2f(1.0f, 1.0f));
 	InvenWeaponZblock1.setPosition(320, 400);
 
-	textInvenweapon1.setFont(fontLostRuins);
+	textInvenweapon1.setFont(fontLostRuins); // 1. 리스트 내 아이템 이름
 	textInvenweapon1.setString("Gladius");
 	textInvenweapon1.setCharacterSize(30);
 	textInvenweapon1.setFillColor(Color::Red);
 	textInvenweapon1.setPosition(380, 395);
 
-	InvenWeaponXblock2.setTexture(textureSQ);
+	InvenWeaponXblock2.setTexture(textureSQ); // 2. 마름모 빈칸
 	InvenWeaponXblock2.setTextureRect(IntRect(33, 1016, 39, 31));
 	InvenWeaponXblock2.setScale(Vector2f(1.0f, 1.0f));
 	InvenWeaponXblock2.setPosition(320, 450);
 
-	textInvenweapon2.setFont(fontLostRuins);
+	textInvenweapon2.setFont(fontLostRuins); // 2. 리스트 내 아이템 이름
 	textInvenweapon2.setString("Dagger");
 	textInvenweapon2.setCharacterSize(30);
 	textInvenweapon2.setFillColor(Color::Red);
@@ -1267,33 +1414,33 @@ void TestUi::weaponlist1()
 
 	///////////////////////////////////////////////////////////////
 
-	InvenWeaponblock3.setTexture(textureSQ);
+	InvenWeaponblock3.setTexture(textureSQ); // 우측 아이템 네모칸
 	InvenWeaponblock3.setTextureRect(IntRect(254, 673, 92, 96));
 	InvenWeaponblock3.setScale(Vector2f(1.0f, 1.0f));
 	InvenWeaponblock3.setPosition(980, 380);
 
-	textInvenweapon3.setFont(fontLostRuins);
+	textInvenweapon3.setFont(fontLostRuins); // 우측 아이템 이름
 	textInvenweapon3.setString("Gladius");
 	textInvenweapon3.setCharacterSize(40);
 	textInvenweapon3.setFillColor(Color::Red);
 	textInvenweapon3.setPosition(1100, 400);
 
-	InvenWeaponblock4.setTexture(weaponpng);
+	InvenWeaponblock4.setTexture(weaponpng); // 우측 아이템 이미지
 	InvenWeaponblock4.setTextureRect(IntRect(13, 148, 14, 53));
 	InvenWeaponblock4.setScale(Vector2f(1.1f, 1.0f));
 	InvenWeaponblock4.setPosition(1020, 400);
 
-	InvenWeaponblock5.setTexture(textureSQ);
+	InvenWeaponblock5.setTexture(textureSQ); // 아이템 이미지 뒷 배경
 	InvenWeaponblock5.setTextureRect(IntRect(62, 605, 42, 40));
 	InvenWeaponblock5.setScale(Vector2f(2.2f, 2.4f));
 	InvenWeaponblock5.setPosition(980, 380);
 
 	InvenWeaponZblock6.setTexture(textureSQ);
-	InvenWeaponZblock6.setTextureRect(IntRect(79, 1016, 39, 31));
+	InvenWeaponZblock6.setTextureRect(IntRect(79, 1016, 39, 31)); // 채워진 마름모
 	InvenWeaponZblock6.setScale(Vector2f(1.0f, 1.0f));
 	InvenWeaponZblock6.setPosition(320, 400);
 
-	InvenWeaponXblock7.setTexture(textureSQ);
+	InvenWeaponXblock7.setTexture(textureSQ); // 채워진 마름모
 	InvenWeaponXblock7.setTextureRect(IntRect(79, 1016, 39, 31));
 	InvenWeaponXblock7.setScale(Vector2f(1.0f, 1.0f));
 	InvenWeaponXblock7.setPosition(320, 450);
@@ -1429,6 +1576,211 @@ void TestUi::weaponlist2()
 	textInvenweapon29.setCharacterSize(25);
 	textInvenweapon29.setFillColor(Color::White);
 	textInvenweapon29.setPosition(980, 800);
+}
+
+void TestUi::scrollList1()
+{
+	orderNum = 1;
+	textureSQ = TextureHolder::GetTexture("graphics/SQ.png");
+	fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");
+	scrollpng = TextureHolder::GetTexture("graphics/Scroll.png");
+
+	Orderblankrhombus1.setTexture(textureSQ); //  1. 마름모 빈칸
+	Orderblankrhombus1.setTextureRect(IntRect(33, 1016, 39, 31));
+	Orderblankrhombus1.setScale(Vector2f(1.0f, 1.0f));
+	Orderblankrhombus1.setPosition(320, 400);
+
+	Otextscrollname1.setFont(fontLostRuins); // 1. 리스트 내 아이템 이름
+	Otextscrollname1.setString("Fire fist");
+	Otextscrollname1.setCharacterSize(30);
+	Otextscrollname1.setFillColor(Color::Red);
+	Otextscrollname1.setPosition(380, 395);
+
+	Orderblankrhombus2.setTexture(textureSQ); // 2. 마름모 빈칸
+	Orderblankrhombus2.setTextureRect(IntRect(33, 1016, 39, 31));
+	Orderblankrhombus2.setScale(Vector2f(1.0f, 1.0f));
+	Orderblankrhombus2.setPosition(320, 450);
+
+	Otextscrollname2.setFont(fontLostRuins); // 2. 리스트 내 아이템 이름
+	Otextscrollname2.setString("Ice pick");
+	Otextscrollname2.setCharacterSize(30);
+	Otextscrollname2.setFillColor(Color::Red);
+	Otextscrollname2.setPosition(380, 445);
+
+	Orderfullrhombus1.setTexture(textureSQ);
+	Orderfullrhombus1.setTextureRect(IntRect(79, 1016, 39, 31)); // 1. 채워진 마름모
+	Orderfullrhombus1.setScale(Vector2f(1.0f, 1.0f));
+	Orderfullrhombus1.setPosition(320, 400);
+
+	Orderfullrhombus2.setTexture(textureSQ); // 2. 채워진 마름모
+	Orderfullrhombus2.setTextureRect(IntRect(79, 1016, 39, 31));
+	Orderfullrhombus2.setScale(Vector2f(1.0f, 1.0f));
+	Orderfullrhombus2.setPosition(320, 450);
+
+
+	///////////////////////////////////////////////////////////////
+
+	orderitemphotoframe1.setTexture(textureSQ); // 1. 우측 아이템 네모칸
+	orderitemphotoframe1.setTextureRect(IntRect(254, 673, 92, 96));
+	orderitemphotoframe1.setScale(Vector2f(1.0f, 1.0f));
+	orderitemphotoframe1.setPosition(980, 380);
+
+	OtextItemnamefield1.setFont(fontLostRuins); // 1. 우측 아이템 이름
+	OtextItemnamefield1.setString("Fire fist");
+	OtextItemnamefield1.setCharacterSize(40);
+	OtextItemnamefield1.setFillColor(Color::Red);
+	OtextItemnamefield1.setPosition(1100, 400);
+
+	OdescriptionImage1.setTexture(scrollpng); // 1. 우측 아이템 이미지
+	OdescriptionImage1.setTextureRect(IntRect(3, 131, 20, 22));
+	OdescriptionImage1.setScale(Vector2f(1.1f, 1.0f));
+	OdescriptionImage1.setPosition(1020, 400);
+
+	Oitembackground1.setTexture(textureSQ); // 1. 우측 아이템 이미지 뒷배경
+	Oitembackground1.setTextureRect(IntRect(62, 605, 42, 40));
+	Oitembackground1.setScale(Vector2f(2.2f, 2.4f));
+	Oitembackground1.setPosition(980, 380);	
+
+	Omagictype1.setFont(fontLostRuins); // 1. 마법 타입
+	Omagictype1.setString("Weapon type : Fire magic");
+	Omagictype1.setCharacterSize(25);
+	Omagictype1.setFillColor(Color::White);
+	Omagictype1.setPosition(980, 520);
+
+	Oattackspeed1.setFont(fontLostRuins); // 1. 공격속도
+	Oattackspeed1.setString("Attack Speed : Ranged magic");
+	Oattackspeed1.setCharacterSize(25);
+	Oattackspeed1.setFillColor(Color::White);
+	Oattackspeed1.setPosition(980, 560);
+
+	ODamage1.setFont(fontLostRuins); // 1. 데미지
+	ODamage1.setString("Damage : Physical 3");
+	ODamage1.setCharacterSize(25);
+	ODamage1.setFillColor(Color::White);
+	ODamage1.setPosition(980, 600);
+
+	OItemDescription1.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	OItemDescription1.setString("This magic was created by a fiery artisan");
+	OItemDescription1.setCharacterSize(25);
+	OItemDescription1.setFillColor(Color::White);
+	OItemDescription1.setPosition(980, 720);
+
+	OItemDescription2.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	OItemDescription2.setString("Lee Min-hyeong,");
+	OItemDescription2.setCharacterSize(25);
+	OItemDescription2.setFillColor(Color::White);
+	OItemDescription2.setPosition(980, 760);
+
+	OItemDescription3.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	OItemDescription3.setString("who puts his soul into animation.");
+	OItemDescription3.setCharacterSize(25);
+	OItemDescription3.setFillColor(Color::White);
+	OItemDescription3.setPosition(980, 800);
+}
+
+void TestUi::scrollList2()
+{
+	textureSQ = TextureHolder::GetTexture("graphics/SQ.png");
+	fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");
+	scrollpng = TextureHolder::GetTexture("graphics/Scroll.png");
+
+	Orderblankrhombus1.setTexture(textureSQ); //  1. 마름모 빈칸
+	Orderblankrhombus1.setTextureRect(IntRect(33, 1016, 39, 31));
+	Orderblankrhombus1.setScale(Vector2f(1.0f, 1.0f));
+	Orderblankrhombus1.setPosition(320, 400);
+
+	Otextscrollname1.setFont(fontLostRuins); // 1. 리스트 내 아이템 이름
+	Otextscrollname1.setString("Fire fist");
+	Otextscrollname1.setCharacterSize(30);
+	Otextscrollname1.setFillColor(Color::Red);
+	Otextscrollname1.setPosition(380, 395);
+
+	Orderblankrhombus2.setTexture(textureSQ); // 2. 마름모 빈칸
+	Orderblankrhombus2.setTextureRect(IntRect(33, 1016, 39, 31));
+	Orderblankrhombus2.setScale(Vector2f(1.0f, 1.0f));
+	Orderblankrhombus2.setPosition(320, 450);
+
+	Otextscrollname2.setFont(fontLostRuins); // 2. 리스트 내 아이템 이름
+	Otextscrollname2.setString("Ice pick");
+	Otextscrollname2.setCharacterSize(30);
+	Otextscrollname2.setFillColor(Color::Red);
+	Otextscrollname2.setPosition(380, 445);
+
+	Orderfullrhombus1.setTexture(textureSQ);
+	Orderfullrhombus1.setTextureRect(IntRect(79, 1016, 39, 31)); // 1. 채워진 마름모
+	Orderfullrhombus1.setScale(Vector2f(1.0f, 1.0f));
+	Orderfullrhombus1.setPosition(320, 400);
+
+	Orderfullrhombus2.setTexture(textureSQ); // 2. 채워진 마름모
+	Orderfullrhombus2.setTextureRect(IntRect(79, 1016, 39, 31));
+	Orderfullrhombus2.setScale(Vector2f(1.0f, 1.0f));
+	Orderfullrhombus2.setPosition(320, 450);
+
+
+	///////////////////////////////////////////////////////////////
+
+	orderitemphotoframe2.setTexture(textureSQ); // 2. 우측 아이템 네모칸
+	orderitemphotoframe2.setTextureRect(IntRect(254, 673, 92, 96));
+	orderitemphotoframe2.setScale(Vector2f(1.0f, 1.0f));
+	orderitemphotoframe2.setPosition(980, 380);
+
+	OtextItemnamefield2.setFont(fontLostRuins); // 2. 우측 아이템 이름
+	OtextItemnamefield2.setString("Fire fist");
+	OtextItemnamefield2.setCharacterSize(40);
+	OtextItemnamefield2.setFillColor(Color::Red);
+	OtextItemnamefield2.setPosition(1100, 400);
+
+	OdescriptionImage2.setTexture(scrollpng); // 2. 우측 아이템 이미지
+	OdescriptionImage2.setTextureRect(IntRect(103, 131, 20, 22));
+	OdescriptionImage2.setScale(Vector2f(1.1f, 1.0f));
+	OdescriptionImage2.setPosition(1020, 400);
+
+	Oitembackground2.setTexture(textureSQ); // 2. 우측 아이템 이미지 뒷배경
+	Oitembackground2.setTextureRect(IntRect(62, 605, 42, 40));
+	Oitembackground2.setScale(Vector2f(2.2f, 2.4f));
+	Oitembackground2.setPosition(980, 380);
+
+	Omagictype2.setFont(fontLostRuins); // 2. 마법 타입
+	Omagictype2.setString("Weapon type : Fire magic");
+	Omagictype2.setCharacterSize(25);
+	Omagictype2.setFillColor(Color::White);
+	Omagictype2.setPosition(980, 520);
+
+	Oattackspeed2.setFont(fontLostRuins); // 2. 공격속도
+	Oattackspeed2.setString("Attack Speed : Ranged magic");
+	Oattackspeed2.setCharacterSize(25);
+	Oattackspeed2.setFillColor(Color::White);
+	Oattackspeed2.setPosition(980, 560);
+
+	ODamage2.setFont(fontLostRuins); // 1. 데미지
+	ODamage2.setString("Damage : Physical 3");
+	ODamage2.setCharacterSize(25);
+	ODamage2.setFillColor(Color::White);
+	ODamage2.setPosition(980, 600);
+
+	OItemDescription01.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	OItemDescription01.setString("This magic was created out of the coolness of");
+	OItemDescription01.setCharacterSize(25);
+	OItemDescription01.setFillColor(Color::White);
+	OItemDescription01.setPosition(980, 720);
+
+	OItemDescription02.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	OItemDescription02.setString("animation director Lee Min-hyung,");
+	OItemDescription02.setCharacterSize(25);
+	OItemDescription02.setFillColor(Color::White);
+	OItemDescription02.setPosition(980, 760);
+
+	OItemDescription03.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	OItemDescription03.setString("who only gave his teammates a job");
+	OItemDescription03.setCharacterSize(25);
+	OItemDescription03.setFillColor(Color::White);
+	OItemDescription03.setPosition(980, 800);
+
+	OItemDescription04.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	OItemDescription04.setString("without giving them carrots.");
+	OItemDescription04.setCharacterSize(25);
+	OItemDescription04.setFillColor(Color::White);
+	OItemDescription04.setPosition(980, 840);
 }
 
 void TestUi::EscSetting()
