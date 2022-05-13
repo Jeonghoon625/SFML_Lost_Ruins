@@ -15,7 +15,9 @@ void MapScene::Init(SceneManager* sceneManager)
 
 	selectTexture = TextureHolder::GetTexture("maps/Stage1/test.png");
 
-	currentInputState = InputState::BLOCK;
+	currentInputState = InputState::NONE;
+	currentDrawState = DrawState::NONE;
+
 	isDraw = true;
 
 	this->sceneMgr = sceneManager;
@@ -55,7 +57,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 {
 	UpdateMousePos(window);
 	MoveView(dt);
-	UpdateButton();
+
 	if (InputManager::GetMouseButtonDown(Mouse::Button::Left))
 	{
 		finalGrid.clear();
@@ -133,6 +135,9 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 			std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
 		}
 		break;
+
+	default:
+		break;
 	}
 
 	if (InputManager::GetKeyDown(Keyboard::F8))
@@ -145,6 +150,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 		player->Init(nullptr);
 		player->Spawn(mousePosWorld.x, mousePosWorld.y);
 	}
+
 	if (player != nullptr)
 	{
 		if (player->GetPause() == false)
@@ -167,6 +173,8 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	{
 		isDraw = !isDraw;
 	}
+
+	UpdateButton();
 }
 
 void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
@@ -213,6 +221,7 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 	{
 		player->Draw(window, mapView);
 	}
+
 	window->setView(*uiView);
 	window->draw(text);
 	
@@ -264,11 +273,11 @@ void MapScene::UpdateMousePos(RenderWindow* window)
 		mousePosGrid.x = mousePosWorld.x / gridSizeU;
 		mousePosGrid.y = mousePosWorld.y / gridSizeU;
 	}
-	/*else
+	else
 	{
 		mousePosGrid.x = 0;
 		mousePosGrid.y = 0;
-	}*/
+	}
 
 	tileSelector.setPosition(mousePosGrid.x * gridSizeF, mousePosGrid.y * gridSizeF);
 	std::stringstream ss;
@@ -314,33 +323,34 @@ int MapScene::CreateBackGround(int r, int c)
 
 void MapScene::CreateButtonSet()
 {
-	name = "Terrian";
-	Button buttonTerrain = CreateButton(resolution.x * 0.9f, resolution.y * 0.5f, 100.f, 50.f, name);
+	Button buttonTerrain = CreateButton(resolution.x * 0.9f, resolution.y * 0.5f, 100.f, 50.f, "Terrian", InputState::TERRAIN, DrawState::NONE);
 	buttons.push_back(buttonTerrain);
 
-	Button buttonBlock = CreateButton(resolution.x * 0.9f, resolution.y * 0.6f, 100.f, 50.f, "Collision\n  Block  ");
+	Button buttonBlock = CreateButton(resolution.x * 0.9f, resolution.y * 0.6f, 100.f, 50.f, "Collision\n  Block  ", InputState::BLOCK, DrawState::NONE);
 	buttons.push_back(buttonBlock);
 }
 
-Button MapScene::CreateButton(float left, float top, float width, float height, string name)
+Button MapScene::CreateButton(float left, float top, float width, float height, string buttonName, InputState buttonInputState, DrawState buttonDrawState)
 {
 	RectangleShape buttonShape(Vector2f(width, height));
-	buttonShape.setFillColor({15, 153, 153});
+	buttonShape.setFillColor({15, 153, 153, 125});
 	buttonShape.setPosition(left, top);
 
 	FloatRect buttonRect(left, top, width, height);
 
 	Text buttonText;
-	buttonText.setCharacterSize(10);
+	buttonText.setFont(font);
+	buttonText.setCharacterSize(15);
 	buttonText.setFillColor(Color::Black);
-	buttonText.setString(name);
-	buttonText.setOrigin(buttonText.getPosition().x * 0.5, buttonText.getPosition().y * 0.5);
+	buttonText.setString(buttonName);
+	buttonText.setOrigin(buttonText.getLocalBounds().left + buttonText.getLocalBounds().width * 0.5, buttonText.getLocalBounds().top + buttonText.getLocalBounds().height * 0.5);
 	buttonText.setPosition(left + width * 0.5, top + height * 0.5);
 
 	Button button;
 	button.buttonRect = buttonRect;
 	button.buttonShape = buttonShape;
 	button.buttonText = buttonText;
+	button.isToggle = false;
 
 	return button;
 }
@@ -351,7 +361,28 @@ void MapScene::UpdateButton()
 	{
 		if (button.buttonRect.contains(mousePosWindow.x, mousePosWindow.y))
 		{
-			button.buttonShape.setPosition(0.f, 0.f);
+			button.buttonShape.setFillColor(Color(255, 0, 0, 125));
+
+			if (InputManager::GetMouseButtonDown(Mouse::Button::Left))
+			{
+				if (button.isToggle)
+				{
+					button.buttonShape.setFillColor(Color(153, 153, 153, 125));
+					currentInputState = InputState::NONE;
+				}
+				else
+				{
+					button.buttonShape.setFillColor(Color::Blue);
+					button.isToggle = true;
+				}
+			}
+		}
+		else
+		{
+			if (!button.isToggle)
+			{
+				button.buttonShape.setFillColor(Color(153, 153, 153, 125));
+			}
 		}
 	}
 }

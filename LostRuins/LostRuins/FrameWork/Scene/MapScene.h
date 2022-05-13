@@ -19,11 +19,30 @@ enum class InputState
 	NONE
 };
 
+enum class DrawState
+{
+	ALL,
+	BLOCK,
+	OBJECT,
+	TERRAIN,
+	NONE
+};
+
+enum class Category
+{
+	Draw,
+	Input
+};
+
 struct Button
 {
 	RectangleShape buttonShape;
 	FloatRect buttonRect;
 	Text buttonText;
+	Category buttonCategory;
+	InputState buttonInputState;
+	DrawState buttonDrawState;
+	bool isToggle;
 };
 
 class MapScene : public Scene
@@ -45,7 +64,6 @@ class MapScene : public Scene
 	RectangleShape shape;
 	RectangleShape tileSelector;
 	vector<vector <RectangleShape>> gridTileMap;
-	
 
 	Vector2i mousePosScreen;
 	Vector2i mousePosWindow;
@@ -66,6 +84,7 @@ class MapScene : public Scene
 	VertexArray vertexMap;
 
 	InputState currentInputState;
+	DrawState currentDrawState;
 
 	vector <Button> buttons;
 	
@@ -93,7 +112,7 @@ public:
 	int CreateBackGround(int c, int r);
 
 	void CreateButtonSet();
-	Button CreateButton(float left, float top, float width, float height, string name);
+	Button CreateButton(float left, float top, float width, float height, string name, InputState buttonInputState, DrawState buttonDrawState);
 	void UpdateButton();
 
 	virtual ~MapScene();
