@@ -18,9 +18,19 @@ enum GameMenu
 	EXIT,
 };
 
+enum class MenuType
+{
+	MENU_SELECT,
+	MENU_LOAD,
+	MENU_OPTION,
+};
+
 class TitleScene : public Scene
 {
 private:
+	const int MAX_MENU_SLOT = 4;
+	const int MAX_SAVE_SLOT = 3;
+
 	SceneManager* sceneMgr;
 	SoundHolder soundHlr;
 
@@ -32,6 +42,7 @@ private:
 
 	Font fontLostRuins;
 	Texture textureTitle;
+	Texture textureUi;
 
 	Sprite sky;
 	Sprite backGround;
@@ -42,17 +53,27 @@ private:
 	Sprite rope1;
 	Sprite rope2;
 
+	Sprite loadBar;
+
 	RectangleShape topBar;
 	RectangleShape bottomBar;
+
+	RectangleShape loadBack;
+	RectangleShape loadScreen;
+	RectangleShape loadSlot;
 
 	Text textGameStart;
 	Text textContinue;
 	Text textOption;
 	Text textExit;
 
+	Text textLoadSlot[3];
+
 	Sound backGroundSound;
 
-	int isPosition;
+	int menuPos;
+	int loadPos;
+	MenuType menuType;
 
 	std::map<std::string, Texture> texmap;
 
@@ -63,6 +84,9 @@ public:
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
 	virtual void Draw(RenderWindow* window, View* mainView);
 	virtual ~TitleScene();
+
+	void SelectingMenu(float dt, RenderWindow* window);
+	void LoadingMenu(float dt);
 
 	void GetSelect(RenderWindow* window);
 	void SettingTextrue();
