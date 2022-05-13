@@ -4,7 +4,7 @@
 
 using namespace sf;
 
-class TestBlock
+class CollisionBlock
 {
 private:
 	Vector2f position;
@@ -12,8 +12,9 @@ private:
 	RectangleShape blockShape;
 	Texture texture;
 public:
-	TestBlock(float left, float top, float width, float hight);
-	TestBlock(FloatRect getGlobalBounds, Vector2u mousePosGrid);
+	CollisionBlock(float centerX, float centerY, float width, float height);
+	CollisionBlock(FloatRect getGlobalBounds, Vector2u mousePosGrid);
+
 	const Vector2f GetPosition();
 	const FloatRect GetBlockRect();
 	const RectangleShape GetBlockShape();

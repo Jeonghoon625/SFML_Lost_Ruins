@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "../../Animation/AnimationController.h"
 #include "../../Animation/rapidcsv.h"
+#include "../../Object/CollisionBlock/CollisionBlock.h"
 #include "../Player/Player.h"
 using namespace sf;
 
@@ -21,7 +22,7 @@ class Monster
 {
 protected:
 	const float START_IMMUNE_MS = 500;
-	const Vector2f scale = Vector2f(3.f, 3.f);
+	const Vector2f scale = Vector2f(1.f, 1.f);
 	const float GRAVITY_POWER = 2000.f;
 	float fallingSpeed;
 	bool isFalling;
@@ -82,6 +83,8 @@ public:
 	int GetHealth();
 	void SetHealth(int damage);
 
+	void Spawn(Vector2f pos);
+
 	int GetAtk();
 	void SetAtk(int atk);
 
@@ -94,8 +97,8 @@ public:
 
 	void AnimationInit(Sprite* sprite);
 
-	void AnimationUpdate();
-	void SetStatus(MonsterStatus newStatus);
+	virtual void AnimationUpdate();
+	virtual void SetStatus(MonsterStatus newStatus);
 
 	virtual void Walk(float dt);
 
@@ -106,11 +109,11 @@ public:
 
 	virtual bool OnHitted(int atk, float dt,Time timeHit);
 
-	void Gravity(float dt, std::vector<TestBlock*> blocks);
-	void UpdateCollision(std::vector <TestBlock*> blocks);
-	void UpdateCollisionAttackRangeBox(std::vector <TestBlock*> blocks);
+	virtual void Gravity(float dt, std::vector<CollisionBlock*> blocks);
+	virtual void UpdateCollision(std::vector <CollisionBlock*> blocks);
+	virtual void UpdateCollisionAttackRangeBox(std::vector <CollisionBlock*> blocks);
 
-	void Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playtime);
+	virtual void Update(Player& player, float dt, std::vector<CollisionBlock*> blocks, Time playtime);
 	void UpdateDelayAndStatus(float dt);
 
 	void Draw(RenderWindow* window);

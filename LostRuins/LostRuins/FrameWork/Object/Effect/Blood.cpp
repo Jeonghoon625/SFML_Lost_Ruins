@@ -20,12 +20,12 @@ void Blood::Bleeding(Vector2f pos, bool dir)
 	if (isDirection == true)
 	{
 		position.x = pos.x - 15.f;
-		sprite.setScale(4.f, 4.f);
+		sprite.setScale(4.f / 3.f, 4.f / 3.f);
 	}
 	else if (isDirection == false)
 	{
 		position.x = pos.x + 15.f;
-		sprite.setScale(-4.f, 4.f);
+		sprite.setScale(-4.f / 3.f, 4.f / 3.f);
 	}
 	position.y = pos.y;
 

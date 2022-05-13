@@ -45,7 +45,7 @@ void Player::Init(ZombieWalker* zombie)
 	}
 }
 
-void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
+void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime)
 {
 	// 플레이어 행동
 	PlayerAction(dt, playTime);
@@ -486,7 +486,7 @@ void Player::AnimationInit(Sprite* sprite)
 	}
 }
 
-void Player::UpdateCollision(std::vector<TestBlock*> blocks)
+void Player::UpdateCollision(std::vector<CollisionBlock*> blocks)
 {
 	bool isCollided = false;
 	for (auto bk : blocks)
@@ -494,14 +494,14 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
 		{
 			float blockUp = bk->GetBlockRect().top;
-			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height * 0.5f; // t+h
+			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height; // t+h
 			float blockLeft = bk->GetBlockRect().left;
-			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width * 0.5f; // l+w
+			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width; // l+w
 
-			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height;
+			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5;
 			float playerDown = hitBox.getPosition().y;
 			float playerLeft = hitBox.getGlobalBounds().left;
-			float playerRight = hitBox.getPosition().x + hitBox.getGlobalBounds().width * 0.5f;
+			float playerRight = hitBox.getPosition().x + hitBox.getGlobalBounds().width * 0.5;
 
 			float playerXpos = hitBox.getPosition().x;
 			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
@@ -894,4 +894,17 @@ void Player::SetStatus(Status newStatus)
 		animation.Play("Dead");
 		break;
 	}
+}
+
+
+void Player::Spawn(float x, float y)
+{
+	position.x = x;
+	position.y = y;
+
+	hitBox.setFillColor(Color(103, 103, 103, 125));
+	hitBox.setSize(Vector2f(20.f, 48.f));
+	hitBox.setOrigin(hitBoxStand);
+	hitBox.setScale(scale);
+	hitBox.setPosition(position);
 }

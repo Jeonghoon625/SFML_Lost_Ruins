@@ -13,8 +13,8 @@ Monster::Monster()
 	isIdle = true;
 	isWalk = false;
 	isRun = false;
-	resolution.x = VideoMode::getDesktopMode().width;
-	resolution.y = VideoMode::getDesktopMode().height;
+	resolution.x = 1920.f;
+	resolution.y = 1080.f;
 }
 
 FloatRect Monster::GetGlobalBound()
@@ -40,6 +40,12 @@ int Monster::GetHealth()
 void Monster::SetHealth(int healthNum)
 {
 	health = healthNum;
+}
+
+void Monster::Spawn(Vector2f pos)
+{
+	sprite.setPosition(pos);
+	position = sprite.getPosition();
 }
 
 int Monster::GetAtk()
@@ -69,7 +75,6 @@ RectangleShape Monster::GetHitBox()
 
 void Monster::MonsterInit()
 {
-
 	strWalk = ("GoblinAttackerWalk");
 	strIdle = ("GoblinAttackerIdle");
 	strRun = ("GoblinAttackerRun");
@@ -85,7 +90,7 @@ void Monster::MonsterInit()
 	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
-	
+
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
@@ -278,7 +283,7 @@ void Monster::Walk(float dt)
 				switch (nextMove)
 				{
 				case -1:
-					sprite.setScale(3.f, 3.f);
+					sprite.setScale(1.f, 1.f);
 					isIdle = false;
 					isWalk = true;
 					/*animation.Play(strWalk);*/
@@ -291,10 +296,10 @@ void Monster::Walk(float dt)
 					isWalk - false;
 					break;
 				case 1:
-					sprite.setScale(-3.f, 3.f);
+					sprite.setScale(-1.f, 1.f);
 					isIdle = false;
 					isWalk = true;
-				/*	animation.Play(strWalk);*/
+					/*	animation.Play(strWalk);*/
 					findPlayerBox.setOrigin(0.f, 40.f);
 					attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.99f);
 					break;
@@ -332,20 +337,20 @@ void Monster::FindPlayer(Player& player)
 				isIdle = false;
 				isWalk = false;
 				isFindPlayer = true;
-			/*	animation.Play(strRun);*/
+				/*	animation.Play(strRun);*/
 			}
 		}
 	}
 }
 
-void Monster::ChasePlayer(Player& player	, float dt)
+void Monster::ChasePlayer(Player& player, float dt)
 {
 	if (isAlive)
 	{
 		/*animation.PlayQueue(strRun);*/
 		if (isFindPlayer && !isAttackPlayer)
 		{
-			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay>0.5f)
+			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay > 0.5f)
 			{
 				attackDelay = 0.f;
 				/*animation.Play(strAttack);*/
@@ -361,13 +366,13 @@ void Monster::ChasePlayer(Player& player	, float dt)
 
 				if (h > 0)
 				{
-					sprite.setScale(-3.f, 3.f);	//플레이어가 몬스터 왼쪽에 있을때
+					sprite.setScale(-1.f, 1.f);	//플레이어가 몬스터 왼쪽에 있을때
 					attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.99f);
 					findPlayerBox.setOrigin(0.f, 40.f);
 				}
 				else
 				{
-					sprite.setScale(3.f, 3.f);	//플레이어가 몬스터 오른쪽에 있을때
+					sprite.setScale(1.f, 1.f);	//플레이어가 몬스터 오른쪽에 있을때
 					attackRangeBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y * 0.99f);
 					findPlayerBox.setOrigin(200.f, 40.f);
 				}
@@ -461,7 +466,7 @@ bool Monster::OnHitted(int atk, float dt, Time timeHit)
 	}
 }
 
-void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
+void Monster::Gravity(float dt, std::vector<CollisionBlock*> blocks)
 {
 	if (isFalling)
 	{
@@ -476,7 +481,7 @@ void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
 	UpdateCollision(blocks);
 }
 
-void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
+void Monster::UpdateCollision(std::vector<CollisionBlock*> blocks)
 {
 	isFalling = true;
 	isCollideHitBox = false;
@@ -605,7 +610,7 @@ void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 
 }
 
-void Monster::UpdateCollisionAttackRangeBox(std::vector<TestBlock*> blocks)
+void Monster::UpdateCollisionAttackRangeBox(std::vector<CollisionBlock*> blocks)
 {
 	isCollideAttackRangeBox = false;
 	for (auto bk : blocks)
@@ -617,7 +622,7 @@ void Monster::UpdateCollisionAttackRangeBox(std::vector<TestBlock*> blocks)
 	}
 }
 
-void Monster::Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playTime)
+void Monster::Update(Player& player, float dt, std::vector<CollisionBlock*> blocks, Time playTime)
 {
 	animation.Update(dt);
 	UpdateCollisionAttackRangeBox(blocks);
@@ -638,12 +643,12 @@ void Monster::UpdateDelayAndStatus(float dt)
 		if (hitDelay > 0.3f)
 		{
 			hitDelay = 0.f;
-			isHit = false; 
+			isHit = false;
 			isFindPlayer = true;
 		}
 	}
 
-	if (GetHealth()<0)
+	if (GetHealth() < 0)
 	{
 		isAlive = false;
 	}

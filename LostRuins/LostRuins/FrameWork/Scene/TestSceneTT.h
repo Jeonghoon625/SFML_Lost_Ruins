@@ -5,11 +5,9 @@
 #include "../Mgr/Utils.h"
 #include "../Animation/AnimationController.h"
 #include "../Animation/rapidcsv.h"
-#include "TestSceneUI/TestSceneUi.h"
 #include "../Object/Npc/Npc.h"
 #include "../Object/Coin/Coin.h"
 #include "../Object/Player/Player.h"
-#include "../Object/TestBlock/TestBlock.h"
 #include "../Object/Monster/Monster.h"
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
@@ -27,15 +25,13 @@ private:
 	Npc testNpc;
 	Coin coin;
 
-	View* uiView;
-
 	Player player;
 	IntRect gameMap;
 
 	Texture textureHeroine;
 	Sprite heroineAction;
 
-	vector <TestBlock*> blocks;
+	vector <CollisionBlock*> blocks;
 
 	Sprite testSprite;
 	Sprite testWeapon;
@@ -50,7 +46,7 @@ private:
 public:
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
-	virtual void Draw(RenderWindow* window, View* mainView);
+	virtual void Draw(RenderWindow* window, View* mainView, View* uiView);
 	virtual ~TestSceneTT();
 
 	void CreateBlock();

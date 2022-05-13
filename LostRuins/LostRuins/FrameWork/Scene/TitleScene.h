@@ -4,7 +4,6 @@
 #include <map>
 #include "Scene.h"
 #include "../Mgr/TextureHolder.h"
-#include "../Mgr/SoundHolder.h"
 #include "../Mgr/Utils.h"
 #include "../Mgr/InputManager.h"
 #include "../Animation/AnimationController.h"
@@ -15,6 +14,7 @@ enum GameMenu
 	GAME_START = 1,
 	CONTINUE,
 	OPTION,
+	MAPEDIT,
 	EXIT,
 };
 
@@ -28,11 +28,10 @@ enum class MenuType
 class TitleScene : public Scene
 {
 private:
-	const int MAX_MENU_SLOT = 4;
+	const int MAX_MENU_SLOT = 5;
 	const int MAX_SAVE_SLOT = 3;
 
 	SceneManager* sceneMgr;
-	SoundHolder soundHlr;
 
 	Vector2i resolution;
 
@@ -65,6 +64,7 @@ private:
 	Text textGameStart;
 	Text textContinue;
 	Text textOption;
+	Text textMapEditor;
 	Text textExit;
 
 	Text textLoadSlot[3];
@@ -77,16 +77,14 @@ private:
 
 	std::map<std::string, Texture> texmap;
 
-	View* uiView;
-
 public:
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
-	virtual void Draw(RenderWindow* window, View* mainView);
+	virtual void Draw(RenderWindow* window, View* mainView, View* uiView);
 	virtual ~TitleScene();
 
 	void SelectingMenu(float dt, RenderWindow* window);
-	void LoadingMenu(float dt);
+	void LoadingMenu(float dt, RenderWindow* window);
 
 	void GetSelect(RenderWindow* window);
 	void SettingTextrue();

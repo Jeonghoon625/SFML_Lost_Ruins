@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "InputManager.h"
 
 void SceneManager::Init()
 {
@@ -8,11 +9,21 @@ void SceneManager::Init()
 void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
 	currentScene->Update(dt, playTime, window, mainView, uiView);
+
+	if (InputManager::GetKeyDown(Keyboard::Escape))
+	{
+		SceneSwitch(SceneType::TITLE);
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::F10))
+	{
+		SceneSwitch(SceneType::TEST_KK);
+	}
 }
 
-void SceneManager::Draw(RenderWindow* window, View* mainView)
+void SceneManager::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
-	currentScene->Draw(window, mainView);
+	currentScene->Draw(window, mainView, uiView);
 }
 
 void SceneManager::SceneSwitch(SceneType sceneType)
@@ -33,7 +44,7 @@ void SceneManager::SceneSwitch(SceneType sceneType)
 		break;
 
 	case SceneType::TEST_LMH:
-		currentScene = new TestScene();
+		currentScene = new GameScene();
 		break;
 
 	case SceneType::GameScene:

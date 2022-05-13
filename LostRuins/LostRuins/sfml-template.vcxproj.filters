@@ -41,9 +41,6 @@
     <ClCompile Include="FrameWork\Object\Player\Player.cpp">
       <Filter>FrameWork\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp">
-      <Filter>FrameWork\Object\TestBlock</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClCompile>
@@ -68,9 +65,6 @@
     <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp">
       <Filter>FrameWork\Object\TestBlock</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\TestMonster\TestZombieWalker.cpp">
-      <Filter>FrameWork\Object\TestMonster</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\FrameWork.cpp">
       <Filter>FrameWork</Filter>
     </ClCompile>
@@ -78,9 +72,6 @@
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Scene\Scene.cpp">
-      <Filter>FrameWork\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Scene\TestScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp">
@@ -152,6 +143,15 @@
     <ClCompile Include="FrameWork\Mgr\EffectManager.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Mgr\SoundHolder.cpp">
+      <Filter>FrameWork\Mgr</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\CollisionBlock\CollisionBlock.cpp">
+      <Filter>FrameWork\Object\CollisionBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Coin\Coin.cpp">
+      <Filter>FrameWork\Object\Coin</Filter>
+    </ClCompile>
     <ClCompile Include="FrameWork\Object\Effect\Blood.cpp">
       <Filter>FrameWork\Object\Effect</Filter>
     </ClCompile>
@@ -161,8 +161,8 @@
     <ClCompile Include="FrameWork\Mgr\SoundHolder.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\Coin\Coin.cpp">
-      <Filter>FrameWork\Object\Coin</Filter>
+    <ClCompile Include="FrameWork\Object\Monster\LamiEye.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,9 +217,6 @@
     <ClInclude Include="FrameWork\Object\Monster\Monster.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h">
-      <Filter>FrameWork\Object\TestBlock</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\FrameWork.h">
       <Filter>FrameWork</Filter>
     </ClInclude>
@@ -227,9 +224,6 @@
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\Scene.h">
-      <Filter>FrameWork\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TestScene.h">
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
@@ -243,9 +237,6 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TitleScene.h">
       <Filter>FrameWork\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Object\TestMonster\TestZombieWalker.h">
-      <Filter>FrameWork\Object\TestMonster</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\MapScene.h">
       <Filter>FrameWork\Scene</Filter>
@@ -277,7 +268,16 @@
     <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="FrameWork\Object\Coin\Coin.h">
+      <Filter>FrameWork\Object\Coin</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\CollisionBlock\CollisionBlock.h">
+      <Filter>FrameWork\Object\CollisionBlock</Filter>
+    </ClInclude>
     <ClInclude Include="FrameWork\Mgr\EffectManager.h">
+      <Filter>FrameWork\Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Mgr\SoundHolder.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Effect\Blood.h">
@@ -289,8 +289,8 @@
     <ClInclude Include="FrameWork\Mgr\SoundHolder.h">
       <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\Coin\Coin.h">
-      <Filter>FrameWork\Object\Coin</Filter>
+    <ClInclude Include="FrameWork\Object\Monster\LamiEye.h">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -318,14 +318,8 @@
     <Filter Include="FrameWork\Object\Monster">
       <UniqueIdentifier>{c61f3fd8-fdd2-4927-bea5-7481777f35ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Object\TestBlock">
-      <UniqueIdentifier>{bea93276-62d3-4225-831a-a52d5590aede}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrameWork\Map">
       <UniqueIdentifier>{8375b908-087e-488e-a92d-e5a51eb0b3be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Object\TestMonster">
-      <UniqueIdentifier>{7b038bf1-d284-45fa-af93-57b466cfd4a4}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Scene">
       <UniqueIdentifier>{1c78ff4b-7a1d-4a87-90fe-41f5998b7565}</UniqueIdentifier>
@@ -342,11 +336,14 @@
     <Filter Include="FrameWork\Object\Spell">
       <UniqueIdentifier>{32fca10a-0513-49cf-8983-140903bcf4a7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Object\Effect">
-      <UniqueIdentifier>{1458e2ce-4653-4df5-8ec4-dbea3d4a939e}</UniqueIdentifier>
+    <Filter Include="FrameWork\Object\CollisionBlock">
+      <UniqueIdentifier>{66f68861-44a6-4166-9945-1f8eeec1ee20}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Object\Coin">
-      <UniqueIdentifier>{e2b8fd78-7c83-489c-a16f-e6e8dd5fe8ea}</UniqueIdentifier>
+      <UniqueIdentifier>{ca6ace7e-b289-460c-b72c-f4e6a862768a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\Effect">
+      <UniqueIdentifier>{a53fd686-7d51-48fd-828c-aa814bcd224b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 #include "TitleScene.h"
 #include "../Mgr/SceneManager.h"
+#include "../Mgr/SoundHolder.h"
 
 void TitleScene::Init(SceneManager* sceneManager)
 {
@@ -7,8 +8,8 @@ void TitleScene::Init(SceneManager* sceneManager)
 	menuPos = 1;
 	loadPos = 1;
 
-	resolution.x = VideoMode::getDesktopMode().width;
-	resolution.y = VideoMode::getDesktopMode().height;
+	resolution.x = 1920.f;
+	resolution.y = 1080.f;
 
 	SettingTextrue();
 	SettingText();
@@ -21,22 +22,20 @@ void TitleScene::Init(SceneManager* sceneManager)
 
 void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-	this->uiView = uiView;
-
 	switch (menuType)
 	{
 	case MenuType::MENU_SELECT:
 		SelectingMenu(dt, window);
 		break;
 	case MenuType::MENU_LOAD:
-		LoadingMenu(dt);
+		LoadingMenu(dt, window);
 		break;
 	case MenuType::MENU_OPTION:
 		break;
 	}
 }
 
-void TitleScene::Draw(RenderWindow* window, View* mainView)
+void TitleScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
 	window->setView(*uiView);
 	window->draw(sky);
@@ -57,6 +56,7 @@ void TitleScene::Draw(RenderWindow* window, View* mainView)
 	window->draw(textGameStart);
 	window->draw(textContinue);
 	window->draw(textOption);
+	window->draw(textMapEditor);
 	window->draw(textExit);
 
 	if (menuType == MenuType::MENU_LOAD)
@@ -70,11 +70,6 @@ void TitleScene::Draw(RenderWindow* window, View* mainView)
 			window->draw(textLoadSlot[i]);
 		}
 	}
-}
-
-TitleScene::~TitleScene()
-{
-
 }
 
 void TitleScene::SelectingMenu(float dt, RenderWindow* window)
@@ -99,14 +94,22 @@ void TitleScene::SelectingMenu(float dt, RenderWindow* window)
 		textGameStart.setFillColor(Color(100, 100, 100));
 		textOption.setFillColor(Color(100, 100, 100));
 		break;
+
 	case OPTION:
 		textOption.setFillColor(Color::White);
 		textContinue.setFillColor(Color(100, 100, 100));
+		textMapEditor.setFillColor(Color(100, 100, 100));
+		break;
+
+	case MAPEDIT:
+		textMapEditor.setFillColor(Color::White);
+		textOption.setFillColor(Color(100, 100, 100));
 		textExit.setFillColor(Color(100, 100, 100));
 		break;
+		
 	case EXIT:
 		textExit.setFillColor(Color::White);
-		textOption.setFillColor(Color(100, 100, 100));
+		textMapEditor.setFillColor(Color(100, 100, 100));
 		break;
 	}
 
@@ -120,7 +123,7 @@ void TitleScene::SelectingMenu(float dt, RenderWindow* window)
 	}
 }
 
-void TitleScene::LoadingMenu(float dt)
+void TitleScene::LoadingMenu(float dt, RenderWindow* window)
 {
 	if (InputManager::GetKeyDown(Keyboard::Up) && loadPos > 1)
 	{
@@ -130,6 +133,12 @@ void TitleScene::LoadingMenu(float dt)
 	{
 		loadPos++;
 	}
+
+	window->draw(textGameStart);
+	window->draw(textContinue);
+	window->draw(textOption);
+	window->draw(textMapEditor);
+	window->draw(textExit);
 
 	switch (loadPos)
 	{
@@ -165,11 +174,18 @@ void TitleScene::GetSelect(RenderWindow* window)
 	case GAME_START:
 		sceneMgr->SceneSwitch(SceneType::GameScene);
 		break;
+
 	case CONTINUE:
 		menuType = MenuType::MENU_LOAD;
 		break;
+
 	case OPTION:
 		break;
+
+	case MAPEDIT:
+		sceneMgr->SceneSwitch(SceneType::MapScene);
+		break;
+
 	case EXIT:
 		window->close();
 		break;
@@ -267,22 +283,29 @@ void TitleScene::SettingText()
 	textGameStart.setString("Game Start");
 	textGameStart.setFillColor(Color::White);
 	textGameStart.setCharacterSize(40);
-	textGameStart.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 180.f);
+	textGameStart.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 110.f);
 	Utils::SetOrigin(textGameStart, Pivots::LC);
 
 	textContinue.setFont(fontLostRuins);
 	textContinue.setString("Continue");
 	textContinue.setFillColor(Color(100, 100, 100));
 	textContinue.setCharacterSize(40);
-	textContinue.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 250.f);
+	textContinue.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 180.f);
 	Utils::SetOrigin(textContinue, Pivots::LC);
 
 	textOption.setFont(fontLostRuins);
 	textOption.setString("Option");
 	textOption.setFillColor(Color(100, 100, 100));
 	textOption.setCharacterSize(40);
-	textOption.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 320.f);
+	textOption.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 250.f);
 	Utils::SetOrigin(textOption, Pivots::LC);
+
+	textMapEditor.setFont(fontLostRuins);
+	textMapEditor.setString("Map Editor");
+	textMapEditor.setFillColor(Color(100, 100, 100));
+	textMapEditor.setCharacterSize(40);
+	textMapEditor.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 320.f);
+	Utils::SetOrigin(textMapEditor, Pivots::LC);
 
 	textExit.setFont(fontLostRuins);
 	textExit.setString("Exit");
@@ -341,4 +364,8 @@ void TitleScene::AnimationInit(AnimationController& animation, Sprite* sprite)
 		}
 		animation.AddClip(clip);
 	}
+}
+
+TitleScene::~TitleScene()
+{
 }

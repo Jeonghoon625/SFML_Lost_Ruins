@@ -1,7 +1,7 @@
 Idle  L0 T47 W125 H293 C16 R2 AC32 origin 35 17
-Diving  L0 T651 W100 H293 C5 R1 AC5 origin 20 26
-Reappearing  L0 T959 W115 H295 C11 R1 AC11 origin 29 19
-ReappearingToIdle L0 T1267 W113 H294 C2 R1 AC2 origin 28 19
+Diving  L0 T651 W100 H293 C5 R1 AC5 origin 20 26   76 26
+Reappearing  L0 T959 W115 H295 C11 R1 AC11 origin 29 19     85 19
+ReappearingToIdle L0 T1267 W113 H294 C2 R1 AC2 origin 28 19     84 19
 Dead L0 T1574 W105 H293 C5 R1 AC5 origin 23 18
 HandIdle L0 T1882W85 H 135 C20 R2 AC32 origin 80 31
 HandDiving L0 T2170 W80 H 155 C5 R1 AC5 origin 69 32

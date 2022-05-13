@@ -8,7 +8,7 @@ Explosion::Explosion()
 {
 	AnimationInit();
 	sprite.setOrigin(16.f, 16.f);
-	sprite.setScale(4.f, 4.f);
+	sprite.setScale(4.f / 3.f, 4.f / 3.f);
 	animation.Play("Explosion");
 }
 

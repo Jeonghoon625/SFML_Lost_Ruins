@@ -35,7 +35,6 @@ void TestSceneTT::Init(SceneManager* sceneManager)
 
 void TestSceneTT::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-	this->uiView = uiView;
 	testUI.Update(dt, playTime, window, uiView, player);
 	testNpc.Update(dt);
 	coin.Update(dt, blocks, player);
@@ -57,7 +56,7 @@ void TestSceneTT::Update(float dt, Time playTime, RenderWindow* window, View* ma
 	}
 }
 
-void TestSceneTT::Draw(RenderWindow* window, View* mainView)
+void TestSceneTT::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
 	window->setView(*mainView);
 	/* View ¼³Á¤*/
@@ -130,15 +129,15 @@ void TestSceneTT::CreateBlock()
 
 	Vector2i res = resolution;
 
-	TestBlock* block1 = new TestBlock(res.x * 0.5f, res.y * 0.5f, 800.f, 50.f);
+	CollisionBlock* block1 = new CollisionBlock(res.x * 0.5f, res.y * 0.5f, 800.f, 50.f);
 	blocks.push_back(block1);
-	TestBlock* block2 = new TestBlock(res.x * 0.5f, res.y - 50.f, res.x, 100.f);
+	CollisionBlock* block2 = new CollisionBlock(res.x * 0.5f, res.y - 50.f, res.x, 100.f);
 	blocks.push_back(block2);
-	TestBlock* block3 = new TestBlock(440.f, res.y * 0.75f - 50.f, 600.f, 50.f);
+	CollisionBlock* block3 = new CollisionBlock(440.f, res.y * 0.75f - 50.f, 600.f, 50.f);
 	blocks.push_back(block3);
-	TestBlock* block4 = new TestBlock(1480.f, res.y * 0.75f - 50.f, 600.f, 50.f);
+	CollisionBlock* block4 = new CollisionBlock(1480.f, res.y * 0.75f - 50.f, 600.f, 50.f);
 	blocks.push_back(block4);
-	TestBlock* block7 = new TestBlock(res.x * 0.5f, res.y - 150.f, 100.f, 100.f);
+	CollisionBlock* block7 = new CollisionBlock(res.x * 0.5f, res.y - 150.f, 100.f, 100.f);
 	blocks.push_back(block7);
 }
 

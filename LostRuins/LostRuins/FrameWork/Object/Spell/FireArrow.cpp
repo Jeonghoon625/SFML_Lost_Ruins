@@ -12,6 +12,7 @@ FireArrow::FireArrow(ZombieWalker* zombie, EffectManager* effectMgr)
 
 	AnimationInit();
 	sprite.setOrigin(16.f, 55.f);
+	sprite.setScale(1.f / 3.f, 1.f / 3.f);
 	animation.Play("FireArrow");
 }
 
@@ -34,7 +35,7 @@ void FireArrow::Spell(Vector2f pos, bool dir)
 	sprite.setPosition(position);
 }
 
-void FireArrow::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
+void FireArrow::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime)
 {
 	if (isDirection == true)
 	{
@@ -56,14 +57,18 @@ void FireArrow::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 		}
 	}
 
-	// 利 面倒
-	if (sprite.getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
-	{
-		effectMgr->HitExplosion(position);
-		zombie->OnHitted(damage, dt, playTime);
-		Stop();
-	}
 
+	// 利 面倒
+	if (zombie != nullptr)
+	{
+		if (sprite.getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+		{
+			effectMgr->HitExplosion(position);
+			zombie->OnHitted(damage, dt, playTime);
+			Stop();
+		}
+	}
+	
 	// 芭府 力茄
 	distance += speed * dt;
 	if (distance > DEFAULT_DISTANCE)
