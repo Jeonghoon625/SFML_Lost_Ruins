@@ -22,6 +22,12 @@ void TitleScene::Init(SceneManager* sceneManager)
 
 void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
+	aniHeroine.Update(dt);
+	aniRope1.Update(dt);
+	aniRope2.Update(dt);
+	aniTree.Update(dt);
+	aniDeadBush.Update(dt);
+
 	switch (menuType)
 	{
 	case MenuType::MENU_SELECT:
@@ -44,6 +50,8 @@ void TitleScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 	window->draw(title);
 	window->draw(rope1);
 	window->draw(rope2);
+	window->draw(tree);
+	window->draw(deadBush);
 	window->draw(ForeGround);
 	window->draw(heroine);
 
@@ -113,10 +121,6 @@ void TitleScene::SelectingMenu(float dt, RenderWindow* window)
 		break;
 	}
 
-	aniHeroine.Update(dt);
-	aniRope1.Update(dt);
-	aniRope2.Update(dt);
-
 	if (InputManager::GetKeyDown(Keyboard::Space))
 	{
 		GetSelect(window);
@@ -152,10 +156,6 @@ void TitleScene::LoadingMenu(float dt, RenderWindow* window)
 		loadSlot.setPosition(resolution.x * 0.5f, 500.f + 160.f);
 		break;
 	}
-
-	aniHeroine.Update(dt);
-	aniRope1.Update(dt);
-	aniRope2.Update(dt);
 
 	if (InputManager::GetKeyDown(Keyboard::Escape))
 	{
@@ -251,6 +251,18 @@ void TitleScene::SettingTextrue()
 	rope2.setScale(3.5f, 3.5f);
 	AnimationInit(aniRope2, &rope2);
 	aniRope2.Play("rope2");
+
+	tree.setOrigin(103.f, 0.f);
+	tree.setPosition(resolution.x, resolution.y*0.1f);
+	tree.setScale(3.5f, 3.5f);
+	AnimationInit(aniTree, &tree);
+	aniTree.Play("tree");
+
+	deadBush.setOrigin(25.f, 20.f);
+	deadBush.setPosition(resolution.x * 0.37f, resolution.y - 200.f);
+	deadBush.setScale(4.f, 4.f);
+	AnimationInit(aniDeadBush, &deadBush);
+	aniDeadBush.Play("deadBush");
 
 	loadBack.setSize(Vector2f(820.f, resolution.y));
 	loadBack.setFillColor(Color(0, 0, 0, 150));
