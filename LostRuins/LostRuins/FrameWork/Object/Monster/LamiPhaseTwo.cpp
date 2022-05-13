@@ -40,6 +40,9 @@ void LamiPhaseTwo::MonsterInit()
 
 	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height * 0.5f);
 	sprite.setPosition(200.f, resolution.y * 0.7f);
+	originalPos = sprite.getPosition();
+
+
 
 	sprite.setScale(scale);
 
@@ -99,6 +102,13 @@ void LamiPhaseTwo::MonsterInit()
 	rightHand.Init(Vector2f(sprite.getGlobalBounds().left + 89, sprite.getGlobalBounds().top + 17), 1);
 	a = 1.f;
 	updateY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
+}
+
+void LamiPhaseTwo::Spawn(Vector2f pos)
+{
+	sprite.setPosition(pos);
+	position = sprite.getPosition();
+	originalPos = pos;
 }
 
 void LamiPhaseTwo::Walk(float dt, Player& player)
@@ -351,12 +361,12 @@ void LamiPhaseTwo::Attack(float dt, int atk, Player& player, Time timeHit)
 
 void LamiPhaseTwo::Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playTime)
 {
-	if (health > START_HEALTH * 0.5f)
+	/*if (health > START_HEALTH * 0.5f)
 	{
 		health -= 1;
-	}
+	}*/
 	std::cout << health << std::endl;
-	Walk(dt, player);
+	/*Walk(dt, player);*/
 	Attack(dt, atk, player, playTime);
 	Dive(dt, player);
 	if (!isDiving && !isReappearing)
@@ -433,7 +443,7 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 	{
 		sprite.setOrigin((sprite.getTextureRect().width * 0.5f), sprite.getTextureRect().height * 0.5f);
 		float h = 0.f;
-		float v = resolution.y * 0.7f - sprite.getPosition().y;
+		float v = originalPos.y - sprite.getPosition().y;
 		Vector2f dir(h, v);
 		position += Utils::Normalize(dir) * speed * 50.f * dt;
 
@@ -445,9 +455,9 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 		hitBox.setPosition(position);
 
 
-		if (sprite.getPosition().y < (resolution.y * 0.7f))
+		if (sprite.getPosition().y < (originalPos.y * 0.7f))
 		{
-			sprite.setPosition(sprite.getPosition().x, resolution.y * 0.7f);
+			sprite.setPosition(sprite.getPosition().x, originalPos.y * 0.7f);
 			ReappearOn = false;
 			isReappearing = true;
 			isDiving = false;
@@ -459,7 +469,7 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 
 void LamiPhaseTwo::Draw(RenderWindow* window)
 {
-	window->draw(leftSclera);
+	window->draw(leftSclera);f
 	window->draw(leftEye);
 	window->draw(sprite);
 
@@ -495,7 +505,7 @@ void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 			a *= -1;
 		}
 
-		leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f), leftSclera.getPosition().y + a * 0.4f);
+		/*leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f), leftSclera.getPosition().y + a * 0.4f);*/
 		if (leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f) < upY || leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f) > downY)
 		{
 			leftSclera.setPosition(leftSclera.getPosition().x, prevY);
