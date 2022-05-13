@@ -1,13 +1,17 @@
 #include "LamiHand.h"
+#include <functional>
 
 LamiHand::LamiHand()
 {
-	AnimationInit(&sprite);
-	animation.Play(strIdle);
+	
 }
 
 void LamiHand::Init(Vector2f pos, int handSide)
 {
+	isAttacking = false;
+
+	AnimationInit(&sprite);
+	
 	strIdle = "Lami2HandIdle";
 	strNearAttack = "Lami2HandAttackNear";
 	strNearAttackToIdle = "Lami2HandAttackNearToIdle";
@@ -22,26 +26,180 @@ void LamiHand::Init(Vector2f pos, int handSide)
 	sprite.setOrigin(80.f,31.f);
 	sprite.setPosition(pos);
 	
-	if (handSide == 0)
+	if (handSide == 0)		//left hand
 	{
 		sprite.setScale(3.f, 3.f);
 	}
-	else
+	else if(handSide == 1)	//Right hand
 	{
 		sprite.setScale(-3.f, 3.f);
 	}
-	
+	currentStatus = Lami2Status::STATUS_IDLE;
+	/*animation.Play(strIdle, std::bind(&LamiHand::IdlePlay, this));*/
 }
-
+//animation.Play(strIdle, std::bind(&LamiHand::AnimationUpdate, this));
 void LamiHand::Update(float dt, Vector2f pos)
 {
 	sprite.setPosition(pos);
 	animation.Update(dt);
+	AnimationUpdate();
 }
 
 void LamiHand::Draw(RenderWindow* window)
 {
 	window->draw(sprite);
+}
+
+Sprite LamiHand::GetSprite()
+{
+	return sprite;
+}
+
+void LamiHand::AnimationPlay(Lami2Status newStatus)
+{
+	switch (newStatus)
+	{
+	case Lami2Status::STATUS_IDLE:
+		animation.Play(strIdle);
+		/*animation.Play(strIdle, std::bind(&LamiHand::AnimationUpdate, this));*/
+		break;
+	case Lami2Status::STATUS_ATTACK_NEAR:
+		animation.Play(strNearAttack);
+		break;
+	case Lami2Status::STATUS_ATTACK_MIDDLE:
+		animation.Play(strMiddleAttack);
+		break;
+	case Lami2Status::STATUS_ATTACK_FAR:
+		animation.Play(strFarAttack);
+		break;
+	case Lami2Status::STATUS_DIVING:
+		animation.Play(strDiving);
+		break;
+	case Lami2Status::STATUS_REAPPEARING:
+		animation.Play(strReappearing);
+		break;
+	case Lami2Status::STATUS_DEAD:
+		break;
+	default:
+		break;
+	}
+}
+
+void LamiHand::AnimationUpdate()
+{
+	switch (currentStatus)
+	{
+	case Lami2Status::STATUS_IDLE:
+		SetStatus(Lami2Status::STATUS_IDLE);
+		break;
+	case Lami2Status::STATUS_ATTACK_NEAR:
+		if (isAttacking == false)
+		{
+			SetStatus(Lami2Status::STATUS_IDLE);
+		}
+		break;
+	case Lami2Status::STATUS_ATTACK_MIDDLE:
+		if (isAttacking == false)
+		{
+			SetStatus(Lami2Status::STATUS_IDLE);
+		}
+		break;
+	case Lami2Status::STATUS_ATTACK_FAR:
+		if (isAttacking == false)
+		{
+			SetStatus(Lami2Status::STATUS_IDLE);
+		}
+		break;
+	case Lami2Status::STATUS_DIVING:
+		SetStatus(Lami2Status::STATUS_DIVING);
+		break;
+	case Lami2Status::STATUS_REAPPEARING:
+		SetStatus(Lami2Status::STATUS_REAPPEARING);
+		break;
+	case Lami2Status::STATUS_DEAD:
+		SetStatus(Lami2Status::STATUS_IDLE);
+		break;
+	default:
+		break;
+	}
+}
+
+void LamiHand::SetStatus(Lami2Status newStatus)
+{
+	Lami2Status prevStatus = currentStatus;
+	currentStatus = newStatus;
+
+	switch (currentStatus)
+	{
+	case Lami2Status::STATUS_IDLE:
+		if (prevStatus == Lami2Status::STATUS_ATTACK_NEAR)
+		{
+			sprite.setOrigin(48,31);
+			/*animation.Play(strNearAttackToIdle);*/
+			animation.Play(strNearAttackToIdle, std::bind(&LamiHand::IsAttackingFalse, this));
+			/*animation.PlayQueue(strIdle);*/
+		}
+		else if (prevStatus == Lami2Status::STATUS_ATTACK_MIDDLE)
+		{
+			sprite.setOrigin(90, 31);
+			/*animation.Play(strMiddleAttackToIdle);*/
+			animation.Play(strMiddleAttackToIdle, std::bind(&LamiHand::IsAttackingFalse, this));
+			/*animation.PlayQueue(strIdle);*/
+		}
+		else if (prevStatus == Lami2Status::STATUS_ATTACK_FAR)
+		{
+			sprite.setOrigin(54, 33);
+			/*animation.Play(strFarAttackToIdle);*/
+			animation.Play(strFarAttackToIdle, std::bind(&LamiHand::IsAttackingFalse, this));
+			/*animation.PlayQueue(strIdle);*/
+		}
+		else if (prevStatus == Lami2Status::STATUS_REAPPEARING)
+		{
+			sprite.setOrigin(59, 31);
+			/*animation.Play(strReappearingToIdle);*/
+			animation.Play(strReappearingToIdle, std::bind(&LamiHand::IsAttackingFalse, this));
+			/*animation.PlayQueue(strIdle);*/
+		}
+		else
+		{
+			/*sprite.setOrigin(80, 31);*/
+			animation.PlayQueue(strIdle);
+		}
+		break;
+	case Lami2Status::STATUS_ATTACK_NEAR:
+		isAttacking = true;
+		sprite.setOrigin(105, 47);
+	/*	animation.Play(strNearAttack);*/
+		animation.Play(strNearAttack, std::bind(&LamiHand::IsAttackingFalse, this));
+		break;
+	case Lami2Status::STATUS_ATTACK_MIDDLE:
+		isAttacking = true;
+		sprite.setOrigin(110, 32);
+		/*animation.Play(strMiddleAttack);*/
+		animation.Play(strMiddleAttack, std::bind(&LamiHand::IsAttackingFalse, this));
+		break;
+	case Lami2Status::STATUS_ATTACK_FAR:
+		isAttacking = true;
+		sprite.setOrigin(111, 38);
+	/*	animation.Play(strFarAttack);*/
+		animation.Play(strFarAttack, std::bind(&LamiHand::IsAttackingFalse, this));
+		break;
+	case Lami2Status::STATUS_DIVING:
+		sprite.setOrigin(69, 32);
+		animation.Play(strDiving);
+		break;
+	case Lami2Status::STATUS_REAPPEARING:
+		sprite.setOrigin(113, 95);
+		animation.Play(strReappearing);
+		break;
+	default:
+		break;
+	}
+}
+
+void LamiHand::IdlePlay()
+{
+	animation.Play(strNearAttack);
 }
 
 void LamiHand::AnimationInit(Sprite* sprite)
@@ -83,5 +241,17 @@ void LamiHand::AnimationInit(Sprite* sprite)
 		}
 		animation.AddClip(clip);
 	}
+}
 
+bool LamiHand::GetIsAttacking()
+{
+	return isAttacking;
+}
+
+void LamiHand::IsAttackingFalse()
+{
+	sprite.setOrigin(80, 31);
+
+	isAttacking = false;
+	animation.PlayQueue(strIdle);
 }

@@ -60,10 +60,22 @@ void AnimationController::Update(float dt)
 			playQueue.pop();
 			Play(nextClipId, false);
 		}
+
+		if (onComplete != nullptr)
+		{
+			onComplete();
+			onComplete = nullptr;
+		}
 	}
 
 	sprite->setTexture(*currentClip->frames[currentFrame].texture);
 	sprite->setTextureRect(currentClip->frames[currentFrame].texCoord);
+}
+
+void AnimationController::Play(std::string clipId, std::function<void()> onCompete, bool clear)
+{
+	Play(clipId, clear);
+	this->onComplete = onCompete;
 }
 
 void AnimationController::Play(std::string clipId, bool clear)
@@ -79,6 +91,9 @@ void AnimationController::Play(std::string clipId, bool clear)
 	currentFrame = 0;
 	totalFrame = currentClip->frames.size();
 	frameDurtion = 1.f / currentClip->fps;
+
+	sprite->setTexture(*currentClip->frames[currentFrame].texture);
+	sprite->setTextureRect(currentClip->frames[currentFrame].texCoord);
 }
 
 void AnimationController::PlayQueue(std::string clipId)

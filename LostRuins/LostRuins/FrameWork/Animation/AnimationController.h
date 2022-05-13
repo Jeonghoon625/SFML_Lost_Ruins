@@ -3,6 +3,7 @@
 #include "AnimationClip.h"
 #include <map>
 #include <queue>
+#include <functional>
 
 using namespace sf;
 
@@ -26,6 +27,8 @@ private:
 
 	Sprite* sprite;
 
+	std::function<void()> onComplete;
+
 public:
 	AnimationController();
 
@@ -34,6 +37,7 @@ public:
 
 	void Update(float dt);
 
+	void Play(std::string clipId, std::function<void()> onCompete, bool clear = true);
 	void Play(std::string clipId, bool clear = true);
 	void PlayQueue(std::string clipId);
 

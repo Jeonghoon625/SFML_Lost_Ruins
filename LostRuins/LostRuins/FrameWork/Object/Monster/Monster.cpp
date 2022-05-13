@@ -13,8 +13,8 @@ Monster::Monster()
 	isIdle = true;
 	isWalk = false;
 	isRun = false;
-	resolution.x = VideoMode::getDesktopMode().width;
-	resolution.y = VideoMode::getDesktopMode().height;
+	resolution.x = 1920.f;
+	resolution.y = 1080.f;
 }
 
 FloatRect Monster::GetGlobalBound()
@@ -69,7 +69,6 @@ RectangleShape Monster::GetHitBox()
 
 void Monster::MonsterInit()
 {
-
 	strWalk = ("GoblinAttackerWalk");
 	strIdle = ("GoblinAttackerIdle");
 	strRun = ("GoblinAttackerRun");
@@ -85,7 +84,7 @@ void Monster::MonsterInit()
 	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
-	
+
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
@@ -294,7 +293,7 @@ void Monster::Walk(float dt)
 					sprite.setScale(-3.f, 3.f);
 					isIdle = false;
 					isWalk = true;
-				/*	animation.Play(strWalk);*/
+					/*	animation.Play(strWalk);*/
 					findPlayerBox.setOrigin(0.f, 40.f);
 					attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.99f);
 					break;
@@ -332,20 +331,20 @@ void Monster::FindPlayer(Player& player)
 				isIdle = false;
 				isWalk = false;
 				isFindPlayer = true;
-			/*	animation.Play(strRun);*/
+				/*	animation.Play(strRun);*/
 			}
 		}
 	}
 }
 
-void Monster::ChasePlayer(Player& player	, float dt)
+void Monster::ChasePlayer(Player& player, float dt)
 {
 	if (isAlive)
 	{
 		/*animation.PlayQueue(strRun);*/
 		if (isFindPlayer && !isAttackPlayer)
 		{
-			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay>0.5f)
+			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay > 0.5f)
 			{
 				attackDelay = 0.f;
 				/*animation.Play(strAttack);*/
@@ -638,12 +637,12 @@ void Monster::UpdateDelayAndStatus(float dt)
 		if (hitDelay > 0.3f)
 		{
 			hitDelay = 0.f;
-			isHit = false; 
+			isHit = false;
 			isFindPlayer = true;
 		}
 	}
 
-	if (GetHealth()<0)
+	if (GetHealth() < 0)
 	{
 		isAlive = false;
 	}
