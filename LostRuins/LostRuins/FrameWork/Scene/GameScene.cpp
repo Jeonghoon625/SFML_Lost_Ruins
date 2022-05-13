@@ -16,9 +16,6 @@ void GameScene::Init(SceneManager* sceneManager)
 
 	player.Spawn(90.f, 340.f);
 
-	float wpXpos = 500.f;
-	float wpYpos = resolution.y * 0.5f;
-
 	// test
 	zombieWalker->MonsterInit();
 

@@ -49,8 +49,8 @@ private:
 	const float START_ROLL_TIME = 0.5f;
 	const float GRAVITY_POWER = 600.f;
 	const float START_IMMUNE_MS = 500.f;
-	const float START_KNOCK_BACK_SPEED = 550.f;
-	const float DEAD_FALLING_SPEED = 600.f;
+	const float START_KNOCK_BACK_SPEED = 180.f;
+	const float DEAD_FALLING_SPEED = 200.f;
 	const float DEAD_TIME_COUNT = 1.f;
 	const int MAX_TEXT_CACHE_SIZE = 50;
 

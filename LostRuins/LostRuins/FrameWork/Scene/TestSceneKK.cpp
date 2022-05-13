@@ -8,7 +8,7 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 	resolution.y = 1080.f;
 
 	player.Init(nullptr);
-	gameMap = IntRect(0, 0, resolution.x, resolution.y);
+	gameMap = FloatRect(0, 0, 35.f * 32.f, 15.f * 32.f);
 	player.Spawn(90.f, 340.f);
 
 	//Goblin.MonsterInit();
@@ -34,6 +34,7 @@ void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* ma
 
 void TestSceneKK::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
+	window->setView(*mainView);
 	/* View ¼³Á¤*/
 	mainView->setCenter(player.GetPosition());
 

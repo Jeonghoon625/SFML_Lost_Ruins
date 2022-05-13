@@ -23,7 +23,7 @@ private:
 	Vector2i resolution;
 
 	AnimationController animation;
-	IntRect gameMap;
+	FloatRect gameMap;
 
 	Player player;
 	Texture textureHeroine;
