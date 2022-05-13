@@ -39,7 +39,7 @@ void SceneManager::SceneSwitch(SceneType sceneType)
 		break;
 
 	case SceneType::TEST_LMH:
-		currentScene = new TestScene();
+		currentScene = new GameScene();
 		break;
 
 	case SceneType::GameScene:

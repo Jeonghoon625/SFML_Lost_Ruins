@@ -11,7 +11,6 @@
 #include "../Object/Monster/Monster.h"
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
-#include "../Object/TestBlock/TestBlock.h"
 #include "../Object/Monster/LamiPhaseTwo.h"
 
 
@@ -37,7 +36,7 @@ private:
 
 	LamiPhaseTwo Lami2;
 
-	vector <TestBlock*> blocks;
+	vector <CollisionBlock*> blocks;
 	//Dummy Map
 	Texture texBackground;
 	VertexArray tileMap;

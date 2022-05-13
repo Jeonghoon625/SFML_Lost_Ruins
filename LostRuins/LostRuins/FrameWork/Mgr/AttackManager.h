@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include <list>
-#include "../Object/TestBlock/TestBlock.h"
+#include "../Object/CollisionBlock/CollisionBlock.h"
 #include "../Object/Weapon/TwohandWeapon.h"
 #include "../Object/Weapon/Dagger.h"
 #include "../Object/Spell/FireArrow.h"
@@ -11,7 +11,7 @@
 using namespace sf;
 using namespace std;
 
-class TestBlock;
+class CollisionBlock;
 class ZombieWalker;
 
 enum class AttackType
@@ -57,7 +57,7 @@ private:
 
 public:
 	void Init(ZombieWalker* zombie, EffectManager* effectMgr);
-	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
+	void Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime);
 	void WeaponDraw(RenderWindow* window, View* mainView);
 	void SpellDraw(RenderWindow* window);
 

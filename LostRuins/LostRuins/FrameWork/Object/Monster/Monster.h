@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "../../Animation/AnimationController.h"
 #include "../../Animation/rapidcsv.h"
+#include "../../Object/CollisionBlock/CollisionBlock.h"
 #include "../Player/Player.h"
 using namespace sf;
 
@@ -106,11 +107,11 @@ public:
 
 	virtual bool OnHitted(int atk, float dt,Time timeHit);
 
-	virtual void Gravity(float dt, std::vector<TestBlock*> blocks);
-	virtual void UpdateCollision(std::vector <TestBlock*> blocks);
-	virtual void UpdateCollisionAttackRangeBox(std::vector <TestBlock*> blocks);
+	virtual void Gravity(float dt, std::vector<CollisionBlock*> blocks);
+	virtual void UpdateCollision(std::vector <CollisionBlock*> blocks);
+	virtual void UpdateCollisionAttackRangeBox(std::vector <CollisionBlock*> blocks);
 
-	virtual void Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playtime);
+	virtual void Update(Player& player, float dt, std::vector<CollisionBlock*> blocks, Time playtime);
 	void UpdateDelayAndStatus(float dt);
 
 	void Draw(RenderWindow* window);

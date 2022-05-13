@@ -35,7 +35,7 @@ void FireArrow::Spell(Vector2f pos, bool dir)
 	sprite.setPosition(position);
 }
 
-void FireArrow::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
+void FireArrow::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime)
 {
 	if (isDirection == true)
 	{

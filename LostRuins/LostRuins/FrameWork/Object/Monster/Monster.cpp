@@ -460,7 +460,7 @@ bool Monster::OnHitted(int atk, float dt, Time timeHit)
 	}
 }
 
-void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
+void Monster::Gravity(float dt, std::vector<CollisionBlock*> blocks)
 {
 	if (isFalling)
 	{
@@ -475,7 +475,7 @@ void Monster::Gravity(float dt, std::vector<TestBlock*> blocks)
 	UpdateCollision(blocks);
 }
 
-void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
+void Monster::UpdateCollision(std::vector<CollisionBlock*> blocks)
 {
 	isFalling = true;
 	isCollideHitBox = false;
@@ -604,7 +604,7 @@ void Monster::UpdateCollision(std::vector<TestBlock*> blocks)
 
 }
 
-void Monster::UpdateCollisionAttackRangeBox(std::vector<TestBlock*> blocks)
+void Monster::UpdateCollisionAttackRangeBox(std::vector<CollisionBlock*> blocks)
 {
 	isCollideAttackRangeBox = false;
 	for (auto bk : blocks)
@@ -616,7 +616,7 @@ void Monster::UpdateCollisionAttackRangeBox(std::vector<TestBlock*> blocks)
 	}
 }
 
-void Monster::Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playTime)
+void Monster::Update(Player& player, float dt, std::vector<CollisionBlock*> blocks, Time playTime)
 {
 	animation.Update(dt);
 	UpdateCollisionAttackRangeBox(blocks);

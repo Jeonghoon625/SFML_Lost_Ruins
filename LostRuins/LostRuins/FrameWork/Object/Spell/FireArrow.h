@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "../../Animation/AnimationController.h"
 #include "../../Animation/rapidcsv.h"
-#include "../../Object/TestBlock/TestBlock.h"
+#include "../../Object/CollisionBlock/CollisionBlock.h"
 #include "../../Mgr/EffectManager.h"
 
 using namespace sf;
@@ -38,7 +38,7 @@ private:
 public:
 	FireArrow(ZombieWalker* zombie, EffectManager* effectMgr);
 	void Spell(Vector2f pos, bool dir);
-	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
+	void Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime);
 	void SetActive(bool active);
 
 	void Stop();

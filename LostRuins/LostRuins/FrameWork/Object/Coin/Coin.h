@@ -56,14 +56,14 @@ public:
 	Sprite GetSprite() const;
 
 	void Init();
-	void Update(float dt, std::vector<TestBlock*> blocks, Player &player);
+	void Update(float dt, std::vector<CollisionBlock*> blocks, Player &player);
 	void Draw(RenderWindow* window, View* mainView, View* uiView);
 
 	
 	//////////////////////////////
 		
-	void Gravity(float dt, std::vector<TestBlock*> blocks);
-	void UpdateCollision(std::vector <TestBlock*> blocks);
+	void Gravity(float dt, std::vector<CollisionBlock*> blocks);
+	void UpdateCollision(std::vector <CollisionBlock*> blocks);
 	bool Coindelete = false;
 
 	/////////////////////////////

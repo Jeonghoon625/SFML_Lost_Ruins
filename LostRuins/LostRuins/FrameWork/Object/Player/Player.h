@@ -9,7 +9,6 @@
 #include "../../Animation/rapidcsv.h"
 #include "../../Mgr/Utils.h"
 #include "../../Mgr/InputManager.h"
-#include "../TestBlock/TestBlock.h"
 #include "../../Mgr/AttackManager.h"
 #include "../CollisionBlock/CollisionBlock.h"
 #include "../../Mgr/EffectManager.h"
@@ -105,7 +104,6 @@ private:
 
 public:
 	void Init(ZombieWalker* zombie);
-	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
 	void Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime);
 	void Draw(RenderWindow* window, View* mainView);
 	
@@ -125,7 +123,7 @@ public:
 	bool GetPause();
 
 	void AnimationInit(Sprite* sprite);
-	void UpdateCollision(std::vector <TestBlock*> blocks);
+	void UpdateCollision(std::vector <CollisionBlock*> blocks);
 
 	void AnimationUpdate();
 	void SetStatus(Status newStatus);

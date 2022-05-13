@@ -28,7 +28,7 @@ enum class MenuType
 class TitleScene : public Scene
 {
 private:
-	const int MAX_MENU_SLOT = 4;
+	const int MAX_MENU_SLOT = 5;
 	const int MAX_SAVE_SLOT = 3;
 
 	SceneManager* sceneMgr;
@@ -84,7 +84,7 @@ public:
 	virtual ~TitleScene();
 
 	void SelectingMenu(float dt, RenderWindow* window);
-	void LoadingMenu(float dt);
+	void LoadingMenu(float dt, RenderWindow* window);
 
 	void GetSelect(RenderWindow* window);
 	void SettingTextrue();

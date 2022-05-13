@@ -22,25 +22,20 @@ void TitleScene::Init(SceneManager* sceneManager)
 
 void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-	this->uiView = uiView;
-
 	switch (menuType)
 	{
 	case MenuType::MENU_SELECT:
 		SelectingMenu(dt, window);
 		break;
 	case MenuType::MENU_LOAD:
-		LoadingMenu(dt);
+		LoadingMenu(dt, window);
 		break;
 	case MenuType::MENU_OPTION:
 		break;
 	}
-	else if (InputManager::GetKeyDown(Keyboard::Down) && isPosition < 5)
-	{
-		isPosition++;
 }
 
-void TitleScene::Draw(RenderWindow* window, View* mainView)
+void TitleScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
 	window->setView(*uiView);
 	window->draw(sky);
@@ -61,6 +56,7 @@ void TitleScene::Draw(RenderWindow* window, View* mainView)
 	window->draw(textGameStart);
 	window->draw(textContinue);
 	window->draw(textOption);
+	window->draw(textMapEditor);
 	window->draw(textExit);
 
 	if (menuType == MenuType::MENU_LOAD)
@@ -74,11 +70,6 @@ void TitleScene::Draw(RenderWindow* window, View* mainView)
 			window->draw(textLoadSlot[i]);
 		}
 	}
-}
-
-TitleScene::~TitleScene()
-{
-
 }
 
 void TitleScene::SelectingMenu(float dt, RenderWindow* window)
@@ -132,20 +123,7 @@ void TitleScene::SelectingMenu(float dt, RenderWindow* window)
 	}
 }
 
-void TitleScene::Draw(RenderWindow* window, View* mainView, View* uiView)
-{
-	window->setView(*uiView);
-	window->draw(sky);
-	window->draw(backGround);
-	window->draw(midGround);
-	window->draw(title);
-	window->draw(rope1);
-	window->draw(rope2);
-	window->draw(ForeGround);
-	window->draw(heroine);
-	window->draw(topBar);
-	window->draw(bottomBar);
-void TitleScene::LoadingMenu(float dt)
+void TitleScene::LoadingMenu(float dt, RenderWindow* window)
 {
 	if (InputManager::GetKeyDown(Keyboard::Up) && loadPos > 1)
 	{
@@ -161,7 +139,7 @@ void TitleScene::LoadingMenu(float dt)
 	window->draw(textOption);
 	window->draw(textMapEditor);
 	window->draw(textExit);
-}
+
 	switch (loadPos)
 	{
 	case 1:
@@ -175,9 +153,6 @@ void TitleScene::LoadingMenu(float dt)
 		break;
 	}
 
-TitleScene::~TitleScene()
-{
-}
 	aniHeroine.Update(dt);
 	aniRope1.Update(dt);
 	aniRope2.Update(dt);
@@ -389,4 +364,8 @@ void TitleScene::AnimationInit(AnimationController& animation, Sprite* sprite)
 		}
 		animation.AddClip(clip);
 	}
+}
+
+TitleScene::~TitleScene()
+{
 }

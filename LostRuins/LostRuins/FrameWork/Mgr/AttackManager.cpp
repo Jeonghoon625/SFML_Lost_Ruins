@@ -18,7 +18,7 @@ void AttackManager::Init(ZombieWalker* zombie, EffectManager* effectMgr)
 	}
 }
 
-void AttackManager::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
+void AttackManager::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime)
 {
 	auto spell = useSpell.begin();
 	while (spell != useSpell.end())

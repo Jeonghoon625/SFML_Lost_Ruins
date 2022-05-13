@@ -4,7 +4,7 @@
 #include "Scene.h"
 #include "../Mgr/TextureHolder.h"
 #include "../Object/Player/Player.h"
-#include "../Object/TestBlock/TestBlock.h"
+#include "../Object/CollisionBlock/CollisionBlock.h"
 #include "../Object/Monster/Monster.h"
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
@@ -20,7 +20,7 @@ class GameScene : public Scene
 
 	Texture textureHeroine;
 
-	vector <TestBlock*> blocks;
+	vector <CollisionBlock*> blocks;
 
 	// test
 	ZombieWalker* zombieWalker;

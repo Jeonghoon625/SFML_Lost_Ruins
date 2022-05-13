@@ -45,16 +45,11 @@
     <ClCompile Include="FrameWork\Object\Npc\Npc.cpp" />
     <ClCompile Include="FrameWork\Object\Player\Player.cpp" />
     <ClCompile Include="FrameWork\Object\Spell\FireArrow.cpp" />
-    <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp" />
-    <ClCompile Include="FrameWork\Object\TestMonster\TestZombieWalker.cpp" />
     <ClCompile Include="FrameWork\Object\Weapon\Dagger.cpp" />
     <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp" />
     <ClCompile Include="FrameWork\Scene\GameScene.cpp" />
     <ClCompile Include="FrameWork\Scene\MapScene.cpp" />
     <ClCompile Include="FrameWork\Scene\Scene.cpp" />
-    <ClCompile Include="FrameWork\Scene\TestScene.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
@@ -102,14 +97,11 @@
     <ClInclude Include="FrameWork\Object\Npc\Npc.h" />
     <ClInclude Include="FrameWork\Object\Player\Player.h" />
     <ClInclude Include="FrameWork\Object\Spell\FireArrow.h" />
-    <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h" />
-    <ClInclude Include="FrameWork\Object\TestMonster\TestZombieWalker.h" />
     <ClInclude Include="FrameWork\Object\Weapon\Dagger.h" />
     <ClInclude Include="FrameWork\Object\Weapon\TwohandWeapon.h" />
     <ClInclude Include="FrameWork\Scene\GameScene.h" />
     <ClInclude Include="FrameWork\Scene\MapScene.h" />
     <ClInclude Include="FrameWork\Scene\Scene.h" />
-    <ClInclude Include="FrameWork\Scene\TestScene.h" />
     <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
