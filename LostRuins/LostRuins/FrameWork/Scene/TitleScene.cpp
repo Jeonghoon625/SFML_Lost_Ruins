@@ -26,6 +26,7 @@ void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mai
 	aniRope1.Update(dt);
 	aniRope2.Update(dt);
 	aniTree.Update(dt);
+	aniDeadBush.Update(dt);
 
 	switch (menuType)
 	{
@@ -50,6 +51,7 @@ void TitleScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 	window->draw(rope1);
 	window->draw(rope2);
 	window->draw(tree);
+	window->draw(deadBush);
 	window->draw(ForeGround);
 	window->draw(heroine);
 
@@ -255,6 +257,12 @@ void TitleScene::SettingTextrue()
 	tree.setScale(3.5f, 3.5f);
 	AnimationInit(aniTree, &tree);
 	aniTree.Play("tree");
+
+	deadBush.setOrigin(25.f, 20.f);
+	deadBush.setPosition(resolution.x * 0.37f, resolution.y - 200.f);
+	deadBush.setScale(4.f, 4.f);
+	AnimationInit(aniDeadBush, &deadBush);
+	aniDeadBush.Play("deadBush");
 
 	loadBack.setSize(Vector2f(820.f, resolution.y));
 	loadBack.setFillColor(Color(0, 0, 0, 150));

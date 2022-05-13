@@ -39,6 +39,7 @@ private:
 	AnimationController aniRope1;
 	AnimationController aniRope2;
 	AnimationController aniTree;
+	AnimationController aniDeadBush;
 
 	Font fontLostRuins;
 	Texture textureTitle;
@@ -53,6 +54,7 @@ private:
 	Sprite rope1;
 	Sprite rope2;
 	Sprite tree;
+	Sprite deadBush;
 	Sprite loadBar;
 
 	RectangleShape topBar;
