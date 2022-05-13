@@ -34,6 +34,7 @@ private:
 	Image Idle2;
 
 	Vector2f prevLeftEyePos;
+	Vector2f originalPos;
 	float a = 1.f;
 
 	bool isNearAttackPlayer;
@@ -62,7 +63,8 @@ private:
 public:
 	LamiPhaseTwo();
 	virtual void MonsterInit();
-
+	virtual void Spawn(Vector2f pos);
+	
 	virtual void Walk(float dt,Player& player);
 
 	virtual void AnimationUpdate();
