@@ -68,13 +68,13 @@ void LamiPhaseOne::ChasePlayer(Player& player, float dt)
 
 				if (h > 0)
 				{
-					sprite.setScale(-3.f, 3.f);	//플레이어가 몬스터 왼쪽에 있을때
+					sprite.setScale(-1.f, 1.f);	//플레이어가 몬스터 왼쪽에 있을때
 					attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.f, attackRangeBox.getSize().y * 0.99f);
 					findPlayerBox.setOrigin(0.f, 40.f);
 				}
 				else
 				{
-					sprite.setScale(3.f, 3.f);	//플레이어가 몬스터 오른쪽에 있을때
+					sprite.setScale(1.f, 1.f);	//플레이어가 몬스터 오른쪽에 있을때
 					attackRangeBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y * 0.99f);
 					findPlayerBox.setOrigin(200.f, 40.f);
 				}
