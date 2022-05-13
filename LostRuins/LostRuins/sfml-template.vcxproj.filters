@@ -149,7 +149,6 @@
     <ClCompile Include="FrameWork\Object\Monster\LamiHand.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\Coin\Coin.cpp" />
     <ClCompile Include="FrameWork\Mgr\EffectManager.cpp">
       <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
@@ -161,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="FrameWork\Mgr\SoundHolder.cpp">
       <Filter>FrameWork\Mgr</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Coin\Coin.cpp">
+      <Filter>FrameWork\Object\Coin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,7 +274,6 @@
     <ClInclude Include="FrameWork\Object\Monster\LamiHand.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\Coin\Coin.h" />
     <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
@@ -287,6 +288,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Mgr\SoundHolder.h">
       <Filter>FrameWork\Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Coin\Coin.h">
+      <Filter>FrameWork\Object\Coin</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +344,9 @@
     </Filter>
     <Filter Include="FrameWork\Object\Effect">
       <UniqueIdentifier>{1458e2ce-4653-4df5-8ec4-dbea3d4a939e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Object\Coin">
+      <UniqueIdentifier>{e2b8fd78-7c83-489c-a16f-e6e8dd5fe8ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -494,9 +494,9 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
 		{
 			float blockUp = bk->GetBlockRect().top;
-			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height * 0.5f;
+			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height * 0.5f; // t+h
 			float blockLeft = bk->GetBlockRect().left;
-			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width * 0.5f;
+			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width * 0.5f; // l+w
 
 			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height;
 			float playerDown = hitBox.getPosition().y;
@@ -530,7 +530,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				else
 				{
 					pos.x -= abs(blockLeft - playerRight);
-					pos.y -= abs(blockDown - playerUp);
+					pos.y += abs(blockDown - playerUp);
 				}
 			}
 			// 블럭 RB에 플레이어가 충돌
@@ -549,7 +549,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				else
 				{
 					pos.x += abs(blockRight - playerLeft);
-					pos.y -= abs(blockDown - playerUp);
+					pos.y += abs(blockDown - playerUp);
 				}
 			}
 			// 블럭 CT에 플레이어가 충돌
@@ -594,7 +594,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				}
 				else
 				{
-					pos.x -= abs(blockRight - playerLeft);
+					pos.x += abs(blockRight - playerLeft);
 					pos.y -= abs(blockUp - playerDown);
 					pos.y += 1.f;
 				}
