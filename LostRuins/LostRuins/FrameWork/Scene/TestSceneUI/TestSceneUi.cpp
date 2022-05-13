@@ -11,23 +11,652 @@ void TestUi::Init(SceneManager* sceneManager)
 	resolution.x = VideoMode::getDesktopMode().width * 0.8f; //1920
 	resolution.y = VideoMode::getDesktopMode().height * 0.8f; //1080
 
+	Initstartimg();
+}
+
+void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainView, Player& player)
+{
+	float HPbarwidth = 314;
+	float HPbarHeight = 17;
+	healthBarsize = Vector2f(HPbarwidth, HPbarHeight);
+	HPbar.setScale(player.GetHealth() / 20.f, 1.f); //player.GetMaxHealth()
+
+	/*float MPwidth = 314;
+	float MPbarHeight = 17;
+	mpBarsize = Vector2f(MPwidth, HPbarHeight);
+	MPbar.setScale(player.get)*/
+
+	ESCsettag();	
+
+	if (InputManager::GetKeyDown(Keyboard::Z) && inventory == true && weaponNum == 1 && menuNum == 1)
+	{
+		Zweaponview = !Zweaponview;
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::X) && inventory == true && weaponNum == 2 && menuNum == 1)
+	{
+		Xweaponview = !Xweaponview;
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Key::Escape) && inventory == false && MAP == false)
+	{
+		Escapemenu();
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Tab) && Escmenu == false)
+	{
+		menuNum = 1;
+		MAP = false;
+		inventory = true;
+		SeeInven();
+		weaponlist1();
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Key::Down) && inventory == true && Zweapon == true && menuNum == 1 && Xweapon == true && weaponNum == 1)
+	{
+		weaponlist2();
+	}
+	
+	if (InputManager::GetKeyDown(Keyboard::Escape) && inventory == true)
+	{
+		inventory = false;
+		Escmenu = false;
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::M))
+	{
+		inventory = false;
+		MAP = true;
+		SeeMap();
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Escape) && MAP == true)
+	{
+		MAP = false;
+		Escmenu = false;
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Key::Left) && inventory == true && menuNum != 1)
+	{
+		--menuNum;
+		InvenCS.setPosition(InvenCS.getPosition().x - 80, 328);
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Key::Right) && inventory == true && menuNum != 7)
+	{
+		++menuNum;
+		InvenCS.setPosition(InvenCS.getPosition().x + 80, 328);
+	}
+
+	
+	if (inventory == true && Zweapon == true && menuNum == 1 && Xweapon == true)
+	{
+		if (InputManager::GetKeyDown(Keyboard::Key::Up) && weaponNum != 1)
+		{
+			--weaponNum;
+			InvenallCS.setPosition(340, InvenallCS.getPosition().y - 50);
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Down) && weaponNum != 2)
+		{
+			++weaponNum;
+			InvenallCS.setPosition(340, InvenallCS.getPosition().y + 50);
+		}
+	}
+
+	
+	if (InputManager::GetKeyDown(Keyboard::Key::Q) && MAP == false && Escset == false && Esckey == false)
+	{
+		inventory = false;
+		MAP = true;
+		SeeMap();
+	}
+	else if (InputManager::GetKeyDown(Keyboard::Key::Q) && inventory == false && Escset == false && Esckey == false)
+	{
+		menuNum = 1;
+		MAP = false;
+		inventory = true;
+		SeeInven();
+	}
+	if (InputManager::GetKeyDown(Keyboard::Key::Q) && inventory == false && Escset == true && Esckey == false && MAP == false)
+	{
+		Escset = false;
+		Esckey = true;
+		EscKeyboard();
+	}
+	else if (InputManager::GetKeyDown(Keyboard::Key::Q) && inventory == false && Escset == false && Esckey == true && MAP == false)
+	{
+		settingNum = 1;
+		Esckey = false;
+		Escset = true;
+		EscSetting();
+	}
+
+
+	if (InputManager::GetKeyDown(Keyboard::Key::W) && MAP == false && Escset == false && Esckey == false)
+	{
+		inventory = false;
+		MAP = true;
+		SeeMap();
+	}
+	else if (InputManager::GetKeyDown(Keyboard::Key::W) && inventory == false && Escset == false && Esckey == false)
+	{
+		menuNum = 1;
+		MAP = false;
+		inventory = true;
+		SeeInven();
+	}
+	if (InputManager::GetKeyDown(Keyboard::Key::W) && inventory == false && Escset == true && Esckey == false && MAP == false)
+	{
+		Escset = false;
+		Esckey = true;		
+		EscKeyboard();
+	}
+	else if (InputManager::GetKeyDown(Keyboard::Key::W) && inventory == false && Escset == false && Esckey == true && MAP == false)
+	{
+		settingNum = 1;
+		Esckey = false;
+		Escset = true;
+		EscSetting();
+	}
+
+
+	if (Escmenu == true)
+	{
+		if (InputManager::GetKeyDown(Keyboard::Key::Up) == true && escNum != 1)
+		{
+			--escNum;
+			EscCS.setPosition(280, EscCS.getPosition().y - 80);
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::Key::Down) == true && escNum != 3)
+		{
+			++escNum;
+			EscCS.setPosition(280, EscCS.getPosition().y + 80);
+		}
+	}
+
+	if (Escset == true)
+	{
+		if (InputManager::GetKeyDown(Keyboard::Key::Up) && settingNum != 1)
+		{
+			--settingNum;
+			settingCS.setPosition(642, settingCS.getPosition().y - 80);
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::Key::Down) && settingNum != 10)
+		{
+			++settingNum;
+			settingCS.setPosition(642, settingCS.getPosition().y + 80);
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 3)
+		{
+			FullCSsetview = !FullCSsetview;
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 3)
+		{
+			FullCSsetview = !FullCSsetview;	
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 4)
+		{
+			VsyCSSetview = !VsyCSSetview;			
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 4)
+		{
+			VsyCSSetview = !VsyCSSetview;			
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 6)
+		{
+			BattleCSSetview = !BattleCSSetview;			
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 6)
+		{
+			BattleCSSetview = !BattleCSSetview;			
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 7 && masterNum != 1)
+		{
+			--masterNum;
+			MasterCS.setPosition(MasterCS.getPosition().x - 67, 660);
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 7 && masterNum != 6)
+		{
+			++masterNum;
+			MasterCS.setPosition(MasterCS.getPosition().x + 67, 660);
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 8 && uiNum != 1)
+		{
+			--uiNum;
+			UICS.setPosition(UICS.getPosition().x - 67, 740);
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 8 && uiNum != 6)
+		{
+			++uiNum;
+			UICS.setPosition(UICS.getPosition().x + 67, 740);
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 9 && sfxNum != 1)
+		{
+			--sfxNum;
+			SFXCS.setPosition(SFXCS.getPosition().x - 67, 820);
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 9 && sfxNum != 6)
+		{
+			++sfxNum;
+			SFXCS.setPosition(SFXCS.getPosition().x + 67, 820);
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 10 && musicNum != 1)
+		{
+			--musicNum;
+			MusicCS.setPosition(MusicCS.getPosition().x - 67, 900);
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 10 && musicNum != 6)
+		{
+			++musicNum;
+			MusicCS.setPosition(MusicCS.getPosition().x + 67, 900);
+		}
+
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Key::Space) && Escmenu == true)
+	{
+		switch (escNum)
+		{
+		case 1:
+			Escmenu = false;
+			break;
+
+		case 2:
+			Escmenu = false;
+			Escset = true;
+			if (Escset == true)
+			{
+				EscSetting();
+			}
+			break;
+
+		case 3:
+			exit(0);
+		}
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Key::Escape) && Escset == true)
+	{
+		Escset = false;
+	}
+	if (InputManager::GetKeyDown(Keyboard::Key::Escape) && Esckey == true)
+	{
+		Esckey = false;
+	}
+
+}
+
+void TestUi::Draw(RenderWindow* window, View* mainView)
+{
+	window->draw(scr1);
+	window->draw(scr2);
+	window->draw(amr1);
+	window->draw(amr2);
+	window->draw(HPbarLine);
+	window->draw(HPbar);
+	window->draw(MPbarLine);
+	window->draw(MPbar);
+
+	/*window->draw(BossHPbarLine);
+	window->draw(BossHPbar);*/
+
+	window->draw(Inventory);
+	window->draw(Mapicon);
+	window->draw(Wear1);
+	window->draw(Wear2);
+
+	window->draw(Shield);
+	window->draw(Weapon);
+	window->draw(ScrollA);
+	window->draw(ScrollS);
+
+	window->draw(ButtonTab);
+	window->draw(ButtonM);
+	window->draw(ButtonX);
+	window->draw(ButtonZ);
+	window->draw(ButtonS);
+	window->draw(ButtonA);
+
+	window->draw(textHPbar); // 체력숫자
+	window->draw(textMPbar); // 마나숫자
+	window->draw(textButtonTab); // TAB버튼
+	window->draw(textButtonM); // M버튼
+	window->draw(textButtonX); // 버튼X
+	window->draw(textButtonZ); // 버튼Z
+	window->draw(textButtonS); // 버튼S
+	window->draw(textButtonA); // 버튼A
+
+	if (inventory == true)
+	{
+		window->draw(Blur);
+		window->draw(Invenwindow); // 인벤토리 창
+		window->draw(InvenLongWeapon); // 인벤토리 무기
+		window->draw(InvenOrder); // 인벤토리 주문
+		window->draw(InvenSupplies); // 인벤토리 소모품
+		window->draw(InvenEquipment); // 인벤토리 장비
+		window->draw(InvenRelic); // 인벤토리 유물
+		window->draw(InvenRecord); // 인벤토리 기록
+		window->draw(InvenKey); // 인벤토리 열쇠
+		window->draw(InvenCS); // 인벤토리 커서
+		window->draw(Invenname); // 인벤토리 이름
+		window->draw(InvenMap); // 인벤토리 맵
+		window->draw(InvenBtQ); // 인벤토리Q버튼
+		window->draw(InvenBtW); // 인벤토리W버튼
+
+		window->draw(textInvenBtQ); // 인벤토리 내 Q버튼
+		window->draw(textInvenBtW); // 인벤토리 내 W버튼
+		window->draw(textInven); // (인벤토리) 텍스트
+		window->draw(textMap); // (맵) 텍스트
+	}
+
+	if (MAP == true)
+	{
+		window->draw(Blur);
+		window->draw(InventoryMAP); // 인벤토리 맵
+		window->draw(Invenname); // 인벤토리 이름
+		window->draw(InvenMap); // 인벤토리 맵
+		window->draw(InvenBtQ); // 인벤토리Q버튼
+		window->draw(InvenBtW); // 인벤토리W버튼
+
+		window->draw(textInvenBtQ); // 인벤토리 내 Q버튼
+		window->draw(textInvenBtW); // 인벤토리 내 W버튼
+		window->draw(textInven); // (인벤토리) 텍스트
+		window->draw(textMap); // (맵) 텍스트
+	}
+
+	if (Escmenu == true)
+	{
+		window->draw(Escback);
+		window->draw(EscCS);
+		window->draw(Continue);
+		window->draw(Setting);
+		window->draw(End);
+	}
+
+	if (Escset == true)
+	{
+		window->draw(setBlur);
+		window->draw(spriteset1);
+		window->draw(spriteset2);
+		window->draw(SettingSet);
+		window->draw(SettingKey);
+		window->draw(SettingBtQ);
+		window->draw(SettingBtW);
+		window->draw(SetBtQ);
+		window->draw(SetBtW);
+		window->draw(Setname);
+		window->draw(Keyname);
+		window->draw(textLanguage);
+		window->draw(LanCSL);
+		window->draw(English);
+		window->draw(LanCSR);
+		window->draw(textResolution);
+		window->draw(ResCSL);
+		window->draw(screensize);
+		window->draw(ResCSR);
+		window->draw(textFullScreen);
+		if (FullCSsetview)
+		{
+			window->draw(FullCS);
+		}
+		else
+		{
+			window->draw(FullCS2);
+		}
+		window->draw(textVsync);
+		if (VsyCSSetview)
+		{
+			window->draw(VsyCS);
+		}
+		else
+		{
+			window->draw(VsyCS2);
+		}
+		window->draw(textRenderMode);
+		window->draw(RenCSL);
+		window->draw(ModeFull);
+		window->draw(RenCSR);
+		window->draw(textBattleLog);
+		if (BattleCSSetview)
+		{
+			window->draw(BattleCS);
+		}
+		else
+		{
+			window->draw(BattleCS2);
+		}		
+		window->draw(textMasterVolume);
+		window->draw(MasterBar);
+		window->draw(MasterCS);
+		window->draw(textUIVolume);
+		window->draw(UIBar);
+		window->draw(UICS);
+		window->draw(textSFXVolume);
+		window->draw(SFXBar);
+		window->draw(SFXCS);
+		window->draw(textMusicVolume);
+		window->draw(MusicBar);
+		window->draw(MusicCS);
+		window->draw(Toggle);
+		window->draw(ToggleLeft);
+		window->draw(ToggleRight);
+		window->draw(TogLeft);
+		window->draw(TogRight);
+		window->draw(SetBack);
+		window->draw(ESCBack);
+		window->draw(SetESC);
+		window->draw(settingCS);
+	}
+
+	if (Esckey == true)
+	{
+		window->draw(setBlur);
+		window->draw(spriteset1);
+		window->draw(spriteset2);
+		window->draw(SettingSet);
+		window->draw(SettingKey);
+		window->draw(SettingBtQ);
+		window->draw(SettingBtW);
+		window->draw(SetBtQ);
+		window->draw(SetBtW);
+		window->draw(Setname);
+		window->draw(Keyname);
+		window->draw(KeyboardLeft);
+		window->draw(KeyboardLeftBox);
+		window->draw(KeyboardLeftDire);
+		window->draw(KeyboardRight);
+		window->draw(KeyboardRightBox);
+		window->draw(KeyboardRightDire);
+		window->draw(KeyboardUP);
+		window->draw(KeyboardUPBox);
+		window->draw(KeyboardUPDire);
+		window->draw(KeyboardDown);
+		window->draw(KeyboardDownBox);
+		window->draw(KeyboardDownDire);
+		window->draw(KeyboardSpace);
+		window->draw(KeyboardSpaceBox);
+		window->draw(KeyboardC);
+		window->draw(KeyboardCBox);
+		window->draw(KeyboardSpaceDire);
+		window->draw(KeyboardCDire);
+		window->draw(KeyboardZ);
+		window->draw(KeyboardZBox);
+		window->draw(KeyboardZDire);
+		window->draw(KeyboardX);
+		window->draw(KeyboardXBox);
+		window->draw(KeyboardXDire);
+		window->draw(KeyboardA);
+		window->draw(KeyboardABox);
+		window->draw(KeyboardADire);
+		window->draw(KeyboardS);
+		window->draw(KeyboardSBox);
+		window->draw(KeyboardSDire);
+		window->draw(KeyboardTab);
+		window->draw(KeyboardTabBox);
+		window->draw(KeyboardTabDire);
+		window->draw(KeyboardM);
+		window->draw(KeyboardMBox);
+		window->draw(KeyboardMDire);
+		window->draw(KeyboardV);
+		window->draw(KeyboardVBox);
+		window->draw(KeyboardVDire);
+		window->draw(KeyboardF);
+		window->draw(KeyboardFBox);
+		window->draw(KeyboardFDire);
+		window->draw(KeyboardQ);
+		window->draw(KeyboardQBox);
+		window->draw(KeyboardQDire);
+		window->draw(KeyboardW);
+		window->draw(KeyboardWBox);
+		window->draw(KeyboardWDire);
+		window->draw(SetBack);
+		window->draw(ESCBack);
+		window->draw(SetESC);
+	}
+
+	if (Zweapon == true && menuNum == 1 && Xweapon == true && weaponNum == 1)
+	{
+		if (inventory == true)
+		{
+			window->draw(InvenWeaponblock5);
+			window->draw(InvenallCS);
+			window->draw(InvenWeaponZblock1);
+			window->draw(textInvenweapon1);
+			window->draw(InvenWeaponXblock2);
+			window->draw(textInvenweapon2);
+			window->draw(InvenWeaponblock3);
+			window->draw(textInvenweapon3);
+			window->draw(InvenWeaponblock4);
+			window->draw(textInvenweapon4);
+			window->draw(textInvenweapon5);
+			window->draw(textInvenweapon6);
+			window->draw(textInvenweapon7);
+			window->draw(textInvenweapon8);
+			window->draw(textInvenweapon9);
+		}
+
+		if (Zweaponview)
+		{
+			if (inventory == true)
+			{
+				window->draw(InvenWeaponZblock6);
+				window->draw(InvenWeaponZblock26);
+			}
+			
+			window->draw(wea);
+		}
+		else
+		{
+
+		}
+
+		if (Xweaponview)
+		{
+			if (inventory == true)
+			{
+				window->draw(InvenWeaponXblock7);
+				window->draw(InvenWeaponXblock27);
+			}
+
+			window->draw(shi);			
+		}
+		else
+		{
+
+		}
+	}
+
+	if (Zweapon == true && menuNum == 1 && Xweapon == true && weaponNum == 2)
+	{
+		if (inventory == true)
+		{
+			window->draw(InvenWeaponblock25);
+			window->draw(InvenallCS);
+			window->draw(InvenWeaponZblock21);
+			window->draw(textInvenweapon21);
+			window->draw(InvenWeaponXblock22);
+			window->draw(textInvenweapon22);
+			window->draw(InvenWeaponblock23);
+			window->draw(textInvenweapon23);
+			window->draw(InvenWeaponblock24);
+			window->draw(textInvenweapon24);
+			window->draw(textInvenweapon25);
+			window->draw(textInvenweapon26);
+			window->draw(textInvenweapon27);
+			window->draw(textInvenweapon28);
+			window->draw(textInvenweapon29);
+		}
+		if (Zweaponview)
+		{
+			if (inventory == true)
+			{
+				window->draw(InvenWeaponZblock6);
+				window->draw(InvenWeaponZblock26);
+			}
+
+			window->draw(wea);
+		}
+		else
+		{
+		}
+
+		if (Xweaponview)
+		{
+			if (inventory == true)
+			{
+				window->draw(InvenWeaponXblock7);
+				window->draw(InvenWeaponXblock27);
+			}
+
+			window->draw(shi);
+		}
+		else
+		{
+
+		}
+	}
+}
+
+void TestUi::Initstartimg()
+{
+	// 테스트 배경
 	textureback = TextureHolder::GetTexture("graphics/background.png");
+
 	spriteback.setTexture(textureback);
 	spriteback.setPosition(0, 0);
 
-	///////////////////////////////
+
+	//인벤토리 내 카테고리 커서
+	InvenallCS.setTexture(textureUI); // 인벤토리 커서
+	InvenallCS.setTextureRect(IntRect(351, 1347, 1209, 90));
+	InvenallCS.setScale(Vector2f(0.2f, 0.5f));
+	InvenallCS.setPosition(340, 394);
+
+
+	// UI 스크롤 이미지
 	scrollpng = TextureHolder::GetTexture("graphics/Scroll.png");
 
-	scr1.setTexture(scrollpng); //ScrollA
+	scr1.setTexture(scrollpng);
 	scr1.setTextureRect(IntRect(3, 131, 20, 22));
 	scr1.setScale(Vector2f(1.7f, 1.7f));
 	scr1.setPosition(1570, 34);
 
-	scr2.setTexture(scrollpng); //ScrollS
+	scr2.setTexture(scrollpng);
 	scr2.setTextureRect(IntRect(103, 131, 20, 22));
 	scr2.setScale(Vector2f(1.7f, 1.7f));
 	scr2.setPosition(1662, 34);
 
+
+	// UI 무기 이미지 (한손검)(단검)
 	weaponpng = TextureHolder::GetTexture("graphics/Weapon.png");
 
 	wea.setTexture(weaponpng);
@@ -40,6 +669,8 @@ void TestUi::Init(SceneManager* sceneManager)
 	shi.setScale(Vector2f(1.9f, 1.9f));
 	shi.setPosition(1863, 33);
 
+
+	// UI 장비 이미지
 	amr1.setTexture(scrollpng);
 	amr1.setTextureRect(IntRect(3, 226, 12, 15));
 	amr1.setScale(Vector2f(2.5f, 2.5f));
@@ -51,6 +682,7 @@ void TestUi::Init(SceneManager* sceneManager)
 	amr2.setPosition(629, 35);
 
 
+	// UI 이미지 (ex 체력칸, 마나칸, 무기칸 등등..)
 	textureUI = TextureHolder::GetTexture("graphics/UI.png");
 
 	HPbarLine.setTexture(textureUI);
@@ -140,11 +772,9 @@ void TestUi::Init(SceneManager* sceneManager)
 	ButtonA.setTextureRect(IntRect(62, 605, 42, 40));
 	ButtonA.setPosition(1590, 10);
 
-	//텍스트//
-
+	// UI 폰트
 	fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");
-
-	// 폰트설정
+	
 	textHPbar.setFont(fontLostRuins);
 	textMPbar.setFont(fontLostRuins);
 	textButtonTab.setFont(fontLostRuins);
@@ -154,7 +784,8 @@ void TestUi::Init(SceneManager* sceneManager)
 	textButtonS.setFont(fontLostRuins);
 	textButtonA.setFont(fontLostRuins);
 
-	//string
+
+	// UI String
 	textHPbar.setString("20/20");
 	textMPbar.setString("20/20");
 	textButtonTab.setString("TAB");
@@ -164,8 +795,7 @@ void TestUi::Init(SceneManager* sceneManager)
 	textButtonS.setString("S");
 	textButtonA.setString("A");
 
-
-	//CharacterSize
+	// UI String Size
 	textHPbar.setCharacterSize(20);
 	textMPbar.setCharacterSize(20);
 	textButtonTab.setCharacterSize(20);
@@ -175,7 +805,7 @@ void TestUi::Init(SceneManager* sceneManager)
 	textButtonS.setCharacterSize(20);
 	textButtonA.setCharacterSize(20);
 
-	//Color
+	// UI String Color
 	textHPbar.setFillColor(Color::White);
 	textMPbar.setFillColor(Color::White);
 	textButtonTab.setFillColor(Color::White);
@@ -185,7 +815,8 @@ void TestUi::Init(SceneManager* sceneManager)
 	textButtonS.setFillColor(Color::White);
 	textButtonA.setFillColor(Color::White);
 
-	//Position
+
+	// UI String Position
 	textHPbar.setPosition(23, 12);
 	textMPbar.setPosition(23, 53);
 	textButtonTab.setPosition(400, 55);
@@ -196,538 +827,36 @@ void TestUi::Init(SceneManager* sceneManager)
 	textButtonA.setPosition(1604, 17);
 
 
+	// UI 체력, 마나 게이지
 	HPbar.setScale(1.f, 1.f);
 	MPbar.setScale(1.f, 1.f);
 
-	menuNum = 1;
-	escNum = 1;
-	settingNum = 1;
+	// 메뉴 이동 초기화
+	menuNum = 1;		// 인벤토리 좌우
+	weaponNum = 1;		// 인벤토리 -> 무기 상하
+	orderNum = 1;		// 인벤토리 -> 주문서 상하
+	SuppliesNum = 1;	// 인벤토리 -> 소모품 상하
+	EquipmentNum = 1;	// 인벤토리 -> 장비 상하
 
-	masterNum = 1;
-	uiNum = 1;
-	sfxNum = 1;
-	musicNum = 1;
+	escNum = 1;		// ESC 상하
+	settingNum = 1;	// ESC -> Setting
+	masterNum = 1;	// ESC -> Master Vol 좌우 초기화
+	uiNum = 1;		// ESC -> UI Vol 좌우 초기화
+	sfxNum = 1;		// ESC -> SFX Vol 좌우 초기화
+	musicNum = 1;	// ESC -> Music Vol 좌우 초기화
 
-	inventory = false;
-	MAP = false;
-	Escmenu = false;
-	Escset = false;
-	Esckey = false;
-}
-
-void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainView, Player& player)
-{
-	float HPbarwidth = 314;
-	float HPbarHeight = 17;
-	healthBarsize = Vector2f(HPbarwidth, HPbarHeight);
-	HPbar.setScale(player.GetHealth() / 20.f, 1.f); //player.GetMaxHealth()
-
-	/*float MPwidth = 314;
-	float MPbarHeight = 17;
-	mpBarsize = Vector2f(MPwidth, HPbarHeight);
-	MPbar.setScale(player.get)*/
-
-	if (InputManager::GetKeyDown(Keyboard::Key::Escape) && inventory == false && MAP == false)
-	{
-		escNum = 1;
-
-		Escmenu = true;
-
-		Escback1 = TextureHolder::GetTexture("graphics/esc.png");
-		Escback.setTexture(Escback1);
-		Escback.setPosition(0, 0);
-
-		EscCS.setTexture(textureUI);
-		EscCS.setTextureRect(IntRect(139, 1369, 70, 68));
-		EscCS.setScale(Vector2f(0.5f, 0.5f));
-		EscCS.setPosition(280, 690);
-
-
-		fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");
-
-		Continue.setFont(fontLostRuins);
-		Setting.setFont(fontLostRuins);
-		End.setFont(fontLostRuins);
-
-		Continue.setString("Continue");
-		Setting.setString("Setting");
-		End.setString("END");
-
-		Continue.setCharacterSize(35);
-		Setting.setCharacterSize(35);
-		End.setCharacterSize(35);
-
-		Continue.setFillColor(Color::White);
-		Setting.setFillColor(Color::White);
-		End.setFillColor(Color::White);
-
-		Continue.setPosition(100, 700);
-		Setting.setPosition(100, 770);
-		End.setPosition(100, 840);
-	}
-
-
-	if (InputManager::GetKeyDown(Keyboard::Tab))
-	{
-		menuNum = 1;
-		MAP = false;
-		inventory = true;
-		SeeInven();
-	}
-	if (InputManager::GetKeyDown(Keyboard::Escape) && inventory == true)
-	{
-		inventory = false;
-		Escmenu = false;
-
-	}
-
-	if (InputManager::GetKeyDown(Keyboard::M))
-	{
-		inventory = false;
-		MAP = true;
-		SeeMap();
-	}
-	if (InputManager::GetKeyDown(Keyboard::Escape) && MAP == true)
-	{
-		MAP = false;
-		Escmenu = false;
-	}
-
-
-
-	if (InputManager::GetKeyDown(Keyboard::Key::Left) && inventory == true && menuNum != 1)
-	{
-		--menuNum;
-		InvenCS.setPosition(InvenCS.getPosition().x - 80, 328);
-	}
-
-	if (InputManager::GetKeyDown(Keyboard::Key::Right) && inventory == true && menuNum != 7)
-	{
-		++menuNum;
-		InvenCS.setPosition(InvenCS.getPosition().x + 80, 328);
-	}
-
-	if (InputManager::GetKeyDown(Keyboard::Key::Q) && MAP == false && Escset == false && Esckey == false)
-	{
-		inventory = false;
-		MAP = true;
-		SeeMap();
-	}
-	else if (InputManager::GetKeyDown(Keyboard::Key::Q) && inventory == false && Escset == false && Esckey == false)
-	{
-		menuNum = 1;
-		MAP = false;
-		inventory = true;
-		SeeInven();
-	}
-	else if (InputManager::GetKeyDown(Keyboard::Key::Q) && inventory == false && Escset == true && Esckey == false && MAP == false)
-	{
-		Escset = false;
-		Esckey = true;
-		EscKeyboard();
-	}
-	else if (InputManager::GetKeyDown(Keyboard::Key::Q) && inventory == false && Escset == false && Esckey == true && MAP == false)
-	{
-		Esckey = false;
-		Escset = true;
-		EscSetting();
-	}
-
-
-	if (InputManager::GetKeyDown(Keyboard::Key::W) && MAP == false && Escset == false && Esckey == false)
-	{
-		inventory = false;
-		MAP = true;
-		SeeMap();
-	}
-	else if (InputManager::GetKeyDown(Keyboard::Key::W) && inventory == false && Escset == false && Esckey == false)
-	{
-		menuNum = 1;
-		MAP = false;
-		inventory = true;
-		SeeInven();
-	}
-	else if (InputManager::GetKeyDown(Keyboard::Key::W) && inventory == false && Escset == true && Esckey == false && MAP == false)
-	{
-		Escset = false;
-		Esckey = true;
-		EscKeyboard();
-	}
-	else if (InputManager::GetKeyDown(Keyboard::Key::W) && inventory == false && Escset == false && Esckey == true && MAP == false)
-	{
-		Esckey = false;
-		Escset = true;
-		EscSetting();
-	}
-
-
-	if (Escmenu == true)
-	{
-		if (InputManager::GetKeyDown(Keyboard::Key::Up) == true && escNum != 1)
-		{
-			--escNum;
-			EscCS.setPosition(280, EscCS.getPosition().y - 80);
-		}
-
-		if (InputManager::GetKeyDown(Keyboard::Key::Down) == true && escNum != 3)
-		{
-			++escNum;
-			EscCS.setPosition(280, EscCS.getPosition().y + 80);
-		}
-	}
-
-	if (Escset == true)
-	{
-		if (InputManager::GetKeyDown(Keyboard::Key::Up) && settingNum != 1)
-		{
-			--settingNum;
-			settingCS.setPosition(642, settingCS.getPosition().y - 80);
-		}
-
-		if (InputManager::GetKeyDown(Keyboard::Key::Down) && settingNum != 10)
-		{
-			++settingNum;
-			settingCS.setPosition(642, settingCS.getPosition().y + 80);
-		}
-
-		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 3)
-		{
-			FullCS.setTexture(textureSQ);
-			FullCS.setTextureRect(IntRect(79, 1016, 39, 31));
-			FullCS.setScale(Vector2f(1.2f, 1.2f));
-			FullCS.setPosition(1145, 342);
-		}
-		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 3)
-		{
-			FullCS.setTexture(textureSQ);
-			FullCS.setTextureRect(IntRect(125, 1017, 31, 23));
-			FullCS.setScale(Vector2f(1.5f, 1.5f));
-			FullCS.setPosition(1145, 342);
-		}
-
-		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 4)
-		{
-			VsyCS.setTexture(textureSQ);
-			VsyCS.setTextureRect(IntRect(79, 1016, 39, 31));
-			VsyCS.setScale(Vector2f(1.2f, 1.2f));
-			VsyCS.setPosition(1145, 422);
-		}
-		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 4)
-		{
-			VsyCS.setTexture(textureSQ);
-			VsyCS.setTextureRect(IntRect(125, 1017, 31, 23));
-			VsyCS.setScale(Vector2f(1.5f, 1.5f));
-			VsyCS.setPosition(1145, 422);
-		}
-
-		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 6)
-		{
-			BattleCS.setTexture(textureSQ);
-			BattleCS.setTextureRect(IntRect(79, 1016, 39, 31));
-			BattleCS.setScale(Vector2f(1.2f, 1.2f));
-			BattleCS.setPosition(1145, 582);
-		}
-		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 6)
-		{
-			BattleCS.setTexture(textureSQ);
-			BattleCS.setTextureRect(IntRect(125, 1017, 31, 23));
-			BattleCS.setScale(Vector2f(1.5f, 1.5f));
-			BattleCS.setPosition(1145, 582);
-		}
-
-		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 7 && masterNum != 1)
-		{
-			--masterNum;
-			MasterCS.setPosition(MasterCS.getPosition().x - 67, 660);
-		}
-		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 7 && masterNum != 6)
-		{
-			++masterNum;
-			MasterCS.setPosition(MasterCS.getPosition().x + 67, 660);
-		}
-
-		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 8 && uiNum != 1)
-		{
-			--uiNum;
-			UICS.setPosition(UICS.getPosition().x - 67, 740);
-		}
-		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 8 && uiNum != 6)
-		{
-			++uiNum;
-			UICS.setPosition(UICS.getPosition().x + 67, 740);
-		}
-
-		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 9 && sfxNum != 1)
-		{
-			--sfxNum;
-			SFXCS.setPosition(SFXCS.getPosition().x - 67, 820);
-		}
-		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 9 && sfxNum != 6)
-		{
-			++sfxNum;
-			SFXCS.setPosition(SFXCS.getPosition().x + 67, 820);
-		}
-
-		if (InputManager::GetKeyDown(Keyboard::Key::Left) && settingNum == 10 && musicNum != 1)
-		{
-			--musicNum;
-			MusicCS.setPosition(MusicCS.getPosition().x - 67, 900);
-		}
-		if (InputManager::GetKeyDown(Keyboard::Key::Right) && settingNum == 10 && musicNum != 6)
-		{
-			++musicNum;
-			MusicCS.setPosition(MusicCS.getPosition().x + 67, 900);
-		}
-
-	}
-
-	if (InputManager::GetKeyDown(Keyboard::Key::Space) && Escmenu == true)
-	{
-		switch (escNum)
-		{
-		case 1:
-			Escmenu = false;
-			break;
-
-		case 2:
-			Escmenu = false;
-			Escset = true;
-			if (Escset == true)
-			{
-				EscSetting();
-			}
-			break;
-
-		case 3:
-			exit(0);
-		}
-	}
-
-	if (InputManager::GetKeyDown(Keyboard::Key::Escape) && Escset == true)
-	{
-		Escset = false;
-	}
-	if (InputManager::GetKeyDown(Keyboard::Key::Escape) && Esckey == true)
-	{
-		Esckey = false;
-	}
-
-}
-
-void TestUi::Draw(RenderWindow* window, View* mainView)
-{
-	//window->draw(spriteback); // 테스트배경
-
-	//////////////
-	window->draw(scr1);
-	window->draw(scr2);
-	window->draw(wea);
-	window->draw(shi);
-	window->draw(amr1);
-	window->draw(amr2);
-	//////////////////
-
-
-	window->draw(HPbarLine);
-	window->draw(HPbar);
-	window->draw(MPbarLine);
-	window->draw(MPbar);
-
-	/*window->draw(BossHPbarLine);
-	window->draw(BossHPbar);*/
-
-	window->draw(Inventory);
-	window->draw(Mapicon);
-	window->draw(Wear1);
-	window->draw(Wear2);
-
-	window->draw(Shield);
-	window->draw(Weapon);
-	window->draw(ScrollA);
-	window->draw(ScrollS);
-
-	window->draw(ButtonTab);
-	window->draw(ButtonM);
-	window->draw(ButtonX);
-	window->draw(ButtonZ);
-	window->draw(ButtonS);
-	window->draw(ButtonA);
-
-	window->draw(textHPbar); // 체력숫자
-	window->draw(textMPbar); // 마나숫자
-	window->draw(textButtonTab); // TAB버튼
-	window->draw(textButtonM); // M버튼
-	window->draw(textButtonX); // 버튼X
-	window->draw(textButtonZ); // 버튼Z
-	window->draw(textButtonS); // 버튼S
-	window->draw(textButtonA); // 버튼A
-
-	if (inventory == true)
-	{
-		window->draw(Blur);
-		window->draw(Invenwindow); // 인벤토리 창
-		window->draw(InvenWeapon); // 인벤토리 무기
-		window->draw(InvenOrder); // 인벤토리 주문
-		window->draw(InvenSupplies); // 인벤토리 소모품
-		window->draw(InvenEquipment); // 인벤토리 장비
-		window->draw(InvenRelic); // 인벤토리 유물
-		window->draw(InvenRecord); // 인벤토리 기록
-		window->draw(InvenKey); // 인벤토리 열쇠
-		window->draw(InvenCS); // 인벤토리 커서
-		window->draw(Invenname); // 인벤토리 이름
-		window->draw(InvenMap); // 인벤토리 맵
-		window->draw(InvenBtQ); // 인벤토리Q버튼
-		window->draw(InvenBtW); // 인벤토리W버튼
-
-		window->draw(textInvenBtQ); // 인벤토리 내 Q버튼
-		window->draw(textInvenBtW); // 인벤토리 내 W버튼
-		window->draw(textInven); // (인벤토리) 텍스트
-		window->draw(textMap); // (맵) 텍스트
-	}
-
-	if (MAP == true)
-	{
-		window->draw(Blur);
-		window->draw(InventoryMAP); // 인벤토리 맵
-		window->draw(Invenname); // 인벤토리 이름
-		window->draw(InvenMap); // 인벤토리 맵
-		window->draw(InvenBtQ); // 인벤토리Q버튼
-		window->draw(InvenBtW); // 인벤토리W버튼
-
-		window->draw(textInvenBtQ); // 인벤토리 내 Q버튼
-		window->draw(textInvenBtW); // 인벤토리 내 W버튼
-		window->draw(textInven); // (인벤토리) 텍스트
-		window->draw(textMap); // (맵) 텍스트
-	}
-
-	if (Escmenu == true)
-	{
-		window->draw(Escback);
-		window->draw(EscCS);
-		window->draw(Continue);
-		window->draw(Setting);
-		window->draw(End);
-	}
-
-	if (Escset == true)
-	{
-		window->draw(setBlur);
-		window->draw(spriteset1);
-		window->draw(spriteset2);
-		window->draw(SettingSet);
-		window->draw(SettingKey);
-		window->draw(SettingBtQ);
-		window->draw(SettingBtW);
-		window->draw(SetBtQ);
-		window->draw(SetBtW);
-		window->draw(Setname);
-		window->draw(Keyname);
-		window->draw(textLanguage);
-		window->draw(LanCSL);
-		window->draw(English);
-		window->draw(LanCSR);
-		window->draw(textResolution);
-		window->draw(ResCSL);
-		window->draw(screensize);
-		window->draw(ResCSR);
-		window->draw(textFullScreen);
-		window->draw(FullCS);
-		window->draw(textVsync);
-		window->draw(VsyCS);
-		window->draw(textRenderMode);
-		window->draw(RenCSL);
-		window->draw(ModeFull);
-		window->draw(RenCSR);
-		window->draw(textBattleLog);
-		window->draw(BattleCS);
-		window->draw(textMasterVolume);
-		window->draw(MasterBar);
-		window->draw(MasterCS);
-		window->draw(textUIVolume);
-		window->draw(UIBar);
-		window->draw(UICS);
-		window->draw(textSFXVolume);
-		window->draw(SFXBar);
-		window->draw(SFXCS);
-		window->draw(textMusicVolume);
-		window->draw(MusicBar);
-		window->draw(MusicCS);
-		window->draw(Toggle);
-		window->draw(ToggleLeft);
-		window->draw(ToggleRight);
-		window->draw(TogLeft);
-		window->draw(TogRight);
-		window->draw(SetBack);
-		window->draw(ESCBack);
-		window->draw(SetESC);
-		window->draw(settingCS);
-	}
-
-	if (Esckey == true)
-	{
-		window->draw(setBlur);
-		window->draw(spriteset1);
-		window->draw(spriteset2);
-		window->draw(SettingSet);
-		window->draw(SettingKey);
-		window->draw(SettingBtQ);
-		window->draw(SettingBtW);
-		window->draw(SetBtQ);
-		window->draw(SetBtW);
-		window->draw(Setname);
-		window->draw(Keyname);
-		window->draw(KeyboardLeft);
-		window->draw(KeyboardLeftBox);
-		window->draw(KeyboardLeftDire);
-		window->draw(KeyboardRight);
-		window->draw(KeyboardRightBox);
-		window->draw(KeyboardRightDire);
-		window->draw(KeyboardUP);
-		window->draw(KeyboardUPBox);
-		window->draw(KeyboardUPDire);
-		window->draw(KeyboardDown);
-		window->draw(KeyboardDownBox);
-		window->draw(KeyboardDownDire);
-		window->draw(KeyboardSpace);
-		window->draw(KeyboardSpaceBox);		
-		window->draw(KeyboardC);
-		window->draw(KeyboardCBox);
-		window->draw(KeyboardSpaceDire);
-		window->draw(KeyboardCDire);
-		window->draw(KeyboardZ);
-		window->draw(KeyboardZBox);
-		window->draw(KeyboardZDire);
-		window->draw(KeyboardX);
-		window->draw(KeyboardXBox);
-		window->draw(KeyboardXDire);
-		window->draw(KeyboardA);
-		window->draw(KeyboardABox);
-		window->draw(KeyboardADire);
-		window->draw(KeyboardS);
-		window->draw(KeyboardSBox);
-		window->draw(KeyboardSDire);
-		window->draw(KeyboardTab);
-		window->draw(KeyboardTabBox);
-		window->draw(KeyboardTabDire);
-		window->draw(KeyboardM);
-		window->draw(KeyboardMBox);
-		window->draw(KeyboardMDire);
-		window->draw(KeyboardV);
-		window->draw(KeyboardVBox);
-		window->draw(KeyboardVDire);
-		window->draw(KeyboardF);
-		window->draw(KeyboardFBox);
-		window->draw(KeyboardFDire);
-		window->draw(KeyboardQ);
-		window->draw(KeyboardQBox);
-		window->draw(KeyboardQDire);
-		window->draw(KeyboardW);
-		window->draw(KeyboardWBox);
-		window->draw(KeyboardWDire);
-		window->draw(SetBack);
-		window->draw(ESCBack);
-		window->draw(SetESC);
-	}
+	inventory = false;	// 인벤토리(Tab)
+	MAP = false;		// 맵(M)
+	Escmenu = false;	// ESC(메뉴)
+	Escset = false;		// ESC -> Setting	
+	Esckey = false;		// ESC -> Keyboard
+	Zweapon = true;		// Z무기
+	Zweaponview = false;// Z무기 표시
+	Xweapon = true;		// X무기
+	Xweaponview = false;// X무기 표시
+	FullCSsetview = false;
+	VsyCSSetview = false;
+	BattleCSSetview = false;
 }
 
 void TestUi::EscKeyboard() // ESC -> Setting -> Keyboard
@@ -1106,13 +1235,209 @@ void TestUi::EscKeyboard() // ESC -> Setting -> Keyboard
 	SetESC.setPosition(939, 1001);
 }
 
+void TestUi::weaponlist1()
+{
+	weaponNum = 1;
+	textureSQ = TextureHolder::GetTexture("graphics/SQ.png");
+	fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");
+	weaponpng = TextureHolder::GetTexture("graphics/Weapon.png");
+
+	InvenWeaponZblock1.setTexture(textureSQ);
+	InvenWeaponZblock1.setTextureRect(IntRect(33, 1016, 39, 31));
+	InvenWeaponZblock1.setScale(Vector2f(1.0f, 1.0f));
+	InvenWeaponZblock1.setPosition(320, 400);
+
+	textInvenweapon1.setFont(fontLostRuins);
+	textInvenweapon1.setString("Gladius");
+	textInvenweapon1.setCharacterSize(30);
+	textInvenweapon1.setFillColor(Color::Red);
+	textInvenweapon1.setPosition(380, 395);
+
+	InvenWeaponXblock2.setTexture(textureSQ);
+	InvenWeaponXblock2.setTextureRect(IntRect(33, 1016, 39, 31));
+	InvenWeaponXblock2.setScale(Vector2f(1.0f, 1.0f));
+	InvenWeaponXblock2.setPosition(320, 450);
+
+	textInvenweapon2.setFont(fontLostRuins);
+	textInvenweapon2.setString("Dagger");
+	textInvenweapon2.setCharacterSize(30);
+	textInvenweapon2.setFillColor(Color::Red);
+	textInvenweapon2.setPosition(380, 445);
+
+
+	///////////////////////////////////////////////////////////////
+
+	InvenWeaponblock3.setTexture(textureSQ);
+	InvenWeaponblock3.setTextureRect(IntRect(254, 673, 92, 96));
+	InvenWeaponblock3.setScale(Vector2f(1.0f, 1.0f));
+	InvenWeaponblock3.setPosition(980, 380);
+
+	textInvenweapon3.setFont(fontLostRuins);
+	textInvenweapon3.setString("Gladius");
+	textInvenweapon3.setCharacterSize(40);
+	textInvenweapon3.setFillColor(Color::Red);
+	textInvenweapon3.setPosition(1100, 400);
+
+	InvenWeaponblock4.setTexture(weaponpng);
+	InvenWeaponblock4.setTextureRect(IntRect(13, 148, 14, 53));
+	InvenWeaponblock4.setScale(Vector2f(1.1f, 1.0f));
+	InvenWeaponblock4.setPosition(1020, 400);
+
+	InvenWeaponblock5.setTexture(textureSQ);
+	InvenWeaponblock5.setTextureRect(IntRect(62, 605, 42, 40));
+	InvenWeaponblock5.setScale(Vector2f(2.2f, 2.4f));
+	InvenWeaponblock5.setPosition(980, 380);
+
+	InvenWeaponZblock6.setTexture(textureSQ);
+	InvenWeaponZblock6.setTextureRect(IntRect(79, 1016, 39, 31));
+	InvenWeaponZblock6.setScale(Vector2f(1.0f, 1.0f));
+	InvenWeaponZblock6.setPosition(320, 400);
+
+	InvenWeaponXblock7.setTexture(textureSQ);
+	InvenWeaponXblock7.setTextureRect(IntRect(79, 1016, 39, 31));
+	InvenWeaponXblock7.setScale(Vector2f(1.0f, 1.0f));
+	InvenWeaponXblock7.setPosition(320, 450);
+
+	textInvenweapon4.setFont(fontLostRuins);
+	textInvenweapon4.setString("Weapon type : One-handed");
+	textInvenweapon4.setCharacterSize(25);
+	textInvenweapon4.setFillColor(Color::White);
+	textInvenweapon4.setPosition(980, 520);
+
+	textInvenweapon5.setFont(fontLostRuins);
+	textInvenweapon5.setString("Attack Speed : Middle");
+	textInvenweapon5.setCharacterSize(25);
+	textInvenweapon5.setFillColor(Color::White);
+	textInvenweapon5.setPosition(980, 560);
+
+	textInvenweapon6.setFont(fontLostRuins);
+	textInvenweapon6.setString("Damage : Physical 3");
+	textInvenweapon6.setCharacterSize(25);
+	textInvenweapon6.setFillColor(Color::White);
+	textInvenweapon6.setPosition(980, 600);
+
+	textInvenweapon7.setFont(fontLostRuins);
+	textInvenweapon7.setString("This is a short one-handed sword chosen ");
+	textInvenweapon7.setCharacterSize(25);
+	textInvenweapon7.setFillColor(Color::White);
+	textInvenweapon7.setPosition(980, 720);
+
+	textInvenweapon8.setFont(fontLostRuins);
+	textInvenweapon8.setString("by Lee Min-hyeong,");
+	textInvenweapon8.setCharacterSize(25);
+	textInvenweapon8.setFillColor(Color::White);
+	textInvenweapon8.setPosition(980, 760);
+
+	textInvenweapon9.setFont(fontLostRuins);
+	textInvenweapon9.setString("the master of animation production.");
+	textInvenweapon9.setCharacterSize(25);
+	textInvenweapon9.setFillColor(Color::White);
+	textInvenweapon9.setPosition(980, 800);	
+}
+
+void TestUi::weaponlist2()
+{
+	InvenWeaponZblock21.setTexture(textureSQ);
+	InvenWeaponZblock21.setTextureRect(IntRect(33, 1016, 39, 31));
+	InvenWeaponZblock21.setScale(Vector2f(1.0f, 1.0f));
+	InvenWeaponZblock21.setPosition(320, 400);
+
+	textInvenweapon21.setFont(fontLostRuins);
+	textInvenweapon21.setString("Gladius");
+	textInvenweapon21.setCharacterSize(30);
+	textInvenweapon21.setFillColor(Color::Red);
+	textInvenweapon21.setPosition(380, 395);
+
+	InvenWeaponXblock22.setTexture(textureSQ);
+	InvenWeaponXblock22.setTextureRect(IntRect(33, 1016, 39, 31));
+	InvenWeaponXblock22.setScale(Vector2f(1.0f, 1.0f));
+	InvenWeaponXblock22.setPosition(320, 450);
+
+	textInvenweapon22.setFont(fontLostRuins);
+	textInvenweapon22.setString("Dagger");
+	textInvenweapon22.setCharacterSize(30);
+	textInvenweapon22.setFillColor(Color::Red);
+	textInvenweapon22.setPosition(380, 445);
+
+	textureSQ = TextureHolder::GetTexture("graphics/SQ.png");
+	fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");
+	weaponpng = TextureHolder::GetTexture("graphics/Weapon.png");
+
+	InvenWeaponblock23.setTexture(textureSQ);
+	InvenWeaponblock23.setTextureRect(IntRect(254, 673, 92, 96));
+	InvenWeaponblock23.setScale(Vector2f(1.0f, 1.0f));
+	InvenWeaponblock23.setPosition(980, 380);
+
+	textInvenweapon23.setFont(fontLostRuins);
+	textInvenweapon23.setString("Dagger");
+	textInvenweapon23.setCharacterSize(40);
+	textInvenweapon23.setFillColor(Color::Red);
+	textInvenweapon23.setPosition(1100, 400);
+
+	InvenWeaponblock24.setTexture(weaponpng);
+	InvenWeaponblock24.setTextureRect(IntRect(3, 17, 4, 25));
+	InvenWeaponblock24.setScale(Vector2f(2.0f, 2.0f));
+	InvenWeaponblock24.setPosition(1025, 405);
+
+	InvenWeaponblock25.setTexture(textureSQ);
+	InvenWeaponblock25.setTextureRect(IntRect(62, 605, 42, 40));
+	InvenWeaponblock25.setScale(Vector2f(2.2f, 2.4f));
+	InvenWeaponblock25.setPosition(980, 380);
+
+	InvenWeaponZblock26.setTexture(textureSQ);
+	InvenWeaponZblock26.setTextureRect(IntRect(79, 1016, 39, 31));
+	InvenWeaponZblock26.setScale(Vector2f(1.0f, 1.0f));
+	InvenWeaponZblock26.setPosition(320, 400);
+
+	InvenWeaponXblock27.setTexture(textureSQ);
+	InvenWeaponXblock27.setTextureRect(IntRect(79, 1016, 39, 31));
+	InvenWeaponXblock27.setScale(Vector2f(1.0f, 1.0f));
+	InvenWeaponXblock27.setPosition(320, 450);
+
+	textInvenweapon24.setFont(fontLostRuins);
+	textInvenweapon24.setString("Weapon type : Dagger");
+	textInvenweapon24.setCharacterSize(25);
+	textInvenweapon24.setFillColor(Color::White);
+	textInvenweapon24.setPosition(980, 520);
+
+	textInvenweapon25.setFont(fontLostRuins);
+	textInvenweapon25.setString("Attack Speed : Fast");
+	textInvenweapon25.setCharacterSize(25);
+	textInvenweapon25.setFillColor(Color::White);
+	textInvenweapon25.setPosition(980, 560);
+
+	textInvenweapon26.setFont(fontLostRuins);
+	textInvenweapon26.setString("Damage : Physical 3");
+	textInvenweapon26.setCharacterSize(25);
+	textInvenweapon26.setFillColor(Color::White);
+	textInvenweapon26.setPosition(980, 600);
+
+	textInvenweapon27.setFont(fontLostRuins);
+	textInvenweapon27.setString("This is a short Dagger chosen ");
+	textInvenweapon27.setCharacterSize(25);
+	textInvenweapon27.setFillColor(Color::White);
+	textInvenweapon27.setPosition(980, 720);
+
+	textInvenweapon28.setFont(fontLostRuins);
+	textInvenweapon28.setString("by Lee Min-hyeong,");
+	textInvenweapon28.setCharacterSize(25);
+	textInvenweapon28.setFillColor(Color::White);
+	textInvenweapon28.setPosition(980, 760);
+
+	textInvenweapon29.setFont(fontLostRuins);
+	textInvenweapon29.setString("the master of animation production.");
+	textInvenweapon29.setCharacterSize(25);
+	textInvenweapon29.setFillColor(Color::White);
+	textInvenweapon29.setPosition(980, 800);
+}
+
 void TestUi::EscSetting()
 {
-	settingNum = 1; // ESC->Setting 위아래 횟수 초기화 
-	masterNum = 1; // Master Vol 좌우 초기화
-	uiNum = 1; // UI Vol 좌우 초기화
-	sfxNum = 1; // SFX Vol 좌우 초기화
-	musicNum = 1; // Music Vol 좌우 초기화
+	settingNum = 1;
+	masterNum = 1;
+	uiNum = 1;
+	sfxNum = 1;
+	musicNum = 1;
 
 	texturesetting = TextureHolder::GetTexture("graphics/setting.png");
 	setBlur1 = TextureHolder::GetTexture("graphics/esc.png");
@@ -1417,6 +1742,39 @@ void TestUi::EscSetting()
 	///////////////////////////////////	
 }
 
+void TestUi::ESCsettag()
+{
+	FullCS.setTexture(textureSQ);
+	FullCS.setTextureRect(IntRect(79, 1016, 39, 31));
+	FullCS.setScale(Vector2f(1.2f, 1.2f));
+	FullCS.setPosition(1145, 342);
+
+	FullCS2.setTexture(textureSQ);
+	FullCS2.setTextureRect(IntRect(125, 1017, 31, 23));
+	FullCS2.setScale(Vector2f(1.5f, 1.5f));
+	FullCS2.setPosition(1145, 342);
+
+	VsyCS.setTexture(textureSQ);
+	VsyCS.setTextureRect(IntRect(79, 1016, 39, 31));
+	VsyCS.setScale(Vector2f(1.2f, 1.2f));
+	VsyCS.setPosition(1145, 422);
+
+	VsyCS2.setTexture(textureSQ);
+	VsyCS2.setTextureRect(IntRect(125, 1017, 31, 23));
+	VsyCS2.setScale(Vector2f(1.5f, 1.5f));
+	VsyCS2.setPosition(1145, 422);
+
+	BattleCS.setTexture(textureSQ);
+	BattleCS.setTextureRect(IntRect(79, 1016, 39, 31));
+	BattleCS.setScale(Vector2f(1.2f, 1.2f));
+	BattleCS.setPosition(1145, 582);
+
+	BattleCS2.setTexture(textureSQ);
+	BattleCS2.setTextureRect(IntRect(125, 1017, 31, 23));
+	BattleCS2.setScale(Vector2f(1.5f, 1.5f));
+	BattleCS2.setPosition(1145, 582);
+}
+
 void TestUi::SeeMap()
 {
 	textureMAP = TextureHolder::GetTexture("graphics/MAP make.png");
@@ -1480,6 +1838,45 @@ void TestUi::SeeMap()
 	textMap.setPosition(1010, 150);
 }
 
+void TestUi::Escapemenu()
+{
+	escNum = 1;
+
+	Escmenu = true;
+
+	Escback1 = TextureHolder::GetTexture("graphics/esc.png");
+	Escback.setTexture(Escback1);
+	Escback.setPosition(0, 0);
+
+	EscCS.setTexture(textureUI);
+	EscCS.setTextureRect(IntRect(139, 1369, 70, 68));
+	EscCS.setScale(Vector2f(0.5f, 0.5f));
+	EscCS.setPosition(280, 690);
+
+
+	fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");
+
+	Continue.setFont(fontLostRuins);
+	Setting.setFont(fontLostRuins);
+	End.setFont(fontLostRuins);
+
+	Continue.setString("Continue");
+	Setting.setString("Setting");
+	End.setString("END");
+
+	Continue.setCharacterSize(35);
+	Setting.setCharacterSize(35);
+	End.setCharacterSize(35);
+
+	Continue.setFillColor(Color::White);
+	Setting.setFillColor(Color::White);
+	End.setFillColor(Color::White);
+
+	Continue.setPosition(100, 700);
+	Setting.setPosition(100, 770);
+	End.setPosition(100, 840);
+}
+
 void TestUi::SeeInven()
 {
 	textureIN = TextureHolder::GetTexture("graphics/inven make.png");
@@ -1496,9 +1893,9 @@ void TestUi::SeeInven()
 	Invenwindow.setScale(Vector2f(1.0f, 0.9f));
 	Invenwindow.setPosition(280, 205); //280, 280
 
-	InvenWeapon.setTexture(textureUI); // 인벤토리 무기
-	InvenWeapon.setTextureRect(IntRect(2, 934, 61, 56));
-	InvenWeapon.setPosition(330, 270);
+	InvenLongWeapon.setTexture(textureUI); // 인벤토리 무기
+	InvenLongWeapon.setTextureRect(IntRect(2, 934, 61, 56));
+	InvenLongWeapon.setPosition(330, 270);
 
 	InvenOrder.setTexture(textureUI); // 인벤토리 주문
 	InvenOrder.setTextureRect(IntRect(69, 933, 58, 58));
@@ -1575,4 +1972,3 @@ void TestUi::SeeInven()
 	textInven.setPosition(728, 150);
 	textMap.setPosition(1010, 150);
 }
-
