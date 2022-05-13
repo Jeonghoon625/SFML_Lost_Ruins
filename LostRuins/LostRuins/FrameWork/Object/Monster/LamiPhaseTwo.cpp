@@ -119,8 +119,14 @@ void LamiPhaseTwo::Walk(float dt, Player& player)
 		float h = player.GetPosition().x - sprite.getPosition().x;
 		float v = 0.f;
 		Vector2f dir(h, v);
-		position += Utils::Normalize(dir) * speed * dt;
-
+		if (Utils::GetLength(dir) < speed * dt * 0.5f)
+		{
+			position = Vector2f(player.GetPosition().x,position.y);
+		}
+		else
+		{
+			position += Utils::Normalize(dir) * speed * dt;
+		}
 		sprite.setPosition(position);
 		findPlayerBox.setPosition(position);
 		attackRangeBox.setPosition(position);
@@ -488,7 +494,7 @@ void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 	if (!isDiving && !isReappearing)
 	{
 		upY = sprite.getGlobalBounds().top + (53.f) - 2.f;
-		downY = sprite.getGlobalBounds().top + (53.f) + 4.f;
+		downY = sprite.getGlobalBounds().top + (53.f) + 3.f;
 
 		prevY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
 
@@ -547,40 +553,51 @@ void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 
 		float length;
 		Vector2f dir;
+		Vector2f dirPos;
 
 		if (lengthRC > lengthRB)
 		{
+			dirPos = dirRB;
 			dir = dirRB - Vector2f(leftEye.getGlobalBounds().left + leftEye.getGlobalBounds().width, leftEye.getGlobalBounds().top + leftEye.getGlobalBounds().height);
 			length = lengthRB;
 		}
 		else
 		{
+			dirPos = dirRC;
 			dir = dirRC - Vector2f(leftEye.getGlobalBounds().left + leftEye.getGlobalBounds().width, leftEye.getGlobalBounds().top + leftEye.getGlobalBounds().height * 0.5f);
 			length = lengthRC;
 		}
 
 		if (length > lengthCB)
 		{
+			dirPos = dirCB;
 			dir = dirCB - Vector2f(leftEye.getGlobalBounds().left + leftEye.getGlobalBounds().width * 0.5f, leftEye.getGlobalBounds().top + leftEye.getGlobalBounds().height);
 			length = lengthCB;
 		}
 
 		if (length > lengthLB)
 		{
+			dirPos = dirLB;
 			dir = dirLB - Vector2f(leftEye.getGlobalBounds().left, leftEye.getGlobalBounds().top + leftEye.getGlobalBounds().height);
 			length = lengthLB;
 		}
 
 		if (length > lengthLC)
 		{
+			dirPos = dirLC;
 			dir = dirLC - Vector2f(leftEye.getGlobalBounds().left, leftEye.getGlobalBounds().top + leftEye.getGlobalBounds().height * 0.5f);
 			length = lengthLC;
 		}
 
-
-
-		leftEye.setPosition(leftEye.getPosition() + Utils::Normalize(dir) * speed * 1.01f * dt);
-
+		if (Utils::GetLength(dir) < speed * dt * 1.6f)
+		{
+			/*leftEye.setPosition(dirPos);*/
+		}
+		else
+		{
+			leftEye.setPosition(leftEye.getPosition() + Utils::Normalize(dir) * speed * 1.5f * dt);
+		}
+		
 		updateY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
 	}
 }
