@@ -9,7 +9,7 @@ CollisionBlock::CollisionBlock(float centerX, float centerY, float width, float 
 	blockRect.left = centerX - width * 0.5f;
 	blockRect.width = width;
 	blockRect.height = height;
-	blockShape.setFillColor(Color(153, 153, 153));
+	blockShape.setFillColor(Color(255, 0, 0, 125));
 	blockShape.setSize(Vector2f(width, height));
 	blockShape.setOrigin(Vector2f(width * 0.5f, height * 0.5f));
 	blockShape.setPosition(position);

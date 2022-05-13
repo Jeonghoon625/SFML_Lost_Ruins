@@ -5,7 +5,6 @@
 #include "../Mgr/Utils.h"
 #include "../Animation/AnimationController.h"
 #include "../Animation/rapidcsv.h"
-#include "TestSceneUI/TestSceneUi.h"
 #include "../Object/Npc/Npc.h"
 #include "../Object/Coin/Coin.h"
 #include "../Object/Player/Player.h"
