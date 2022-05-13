@@ -96,11 +96,11 @@ void TestSceneKK::CreateBlock()
 
 	Vector2i res = resolution;
 
-	CollisionBlock* block1 = new CollisionBlock(res.x * 0.5f, res.y * 0.5f, 200.f, 50.f);
-	blocks.push_back(block1);
+	//CollisionBlock* block1 = new CollisionBlock(res.x * 0.5f, res.y * 0.5f, 200.f, 50.f);
+	//blocks.push_back(block1);
 	CollisionBlock* block2 = new CollisionBlock(res.x * 0.5f, res.y - 50.f, res.x, 100.f);
 	blocks.push_back(block2);
-	CollisionBlock* block3 = new CollisionBlock(540.f, res.y * 0.75f - 50.f, 200.f, 50.f);
+	CollisionBlock* block3 = new CollisionBlock(540.f, res.y * 0.75f - 50.f, 1200.f, 50.f);
 	blocks.push_back(block3);
 	CollisionBlock* block4 = new CollisionBlock(1380.f, res.y * 0.75f - 50.f, 200.f, 50.f);
 	blocks.push_back(block4);

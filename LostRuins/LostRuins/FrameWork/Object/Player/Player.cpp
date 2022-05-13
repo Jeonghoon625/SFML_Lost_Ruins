@@ -498,10 +498,10 @@ void Player::UpdateCollision(std::vector<CollisionBlock*> blocks)
 			float blockLeft = bk->GetBlockRect().left;
 			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width; // l+w
 
-			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height;
+			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5;
 			float playerDown = hitBox.getPosition().y;
 			float playerLeft = hitBox.getGlobalBounds().left;
-			float playerRight = hitBox.getPosition().x + hitBox.getGlobalBounds().width * 0.5f;
+			float playerRight = hitBox.getPosition().x + hitBox.getGlobalBounds().width * 0.5;
 
 			float playerXpos = hitBox.getPosition().x;
 			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;

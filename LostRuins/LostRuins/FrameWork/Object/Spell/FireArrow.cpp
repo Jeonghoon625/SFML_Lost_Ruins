@@ -57,14 +57,18 @@ void FireArrow::Update(float dt, std::vector <CollisionBlock*> blocks, Time play
 		}
 	}
 
-	// 利 面倒
-	if (sprite.getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
-	{
-		effectMgr->HitExplosion(position);
-		zombie->OnHitted(damage, dt, playTime);
-		Stop();
-	}
 
+	// 利 面倒
+	if (zombie != nullptr)
+	{
+		if (sprite.getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+		{
+			effectMgr->HitExplosion(position);
+			zombie->OnHitted(damage, dt, playTime);
+			Stop();
+		}
+	}
+	
 	// 芭府 力茄
 	distance += speed * dt;
 	if (distance > DEFAULT_DISTANCE)
