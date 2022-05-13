@@ -39,7 +39,7 @@ void LamiPhaseTwo::MonsterInit()
 	animation.Play(strIdle);
 
 	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height * 0.5f);
-	sprite.setPosition(resolution.x * 0.5, resolution.y * 0.7);
+	sprite.setPosition(200.f, resolution.y * 0.5f);
 
 	sprite.setScale(scale);
 
@@ -47,7 +47,7 @@ void LamiPhaseTwo::MonsterInit()
 
 	leftSclera.setOrigin(leftSclera.getTextureRect().width * 0.5f, leftSclera.getTextureRect().height * 0.5f);
 	leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f * 3.f), sprite.getGlobalBounds().top + (52.f * 3.f));
-	leftSclera.setScale(3.f, 3.f);
+	leftSclera.setScale(1.f, 1.f);
 
 	leftEye.setTexture(TextureHolder::GetTexture("graphics/Eye.png"));
 	leftEye.setScale(scale);
@@ -429,11 +429,11 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 		}
 	}
 
-	if (isDiving && ReappearOn)
+	if (isDiving && ReappearOn)	//다이빙 후 원래 자리로 돌아가기
 	{
 		sprite.setOrigin((sprite.getTextureRect().width * 0.5f), sprite.getTextureRect().height * 0.5f);
 		float h = 0.f;
-		float v = resolution.y * 0.6f - sprite.getPosition().y;
+		float v = resolution.y * 1.6f - sprite.getPosition().y;
 		Vector2f dir(h, v);
 		position += Utils::Normalize(dir) * speed * 50.f * dt;
 
@@ -444,9 +444,10 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 5, position.y);
 		hitBox.setPosition(position);
 
-		if (sprite.getPosition().y < resolution.y * 0.7f)
+
+		if (sprite.getPosition().y < resolution.y * 0.5f)
 		{
-			sprite.setPosition(sprite.getPosition().x, resolution.y * 0.7f);
+			sprite.setPosition(sprite.getPosition().x, resolution.y * 0.5f);
 			ReappearOn = false;
 			isReappearing = true;
 			isDiving = false;

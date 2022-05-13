@@ -21,7 +21,7 @@ class Monster
 {
 protected:
 	const float START_IMMUNE_MS = 500;
-	const Vector2f scale = Vector2f(3.f, 3.f);
+	const Vector2f scale = Vector2f(1.f, 1.f);
 	const float GRAVITY_POWER = 2000.f;
 	float fallingSpeed;
 	bool isFalling;

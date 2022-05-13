@@ -30,11 +30,11 @@ void LamiHand::Init(Vector2f pos, int handSide)
 	
 	if (handSide == 0)		//left hand
 	{
-		sprite.setScale(3.f, 3.f);
+		sprite.setScale(1.f, 1.f);
 	}
 	else if(handSide == 1)	//Right hand
 	{
-		sprite.setScale(-3.f, 3.f);
+		sprite.setScale(-1.f, 1.f);
 	}
 	currentStatus = Lami2Status::STATUS_IDLE;
 	/*animation.Play(strIdle, std::bind(&LamiHand::IdlePlay, this));*/
