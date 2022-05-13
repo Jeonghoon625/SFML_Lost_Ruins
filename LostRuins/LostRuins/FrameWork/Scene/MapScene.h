@@ -28,8 +28,8 @@ struct Button
 
 class MapScene : public Scene
 {
-	const int mapWidth = 50;
-	const int mapHeight = 20;
+	const int mapWidth = 35;
+	const int mapHeight = 15;
 	const float VIEW_SPEED = mapWidth * 10.f;
 
 	float gridSizeF;

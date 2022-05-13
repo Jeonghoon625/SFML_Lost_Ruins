@@ -16,7 +16,7 @@ class GameScene : public Scene
 	Vector2i resolution;
 
 	Player player;
-	IntRect gameMap;
+	FloatRect gameMap;
 
 	Texture textureHeroine;
 
