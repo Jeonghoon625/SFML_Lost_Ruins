@@ -361,12 +361,12 @@ void LamiPhaseTwo::Attack(float dt, int atk, Player& player, Time timeHit)
 
 void LamiPhaseTwo::Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playTime)
 {
-	/*if (health > START_HEALTH * 0.5f)
+	if (health > START_HEALTH * 0.5f)
 	{
 		health -= 1;
-	}*/
+	}
 	std::cout << health << std::endl;
-	/*Walk(dt, player);*/
+	Walk(dt, player);
 	Attack(dt, atk, player, playTime);
 	Dive(dt, player);
 	if (!isDiving && !isReappearing)
@@ -455,21 +455,23 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 		hitBox.setPosition(position);
 
 
-		if (sprite.getPosition().y < (originalPos.y * 0.7f))
+		if (sprite.getPosition().y < (originalPos.y))
 		{
-			sprite.setPosition(sprite.getPosition().x, originalPos.y * 0.7f);
+			sprite.setPosition(sprite.getPosition().x, originalPos.y);
 			ReappearOn = false;
 			isReappearing = true;
 			isDiving = false;
 			diveDelay = 0.f;
+			
+			position = sprite.getPosition();
+			
 		}
 	}
-	std::cout << sprite.getPosition().y << std::endl;
 }
 
 void LamiPhaseTwo::Draw(RenderWindow* window)
 {
-	window->draw(leftSclera);f
+	window->draw(leftSclera);
 	window->draw(leftEye);
 	window->draw(sprite);
 
@@ -491,7 +493,7 @@ void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 
 		prevY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
 
-		/*leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f * 3.f), updateY);*/
+		leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f * 3.f), updateY);
 
 		std::cout << prevY << std::endl;
 		std::cout << upY << std::endl;
