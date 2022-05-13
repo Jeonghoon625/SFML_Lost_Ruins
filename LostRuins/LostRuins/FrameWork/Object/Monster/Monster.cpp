@@ -42,6 +42,12 @@ void Monster::SetHealth(int healthNum)
 	health = healthNum;
 }
 
+void Monster::Spawn(Vector2f pos)
+{
+	sprite.setPosition(pos);
+	position = sprite.getPosition();
+}
+
 int Monster::GetAtk()
 {
 	return atk;
