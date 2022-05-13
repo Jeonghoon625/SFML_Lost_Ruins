@@ -39,20 +39,20 @@ void LamiPhaseTwo::MonsterInit()
 	animation.Play(strIdle);
 
 	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height * 0.5f);
-	sprite.setPosition(200.f, resolution.y * 0.5f);
+	sprite.setPosition(200.f, resolution.y * 0.7f);
 
 	sprite.setScale(scale);
 
 	leftSclera.setTexture(TextureHolder::GetTexture("graphics/Sclera.png"));
 
 	leftSclera.setOrigin(leftSclera.getTextureRect().width * 0.5f, leftSclera.getTextureRect().height * 0.5f);
-	leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f * 3.f), sprite.getGlobalBounds().top + (52.f * 3.f));
+	leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f), sprite.getGlobalBounds().top + (52.f));
 	leftSclera.setScale(1.f, 1.f);
 
 	leftEye.setTexture(TextureHolder::GetTexture("graphics/Eye.png"));
 	leftEye.setScale(scale);
 	leftEye.setOrigin(leftEye.getTextureRect().width * 0.5f, leftEye.getTextureRect().height * 0.5f);
-	leftEye.setPosition(sprite.getGlobalBounds().left + (49.0f * 3.f), sprite.getGlobalBounds().top + (52.f * 3.f));
+	leftEye.setPosition(sprite.getGlobalBounds().left + (49.f), sprite.getGlobalBounds().top + (52.f));
 
 	SetHealth(START_HEALTH);
 	SetAtk(3);
@@ -77,14 +77,14 @@ void LamiPhaseTwo::MonsterInit()
 	attackRangeLeftBox.setSize(Vector2f(60.f, 150.f));
 	attackRangeLeftBox.setScale(scale);
 	attackRangeLeftBox.setFillColor(Color(153, 0, 0, 80));
-	attackRangeLeftBox.setOrigin(attackRangeBox.getSize().x * 0.5, attackRangeBox.getSize().y);
-	attackRangeLeftBox.setPosition(sprite.getOrigin().x - 180.f, sprite.getOrigin().y);
+	attackRangeLeftBox.setOrigin(attackRangeBox.getGlobalBounds().width, attackRangeBox.getSize().y);
+	attackRangeLeftBox.setPosition(sprite.getOrigin().x, sprite.getOrigin().y);
 
 	attackRangeRightBox.setSize(Vector2f(60.f, 150.f));
 	attackRangeRightBox.setScale(scale);
 	attackRangeRightBox.setFillColor(Color(153, 0, 0, 80));
-	attackRangeRightBox.setOrigin(attackRangeBox.getSize().x * 0.5, attackRangeBox.getSize().y);
-	attackRangeRightBox.setPosition(sprite.getOrigin().x + 180.f, sprite.getOrigin().y);
+	attackRangeRightBox.setOrigin(attackRangeBox.getSize().x, attackRangeBox.getSize().y);
+	attackRangeRightBox.setPosition(sprite.getOrigin().x, sprite.getOrigin().y);
 
 
 	hitBox.setSize(Vector2f(60.f, 100.f));
@@ -95,8 +95,8 @@ void LamiPhaseTwo::MonsterInit()
 
 
 
-	leftHand.Init(Vector2f(sprite.getGlobalBounds().left + 35 * 3, sprite.getGlobalBounds().top + 17 * 3), 0);
-	rightHand.Init(Vector2f(sprite.getGlobalBounds().left + 89 * 3, sprite.getGlobalBounds().top + 17 * 3), 1);
+	leftHand.Init(Vector2f(sprite.getGlobalBounds().left + 35, sprite.getGlobalBounds().top + 17), 0);
+	rightHand.Init(Vector2f(sprite.getGlobalBounds().left + 89, sprite.getGlobalBounds().top + 17), 1);
 	a = 1.f;
 	updateY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
 }
@@ -361,19 +361,19 @@ void LamiPhaseTwo::Update(Player& player, float dt, std::vector<TestBlock*> bloc
 	Dive(dt, player);
 	if (!isDiving && !isReappearing)
 	{
-		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 35 * 3, sprite.getGlobalBounds().top + 17 * 3));
-		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 89 * 3, sprite.getGlobalBounds().top + 17 * 3));
+		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 35, sprite.getGlobalBounds().top + 17));
+		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 89, sprite.getGlobalBounds().top + 17));
 	}
 	else if (isDiving && !isReappearing)
 	{
-		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 20 * 3, sprite.getGlobalBounds().top + 26 * 3));
-		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 76 * 3, sprite.getGlobalBounds().top + 26 * 3));
+		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 20, sprite.getGlobalBounds().top + 26));
+		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 76, sprite.getGlobalBounds().top + 26));
 	}
 	else if (!isDiving && isReappearing)
 	{
 
-		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 29 * 3, sprite.getGlobalBounds().top + 19 * 3));
-		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 85 * 3, sprite.getGlobalBounds().top + 19 * 3));
+		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 29, sprite.getGlobalBounds().top + 19));
+		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 85, sprite.getGlobalBounds().top + 19));
 	}
 
 	AnimationUpdate();
@@ -433,7 +433,7 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 	{
 		sprite.setOrigin((sprite.getTextureRect().width * 0.5f), sprite.getTextureRect().height * 0.5f);
 		float h = 0.f;
-		float v = resolution.y * 1.6f - sprite.getPosition().y;
+		float v = resolution.y * 0.7f - sprite.getPosition().y;
 		Vector2f dir(h, v);
 		position += Utils::Normalize(dir) * speed * 50.f * dt;
 
@@ -445,15 +445,16 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 		hitBox.setPosition(position);
 
 
-		if (sprite.getPosition().y < resolution.y * 0.5f)
+		if (sprite.getPosition().y < (resolution.y * 0.7f))
 		{
-			sprite.setPosition(sprite.getPosition().x, resolution.y * 0.5f);
+			sprite.setPosition(sprite.getPosition().x, resolution.y * 0.7f);
 			ReappearOn = false;
 			isReappearing = true;
 			isDiving = false;
 			diveDelay = 0.f;
 		}
 	}
+	std::cout << sprite.getPosition().y << std::endl;
 }
 
 void LamiPhaseTwo::Draw(RenderWindow* window)
@@ -475,8 +476,8 @@ void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 {
 	if (!isDiving && !isReappearing)
 	{
-		upY = sprite.getGlobalBounds().top + (52.f * 3.f);
-		downY = sprite.getGlobalBounds().top + (52.f * 3.f) + 12;
+		upY = sprite.getGlobalBounds().top + (52.f);
+		downY = sprite.getGlobalBounds().top + (52.f) + 4;
 
 		prevY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
 
@@ -494,7 +495,7 @@ void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 			a *= -1;
 		}
 
-		leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f * 3.f), leftSclera.getPosition().y + a * 0.4f);
+		leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f), leftSclera.getPosition().y + a * 0.4f);
 		if (leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f) < upY || leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f) > downY)
 		{
 			leftSclera.setPosition(leftSclera.getPosition().x, prevY);
