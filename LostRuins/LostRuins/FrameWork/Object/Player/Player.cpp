@@ -387,6 +387,10 @@ bool Player::OnHitted(int damage, Time timeHit)
 				isJump = false;
 				JumpingSpeed = START_JUMP_SPEED;
 			}
+			if (isSpell == true)
+			{
+				isSpell = false;
+			}
 
 			if (health < 0)
 			{
