@@ -85,4 +85,3 @@ public:
 	virtual void UpdateCollision(std::vector <TestBlock*> blocks);
 	virtual void UpdateCollisionAttackRangeBox(std::vector <TestBlock*> blocks);
 };
-

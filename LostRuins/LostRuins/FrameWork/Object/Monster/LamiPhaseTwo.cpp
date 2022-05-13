@@ -49,7 +49,7 @@ void LamiPhaseTwo::MonsterInit()
 	leftSclera.setTexture(TextureHolder::GetTexture("graphics/Sclera.png"));
 
 	leftSclera.setOrigin(leftSclera.getTextureRect().width * 0.5f, leftSclera.getTextureRect().height * 0.5f);
-	leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f), sprite.getGlobalBounds().top + (52.f));
+	leftSclera.setPosition(sprite.getGlobalBounds().left + (50.0f), sprite.getGlobalBounds().top + (53.f));
 	leftSclera.setScale(1.f, 1.f);
 
 	leftEye.setTexture(TextureHolder::GetTexture("graphics/Eye.png"));
@@ -63,7 +63,6 @@ void LamiPhaseTwo::MonsterInit()
 
 
 	position = sprite.getPosition();
-
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
@@ -361,13 +360,13 @@ void LamiPhaseTwo::Attack(float dt, int atk, Player& player, Time timeHit)
 
 void LamiPhaseTwo::Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playTime)
 {
-	if (health > START_HEALTH * 0.5f)
+	/*if (health > START_HEALTH * 0.5f)
 	{
 		health -= 1;
 	}
-	std::cout << health << std::endl;
+	std::cout << health << std::endl;*/
 	Walk(dt, player);
-	Attack(dt, atk, player, playTime);
+	/*Attack(dt, atk, player, playTime);*/
 	Dive(dt, player);
 	if (!isDiving && !isReappearing)
 	{
@@ -488,12 +487,12 @@ void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 {
 	if (!isDiving && !isReappearing)
 	{
-		upY = sprite.getGlobalBounds().top + (52.f);
-		downY = sprite.getGlobalBounds().top + (52.f) + 4;
+		upY = sprite.getGlobalBounds().top + (53.f) - 2.f;
+		downY = sprite.getGlobalBounds().top + (53.f) + 4.f;
 
 		prevY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
 
-		leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f * 3.f), updateY);
+		leftSclera.setPosition(sprite.getGlobalBounds().left + 50.f, updateY);
 
 		std::cout << prevY << std::endl;
 		std::cout << upY << std::endl;
@@ -507,10 +506,18 @@ void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 			a *= -1;
 		}
 
-		/*leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f), leftSclera.getPosition().y + a * 0.4f);*/
+		leftSclera.setPosition(sprite.getGlobalBounds().left + (49.0f), leftSclera.getPosition().y + a * 0.15f);
 		if (leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f) < upY || leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f) > downY)
 		{
-			leftSclera.setPosition(leftSclera.getPosition().x, prevY);
+			if (a == 1)
+			{
+				leftSclera.setPosition(leftSclera.getPosition().x, downY);
+			}
+			else if (a == -1)
+			{
+				leftSclera.setPosition(leftSclera.getPosition().x, upY);
+			}
+			
 			std::cout << a << "dd" << std::endl;
 		}
 
@@ -572,9 +579,9 @@ void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 
 
 
-		leftEye.setPosition(leftEye.getPosition() + Utils::Normalize(dir) * speed * 2.f * dt);
+		leftEye.setPosition(leftEye.getPosition() + Utils::Normalize(dir) * speed * 1.01f * dt);
 
-		/*updateY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);*/
+		updateY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
 	}
 }
 
