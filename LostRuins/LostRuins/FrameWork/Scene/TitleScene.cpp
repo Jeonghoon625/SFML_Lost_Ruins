@@ -5,7 +5,8 @@
 void TitleScene::Init(SceneManager* sceneManager)
 {
 	this->sceneMgr = sceneManager;
-	isPosition = 1;
+	menuPos = 1;
+	loadPos = 1;
 
 	resolution.x = 1920.f;
 	resolution.y = 1080.f;
@@ -13,22 +14,85 @@ void TitleScene::Init(SceneManager* sceneManager)
 	SettingTextrue();
 	SettingText();
 
+	menuType = MenuType::MENU_SELECT;
+
 	backGroundSound.setBuffer(SoundHolder::GetBuffer("sound/back_ground_sound.wav"));
 	backGroundSound.play();
 }
 
 void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-	if (InputManager::GetKeyDown(Keyboard::Up) && isPosition > 1)
+	this->uiView = uiView;
+
+	switch (menuType)
 	{
-		isPosition--;
+	case MenuType::MENU_SELECT:
+		SelectingMenu(dt, window);
+		break;
+	case MenuType::MENU_LOAD:
+		LoadingMenu(dt);
+		break;
+	case MenuType::MENU_OPTION:
+		break;
 	}
 	else if (InputManager::GetKeyDown(Keyboard::Down) && isPosition < 5)
 	{
 		isPosition++;
+}
+
+void TitleScene::Draw(RenderWindow* window, View* mainView)
+{
+	window->setView(*uiView);
+	window->draw(sky);
+	window->draw(backGround);
+	window->draw(midGround);
+	window->draw(title);
+	window->draw(rope1);
+	window->draw(rope2);
+	window->draw(ForeGround);
+	window->draw(heroine);
+
+	if (menuType == MenuType::MENU_SELECT)
+	{
+		window->draw(topBar);
+		window->draw(bottomBar);
 	}
 
-	switch (isPosition)
+	window->draw(textGameStart);
+	window->draw(textContinue);
+	window->draw(textOption);
+	window->draw(textExit);
+
+	if (menuType == MenuType::MENU_LOAD)
+	{
+		window->draw(loadBack);
+		window->draw(loadBar);
+		window->draw(loadScreen);
+		window->draw(loadSlot);
+		for (int i = 0; i < MAX_SAVE_SLOT; i++)
+		{
+			window->draw(textLoadSlot[i]);
+		}
+	}
+}
+
+TitleScene::~TitleScene()
+{
+
+}
+
+void TitleScene::SelectingMenu(float dt, RenderWindow* window)
+{
+	if (InputManager::GetKeyDown(Keyboard::Up) && menuPos > 1)
+	{
+		menuPos--;
+	}
+	else if (InputManager::GetKeyDown(Keyboard::Down) && menuPos < MAX_MENU_SLOT)
+	{
+		menuPos++;
+	}
+
+	switch (menuPos)
 	{
 	case GAME_START:
 		textGameStart.setFillColor(Color::White);
@@ -81,6 +145,16 @@ void TitleScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 	window->draw(heroine);
 	window->draw(topBar);
 	window->draw(bottomBar);
+void TitleScene::LoadingMenu(float dt)
+{
+	if (InputManager::GetKeyDown(Keyboard::Up) && loadPos > 1)
+	{
+		loadPos--;
+	}
+	else if (InputManager::GetKeyDown(Keyboard::Down) && loadPos < MAX_SAVE_SLOT)
+	{
+		loadPos++;
+	}
 
 	window->draw(textGameStart);
 	window->draw(textContinue);
@@ -88,20 +162,46 @@ void TitleScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 	window->draw(textMapEditor);
 	window->draw(textExit);
 }
+	switch (loadPos)
+	{
+	case 1:
+		loadSlot.setPosition(resolution.x * 0.5f, 500.f);
+		break;
+	case 2:
+		loadSlot.setPosition(resolution.x * 0.5f, 500.f + 80.f);
+		break;
+	case 3:
+		loadSlot.setPosition(resolution.x * 0.5f, 500.f + 160.f);
+		break;
+	}
 
 TitleScene::~TitleScene()
 {
 }
+	aniHeroine.Update(dt);
+	aniRope1.Update(dt);
+	aniRope2.Update(dt);
+
+	if (InputManager::GetKeyDown(Keyboard::Escape))
+	{
+		menuType = MenuType::MENU_SELECT;
+	}
+	else if (InputManager::GetKeyDown(Keyboard::Space))
+	{
+
+	}
+}
 
 void TitleScene::GetSelect(RenderWindow* window)
 {
-	switch (isPosition)
+	switch (menuPos)
 	{
 	case GAME_START:
 		sceneMgr->SceneSwitch(SceneType::GameScene);
 		break;
 
 	case CONTINUE:
+		menuType = MenuType::MENU_LOAD;
 		break;
 
 	case OPTION:
@@ -120,6 +220,7 @@ void TitleScene::GetSelect(RenderWindow* window)
 void TitleScene::SettingTextrue()
 {
 	textureTitle = TextureHolder::GetTexture("graphics/title.png");
+	textureUi = TextureHolder::GetTexture("graphics/UI.png");
 
 	sky.setTexture(textureTitle);
 	sky.setTextureRect(IntRect(1, 1233, 640, 360));
@@ -175,7 +276,29 @@ void TitleScene::SettingTextrue()
 	rope2.setScale(3.5f, 3.5f);
 	AnimationInit(aniRope2, &rope2);
 	aniRope2.Play("rope2");
+
+	loadBack.setSize(Vector2f(820.f, resolution.y));
+	loadBack.setFillColor(Color(0, 0, 0, 150));
+	loadBack.setOrigin(820.f * 0.5f, 0);
+	loadBack.setPosition(resolution.x * 0.5f, 0);
+
+	loadScreen.setSize(Vector2f(520.f, 320.f));
+	loadScreen.setFillColor(Color::White);
+	loadScreen.setOrigin(520.f * 0.5f, 20);
+	loadScreen.setPosition(resolution.x * 0.5f, 100.f);
+
+	loadBar.setTexture(textureUi);
+	loadBar.setTextureRect(IntRect(488, 1068, 223, 64));
+	loadBar.setOrigin(111.5f, 0.f);
+	loadBar.setScale(4.f, 18.f);
+	loadBar.setPosition(resolution.x * 0.5f, 0.f);
+
+	loadSlot.setSize(Vector2f(800.f, 40.f));
+	loadSlot.setFillColor(Color(150, 150, 150, 80));
+	loadSlot.setOrigin(800.f * 0.5f, 0.f);
+	loadSlot.setPosition(resolution.x * 0.5f, 500.f);
 }
+
 
 void TitleScene::SettingText()
 {
@@ -215,6 +338,16 @@ void TitleScene::SettingText()
 	textExit.setCharacterSize(40);
 	textExit.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 390.f);
 	Utils::SetOrigin(textExit, Pivots::LC);
+
+	for (int i = 0; i < MAX_SAVE_SLOT; i++)
+	{
+		textLoadSlot[i].setFont(fontLostRuins);
+		textLoadSlot[i].setString("---------");
+		textLoadSlot[i].setFillColor(Color(200, 200, 200));
+		textLoadSlot[i].setCharacterSize(30);
+		textLoadSlot[i].setPosition(resolution.x * 0.5f, 500.f + (80.f * i));
+		Utils::SetOrigin(textLoadSlot[i], Pivots::CC);
+	}
 }
 
 void TitleScene::AnimationInit(AnimationController& animation, Sprite* sprite)
