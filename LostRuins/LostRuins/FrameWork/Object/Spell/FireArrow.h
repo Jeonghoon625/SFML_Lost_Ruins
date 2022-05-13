@@ -13,8 +13,8 @@ class FireArrow
 {
 private:
 	const int SPELL_DAMAGE = 10;
-	const float DEFAULT_SPEED = 700.f;
-	const float DEFAULT_DISTANCE = 800.f;
+	const float DEFAULT_SPEED = 230.f;
+	const float DEFAULT_DISTANCE = 800.f / 3.f;
 
 	AnimationController animation;
 

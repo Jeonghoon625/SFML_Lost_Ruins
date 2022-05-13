@@ -15,6 +15,7 @@ enum GameMenu
 	GAME_START = 1,
 	CONTINUE,
 	OPTION,
+	MAPEDIT,
 	EXIT,
 };
 
@@ -48,6 +49,7 @@ private:
 	Text textGameStart;
 	Text textContinue;
 	Text textOption;
+	Text textMapEditor;
 	Text textExit;
 
 	Sound backGroundSound;

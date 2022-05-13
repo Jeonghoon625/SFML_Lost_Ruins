@@ -22,7 +22,7 @@ void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mai
 	{
 		isPosition--;
 	}
-	else if (InputManager::GetKeyDown(Keyboard::Down) && isPosition < 4)
+	else if (InputManager::GetKeyDown(Keyboard::Down) && isPosition < 5)
 	{
 		isPosition++;
 	}
@@ -38,14 +38,22 @@ void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mai
 		textGameStart.setFillColor(Color(100, 100, 100));
 		textOption.setFillColor(Color(100, 100, 100));
 		break;
+
 	case OPTION:
 		textOption.setFillColor(Color::White);
 		textContinue.setFillColor(Color(100, 100, 100));
+		textMapEditor.setFillColor(Color(100, 100, 100));
+		break;
+
+	case MAPEDIT:
+		textMapEditor.setFillColor(Color::White);
+		textOption.setFillColor(Color(100, 100, 100));
 		textExit.setFillColor(Color(100, 100, 100));
 		break;
+		
 	case EXIT:
 		textExit.setFillColor(Color::White);
-		textOption.setFillColor(Color(100, 100, 100));
+		textMapEditor.setFillColor(Color(100, 100, 100));
 		break;
 	}
 
@@ -77,6 +85,7 @@ void TitleScene::Draw(RenderWindow* window, View* mainView)
 	window->draw(textGameStart);
 	window->draw(textContinue);
 	window->draw(textOption);
+	window->draw(textMapEditor);
 	window->draw(textExit);
 }
 
@@ -92,10 +101,17 @@ void TitleScene::GetSelect(RenderWindow* window)
 	case GAME_START:
 		sceneMgr->SceneSwitch(SceneType::GameScene);
 		break;
+
 	case CONTINUE:
 		break;
+
 	case OPTION:
 		break;
+
+	case MAPEDIT:
+		sceneMgr->SceneSwitch(SceneType::MapScene);
+		break;
+
 	case EXIT:
 		window->close();
 		break;
@@ -170,22 +186,29 @@ void TitleScene::SettingText()
 	textGameStart.setString("Game Start");
 	textGameStart.setFillColor(Color::White);
 	textGameStart.setCharacterSize(40);
-	textGameStart.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 180.f);
+	textGameStart.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 110.f);
 	Utils::SetOrigin(textGameStart, Pivots::LC);
 
 	textContinue.setFont(fontLostRuins);
 	textContinue.setString("Continue");
 	textContinue.setFillColor(Color(100, 100, 100));
 	textContinue.setCharacterSize(40);
-	textContinue.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 250.f);
+	textContinue.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 180.f);
 	Utils::SetOrigin(textContinue, Pivots::LC);
 
 	textOption.setFont(fontLostRuins);
 	textOption.setString("Option");
 	textOption.setFillColor(Color(100, 100, 100));
 	textOption.setCharacterSize(40);
-	textOption.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 320.f);
+	textOption.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 250.f);
 	Utils::SetOrigin(textOption, Pivots::LC);
+
+	textMapEditor.setFont(fontLostRuins);
+	textMapEditor.setString("Map Editor");
+	textMapEditor.setFillColor(Color(100, 100, 100));
+	textMapEditor.setCharacterSize(40);
+	textMapEditor.setPosition(resolution.x * 0.1f, resolution.y * 0.5f + 320.f);
+	Utils::SetOrigin(textMapEditor, Pivots::LC);
 
 	textExit.setFont(fontLostRuins);
 	textExit.setString("Exit");

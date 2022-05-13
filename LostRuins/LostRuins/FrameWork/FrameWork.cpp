@@ -10,7 +10,7 @@ bool FrameWork::Initialize()
 
 	objectView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	objectView->setCenter(resolution.x * 0.5f, resolution.y * 0.5f);
-	objectView->setSize(1600.f, 900.f);
+	objectView->zoom(1.f/4.f);
 
 	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	uiView->setCenter(resolution.x * 0.5f, resolution.y * 0.5f);

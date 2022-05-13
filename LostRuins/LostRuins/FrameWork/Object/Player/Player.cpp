@@ -1051,7 +1051,7 @@ void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTim
 	AnimationUpdate();
 	animation.Update(dt);
 
-	attackMgr.Update(dt);
+	//attackMgr.Update(dt);
 
 	auto DorR = useDorR.begin();
 	while (DorR != useDorR.end())
