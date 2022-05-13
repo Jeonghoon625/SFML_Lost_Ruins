@@ -1,4 +1,6 @@
 #include "LamiPhaseTwo.h"
+#include "../../Mgr/Utils.h"
+#include <functional>
 
 LamiPhaseTwo::LamiPhaseTwo()
 	:Monster()
@@ -14,9 +16,14 @@ LamiPhaseTwo::LamiPhaseTwo()
 	isLeft = false;
 	isRight = false;
 	isFar = false;
+	isDiving = false;
+	isReappearing = false;
+	diveOn = false;
+	ReappearOn = false;
 	atk = 3;
 	attackHitDelay = 0.f;
 	punchCount = 0;
+	diveCount = 0;
 }
 
 void LamiPhaseTwo::MonsterInit()
@@ -54,7 +61,7 @@ void LamiPhaseTwo::MonsterInit()
 	Sprite leftEye;
 	Sprite RightEye;*/
 
-	SetHealth(20);
+	SetHealth(START_HEALTH);
 	SetAtk(3);
 	SetSpeed(50.f);
 
@@ -90,7 +97,7 @@ void LamiPhaseTwo::MonsterInit()
 	hitBox.setSize(Vector2f(60.f, 100.f));
 	hitBox.setScale(scale);
 	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y * 0.99f);
-	hitBox.setFillColor(Color(0, 0, 100, 70));
+	hitBox.setFillColor(Color(0, 0, 200, 70));
 	hitBox.setPosition(sprite.getOrigin());
 
 	
@@ -103,9 +110,9 @@ void LamiPhaseTwo::MonsterInit()
 
 void LamiPhaseTwo::Walk(float dt, Player& player)
 {
-	if (!isAttackPlayer)
+	
+	if (!isAttackPlayer && !isDiving && !isReappearing)
 	{
-
 		sprite.setOrigin((sprite.getTextureRect().width * 0.5f), sprite.getTextureRect().height*0.5f);
 		float h = player.GetPosition().x - sprite.getPosition().x;
 		float v = 0.f;
@@ -134,6 +141,7 @@ void LamiPhaseTwo::AnimationUpdate()
 		{
 			SetStatus(Lami2Status::STATUS_IDLE);
 			leftHand.SetStatus(Lami2Status::STATUS_IDLE);
+			
 		}
 		else if (isFarAttackPlayer == true && isFar == true)
 		{
@@ -161,6 +169,12 @@ void LamiPhaseTwo::AnimationUpdate()
 			SetStatus(Lami2Status::STATUS_ATTACK_NEAR);
 			rightHand.SetStatus(Lami2Status::STATUS_ATTACK_NEAR);
 		}
+		else if (isDiving == true && isReappearing == false)
+		{
+			SetStatus(Lami2Status::STATUS_DIVING);
+			leftHand.SetStatus(Lami2Status::STATUS_DIVING);
+			rightHand.SetStatus(Lami2Status::STATUS_DIVING);
+		}
 		break;
 	case Lami2Status::STATUS_ATTACK_NEAR:
 		if (isNearAttackPlayer == false)
@@ -181,12 +195,17 @@ void LamiPhaseTwo::AnimationUpdate()
 		}
 		break;
 	case Lami2Status::STATUS_DIVING:
-		SetStatus(Lami2Status::STATUS_DIVING);
+		if (isDiving == false)
+		{
+			SetStatus(Lami2Status::STATUS_REAPPEARING);	//여기 작업중
+			leftHand.SetStatus(Lami2Status::STATUS_REAPPEARING);
+			rightHand.SetStatus(Lami2Status::STATUS_REAPPEARING);
+		}
 		break;
 	case Lami2Status::STATUS_REAPPEARING:
-		if (isAlive == false)
+		if (isReappearing == false)
 		{
-			SetStatus(Lami2Status::STATUS_DEAD);
+			SetStatus(Lami2Status::STATUS_IDLE);
 		}
 		break;
 	case Lami2Status::STATUS_DEAD:
@@ -213,13 +232,17 @@ void LamiPhaseTwo::SetStatus(Lami2Status newStatus)
 			animation.Play(strReappearingToIdle);
 		}
 		else
-		animation.PlayQueue(strIdle);
+		{
+			animation.PlayQueue(strIdle);
+		}
 		break;
 	case Lami2Status::STATUS_DIVING:
-		animation.Play(strDiving);
+		/*animation.Play(strDiving);*/
+		animation.Play(strDiving, std::bind(&LamiPhaseTwo::SetDive, this));
 		break;
 	case Lami2Status::STATUS_REAPPEARING:
-		animation.Play(strReappearing);
+		/*animation.Play(strReappearing);*/
+		animation.Play(strReappearingToIdle, std::bind(&LamiPhaseTwo::SetIdle, this));
 		break;
 	default:
 		break;
@@ -228,7 +251,7 @@ void LamiPhaseTwo::SetStatus(Lami2Status newStatus)
 
 void LamiPhaseTwo::Attack(float dt, int atk, Player& player, Time timeHit)
 {
-	if (isAlive)
+	if (isAlive && !isDiving)
 	{
 		if (!isAttackPlayer)
 		{
@@ -333,20 +356,114 @@ void LamiPhaseTwo::Attack(float dt, int atk, Player& player, Time timeHit)
 			}
 		}
 	}
+
+	
 }
 
 void LamiPhaseTwo::Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playTime)
 {
-
+	/*if (health > START_HEALTH * 0.5f)
+	{
+		health -= 1;
+	}
+	std::cout << health << std::endl;*/
 	Walk(dt, player);
-	
 	Attack(dt, atk, player, playTime);
+	Dive(dt, player);
+	if (!isDiving && !isReappearing)
+	{
+		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 35 * 3, sprite.getGlobalBounds().top + 17 * 3));
+		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 89 * 3, sprite.getGlobalBounds().top + 17 * 3));
+	}
+	else if (isDiving && !isReappearing)
+	{
+		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 20 * 3, sprite.getGlobalBounds().top + 26 * 3));
+		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 76 * 3, sprite.getGlobalBounds().top + 26 * 3));
+	}
+	else if (!isDiving && isReappearing)
+	{
 
-	leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 35 * 3, sprite.getGlobalBounds().top + 17 * 3));
-	rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 89 * 3, sprite.getGlobalBounds().top + 17 * 3));
+		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 29 * 3, sprite.getGlobalBounds().top + 19 * 3));
+		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 85 * 3, sprite.getGlobalBounds().top + 19 * 3));
+	}
+
 	AnimationUpdate();
 	EyeUpdate(dt, player);
 	animation.Update(dt);
+}
+
+void LamiPhaseTwo::Dive(float dt, Player& player)
+{
+	if (health < START_HEALTH * 0.7f && diveCount == 0)
+	{
+		diveCount++;
+		isDiving = true;
+		
+		attackDelay = 0.f;
+		isIdle = false;
+		isAttackPlayer = false;
+		isNearAttackPlayer = false;
+		isFarAttackPlayer = false;
+		isMiddleAttackPlayer = false;
+		isLeft = false;
+		isRight = false;
+		isFar = false;
+
+		sprite.setPosition(position);
+		findPlayerBox.setPosition(position);
+		attackRangeBox.setPosition(position);
+		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 5, position.y);
+		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 5, position.y);
+		hitBox.setPosition(position);
+	}
+	
+	if (isDiving && diveOn)
+	{
+		sprite.setOrigin((sprite.getTextureRect().width * 0.5f), sprite.getTextureRect().height * 0.5f);
+		diveDelay += dt;
+		float h = player.GetPosition().x - sprite.getPosition().x;
+		float v = 3000.f - sprite.getPosition().y;
+		Vector2f dir(h, v);
+		position += Utils::Normalize(dir) * speed * 50.f * dt;
+		sprite.setPosition(position);
+		findPlayerBox.setPosition(position);
+		attackRangeBox.setPosition(position);
+		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 5, position.y);
+		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 5, position.y);
+		hitBox.setPosition(position);
+
+		if (diveDelay > 5.f)
+		{
+			diveOn = false;
+			ReappearOn = true;
+			diveDelay = 0.f;
+		}
+	}
+
+	if (isDiving && ReappearOn)
+	{
+		sprite.setOrigin((sprite.getTextureRect().width * 0.5f), sprite.getTextureRect().height * 0.5f);
+		float h = 0.f;
+		float v = resolution.y * 0.6f - sprite.getPosition().y;
+		Vector2f dir(h, v);
+		position += Utils::Normalize(dir) * speed * 50.f * dt;
+
+		sprite.setPosition(position);
+		findPlayerBox.setPosition(position);
+		attackRangeBox.setPosition(position);
+		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 5, position.y);
+		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 5, position.y);
+		hitBox.setPosition(position);
+
+		if (sprite.getPosition().y < resolution.y * 0.7f)
+		{
+		sprite.setPosition(sprite.getPosition().x, resolution.y * 0.7f);
+			ReappearOn = false;
+			isReappearing = true;
+			isDiving = false;
+			diveDelay = 0.f;
+		}
+	}
 }
 
 void LamiPhaseTwo::Draw(RenderWindow* window)
@@ -364,7 +481,7 @@ void LamiPhaseTwo::Draw(RenderWindow* window)
 
 void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 {
-	upY = sprite.getGlobalBounds().top + (52.f * 3.f) ;
+	upY = sprite.getGlobalBounds().top + (52.f * 3.f);
 	downY = sprite.getGlobalBounds().top + (52.f * 3.f) + 12;
 
 	prevY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
@@ -390,39 +507,95 @@ void LamiPhaseTwo::EyeUpdate(float dt, Player& player)
 		std::cout << a << "dd" << std::endl;
 	}
 
-	float h = player.GetPosition().x - leftEye.getPosition().x;
+	/*float h = player.GetPosition().x - leftEye.getPosition().x;
 	float v = player.GetPosition().y - leftEye.getPosition().y;
-	Vector2f dir(h, v);
+	Vector2f dir(h, v);*/
 	prevLeftEyePos = Vector2f(leftEye.getPosition().x, leftEye.getPosition().y);
-	
-	
-	
 
-	if (leftEye.getGlobalBounds().left + leftEye.getGlobalBounds().width < leftSclera.getGlobalBounds().left + leftSclera.getGlobalBounds().width
-		&& leftEye.getGlobalBounds().left > leftSclera.getGlobalBounds().left
-		&& leftEye.getGlobalBounds().top + leftEye.getGlobalBounds().height < leftSclera.getGlobalBounds().top + leftSclera.getGlobalBounds().height
-		&& leftEye.getGlobalBounds().top > leftSclera.getGlobalBounds().top)
+	float h = leftSclera.getGlobalBounds().left + leftSclera.getGlobalBounds().width;
+	float v = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
+	Vector2f dirRC(h, v);
+	h = leftSclera.getGlobalBounds().left + leftSclera.getGlobalBounds().width;
+	v = leftSclera.getGlobalBounds().top + leftSclera.getGlobalBounds().height;
+	Vector2f dirRB(h, v);
+	h = leftSclera.getGlobalBounds().left + leftSclera.getGlobalBounds().width * 0.5f;
+	v = leftSclera.getGlobalBounds().top + leftSclera.getGlobalBounds().height;
+	Vector2f dirCB(h, v);
+	h = leftSclera.getGlobalBounds().left;
+	v = leftSclera.getGlobalBounds().top + leftSclera.getGlobalBounds().height;
+	Vector2f dirLB(h, v);
+	h = leftSclera.getGlobalBounds().left;
+	v = leftSclera.getGlobalBounds().top + leftSclera.getGlobalBounds().height * 0.5f;
+	Vector2f dirLC(h, v);
+
+	float lengthRC = Utils::GetLength(dirRC - player.GetPosition());
+	float lengthRB = Utils::GetLength(dirRB - player.GetPosition());
+	float lengthCB = Utils::GetLength(dirCB - player.GetPosition());
+	float lengthLB = Utils::GetLength(dirLB - player.GetPosition());
+	float lengthLC = Utils::GetLength(dirLC - player.GetPosition());
+	
+	float length;
+	Vector2f dir;
+
+	if (lengthRC > lengthRB)
 	{
-		leftEye.setPosition(leftEye.getPosition() + Utils::Normalize(dir) * speed * dt * 4.f);
+		dir = dirRB - Vector2f(leftEye.getGlobalBounds().left + leftEye.getGlobalBounds().width, leftEye.getGlobalBounds().top + leftEye.getGlobalBounds().height);
+		length = lengthRB;
 	}
-	if (leftSclera.getGlobalBounds().left + (leftSclera.getGlobalBounds().width * 0.5f) + 12 < leftEye.getGlobalBounds().left + (leftEye.getGlobalBounds().width * 0.5f))
+	else
 	{
-		leftEye.setPosition(prevLeftEyePos.x, leftEye.getPosition().y);
+		dir = dirRC - Vector2f(leftEye.getGlobalBounds().left + leftEye.getGlobalBounds().width, leftEye.getGlobalBounds().top + leftEye.getGlobalBounds().height*0.5f);
+		length = lengthRC;
 	}
-	if (leftSclera.getGlobalBounds().left + (leftSclera.getGlobalBounds().width * 0.5f) - 6 > leftEye.getGlobalBounds().left + (leftEye.getGlobalBounds().width * 0.5f))
+
+	if (length > lengthCB)
 	{
-		leftEye.setPosition(prevLeftEyePos.x, leftEye.getPosition().y);
+		dir = dirCB - Vector2f(leftEye.getGlobalBounds().left + leftEye.getGlobalBounds().width*0.5f, leftEye.getGlobalBounds().top + leftEye.getGlobalBounds().height);
+		length = lengthCB;
 	}
-	if (leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f) + 6 < leftEye.getGlobalBounds().top + (leftEye.getGlobalBounds().height * 0.5f))
+
+	if (length > lengthLB)
 	{
-		leftEye.setPosition(leftEye.getPosition().x, prevLeftEyePos.y);
+		dir = dirLB - Vector2f(leftEye.getGlobalBounds().left , leftEye.getGlobalBounds().top + leftEye.getGlobalBounds().height);
+		length = lengthLB;
 	}
-	if (leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f) - 9 > leftEye.getGlobalBounds().top + (leftEye.getGlobalBounds().height * 0.5f))
+
+	if (length > lengthLC)
 	{
-		leftEye.setPosition(leftEye.getPosition().x, prevLeftEyePos.y);
+		dir = dirLC - Vector2f(leftEye.getGlobalBounds().left + leftEye.getGlobalBounds().width * 0.5f, leftEye.getGlobalBounds().top + leftEye.getGlobalBounds().height*0.5f);
+		length = lengthLC;
 	}
+
+
+	
+	leftEye.setPosition(leftEye.getPosition() + Utils::Normalize(dir) * speed * 2.f * dt);
 
 	updateY = leftSclera.getGlobalBounds().top + (leftSclera.getGlobalBounds().height * 0.5f);
+}
+
+void LamiPhaseTwo::SetDive()
+{
+	if (diveOn)
+	{
+		diveOn = false;
+	}
+	else
+	{
+		diveOn = true;
+	}
+}
+
+void LamiPhaseTwo::SetIdle()
+{
+	if (isIdle)
+	{
+		isIdle = false;
+	}
+	else
+	{
+		isIdle = true;
+	}
+	isReappearing = false;
 }
 
 bool LamiPhaseTwo::OnHitted(int atk, float dt, Time timeHit)
