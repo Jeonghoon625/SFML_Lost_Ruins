@@ -38,6 +38,7 @@ private:
 	AnimationController aniHeroine;
 	AnimationController aniRope1;
 	AnimationController aniRope2;
+	AnimationController aniTree;
 
 	Font fontLostRuins;
 	Texture textureTitle;
@@ -51,7 +52,7 @@ private:
 	Sprite heroine;
 	Sprite rope1;
 	Sprite rope2;
-
+	Sprite tree;
 	Sprite loadBar;
 
 	RectangleShape topBar;
