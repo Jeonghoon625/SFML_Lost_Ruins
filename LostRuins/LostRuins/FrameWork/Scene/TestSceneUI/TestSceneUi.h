@@ -121,12 +121,34 @@ private:
 	////////////////////////////////////////////
 
 	Sprite InvenOrder; // 주문
-	Sprite InvenOrderblock1;
-	Sprite InvenOrderblock2;
-	Sprite InvenOrderblock3;
-	Text textInvenOrder1;
-	Text textInvenOrder2;
-	Text textInvenOrder3;
+	Sprite Orderblankrhombus1; //  1. 마름모 빈칸
+	Sprite Orderblankrhombus2; // 2. 마름모 빈칸
+	Sprite orderitemphotoframe1; // 1. 우측 아이템 네모칸
+	Sprite orderitemphotoframe2; // 2. 우측 아이템 네모칸
+	Sprite OdescriptionImage1; // 1. 우측 아이템 이미지
+	Sprite OdescriptionImage2; // 2. 우측 아이템 이미지
+	Sprite Oitembackground1; // 1. 우측 아이템 이미지 뒷배경
+	Sprite Oitembackground2; // 2. 우측 아이템 이미지 뒷배경
+	Sprite Orderfullrhombus1; // 1. 채원진 마름모
+	Sprite Orderfullrhombus2; // 2. 채원진 마름모
+
+	Text Otextscrollname1; // 1. 리스트 내 아이템 이름
+	Text Otextscrollname2; // 2. 리스트 내 아이템 이름
+	Text OtextItemnamefield1; // 1. 우측 아이템 이름
+	Text OtextItemnamefield2; // 2. 우측 아이템 이름
+	Text Omagictype1; // 1. 마법타입
+	Text Omagictype2; // 2. 마법타입
+	Text Oattackspeed1; // 1. 공격속도
+	Text Oattackspeed2; // 2. 공격속도
+	Text ODamage1; // 1. 데미지
+	Text ODamage2; // 2. 데미지
+	Text OItemDescription1; // 1. 아이템설명 텍스트
+	Text OItemDescription2; // 1. 아이템설명 텍스트
+	Text OItemDescription3; // 1. 아이템설명 텍스트
+	Text OItemDescription01; // 2. 아이템설명 텍스트
+	Text OItemDescription02; // 2. 아이템설명 텍스트
+	Text OItemDescription03; // 2. 아이템설명 텍스트
+	Text OItemDescription04; // 2. 아이템설명 텍스트
 
 	////////////////////////////////////////////
 	//                                        //
@@ -364,10 +386,17 @@ private:
 	bool inventory;
 	bool MAP;
 	bool Escmenu;
+
 	bool Zweapon;
 	bool Zweaponview;
 	bool Xweapon;
 	bool Xweaponview;
+
+	bool Zscroll;
+	bool Zscrollview;
+	bool Xscroll;
+	bool Xscrollview;
+
 	bool Escset;
 	bool FullCSsetview;
 	bool VsyCSSetview;
@@ -388,4 +417,6 @@ public:
 	void EscKeyboard();
 	void weaponlist1();
 	void weaponlist2();
+	void scrollList1();
+	void scrollList2();
 };
