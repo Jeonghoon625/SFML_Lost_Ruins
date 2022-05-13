@@ -33,7 +33,6 @@ void Utils::SetOrigin(sf::Transformable& tr, sf::FloatRect bounds, Pivots preset
 	case Pivots::LB:
 		tr.setOrigin(bounds.left, bounds.height);
 		break;
-
 	case Pivots::CT:
 		tr.setOrigin(bounds.width * 0.5f, bounds.top);
 		break;

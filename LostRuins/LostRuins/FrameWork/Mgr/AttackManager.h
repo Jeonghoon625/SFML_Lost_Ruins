@@ -2,13 +2,16 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include <list>
+#include "../Object/TestBlock/TestBlock.h"
 #include "../Object/Weapon/TwohandWeapon.h"
 #include "../Object/Weapon/Dagger.h"
 #include "../Object/Spell/FireArrow.h"
+#include "../Mgr/EffectManager.h"
 
 using namespace sf;
 using namespace std;
 
+class TestBlock;
 class ZombieWalker;
 
 enum class AttackType
@@ -31,8 +34,8 @@ private:
 	const float DAGGER_ATTACK_FPS = 0.03f;
 	const float TWO_HANDED_ATTACK_FPS = 0.04f;
 
-	const int MAX_SPELL_CACHE_SIZE = 10;
-	const float FIRE_ARROW_CAST_TIME = 1.f;
+	const int MAX_SPELL_CACHE_SIZE = 50;
+	const float FIRE_ARROW_CAST_TIME = 0.8f;
 
 	AttackType currentAtkType;
 	Sprite sprite;
@@ -50,10 +53,11 @@ private:
 	std::list<FireArrow*> useSpell;
 
 	ZombieWalker* zombie;
+	EffectManager* effectMgr;
 
 public:
-	void Init(ZombieWalker* zombie);
-	void Update(float dt);
+	void Init(ZombieWalker* zombie, EffectManager* effectMgr);
+	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
 	void WeaponDraw(RenderWindow* window, View* mainView);
 	void SpellDraw(RenderWindow* window);
 
@@ -74,5 +78,6 @@ public:
 	~AttackManager();
 	void TwohandWeaponInit();
 	void DaggerWeaponInit();
+
 };
 

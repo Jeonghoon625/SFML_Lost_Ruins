@@ -1,0 +1,2 @@
+ID,FPS,"LOOP TYPE(0:Single, 1:Loop)",CLIP PATH
+Explosion,15,0,data_tables/animations/effect/effect_animation_Explosion.csv

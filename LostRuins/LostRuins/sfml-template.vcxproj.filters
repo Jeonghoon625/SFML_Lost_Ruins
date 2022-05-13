@@ -125,12 +125,6 @@
     <ClCompile Include="FrameWork\Scene\MapScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\TitleObject\Rofe1.cpp">
-      <Filter>Framework\Object\TitleObject</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Object\TitleObject\Rofe2.cpp">
-      <Filter>Framework\Object\TitleObject</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\Object\Weapon\Dagger.cpp">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClCompile>
@@ -155,8 +149,18 @@
     <ClCompile Include="FrameWork\Object\Monster\LamiHand.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\Coin\Coin.cpp">
-      <Filter>FrameWork\Object\Coin</Filter>
+    <ClCompile Include="FrameWork\Object\Coin\Coin.cpp" />
+    <ClCompile Include="FrameWork\Mgr\EffectManager.cpp">
+      <Filter>FrameWork\Mgr</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Effect\Blood.cpp">
+      <Filter>FrameWork\Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Object\Effect\Explosion.cpp">
+      <Filter>FrameWork\Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Mgr\SoundHolder.cpp">
+      <Filter>FrameWork\Mgr</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Object\CollisionBlock\CollisionBlock.cpp">
       <Filter>FrameWork\Object\CollisionBlock</Filter>
@@ -247,12 +251,6 @@
     <ClInclude Include="FrameWork\Scene\MapScene.h">
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\TitleObject\Rofe1.h">
-      <Filter>Framework\Object\TitleObject</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Object\TitleObject\Rofe2.h">
-      <Filter>Framework\Object\TitleObject</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\Object\Weapon\Dagger.h">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClInclude>
@@ -285,6 +283,18 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Object\CollisionBlock\CollisionBlock.h">
       <Filter>FrameWork\Object\CollisionBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Mgr\EffectManager.h">
+      <Filter>FrameWork\Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Effect\Blood.h">
+      <Filter>FrameWork\Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Effect\Explosion.h">
+      <Filter>FrameWork\Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Mgr\SoundHolder.h">
+      <Filter>FrameWork\Mgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -329,9 +339,6 @@
     </Filter>
     <Filter Include="Framework\Object\Npc">
       <UniqueIdentifier>{51fb6813-1bc0-4c1a-8488-2c8efba53977}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Object\TitleObject">
-      <UniqueIdentifier>{357af2aa-5fb7-49fd-983d-35777ffead7c}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Object\DamageAndRecovery">
       <UniqueIdentifier>{75e52427-22c3-41a2-be12-c7305e7afd54}</UniqueIdentifier>

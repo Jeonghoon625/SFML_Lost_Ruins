@@ -28,19 +28,18 @@ void Player::Init(ZombieWalker* zombie)
 	isAlive = true;
 	isPause = false;
 
-	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
-
+	AnimationInit(&sprite);
 	sprite.setOrigin(15.5f, 50.f);
 	sprite.setScale(scale);
-	AnimationInit();
 	currentStatus = Status::STATUS_IDLE;
 	animation.Play("Idle");
 
-	attackMgr.Init(zombie);
+	effectMgr.Init();
+	attackMgr.Init(zombie, &effectMgr);
 
 	this->zombie = zombie;
 
-	for (int i = 0; i < MAX_DAMAGE_TEXT; i++)
+	for (int i = 0; i < MAX_TEXT_CACHE_SIZE; i++)
 	{
 		unuseDorR.push_back(new DamageAndRecovery());
 	}
@@ -58,7 +57,8 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 	AnimationUpdate();
 	animation.Update(dt);
 
-	attackMgr.Update(dt);
+	attackMgr.Update(dt, blocks, playTime);
+	effectMgr.Update(dt);
 
 	auto DorR = useDorR.begin();
 	while (DorR != useDorR.end())
@@ -87,6 +87,7 @@ void Player::Draw(RenderWindow* window, View* mainView)
 		attackMgr.WeaponDraw(window, mainView);
 	}
 	attackMgr.SpellDraw(window);
+	effectMgr.Draw(window);
 
 	for (auto DorR : useDorR)
 	{
@@ -202,7 +203,7 @@ void Player::PlayerAction(float dt, Time playTime)
 		else if (isSpell == true)
 		{
 			attackFps -= dt;
-			if (attackFps < 0.25f && isDelay == false)
+			if (attackFps < 0.2f && isDelay == false)
 			{
 				//std::cout << "발사" << std::endl;
 				attackMgr.CastingSpell(sprite);
@@ -355,10 +356,12 @@ bool Player::OnHitted(int damage, Time timeHit)
 			lastHit = timeHit;
 			health -= damage;
 
+			effectMgr.HitActor(sprite);
+
 			Vector2f spawnPos(position.x, sprite.getGlobalBounds().top);
 			if (unuseDorR.empty())
 			{
-				for (int i = 0; i < MAX_DAMAGE_TEXT; ++i)
+				for (int i = 0; i < MAX_TEXT_CACHE_SIZE; ++i)
 				{
 					unuseDorR.push_back(new DamageAndRecovery());
 				}
@@ -383,6 +386,10 @@ bool Player::OnHitted(int damage, Time timeHit)
 			{
 				isJump = false;
 				JumpingSpeed = START_JUMP_SPEED;
+			}
+			if (isSpell == true)
+			{
+				isSpell = false;
 			}
 
 			if (health < 0)
@@ -438,9 +445,9 @@ bool Player::GetPause()
 	return isPause;
 }
 
-void Player::AnimationInit()
+void Player::AnimationInit(Sprite* sprite)
 {
-	animation.SetTarget(&sprite);
+	animation.SetTarget(sprite);
 
 	rapidcsv::Document clips("data_tables/animations/player/player_animation_clips2.csv");
 	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
@@ -508,7 +515,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				JumpingSpeed = START_JUMP_SPEED;
 			}
 			// 블럭 LB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockLeft > playerXpos && blockDown < playerYpos)
+			if (blockDown < playerYpos && blockLeft > playerXpos)
 			{
 				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
 				{
@@ -527,7 +534,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				}
 			}
 			// 블럭 RB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockRight < playerXpos && blockDown < playerYpos)
+			if (blockDown < playerYpos && blockRight < playerXpos)
 			{
 				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
 				{
@@ -553,7 +560,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				fallingSpeed = 0.f;
 			}
 			// 블럭 LT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockLeft > playerXpos && blockUp > playerYpos)
+			if (blockUp > playerYpos && blockLeft > playerXpos)
 			{
 				if (abs(blockLeft - playerRight) > abs(blockUp - playerDown))
 				{
@@ -573,7 +580,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				}
 			}
 			// 블럭 RT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockRight < playerXpos && blockUp > playerYpos)
+			if (blockUp > playerYpos && blockRight < playerXpos)
 			{
 				if (abs(blockRight - playerLeft) > abs(blockUp - playerDown))
 				{
@@ -617,7 +624,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 void Player::AnimationUpdate()
 {
 	// 스프라이트 반전
-	if (isAttack == false && isRoll == false && isHit == false && isAlive == true)
+	if (isAttack == false && isRoll == false && isHit == false && isSpell == false && isAlive == true)
 	{
 		if (InputManager::GetKey(Keyboard::Left))
 		{
