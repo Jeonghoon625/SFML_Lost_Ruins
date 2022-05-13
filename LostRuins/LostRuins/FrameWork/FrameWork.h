@@ -3,6 +3,7 @@
 #include "Mgr/InputManager.h"
 #include "Mgr/SceneManager.h"
 #include "Mgr/TextureHolder.h"
+#include "Mgr/SoundHolder.h"
 #include "Candle/Candle.hpp"
 #include "Candle/RadialLight.hpp"
 
@@ -20,6 +21,7 @@ private:
 
 	SceneManager sceneMgr;
 	TextureHolder textureHolder;
+	SoundHolder soundHolder;
 
 	Clock clock;
 	Time playTime;

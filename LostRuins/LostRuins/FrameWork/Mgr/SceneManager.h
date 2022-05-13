@@ -28,7 +28,7 @@ private:
 public:
 	void Init();
 	void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
-	void Draw(RenderWindow* window, View* mainView);
+	void Draw(RenderWindow* window, View* mainView, View* uiView);
 
 	void SceneSwitch(SceneType sceneType);
 	void sceneRelease();

@@ -1,13 +1,14 @@
 #include "TitleScene.h"
 #include "../Mgr/SceneManager.h"
+#include "../Mgr/SoundHolder.h"
 
 void TitleScene::Init(SceneManager* sceneManager)
 {
 	this->sceneMgr = sceneManager;
 	isPosition = 1;
 
-	resolution.x = VideoMode::getDesktopMode().width;
-	resolution.y = VideoMode::getDesktopMode().height;
+	resolution.x = 1920.f;
+	resolution.y = 1080.f;
 
 	SettingTextrue();
 	SettingText();
@@ -60,7 +61,6 @@ void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mai
 	aniHeroine.Update(dt);
 	aniRope1.Update(dt);
 	aniRope2.Update(dt);
-	this->uiView = uiView;
 
 	if (InputManager::GetKeyDown(Keyboard::Space))
 	{
@@ -68,7 +68,7 @@ void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mai
 	}
 }
 
-void TitleScene::Draw(RenderWindow* window, View* mainView)
+void TitleScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
 	window->setView(*uiView);
 	window->draw(sky);
@@ -91,7 +91,6 @@ void TitleScene::Draw(RenderWindow* window, View* mainView)
 
 TitleScene::~TitleScene()
 {
-
 }
 
 void TitleScene::GetSelect(RenderWindow* window)

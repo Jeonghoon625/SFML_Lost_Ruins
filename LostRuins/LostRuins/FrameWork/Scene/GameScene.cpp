@@ -48,7 +48,7 @@ void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* main
 	}
 }
 
-void GameScene::Draw(RenderWindow* window, View* objectView)
+void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
 {
 	/* View ¼³Á¤*/
 	objectView->setCenter(player.GetPosition());
@@ -99,6 +99,7 @@ GameScene::~GameScene()
 	{
 		delete blockShape;
 	}
+
 	blocks.clear();
 }
 

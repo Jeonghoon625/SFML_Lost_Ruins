@@ -7,10 +7,9 @@ void Scene::Init(SceneManager* sceneManager)
 
 void Scene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-
 }
 
-void Scene::Draw(RenderWindow* window, View* mainView)
+void Scene::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
 
 }

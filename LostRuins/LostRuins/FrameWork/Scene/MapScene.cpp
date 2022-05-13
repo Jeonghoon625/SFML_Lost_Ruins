@@ -20,8 +20,8 @@ void MapScene::Init(SceneManager* sceneManager)
 
 	this->sceneMgr = sceneManager;
 
-	resolution.x = VideoMode::getDesktopMode().width;
-	resolution.y = VideoMode::getDesktopMode().height;
+	resolution.x = 1920.f; // VideoMode::getDesktopMode().width;
+	resolution.y = 1080.f; // VideoMode::getDesktopMode().height;
 
 	mapView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
@@ -169,7 +169,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	}
 }
 
-void MapScene::Draw(RenderWindow* window, View* mainView)
+void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
 	window->setView(*mapView);
 	window->draw(shape);

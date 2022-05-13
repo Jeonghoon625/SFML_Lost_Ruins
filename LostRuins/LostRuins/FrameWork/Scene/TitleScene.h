@@ -4,7 +4,6 @@
 #include <map>
 #include "Scene.h"
 #include "../Mgr/TextureHolder.h"
-#include "../Mgr/SoundHolder.h"
 #include "../Mgr/Utils.h"
 #include "../Mgr/InputManager.h"
 #include "../Animation/AnimationController.h"
@@ -23,7 +22,6 @@ class TitleScene : public Scene
 {
 private:
 	SceneManager* sceneMgr;
-	SoundHolder soundHlr;
 
 	Vector2i resolution;
 
@@ -58,12 +56,10 @@ private:
 
 	std::map<std::string, Texture> texmap;
 
-	View* uiView;
-
 public:
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
-	virtual void Draw(RenderWindow* window, View* mainView);
+	virtual void Draw(RenderWindow* window, View* mainView, View* uiView);
 	virtual ~TitleScene();
 
 	void GetSelect(RenderWindow* window);

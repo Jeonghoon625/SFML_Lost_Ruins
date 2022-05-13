@@ -15,7 +15,6 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 	//zombieCrawler.MonsterInit();
 	//zombieWalker.MonsterInit();
 
-	
 	CreateBlock();
 	//Dummy Map
 	CreateBackGround();
@@ -25,8 +24,6 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 
 void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-
-	
 	//Goblin.Update(player,dt, blocks, playTime);
 	//zombieCrawler.Update(player,dt, blocks, playTime);
 	//zombieWalker.Update(player,dt, blocks, playTime);
@@ -34,7 +31,7 @@ void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* ma
 	player.Update(dt, blocks, playTime);
 }
 
-void TestSceneKK::Draw(RenderWindow* window, View* mainView)
+void TestSceneKK::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
 	/* View ¼³Á¤*/
 	mainView->setCenter(player.GetPosition());
@@ -77,8 +74,6 @@ void TestSceneKK::Draw(RenderWindow* window, View* mainView)
 	zombieWalker.Draw(window);*/
 	Lami2.Draw(window);
 	player.Draw(window, mainView);
-	
-
 }
 
 TestSceneKK::~TestSceneKK()
