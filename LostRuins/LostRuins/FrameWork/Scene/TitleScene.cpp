@@ -49,15 +49,15 @@ void TitleScene::Update(float dt, Time playTime, RenderWindow* window, View* mai
 		break;
 	}
 
-	if (InputManager::GetKeyDown(Keyboard::Space))
-	{
-		GetSelect(window);
-	}
-
 	aniHeroine.Update(dt);
 	aniRope1.Update(dt);
 	aniRope2.Update(dt);
 	this->uiView = uiView;
+
+	if (InputManager::GetKeyDown(Keyboard::Space))
+	{
+		GetSelect(window);
+	}
 }
 
 void TitleScene::Draw(RenderWindow* window, View* mainView)
