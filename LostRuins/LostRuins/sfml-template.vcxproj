@@ -22,13 +22,18 @@
     <ClCompile Include="FrameWork\Animation\AnimationClip.cpp" />
     <ClCompile Include="FrameWork\Animation\AnimationController.cpp" />
     <ClCompile Include="FrameWork\FrameWork.cpp" />
+    <ClCompile Include="FrameWork\Mgr\EffectManager.cpp" />
     <ClCompile Include="FrameWork\Mgr\InputManager.cpp" />
     <ClCompile Include="FrameWork\Mgr\SceneManager.cpp" />
+    <ClCompile Include="FrameWork\Mgr\SoundHolder.cpp" />
     <ClCompile Include="FrameWork\Mgr\TextureHolder.cpp" />
     <ClCompile Include="FrameWork\Mgr\UIManager.cpp" />
     <ClCompile Include="FrameWork\Mgr\Utils.cpp" />
+    <ClCompile Include="FrameWork\Object\CollisionBlock\CollisionBlock.cpp" />
     <ClCompile Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.cpp" />
     <ClCompile Include="FrameWork\Object\Coin\Coin.cpp" />
+    <ClCompile Include="FrameWork\Object\Effect\Blood.cpp" />
+    <ClCompile Include="FrameWork\Object\Effect\Explosion.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp" />
     <ClCompile Include="FrameWork\Mgr\AttackManager.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\LamiHand.cpp" />
@@ -46,12 +51,16 @@
     <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp" />
     <ClCompile Include="FrameWork\Scene\GameScene.cpp" />
     <ClCompile Include="FrameWork\Scene\MapScene.cpp" />
-    <ClCompile Include="FrameWork\Object\TitleObject\Rofe1.cpp" />
-    <ClCompile Include="FrameWork\Object\TitleObject\Rofe2.cpp" />
     <ClCompile Include="FrameWork\Scene\Scene.cpp" />
-    <ClCompile Include="FrameWork\Scene\TestScene.cpp" />
-    <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp" />
-    <ClCompile Include="FrameWork\Scene\TestSceneTT.cpp" />
+    <ClCompile Include="FrameWork\Scene\TestScene.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Scene\TestSceneTT.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="FrameWork\Scene\TestSceneUI\TestSceneUi.cpp" />
     <ClCompile Include="FrameWork\Scene\TitleScene.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -70,12 +79,17 @@
     <ClInclude Include="FrameWork\Animation\AnimationController.h" />
     <ClInclude Include="FrameWork\Animation\rapidcsv.h" />
     <ClInclude Include="FrameWork\FrameWork.h" />
+    <ClInclude Include="FrameWork\Mgr\EffectManager.h" />
     <ClInclude Include="FrameWork\Mgr\InputManager.h" />
     <ClInclude Include="FrameWork\Mgr\SceneManager.h" />
+    <ClInclude Include="FrameWork\Mgr\SoundHolder.h" />
     <ClInclude Include="FrameWork\Mgr\TextureHolder.h" />
     <ClInclude Include="FrameWork\Mgr\UIManager.h" />
     <ClInclude Include="FrameWork\Mgr\Utils.h" />
+    <ClInclude Include="FrameWork\Object\CollisionBlock\CollisionBlock.h" />
     <ClInclude Include="FrameWork\Object\DamageAndRecovery\DamageAndRecovery.h" />
+    <ClInclude Include="FrameWork\Object\Effect\Blood.h" />
+    <ClInclude Include="FrameWork\Object\Effect\Explosion.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiHand.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiPhaseOne.h" />
     <ClInclude Include="FrameWork\Object\Monster\LamiPhaseTwo.h" />
@@ -94,12 +108,14 @@
     <ClInclude Include="FrameWork\Object\Weapon\TwohandWeapon.h" />
     <ClInclude Include="FrameWork\Scene\GameScene.h" />
     <ClInclude Include="FrameWork\Scene\MapScene.h" />
-    <ClInclude Include="FrameWork\Object\TitleObject\Rofe1.h" />
-    <ClInclude Include="FrameWork\Object\TitleObject\Rofe2.h" />
     <ClInclude Include="FrameWork\Scene\Scene.h" />
     <ClInclude Include="FrameWork\Scene\TestScene.h" />
-    <ClInclude Include="FrameWork\Scene\TestSceneKK.h" />
-    <ClInclude Include="FrameWork\Scene\TestSceneTT.h" />
+    <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\TestSceneTT.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="FrameWork\Scene\TestSceneUI\TestSceneUi.h" />
     <ClInclude Include="FrameWork\Scene\TitleScene.h" />
   </ItemGroup>

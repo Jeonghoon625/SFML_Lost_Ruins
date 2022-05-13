@@ -1,17 +1,15 @@
 #pragma once
-
 #include <SFML/Graphics.hpp>
 #include <algorithm>
+#include <vector>
 #include "Scene.h"
 #include "../Mgr/TextureHolder.h"
 #include "../Object/Player/Player.h"
-#include "../Object/TestBlock/TestBlock.h"
 #include "../Object/Monster/Monster.h"
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
+#include "../Object/CollisionBlock/CollisionBlock.h"
 #include "TestSceneUI/TestSceneUi.h"
-#include "../Object/TestBlock/TestBlock.h"
-#include <vector>
 
 enum class InputState
 {
@@ -21,59 +19,83 @@ enum class InputState
 	NONE
 };
 
+struct Button
+{
+	RectangleShape buttonShape;
+	FloatRect buttonRect;
+	Text buttonText;
+};
+
 class MapScene : public Scene
 {
 	const int mapWidth = 50;
 	const int mapHeight = 20;
-
 	const float VIEW_SPEED = mapWidth * 10.f;
+
 	float gridSizeF;
 	unsigned gridSizeU;
 	
 	SceneManager* sceneMgr;
 	Vector2i resolution;
 
-	Texture texBackground;
-
 	View* mapView;
 	View* uiView;
-	
+	View* miniMapView;
+
 	RectangleShape shape;
 	RectangleShape tileSelector;
-	vector<vector <RectangleShape>> tileMap;
+	vector<vector <RectangleShape>> gridTileMap;
+	
+
+	Vector2i mousePosScreen;
+	Vector2i mousePosWindow;
+	Vector2f mousePosWorld;
+	Vector2u mousePosGrid;
+
+	Vector2u downGrid;
+	Vector2u upGrid;
+	vector<Vector2u> finalGrid;
+	RectangleShape* currentDrag;
+
+	Text text;
+	Font font;
+
+	vector <CollisionBlock*> blocks;
+
+	Texture selectTexture;
+	VertexArray vertexMap;
+
+	InputState currentInputState;
+
+	vector <Button> buttons;
+	
+	string name;
+
+	//test
+	bool isDraw;
+	Player* player;
 
 	int fromX;
 	int toX;
 	int fromY;
 	int toY;
 
-	Vector2i mousePosScreen;
-	Vector2i mousePosWindow;
-	Vector2f mousePosView;
-	Vector2u mousePosGrid;
-
-	Text text;
-	Font font;
-
-	Vector2u downGrid;
-	Vector2u upGrid;
-	vector<Vector2u> finalGrid;
-	
-	VertexArray vertexMap;
-	InputState currentInputState;
-
-	RectangleShape* currentDrag;
-
-	vector <TestBlock*> blocks;
-
 public:
 	MapScene();
-	int CreateBackGround(int c, int r);
 
-	void CreateBlocks(int fromX, int toX, int fromY, int toY);
 	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
-	virtual void Draw(RenderWindow* window, View* mainView);
+	virtual void Draw(RenderWindow* window, View* mainView, View* uiView);
+
+	void MoveView(float dt);
+	void UpdateMousePos(RenderWindow* window);
+
+	int CreateBackGround(int c, int r);
+
+	void CreateButtonSet();
+	Button CreateButton(float left, float top, float width, float height, string name);
+	void UpdateButton();
+
 	virtual ~MapScene();
 };
 

@@ -35,7 +35,6 @@ void TestSceneTT::Init(SceneManager* sceneManager)
 
 void TestSceneTT::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-	this->uiView = uiView;
 	testUI.Update(dt, playTime, window, uiView, player);
 	testNpc.Update(dt);
 	coin.Update(dt, blocks, player);
@@ -57,7 +56,7 @@ void TestSceneTT::Update(float dt, Time playTime, RenderWindow* window, View* ma
 	}
 }
 
-void TestSceneTT::Draw(RenderWindow* window, View* mainView)
+void TestSceneTT::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
 	window->setView(*mainView);
 	/* View ¼³Á¤*/

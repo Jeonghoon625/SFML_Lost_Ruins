@@ -16,7 +16,7 @@ class Coin
 private:
 
 	//////////////////////////////////////
-	
+
 	bool isFalling;
 	float fallingSpeed;
 	const float GRAVITY_POWER = 2000.f;

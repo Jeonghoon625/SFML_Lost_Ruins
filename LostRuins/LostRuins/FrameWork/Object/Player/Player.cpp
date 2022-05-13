@@ -28,19 +28,18 @@ void Player::Init(ZombieWalker* zombie)
 	isAlive = true;
 	isPause = false;
 
-	texture = TextureHolder::GetTexture("graphics/heroin_sprite.png");
-
+	AnimationInit(&sprite);
 	sprite.setOrigin(15.5f, 50.f);
 	sprite.setScale(scale);
-	AnimationInit();
 	currentStatus = Status::STATUS_IDLE;
 	animation.Play("Idle");
 
-	attackMgr.Init(zombie);
+	effectMgr.Init();
+	attackMgr.Init(zombie, &effectMgr);
 
 	this->zombie = zombie;
 
-	for (int i = 0; i < MAX_DAMAGE_TEXT; i++)
+	for (int i = 0; i < MAX_TEXT_CACHE_SIZE; i++)
 	{
 		unuseDorR.push_back(new DamageAndRecovery());
 	}
@@ -58,7 +57,8 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 	AnimationUpdate();
 	animation.Update(dt);
 
-	attackMgr.Update(dt);
+	attackMgr.Update(dt, blocks, playTime);
+	effectMgr.Update(dt);
 
 	auto DorR = useDorR.begin();
 	while (DorR != useDorR.end())
@@ -87,6 +87,7 @@ void Player::Draw(RenderWindow* window, View* mainView)
 		attackMgr.WeaponDraw(window, mainView);
 	}
 	attackMgr.SpellDraw(window);
+	effectMgr.Draw(window);
 
 	for (auto DorR : useDorR)
 	{
@@ -202,7 +203,7 @@ void Player::PlayerAction(float dt, Time playTime)
 		else if (isSpell == true)
 		{
 			attackFps -= dt;
-			if (attackFps < 0.25f && isDelay == false)
+			if (attackFps < 0.2f && isDelay == false)
 			{
 				//std::cout << "발사" << std::endl;
 				attackMgr.CastingSpell(sprite);
@@ -355,10 +356,12 @@ bool Player::OnHitted(int damage, Time timeHit)
 			lastHit = timeHit;
 			health -= damage;
 
+			effectMgr.HitActor(sprite);
+
 			Vector2f spawnPos(position.x, sprite.getGlobalBounds().top);
 			if (unuseDorR.empty())
 			{
-				for (int i = 0; i < MAX_DAMAGE_TEXT; ++i)
+				for (int i = 0; i < MAX_TEXT_CACHE_SIZE; ++i)
 				{
 					unuseDorR.push_back(new DamageAndRecovery());
 				}
@@ -383,6 +386,10 @@ bool Player::OnHitted(int damage, Time timeHit)
 			{
 				isJump = false;
 				JumpingSpeed = START_JUMP_SPEED;
+			}
+			if (isSpell == true)
+			{
+				isSpell = false;
 			}
 
 			if (health < 0)
@@ -438,9 +445,9 @@ bool Player::GetPause()
 	return isPause;
 }
 
-void Player::AnimationInit()
+void Player::AnimationInit(Sprite* sprite)
 {
-	animation.SetTarget(&sprite);
+	animation.SetTarget(sprite);
 
 	rapidcsv::Document clips("data_tables/animations/player/player_animation_clips2.csv");
 	std::vector<std::string> colId = clips.GetColumn<std::string>("ID");
@@ -487,9 +494,9 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
 		{
 			float blockUp = bk->GetBlockRect().top;
-			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height * 0.5f;
+			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height * 0.5f; // t+h
 			float blockLeft = bk->GetBlockRect().left;
-			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width * 0.5f;
+			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width * 0.5f; // l+w
 
 			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height;
 			float playerDown = hitBox.getPosition().y;
@@ -508,7 +515,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				JumpingSpeed = START_JUMP_SPEED;
 			}
 			// 블럭 LB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockLeft > playerXpos && blockDown < playerYpos)
+			if (blockDown < playerYpos && blockLeft > playerXpos)
 			{
 				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
 				{
@@ -523,11 +530,11 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				else
 				{
 					pos.x -= abs(blockLeft - playerRight);
-					pos.y -= abs(blockDown - playerUp);
+					pos.y += abs(blockDown - playerUp);
 				}
 			}
 			// 블럭 RB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockRight < playerXpos && blockDown < playerYpos)
+			if (blockDown < playerYpos && blockRight < playerXpos)
 			{
 				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
 				{
@@ -542,7 +549,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				else
 				{
 					pos.x += abs(blockRight - playerLeft);
-					pos.y -= abs(blockDown - playerUp);
+					pos.y += abs(blockDown - playerUp);
 				}
 			}
 			// 블럭 CT에 플레이어가 충돌
@@ -553,7 +560,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				fallingSpeed = 0.f;
 			}
 			// 블럭 LT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockLeft > playerXpos && blockUp > playerYpos)
+			if (blockUp > playerYpos && blockLeft > playerXpos)
 			{
 				if (abs(blockLeft - playerRight) > abs(blockUp - playerDown))
 				{
@@ -573,7 +580,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				}
 			}
 			// 블럭 RT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockRight < playerXpos && blockUp > playerYpos)
+			if (blockUp > playerYpos && blockRight < playerXpos)
 			{
 				if (abs(blockRight - playerLeft) > abs(blockUp - playerDown))
 				{
@@ -587,7 +594,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				}
 				else
 				{
-					pos.x -= abs(blockRight - playerLeft);
+					pos.x += abs(blockRight - playerLeft);
 					pos.y -= abs(blockUp - playerDown);
 					pos.y += 1.f;
 				}
@@ -617,7 +624,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 void Player::AnimationUpdate()
 {
 	// 스프라이트 반전
-	if (isAttack == false && isRoll == false && isHit == false && isAlive == true)
+	if (isAttack == false && isRoll == false && isHit == false && isSpell == false && isAlive == true)
 	{
 		if (InputManager::GetKey(Keyboard::Left))
 		{
@@ -886,5 +893,179 @@ void Player::SetStatus(Status newStatus)
 	case Status::STATUS_DEAD:
 		animation.Play("Dead");
 		break;
+	}
+}
+
+
+void Player::Spawn(float x, float y)
+{
+	position.x = x;
+	position.y = y;
+
+	hitBox.setFillColor(Color(103, 103, 103, 125));
+	hitBox.setSize(Vector2f(20.f, 48.f));
+	hitBox.setOrigin(hitBoxStand);
+	hitBox.setScale(scale);
+	hitBox.setPosition(position);
+}
+
+void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime)
+{
+	// 플레이어 행동
+	PlayerAction(dt, playTime);
+
+	// 충돌 처리
+	bool isCollided = false;
+	for (auto bk : blocks)
+	{
+		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
+		{
+			float blockUp = bk->GetBlockRect().top;
+			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height; //t+h
+			float blockLeft = bk->GetBlockRect().left;
+			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width; //l+w
+
+			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height;
+			float playerDown = hitBox.getPosition().y;
+			float playerLeft = hitBox.getGlobalBounds().left;
+			float playerRight = hitBox.getPosition().x + hitBox.getGlobalBounds().width * 0.5f;
+
+			float playerXpos = hitBox.getPosition().x;
+			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
+			Vector2f pos = hitBox.getPosition();
+
+			// 블럭 CB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
+			{
+				pos.y = blockDown + hitBox.getGlobalBounds().height;
+				isJump = false;
+				JumpingSpeed = START_JUMP_SPEED;
+			}
+			// 블럭 LB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockLeft > playerXpos && blockDown < playerYpos)
+			{
+				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+					isJump = false;
+					JumpingSpeed = START_JUMP_SPEED;
+				}
+				else if (abs(blockLeft - playerRight) < abs(blockDown - playerUp))
+				{
+					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockLeft - playerRight);
+					pos.y -= abs(blockDown - playerUp);
+				}
+			}
+			// 블럭 RB에 플레이어가 충돌
+			if (blockDown < playerYpos && blockRight < playerXpos && blockDown < playerYpos)
+			{
+				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+					isJump = false;
+					JumpingSpeed = START_JUMP_SPEED;
+				}
+				else if (abs(blockRight - playerLeft) < abs(blockDown - playerUp))
+				{
+					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x += abs(blockRight - playerLeft);
+					pos.y -= abs(blockDown - playerUp);
+				}
+			}
+			// 블럭 CT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
+			{
+				pos.y = blockUp + 1.f;
+				isFloor = true;
+				fallingSpeed = 0.f;
+			}
+			// 블럭 LT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockLeft > playerXpos && blockUp > playerYpos)
+			{
+				if (abs(blockLeft - playerRight) > abs(blockUp - playerDown))
+				{
+					pos.y = blockUp + 1.f;
+					isFloor = true;
+					fallingSpeed = 0.f;
+				}
+				else if (abs(blockLeft - playerRight) < abs(blockUp - playerDown))
+				{
+					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockLeft - playerRight);
+					pos.y -= abs(blockUp - playerDown);
+					pos.y += 1.f;
+				}
+			}
+			// 블럭 RT에 플레이어가 충돌
+			if (blockUp > playerYpos && blockRight < playerXpos && blockUp > playerYpos)
+			{
+				if (abs(blockRight - playerLeft) > abs(blockUp - playerDown))
+				{
+					pos.y = blockUp + 1.f;
+					isFloor = true;
+					fallingSpeed = 0.f;
+				}
+				else if (abs(blockRight - playerLeft) < abs(blockUp - playerDown))
+				{
+					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockRight - playerLeft);
+					pos.y -= abs(blockUp - playerDown);
+					pos.y += 1.f;
+				}
+			}
+			// 블럭 LC에 플레이어가 충돌
+			if (blockLeft > playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			{
+				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+			}
+			// 블럭 RC에 플레이어가 충돌
+			if (blockRight < playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			{
+				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+			}
+
+			isCollided = true;
+			hitBox.setPosition(pos);
+			position = pos;
+		}
+	}
+	if (isCollided == false)
+	{
+		isFloor = false;
+	}
+
+	// 애니메이션
+	AnimationUpdate();
+	animation.Update(dt);
+
+	//attackMgr.Update(dt);
+
+	auto DorR = useDorR.begin();
+	while (DorR != useDorR.end())
+	{
+		DamageAndRecovery* isDorR = *DorR;
+		isDorR->Update(dt);
+
+		if (!isDorR->IsActive())
+		{
+			DorR = useDorR.erase(DorR);
+		}
+		else
+		{
+			++DorR;
+		}
 	}
 }

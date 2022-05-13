@@ -19,7 +19,6 @@ void GameScene::Init(SceneManager* sceneManager)
 	float wpXpos = 500.f;
 	float wpYpos = resolution.y * 0.5f;
 
-	
 	// test
 	zombieWalker->MonsterInit();
 
@@ -49,33 +48,33 @@ void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* main
 	}
 }
 
-void GameScene::Draw(RenderWindow* window, View* mainView)
+void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
 {
 	/* View 설정*/
-	mainView->setCenter(player.GetPosition());
+	objectView->setCenter(player.GetPosition());
 
 	//좌측 조정
-	if ((mainView->getCenter().x) - (mainView->getSize().x * 0.5f) < gameMap.left)
+	if ((objectView->getCenter().x) - (objectView->getSize().x * 0.5f) < gameMap.left)
 	{
-		mainView->move((mainView->getSize().x * 0.5f) - (mainView->getCenter().x), 0);
+		objectView->move((objectView->getSize().x * 0.5f) - (objectView->getCenter().x), 0);
 	}
 
 	//우측 조정
-	if ((mainView->getCenter().x) + (mainView->getSize().x * 0.5f) > gameMap.left + gameMap.width)
+	if ((objectView->getCenter().x) + (objectView->getSize().x * 0.5f) > gameMap.left + gameMap.width)
 	{
-		mainView->move((gameMap.left + gameMap.width) - ((mainView->getCenter().x) + (mainView->getSize().x * 0.5f)), 0);
+		objectView->move((gameMap.left + gameMap.width) - ((objectView->getCenter().x) + (objectView->getSize().x * 0.5f)), 0);
 	}
 
 	//위측 조정
-	if ((mainView->getCenter().y) - (mainView->getSize().y * 0.5f) < gameMap.top)
+	if ((objectView->getCenter().y) - (objectView->getSize().y * 0.5f) < gameMap.top)
 	{
-		mainView->move(0, (mainView->getSize().y * 0.5f) - (mainView->getCenter().y));
+		objectView->move(0, (objectView->getSize().y * 0.5f) - (objectView->getCenter().y));
 	}
 
 	//아래측 조정
-	if ((mainView->getCenter().y) + (mainView->getSize().y * 0.5f) > gameMap.top + gameMap.height)
+	if ((objectView->getCenter().y) + (objectView->getSize().y * 0.5f) > gameMap.top + gameMap.height)
 	{
-		mainView->move(0, (gameMap.top + gameMap.height) - ((mainView->getCenter().y) + (mainView->getSize().y * 0.5f)));
+		objectView->move(0, (gameMap.top + gameMap.height) - ((objectView->getCenter().y) + (objectView->getSize().y * 0.5f)));
 	}
 
 
@@ -86,7 +85,7 @@ void GameScene::Draw(RenderWindow* window, View* mainView)
 		window->draw(blockShape->GetBlockShape());
 	}
 
-	player.Draw(window, mainView);
+	player.Draw(window, objectView);
 
 	// test
 	zombieWalker->Draw(window);
@@ -100,6 +99,7 @@ GameScene::~GameScene()
 	{
 		delete blockShape;
 	}
+
 	blocks.clear();
 }
 
@@ -138,7 +138,7 @@ int GameScene::CreateBackGround()
 	tileMap.setPrimitiveType(Quads);
 	tileMap.resize(cols * rows * VERTS_IN_QUAD);
 
-	for (int r = 0; r < rows; ++r)
+	for (int r   = 0; r < rows; ++r)
 	{
 		for (int c = 0; c < cols; ++c)
 		{
