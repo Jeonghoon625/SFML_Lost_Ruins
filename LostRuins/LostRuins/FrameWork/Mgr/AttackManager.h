@@ -34,6 +34,8 @@ private:
 	const float DAGGER_ATTACK_FPS = 0.03f;
 	const float TWO_HANDED_ATTACK_FPS = 0.04f;
 
+	const int SPELL_COST_FIRE_ARROW = 4;
+
 	const int MAX_SPELL_CACHE_SIZE = 50;
 	const float FIRE_ARROW_CAST_TIME = 0.8f;
 
@@ -42,6 +44,7 @@ private:
 
 	int isFps;
 	int maxFps;
+	int cost;
 	int delay;
 
 	bool isDirection;
@@ -74,6 +77,8 @@ public:
 	void NextFps();
 	void ResetFps();
 	Sprite GetSprite();
+
+	int PaySpellCost();
 
 	~AttackManager();
 	void TwohandWeaponInit();

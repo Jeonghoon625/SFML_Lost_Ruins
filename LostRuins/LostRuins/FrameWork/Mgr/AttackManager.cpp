@@ -80,6 +80,7 @@ void AttackManager::SetAttackType(AttackType attackType)
 		currentAtkType = AttackType::TWO_HANDED;
 		break;
 	case AttackType::FIRE_ARROW:
+		cost = SPELL_COST_FIRE_ARROW;
 		currentAtkType = AttackType::FIRE_ARROW;
 		break;
 	}
@@ -211,6 +212,11 @@ void AttackManager::ResetFps()
 Sprite AttackManager::GetSprite()
 {
 	return sprite;
+}
+
+int AttackManager::PaySpellCost()
+{
+	return cost;
 }
 
 AttackManager::~AttackManager()

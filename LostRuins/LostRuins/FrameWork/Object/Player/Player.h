@@ -68,6 +68,8 @@ private:
 	int tileSize;
 	int health;
 	int maxHealth;
+	int mana;
+	int maxMana;
 
 	float speed;
 	float JumpingSpeed;
@@ -118,8 +120,12 @@ public:
 	Vector2f GetPosition() const;
 	Sprite GetSprite() const;
 	int GetHealth() const;
+	int GetMaxHealth() const;
+	int GetMana() const;
+	int GetMaxMana() const;
 	RectangleShape GetHitBox();
 	bool GetAlive();
+	void SetPause(bool isPause);
 	bool GetPause();
 
 	void AnimationInit(Sprite* sprite);

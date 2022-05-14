@@ -18,8 +18,20 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 {
 	float HPbarwidth = 314;
 	float HPbarHeight = 17;
+	float MPbarwidth = 314;
+	float MPbarHeight = 17;
+
+	stringstream hp;
+	hp << player.GetHealth() << "/" << player.GetMaxHealth();
+	textHPbar.setString(hp.str());
+	stringstream mp;
+	mp << player.GetMana() << "/" << player.GetMaxMana();
+	textMPbar.setString(mp.str());
+
 	healthBarsize = Vector2f(HPbarwidth, HPbarHeight);
 	HPbar.setScale(player.GetHealth() / 20.f, 1.f); //player.GetMaxHealth()
+	mpBarsize = Vector2f(MPbarwidth, MPbarHeight);
+	MPbar.setScale(player.GetMana() / 20.f, 1.f);
 
 	/*float MPwidth = 314;
 	float MPbarHeight = 17;
@@ -387,6 +399,7 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 		{
 		case 1:
 			Escmenu = false;
+			player.SetPause(false);
 			break;
 
 		case 2:
@@ -2356,6 +2369,11 @@ void TestUi::relics()
 	RelicItemDescription3.setCharacterSize(25);
 	RelicItemDescription3.setFillColor(Color::White);
 	RelicItemDescription3.setPosition(980, 800);
+}
+
+bool TestUi::GetEscMenu()
+{
+	return Escmenu;
 }
 
 void TestUi::EscSetting()

@@ -13,6 +13,7 @@ class TestUi
 {
 private:
 	SceneManager* sceneMgr;
+	Player player;
 	Vector2i resolution;
 	std::map<std::string, Texture> texmap;
 	Vector2f healthBarsize; // HP바 사이즈
@@ -483,4 +484,6 @@ public:
 	void EquipList1();
 	void EquipList2();
 	void relics();
+
+	bool GetEscMenu();
 };
