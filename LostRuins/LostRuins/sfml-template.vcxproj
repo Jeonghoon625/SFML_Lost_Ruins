@@ -41,6 +41,7 @@
     <ClCompile Include="FrameWork\Object\Monster\LamiPhaseOne.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\LamiPhaseTwo.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\Monster.cpp" />
+    <ClCompile Include="FrameWork\Object\Monster\SlimeGreen.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\ZombieCrawler.cpp" />
     <ClCompile Include="FrameWork\Object\Monster\ZombieWalker.cpp" />
     <ClCompile Include="FrameWork\Object\Npc\Npc.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="FrameWork\Object\Coin\Coin.h" />
     <ClInclude Include="FrameWork\Object\Monster\GoblinAttacker.h" />
     <ClInclude Include="FrameWork\Object\Monster\Monster.h" />
+    <ClInclude Include="FrameWork\Object\Monster\SlimeGreen.h" />
     <ClInclude Include="FrameWork\Object\Monster\ZombieCrawler.h" />
     <ClInclude Include="FrameWork\Object\Monster\ZombieWalker.h" />
     <ClInclude Include="FrameWork\Object\Npc\Npc.h" />

@@ -22,6 +22,7 @@ void ZombieWalker::MonsterInit()
 	strAttack = ("ZombieWalkerAttack");
 	strAttackBlocked = ("ZombieWalkerAttackBlocked");
 	strDamageTaken = ("ZombieWalkerDamageTaken");
+	AnimationInit(&sprite);
 
 	SetHealth(20);
 	SetAtk(3);
@@ -30,7 +31,7 @@ void ZombieWalker::MonsterInit()
 	sprite.setScale(scale);
 	position = sprite.getPosition();
 
-	AnimationInit(&sprite);
+	
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setOrigin(200, 40);

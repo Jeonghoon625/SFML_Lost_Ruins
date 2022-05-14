@@ -13,6 +13,7 @@
 #include "../Object/Monster/ZombieWalker.h"
 #include "../Object/TestBlock/TestBlock.h"
 #include "../Object/Monster/LamiPhaseTwo.h"
+#include "../Object/Monster/SlimeGreen.h"
 
 
 
@@ -34,6 +35,7 @@ private:
 	Monster Goblin;
 	ZombieCrawler zombieCrawler;
 	ZombieWalker zombieWalker;
+	SlimeGreen slimeGreen;
 
 	LamiPhaseTwo Lami2;
 
