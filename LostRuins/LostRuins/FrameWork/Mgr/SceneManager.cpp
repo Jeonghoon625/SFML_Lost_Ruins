@@ -10,10 +10,10 @@ void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* m
 {
 	currentScene->Update(dt, playTime, window, mainView, uiView);
 
-	if (InputManager::GetKeyDown(Keyboard::Escape))
+	/*if (InputManager::GetKeyDown(Keyboard::Escape))
 	{
 		SceneSwitch(SceneType::TITLE);
-	}
+	}*/
 
 	if (InputManager::GetKeyDown(Keyboard::F10))
 	{

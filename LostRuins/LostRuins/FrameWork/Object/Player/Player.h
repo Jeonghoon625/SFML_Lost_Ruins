@@ -120,6 +120,7 @@ public:
 	int GetHealth() const;
 	RectangleShape GetHitBox();
 	bool GetAlive();
+	void SetPause(bool isPause);
 	bool GetPause();
 
 	void AnimationInit(Sprite* sprite);
