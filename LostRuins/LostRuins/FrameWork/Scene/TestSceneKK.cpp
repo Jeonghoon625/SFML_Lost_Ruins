@@ -19,6 +19,7 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 	//Dummy Map
 	CreateBackGround();
 	texBackground = TextureHolder::GetTexture("maps/Another/SewerWall.png");
+	slimeGreen.MonsterInit();
 	Lami2.MonsterInit();
 	Lami2.Spawn(Vector2f(100.f, 340.f));
 }
@@ -28,6 +29,7 @@ void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* ma
 	//Goblin.Update(player,dt, blocks, playTime);
 	//zombieCrawler.Update(player,dt, blocks, playTime);
 	//zombieWalker.Update(player,dt, blocks, playTime);
+	slimeGreen.Update(player, dt, blocks, playTime);
 	Lami2.Update(player, dt, blocks, playTime);
 	player.Update(dt, blocks, playTime);
 }
@@ -74,6 +76,7 @@ void TestSceneKK::Draw(RenderWindow* window, View* mainView, View* uiView)
 	Goblin.Draw(window);
 	zombieCrawler.Draw(window);
 	zombieWalker.Draw(window);*/
+	slimeGreen.Draw(window);
 	Lami2.Draw(window);
 	player.Draw(window, mainView);
 }

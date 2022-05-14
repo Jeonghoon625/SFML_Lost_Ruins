@@ -14,7 +14,7 @@ void GoblinAttacker::MonsterInit()
 	strAttack = ("GoblinAttackerAttack");
 	strAttackBlocked = ("GoblinAttackerAttackBlocked");
 	strDamageTaken = ("GoblinAttackerDamageTaken");
-
+	AnimationInit(&sprite);
 	SetHealth(20);
 	SetAtk(3);
 	SetSpeed(70.f);
@@ -22,7 +22,7 @@ void GoblinAttacker::MonsterInit()
 	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
-
+	
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);

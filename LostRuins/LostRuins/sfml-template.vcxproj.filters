@@ -164,6 +164,9 @@
     <ClCompile Include="FrameWork\Map\Map.cpp">
       <Filter>FrameWork\Map</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Object\Monster\SlimeGreen.cpp">
+      <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -297,6 +300,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Map\csvfile.h">
       <Filter>FrameWork\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Object\Monster\SlimeGreen.h">
+      <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

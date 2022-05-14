@@ -15,7 +15,7 @@ void ZombieCrawler::MonsterInit()
 	strAttack = ("ZombieCrawlerAttack");
 	strAttackBlocked = ("ZombieCrawlerAttackBlocked");
 	strDamageTaken = ("ZombieCrawlerDamageTaken");
-
+	AnimationInit(&sprite);
 	SetHealth(20);
 	SetAtk(3);
 	SetSpeed(30.f);
@@ -23,7 +23,7 @@ void ZombieCrawler::MonsterInit()
 	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
-	AnimationInit(&sprite);
+	
 
 	findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
