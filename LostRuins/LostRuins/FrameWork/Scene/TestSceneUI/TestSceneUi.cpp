@@ -387,6 +387,7 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 		{
 		case 1:
 			Escmenu = false;
+			player.SetPause(false);
 			break;
 
 		case 2:
@@ -2356,6 +2357,11 @@ void TestUi::relics()
 	RelicItemDescription3.setCharacterSize(25);
 	RelicItemDescription3.setFillColor(Color::White);
 	RelicItemDescription3.setPosition(980, 800);
+}
+
+bool TestUi::GetEscMenu()
+{
+	return Escmenu;
 }
 
 void TestUi::EscSetting()

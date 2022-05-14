@@ -75,6 +75,15 @@ void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTim
 			++DorR;
 		}
 	}
+
+	if (InputManager::GetKeyDown(Keyboard::Tab) && isPause == false)
+	{
+		isPause = true;
+	}
+	else if (InputManager::GetKeyDown(Keyboard::Escape) && isPause == false)
+	{
+		isPause = true;
+	}
 }
 
 void Player::Draw(RenderWindow* window, View* mainView)

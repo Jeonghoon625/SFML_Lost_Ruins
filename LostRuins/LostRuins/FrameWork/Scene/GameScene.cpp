@@ -44,10 +44,13 @@ void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* obje
 		}
 
 		player.Update(dt, blocks, playTime);
-
-		if (InputManager::GetKeyDown(Keyboard::Tab))
+	}
+	else
+	{
+		if (InputManager::GetKeyDown(Keyboard::Escape) && 
+			player.GetPause() == true && testUI.GetEscMenu() == false)
 		{
-			player.SetPause(true);
+			player.SetPause(false);
 		}
 	}
 
