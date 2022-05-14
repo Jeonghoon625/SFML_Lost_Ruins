@@ -10,6 +10,7 @@
 #include "../Object/Monster/ZombieWalker.h"
 #include "../Object/CollisionBlock/CollisionBlock.h"
 #include "TestSceneUI/TestSceneUi.h"
+#include "../Map/Map.h"
 
 enum class ButtonType
 {
@@ -47,9 +48,10 @@ struct Button
 
 class MapScene : public Scene
 {
-	const int mapWidth = 35;
-	const int mapHeight = 15;
-	const float VIEW_SPEED = mapWidth * 10.f;
+	
+	int mapWidth;
+	int mapHeight;
+	float VIEW_SPEED;
 
 	float gridSizeF;
 	unsigned gridSizeU;
@@ -72,7 +74,7 @@ class MapScene : public Scene
 
 	Vector2u downGrid;
 	Vector2u upGrid;
-	vector<Vector2u> finalGrid;
+	vector<Vector2u> ingGrid;
 	RectangleShape* currentDrag;
 
 	Text mousePosText;
@@ -115,8 +117,12 @@ public:
 	void CreateButtonSet();
 	Button InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonCategory category, ButtonState state);
 	bool UpdateButton();
+
 	void SetCurrentInputState(ButtonState state);
 	void SetCurrentDrawState(ButtonState state);
+
+	void MapDataInit();
+
 	virtual ~MapScene();
 };
 

@@ -1,6 +1,7 @@
 #include "MapScene.h"
 #include <sstream>
 #include <iostream>
+#include "../Map/csvfile.h"
 #include "../Mgr/InputManager.h"
 
 MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSizeF)), shape(Vector2f(gridSizeF, gridSizeF)), tileSelector(Vector2f(gridSizeF, gridSizeF))
@@ -9,6 +10,8 @@ MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSize
 
 void MapScene::Init(SceneManager* sceneManager)
 {
+	MapDataInit();
+	VIEW_SPEED = mapWidth * 10.f;
 	this->sceneMgr = sceneManager;
 
 	resolution.x = 1920.f; // VideoMode::getDesktopMode().width;
@@ -73,9 +76,13 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	{
 		if (InputManager::GetMouseButtonDown(Mouse::Button::Left))
 		{
-			finalGrid.clear();
 			downGrid = mousePosGrid;
 			std::cout << "DGrid : " << downGrid.x << " " << downGrid.y << "\n";
+			ingGrid.push_back(mousePosGrid);
+			if (currentInputState == ButtonState::TERRAIN)
+			{
+				CreateBackGround(downGrid.x, downGrid.y);
+			}
 
 			if (currentInputState == ButtonState::BLOCK)
 			{
@@ -85,28 +92,32 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 			}
 		}
 
-		if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == ButtonState::BLOCK && currentDrag != nullptr)
+		if (InputManager::GetMouseButton(Mouse::Button::Left))
 		{
-			currentDrag->setSize(Vector2f(((int)mousePosGrid.x - (int)downGrid.x) * gridSizeF, ((int)mousePosGrid.y - (int)downGrid.y) * gridSizeF));
-
-			if (((int)mousePosGrid.x - (int)downGrid.x) >= 0)
+			if (currentInputState == ButtonState::BLOCK && currentDrag != nullptr)
 			{
-				currentDrag->setSize(Vector2f(currentDrag->getSize().x + gridSizeF, currentDrag->getSize().y));
+				currentDrag->setSize(Vector2f(((int)mousePosGrid.x - (int)downGrid.x) * gridSizeF, ((int)mousePosGrid.y - (int)downGrid.y) * gridSizeF));
+
+				if (((int)mousePosGrid.x - (int)downGrid.x) >= 0)
+				{
+					currentDrag->setSize(Vector2f(currentDrag->getSize().x + gridSizeF, currentDrag->getSize().y));
+				}
+
+				if (((int)mousePosGrid.y - (int)downGrid.y) >= 0)
+				{
+					currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y + gridSizeF));
+				}
 			}
 
-			if (((int)mousePosGrid.y - (int)downGrid.y) >= 0)
+			if (currentInputState == ButtonState::TERRAIN)
 			{
-				currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y + gridSizeF));
-			}
+				auto it = find(ingGrid.begin(), ingGrid.end(), mousePosGrid);
+				if (it == ingGrid.end())
+				{
+					CreateBackGround(mousePosGrid.x, mousePosGrid.y);
+				}
 
-			if (((int)mousePosGrid.x - (int)downGrid.x) < 0)
-			{
-				currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y));
-			}
-
-			if (((int)mousePosGrid.y - (int)downGrid.y) < 0)
-			{
-				currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y));
+				ingGrid.push_back(mousePosGrid);
 			}
 		}
 
@@ -117,8 +128,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 			{
 				upGrid = mousePosGrid;
 				std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
-
-				CreateBackGround(upGrid.x, upGrid.y);
+				ingGrid.clear();
 			}
 			break;
 
@@ -180,16 +190,19 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
 	//Object Render
 	window->setView(*mapView);
-	window->draw(shape);
 
-	for (int i = 0; i < mapWidth; i++)
+	if (isDraw)
 	{
-		for (int j = 0; j < mapHeight; j++)
+		window->draw(shape);
+
+		for (int i = 0; i < mapWidth; i++)
 		{
-			window->draw(gridTileMap[i][j]);
+			for (int j = 0; j < mapHeight; j++)
+			{
+				window->draw(gridTileMap[i][j]);
+			}
 		}
 	}
-
 	RectangleShape textureShape;
 
 	fromX = mousePosGrid.x;
@@ -209,10 +222,14 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 		window->draw(*currentDrag);
 	}
 
-	for (auto blockShape : blocks)
+	if (isDraw)
 	{
-		window->draw(blockShape->GetBlockShape());
+		for (auto blockShape : blocks)
+		{
+			window->draw(blockShape->GetBlockShape());
+		}
 	}
+	
 
 	window->draw(tileSelector);
 	if (player != nullptr)
@@ -285,6 +302,7 @@ void MapScene::UpdateMousePos(RenderWindow* window)
 
 int MapScene::CreateBackGround(int c, int r)
 {
+	std::cout << "cccc" << std::endl;
 	int TILE_SIZE = 32;
 	int TILE_TYPES = 0;
 	int VERTS_IN_QUAD = 4;
@@ -317,7 +335,7 @@ int MapScene::CreateBackGround(int c, int r)
 
 void MapScene::CreateButtonSet()
 {
-	Button buttonTerrain = InitButton(resolution.x * 0.9f, resolution.y * 0.5f, 100.f, 50.f, "Terrian", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::TERRAIN);
+	Button buttonTerrain = InitButton(resolution.x * 0.9f, resolution.y * 0.5f, 100.f, 50.f, "Terrain", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::TERRAIN);
 	buttons.push_back(buttonTerrain);
 
 	Button buttonBlock = InitButton(resolution.x * 0.9f, resolution.y * 0.6f, 100.f, 50.f, "Collision\n  Block  ", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::BLOCK);
@@ -369,7 +387,7 @@ bool MapScene::UpdateButton()
 				std::cout << "ButtonDown" << std::endl;
 			}
 
-			if (InputManager::GetMouseButton(Mouse::Button::Left) && button.isButtonClick)
+			if (InputManager::GetMouseButton(Mouse::Button::Left) && button.isButtonClick)	
 			{
 				button.buttonShape.setFillColor(Color::Blue); //Blue
 				std::cout << "Button" << std::endl;
@@ -460,6 +478,26 @@ void MapScene::SetCurrentInputState(ButtonState state)
 void MapScene::SetCurrentDrawState(ButtonState state)
 {
 	currentDrawState = state;
+}
+
+void MapScene::MapDataInit()
+{
+	rapidcsv::Document clips("data_tables/maps/Map_Clips.csv");
+	std::vector<std::string> colId = clips.GetColumn<std::string>("mapId");
+	std::vector<int> colWidth = clips.GetColumn<int>("mapWidth");
+	std::vector<int> colHeight = clips.GetColumn<int>("mapHeight");
+	std::vector<std::string> colPath = clips.GetColumn<std::string>("mapDataPath");
+
+	int totalMaps = colId.size();
+
+	mapWidth = colWidth[0];
+	mapHeight = colHeight[0];
+	
+	csvfile csv("Test.csv");
+	csv << "X" << "VALUE" << endrow;
+	// Data
+	int i = 1;
+	csv << i++ << 123 << endrow;
 }
 
 MapScene::~MapScene()

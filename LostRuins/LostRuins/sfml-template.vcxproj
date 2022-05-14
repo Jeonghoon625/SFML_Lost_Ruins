@@ -22,6 +22,7 @@
     <ClCompile Include="FrameWork\Animation\AnimationClip.cpp" />
     <ClCompile Include="FrameWork\Animation\AnimationController.cpp" />
     <ClCompile Include="FrameWork\FrameWork.cpp" />
+    <ClCompile Include="FrameWork\Map\Map.cpp" />
     <ClCompile Include="FrameWork\Mgr\EffectManager.cpp" />
     <ClCompile Include="FrameWork\Mgr\InputManager.cpp" />
     <ClCompile Include="FrameWork\Mgr\SceneManager.cpp" />
@@ -75,6 +76,8 @@
     <ClInclude Include="FrameWork\Animation\AnimationController.h" />
     <ClInclude Include="FrameWork\Animation\rapidcsv.h" />
     <ClInclude Include="FrameWork\FrameWork.h" />
+    <ClInclude Include="FrameWork\Map\csvfile.h" />
+    <ClInclude Include="FrameWork\Map\Map.h" />
     <ClInclude Include="FrameWork\Mgr\EffectManager.h" />
     <ClInclude Include="FrameWork\Mgr\InputManager.h" />
     <ClInclude Include="FrameWork\Mgr\SceneManager.h" />

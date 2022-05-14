@@ -3,7 +3,7 @@
 
 void SceneManager::Init()
 {
-	SceneSwitch(SceneType::GameScene);
+	SceneSwitch(SceneType::MapScene);
 }
 
 void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)

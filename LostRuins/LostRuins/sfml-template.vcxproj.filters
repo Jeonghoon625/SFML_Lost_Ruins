@@ -62,9 +62,6 @@
     <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp">
-      <Filter>FrameWork\Object\TestBlock</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\FrameWork.cpp">
       <Filter>FrameWork</Filter>
     </ClCompile>
@@ -163,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="FrameWork\Object\Monster\LamiEye.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\Map\Map.cpp">
+      <Filter>FrameWork\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +291,12 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Monster\LamiEye.h">
       <Filter>FrameWork\Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Map\Map.h">
+      <Filter>FrameWork\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Map\csvfile.h">
+      <Filter>FrameWork\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
