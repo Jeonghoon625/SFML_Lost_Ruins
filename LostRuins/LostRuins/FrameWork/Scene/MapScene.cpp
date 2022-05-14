@@ -15,9 +15,6 @@ void MapScene::Init(SceneManager* sceneManager)
 
 	selectTexture = TextureHolder::GetTexture("maps/Stage1/test.png");
 
-	currentInputState = InputState::NONE;
-	currentDrawState = DrawState::NONE;
-
 	isDraw = true;
 
 	this->sceneMgr = sceneManager;
@@ -44,11 +41,20 @@ void MapScene::Init(SceneManager* sceneManager)
 	}
 
 	font.loadFromFile("fonts/LiberationSans-Bold.ttf");
-	text.setCharacterSize(20);
-	text.setFillColor(Color::Magenta);
-	text.setFont(font);
-	text.setPosition(0.f, 0.f);
-	text.setString("TEST");
+	mousePosText.setCharacterSize(20);
+	mousePosText.setFillColor(Color::Magenta);
+	mousePosText.setFont(font);
+	mousePosText.setPosition(0.f, 0.f);
+	mousePosText.setString("TEST");
+
+	stateText.setCharacterSize(30);
+	stateText.setFillColor(Color::Red);
+	stateText.setFont(font);
+	stateText.setPosition(0.f, 0.f);
+	stateText.setString("TEST");
+
+	currentInputState = ButtonState::NONE;
+	currentDrawState = ButtonState::NONE;
 
 	CreateButtonSet();
 }
@@ -58,127 +64,131 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	UpdateMousePos(window);
 	MoveView(dt);
 
-	if (InputManager::GetMouseButtonDown(Mouse::Button::Left))
+	if (!UpdateButton())
 	{
-		finalGrid.clear();
-		downGrid = mousePosGrid;
-		std::cout << "DGrid : " << downGrid.x << " " << downGrid.y << "\n";
-
-		if (currentInputState == InputState::BLOCK)
+		if (InputManager::GetMouseButtonDown(Mouse::Button::Left))
 		{
-			currentDrag = new RectangleShape(Vector2f(0.f, 0.f));
-			currentDrag->setFillColor({ 100, 100, 200, 125 });
-			currentDrag->setPosition(downGrid.x * gridSizeF, downGrid.y * gridSizeF);
-		}
-	}
+			finalGrid.clear();
+			downGrid = mousePosGrid;
+			std::cout << "DGrid : " << downGrid.x << " " << downGrid.y << "\n";
 
-	if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == InputState::BLOCK)
-	{
-		currentDrag->setSize(Vector2f(((int)mousePosGrid.x - (int)downGrid.x) * gridSizeF, ((int)mousePosGrid.y - (int)downGrid.y) * gridSizeF));
-
-		if (((int)mousePosGrid.x - (int)downGrid.x) >= 0)
-		{
-			currentDrag->setSize(Vector2f(currentDrag->getSize().x + gridSizeF, currentDrag->getSize().y));
-		}
-
-		if (((int)mousePosGrid.y - (int)downGrid.y) >= 0)
-		{
-			currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y + gridSizeF));
-		}
-
-		if (((int)mousePosGrid.x - (int)downGrid.x) < 0)
-		{
-			currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y));
-		}
-
-		if (((int)mousePosGrid.y - (int)downGrid.y) < 0)
-		{
-			currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y));
-		}
-	}
-
-	switch (currentInputState)
-	{
-	case::InputState::TERRAIN:
-		if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
-		{
-			upGrid = mousePosGrid;
-			std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
-
-			for (unsigned int i = downGrid.x; i <= upGrid.x; i++)
+			if (currentInputState == ButtonState::BLOCK)
 			{
-				for (unsigned int j = downGrid.y; j <= upGrid.y; j++)
+				currentDrag = new RectangleShape(Vector2f(0.f, 0.f));
+				currentDrag->setFillColor({ 100, 100, 200, 125 });
+				currentDrag->setPosition(downGrid.x * gridSizeF, downGrid.y * gridSizeF);
+			}
+		}
+
+		if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == ButtonState::BLOCK && currentDrag != nullptr)
+		{
+			currentDrag->setSize(Vector2f(((int)mousePosGrid.x - (int)downGrid.x) * gridSizeF, ((int)mousePosGrid.y - (int)downGrid.y) * gridSizeF));
+
+			if (((int)mousePosGrid.x - (int)downGrid.x) >= 0)
+			{
+				currentDrag->setSize(Vector2f(currentDrag->getSize().x + gridSizeF, currentDrag->getSize().y));
+			}
+
+			if (((int)mousePosGrid.y - (int)downGrid.y) >= 0)
+			{
+				currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y + gridSizeF));
+			}
+
+			if (((int)mousePosGrid.x - (int)downGrid.x) < 0)
+			{
+				currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y));
+			}
+
+			if (((int)mousePosGrid.y - (int)downGrid.y) < 0)
+			{
+				currentDrag->setSize(Vector2f(currentDrag->getSize().x, currentDrag->getSize().y));
+			}
+		}
+
+		switch (currentInputState)
+		{
+		case::ButtonState::TERRAIN:
+			if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
+			{
+				upGrid = mousePosGrid;
+				std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
+
+				for (unsigned int i = downGrid.x; i <= upGrid.x; i++)
 				{
-					finalGrid.push_back(Vector2u(i, j));
+					for (unsigned int j = downGrid.y; j <= upGrid.y; j++)
+					{
+						finalGrid.push_back(Vector2u(i, j));
+					}
+				}
+
+				int i = 0;
+
+				for (auto it : finalGrid)
+				{
+					CreateBackGround(it.x, it.y);
+					std::cout << ++i << "Fgrid : " << it.x << " " << it.y << "\n";
 				}
 			}
+			break;
 
-			int i = 0;
-
-			for (auto it : finalGrid)
+		case::ButtonState::BLOCK:
+			if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
 			{
-				CreateBackGround(it.x, it.y);
-				std::cout << ++i << "Fgrid : " << it.x << " " << it.y << "\n";
+
+				CollisionBlock* block = new CollisionBlock(currentDrag->getGlobalBounds(), downGrid);
+				blocks.push_back(block);
+
+				delete currentDrag;
+				currentDrag = nullptr;
+				
+				upGrid = mousePosGrid;
+				std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
 			}
-		}
-		break;
+			break;
 
-	case::InputState::BLOCK:
-		if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
+		default:
+			break;
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::F8))
 		{
-			CollisionBlock* block = new CollisionBlock(currentDrag->getGlobalBounds(), downGrid);
-			blocks.push_back(block);
-
-			delete currentDrag;
-
-			upGrid = mousePosGrid;
-			std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
+			if (player != nullptr)
+			{
+				delete player;
+			}
+			player = new Player();
+			player->Init(nullptr);
+			player->Spawn(mousePosWorld.x, mousePosWorld.y);
 		}
-		break;
 
-	default:
-		break;
-	}
-
-	if (InputManager::GetKeyDown(Keyboard::F8))
-	{
 		if (player != nullptr)
 		{
-			delete player;
-		}
-		player = new Player();
-		player->Init(nullptr);
-		player->Spawn(mousePosWorld.x, mousePosWorld.y);
-	}
-
-	if (player != nullptr)
-	{
-		if (player->GetPause() == false)
-		{
-			if (player->GetAlive() == false)
+			if (player->GetPause() == false)
 			{
-				dt *= 0.25f;
+				if (player->GetAlive() == false)
+				{
+					dt *= 0.25f;
+				}
+
+				player->Update(dt, blocks, playTime);
 			}
 
-			player->Update(dt, blocks, playTime);
+			if (InputManager::GetKeyDown(Keyboard::F9))
+			{
+				delete player;
+				player = nullptr;
+			}
 		}
-
-		if (InputManager::GetKeyDown(Keyboard::F9))
+		if (InputManager::GetKeyDown(Keyboard::Tab))
 		{
-			delete player;
-			player = nullptr;
+			isDraw = !isDraw;
 		}
 	}
-	if (InputManager::GetKeyDown(Keyboard::Tab))
-	{
-		isDraw = !isDraw;
-	}
-
-	UpdateButton();
 }
 
 void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
+	//Object Render
 	window->setView(*mapView);
 	window->draw(shape);
 
@@ -194,6 +204,7 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 
 	fromX = mousePosGrid.x;
 	fromY = mousePosGrid.y;
+
 	textureShape.setFillColor({ 255, 255, 255, 125 });
 	textureShape.setTexture(&selectTexture);
 	textureShape.setPosition(fromX * gridSizeU, fromY * gridSizeU);
@@ -203,17 +214,14 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 	window->draw(vertexMap, &selectTexture);
 	window->draw(textureShape);
 
-	if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == InputState::BLOCK)
+	if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == ButtonState::BLOCK && currentDrag != nullptr)
 	{
 		window->draw(*currentDrag);
 	}
 
-	if (isDraw)
+	for (auto blockShape : blocks)
 	{
-		for (auto blockShape : blocks)
-		{
-			window->draw(blockShape->GetBlockShape());
-		}
+		window->draw(blockShape->GetBlockShape());
 	}
 
 	window->draw(tileSelector);
@@ -222,9 +230,10 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 		player->Draw(window, mapView);
 	}
 
+	//UI Render
 	window->setView(*uiView);
-	window->draw(text);
-	
+	window->draw(mousePosText);
+	window->draw(stateText);
 	for (auto button : buttons)
 	{
 		window->draw(button.buttonShape);
@@ -273,11 +282,6 @@ void MapScene::UpdateMousePos(RenderWindow* window)
 		mousePosGrid.x = mousePosWorld.x / gridSizeU;
 		mousePosGrid.y = mousePosWorld.y / gridSizeU;
 	}
-	else
-	{
-		mousePosGrid.x = 0;
-		mousePosGrid.y = 0;
-	}
 
 	tileSelector.setPosition(mousePosGrid.x * gridSizeF, mousePosGrid.y * gridSizeF);
 	std::stringstream ss;
@@ -285,8 +289,8 @@ void MapScene::UpdateMousePos(RenderWindow* window)
 		<< "Window : " << mousePosWindow.x << " " << mousePosWindow.y << "\n"
 		<< "World : " << mousePosWorld.x << " " << mousePosWorld.y << "\n"
 		<< "Grid : " << mousePosGrid.x << " " << mousePosGrid.y << "\n";
-	text.setString(ss.str());
-	text.setPosition(mousePosWindow.x + 10.f, mousePosWindow.y + 10.f);
+	mousePosText.setString(ss.str());
+	mousePosText.setPosition(mousePosWindow.x + 10.f, mousePosWindow.y + 10.f);
 }
 
 int MapScene::CreateBackGround(int r, int c)
@@ -323,14 +327,14 @@ int MapScene::CreateBackGround(int r, int c)
 
 void MapScene::CreateButtonSet()
 {
-	Button buttonTerrain = CreateButton(resolution.x * 0.9f, resolution.y * 0.5f, 100.f, 50.f, "Terrian", InputState::TERRAIN, DrawState::NONE);
+	Button buttonTerrain = InitButton(resolution.x * 0.9f, resolution.y * 0.5f, 100.f, 50.f, "Terrian", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::TERRAIN);
 	buttons.push_back(buttonTerrain);
 
-	Button buttonBlock = CreateButton(resolution.x * 0.9f, resolution.y * 0.6f, 100.f, 50.f, "Collision\n  Block  ", InputState::BLOCK, DrawState::NONE);
+	Button buttonBlock = InitButton(resolution.x * 0.9f, resolution.y * 0.6f, 100.f, 50.f, "Collision\n  Block  ", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::BLOCK);
 	buttons.push_back(buttonBlock);
 }
 
-Button MapScene::CreateButton(float left, float top, float width, float height, string buttonName, InputState buttonInputState, DrawState buttonDrawState)
+Button MapScene::InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonCategory category, ButtonState state)
 {
 	RectangleShape buttonShape(Vector2f(width, height));
 	buttonShape.setFillColor({15, 153, 153, 125});
@@ -342,7 +346,7 @@ Button MapScene::CreateButton(float left, float top, float width, float height, 
 	buttonText.setFont(font);
 	buttonText.setCharacterSize(15);
 	buttonText.setFillColor(Color::Black);
-	buttonText.setString(buttonName);
+	buttonText.setString(name);
 	buttonText.setOrigin(buttonText.getLocalBounds().left + buttonText.getLocalBounds().width * 0.5, buttonText.getLocalBounds().top + buttonText.getLocalBounds().height * 0.5);
 	buttonText.setPosition(left + width * 0.5, top + height * 0.5);
 
@@ -350,41 +354,122 @@ Button MapScene::CreateButton(float left, float top, float width, float height, 
 	button.buttonRect = buttonRect;
 	button.buttonShape = buttonShape;
 	button.buttonText = buttonText;
-	button.isToggle = false;
+	button.buttonType = type;
+	button.buttonCategory = category;
+	button.buttonState = state;
+	button.isButtonToggle = false;
+	button.isButtonClick = false;
 
 	return button;
 }
 
-void MapScene::UpdateButton()
+bool MapScene::UpdateButton()
 {
+	bool isButtonUpdate = false;
+
 	for (Button& button : buttons)
 	{
-		if (button.buttonRect.contains(mousePosWindow.x, mousePosWindow.y))
-		{
-			button.buttonShape.setFillColor(Color(255, 0, 0, 125));
+		if (button.buttonRect.contains(mousePosWindow.x, mousePosWindow.y)) //Hover
+		{	
+			button.buttonShape.setFillColor(Color(255, 0, 0, 125)); //Red
 
 			if (InputManager::GetMouseButtonDown(Mouse::Button::Left))
 			{
-				if (button.isToggle)
-				{
-					button.buttonShape.setFillColor(Color(153, 153, 153, 125));
-					currentInputState = InputState::NONE;
-				}
-				else
-				{
-					button.buttonShape.setFillColor(Color::Blue);
-					button.isToggle = true;
-				}
+				button.isButtonClick = true;
+				std::cout << "ButtonDown" << std::endl;
 			}
+
+			if (InputManager::GetMouseButton(Mouse::Button::Left) && button.isButtonClick)
+			{
+				button.buttonShape.setFillColor(Color::Blue); //Blue
+				std::cout << "Button" << std::endl;
+			}
+
+			if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
+			{
+				switch (button.buttonType)
+				{
+				case ButtonType::DEFAULT:
+					if (button.buttonCategory == ButtonCategory::INPUT)
+					{
+						SetCurrentInputState(button.buttonState);
+					}
+
+					if (button.buttonCategory == ButtonCategory::DRAW)
+					{
+						SetCurrentDrawState(button.buttonState);
+					}
+					break;
+				
+				case ButtonType::TOGGLE:
+					break;
+
+				default:
+					break;
+				}
+
+				button.buttonShape.setFillColor(Color(255, 0, 0, 125)); //Red
+				button.isButtonClick = false;
+				std::cout << "ButtonUp" << std::endl;
+			}
+
+			isButtonUpdate = true;
 		}
 		else
 		{
-			if (!button.isToggle)
-			{
-				button.buttonShape.setFillColor(Color(153, 153, 153, 125));
-			}
+			button.buttonShape.setFillColor(Color(153, 153, 153, 125)); //Gray
 		}
 	}
+
+	std::stringstream ss;
+	string inputState;
+	switch (currentInputState)
+	{
+	case ButtonState::BLOCK:
+		inputState = "BLOCK";
+		break;
+	case ButtonState::NONE:
+		inputState = "NONE";
+		break;
+	case ButtonState::OBJECT:
+		inputState = "OBJECT";
+		break;
+	case ButtonState::TERRAIN:
+		inputState = "TERRAIN";
+		break;
+	}
+	string drawState;
+	switch (currentDrawState)
+	{
+	case ButtonState::BLOCK:
+		drawState = "BLOCK";
+		break;
+	case ButtonState::NONE:
+		drawState = "NONE";
+		break;
+	case ButtonState::OBJECT:
+		drawState = "OBJECT";
+		break;
+	case ButtonState::TERRAIN:
+		drawState = "TERRAIN";
+		break;
+	}
+	ss << "InputState : " << inputState << '\n'
+		<< "DrawState : " << drawState << std::endl;
+
+	stateText.setString(ss.str());
+
+	return isButtonUpdate;
+}
+
+void MapScene::SetCurrentInputState(ButtonState state)
+{
+	currentInputState = state;
+}
+
+void MapScene::SetCurrentDrawState(ButtonState state)
+{
+	currentDrawState = state;
 }
 
 MapScene::~MapScene()
@@ -396,6 +481,7 @@ MapScene::~MapScene()
 	{
 		delete it;
 	}
+
 	blocks.clear();
 }
 

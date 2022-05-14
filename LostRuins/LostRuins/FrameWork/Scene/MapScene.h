@@ -11,27 +11,24 @@
 #include "../Object/CollisionBlock/CollisionBlock.h"
 #include "TestSceneUI/TestSceneUi.h"
 
-enum class InputState
+enum class ButtonType
+{
+	DEFAULT,
+	TOGGLE
+};
+
+enum class ButtonCategory
+{
+	DRAW,
+	INPUT
+};
+
+enum class ButtonState
 {
 	BLOCK,
 	OBJECT,
 	TERRAIN,
 	NONE
-};
-
-enum class DrawState
-{
-	ALL,
-	BLOCK,
-	OBJECT,
-	TERRAIN,
-	NONE
-};
-
-enum class Category
-{
-	Draw,
-	Input
 };
 
 struct Button
@@ -39,10 +36,13 @@ struct Button
 	RectangleShape buttonShape;
 	FloatRect buttonRect;
 	Text buttonText;
-	Category buttonCategory;
-	InputState buttonInputState;
-	DrawState buttonDrawState;
-	bool isToggle;
+
+	ButtonType buttonType;
+	ButtonCategory buttonCategory;
+	ButtonState buttonState;
+
+	bool isButtonClick;
+	bool isButtonToggle;
 };
 
 class MapScene : public Scene
@@ -75,7 +75,8 @@ class MapScene : public Scene
 	vector<Vector2u> finalGrid;
 	RectangleShape* currentDrag;
 
-	Text text;
+	Text mousePosText;
+	Text stateText;
 	Font font;
 
 	vector <CollisionBlock*> blocks;
@@ -83,11 +84,11 @@ class MapScene : public Scene
 	Texture selectTexture;
 	VertexArray vertexMap;
 
-	InputState currentInputState;
-	DrawState currentDrawState;
+	ButtonState currentInputState;
+	ButtonState currentDrawState;
 
 	vector <Button> buttons;
-	
+
 	string name;
 
 	//test
@@ -112,9 +113,10 @@ public:
 	int CreateBackGround(int c, int r);
 
 	void CreateButtonSet();
-	Button CreateButton(float left, float top, float width, float height, string name, InputState buttonInputState, DrawState buttonDrawState);
-	void UpdateButton();
-
+	Button InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonCategory category, ButtonState state);
+	bool UpdateButton();
+	void SetCurrentInputState(ButtonState state);
+	void SetCurrentDrawState(ButtonState state);
 	virtual ~MapScene();
 };
 
