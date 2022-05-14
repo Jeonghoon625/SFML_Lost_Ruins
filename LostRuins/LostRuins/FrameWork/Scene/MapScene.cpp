@@ -9,14 +9,6 @@ MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSize
 
 void MapScene::Init(SceneManager* sceneManager)
 {
-	tileSelector.setFillColor(Color::Transparent);
-	tileSelector.setOutlineThickness(5.f);
-	tileSelector.setOutlineColor(Color::Red);
-
-	selectTexture = TextureHolder::GetTexture("maps/Stage1/test.png");
-
-	isDraw = true;
-
 	this->sceneMgr = sceneManager;
 
 	resolution.x = 1920.f; // VideoMode::getDesktopMode().width;
@@ -25,6 +17,11 @@ void MapScene::Init(SceneManager* sceneManager)
 	mapView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 
+	//State
+	currentInputState = ButtonState::NONE;
+	currentDrawState = ButtonState::NONE;
+
+	//격자무늬
 	gridTileMap.resize(mapWidth, vector<RectangleShape>());
 
 	for (int i = 0; i < mapWidth; i++)
@@ -40,6 +37,12 @@ void MapScene::Init(SceneManager* sceneManager)
 		}
 	}
 
+	//타일맵 선택 영역 하이라이트
+	tileSelector.setFillColor(Color::Transparent);
+	tileSelector.setOutlineThickness(5.f);
+	tileSelector.setOutlineColor(Color::Red);
+
+	//UI Text
 	font.loadFromFile("fonts/LiberationSans-Bold.ttf");
 	mousePosText.setCharacterSize(20);
 	mousePosText.setFillColor(Color::Magenta);
@@ -53,9 +56,11 @@ void MapScene::Init(SceneManager* sceneManager)
 	stateText.setPosition(0.f, 0.f);
 	stateText.setString("TEST");
 
-	currentInputState = ButtonState::NONE;
-	currentDrawState = ButtonState::NONE;
+	//test
+	selectTexture = TextureHolder::GetTexture("maps/Stage1/test.png");
+	isDraw = true;
 
+	//버튼 집합 생성
 	CreateButtonSet();
 }
 
@@ -113,28 +118,13 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 				upGrid = mousePosGrid;
 				std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
 
-				for (unsigned int i = downGrid.x; i <= upGrid.x; i++)
-				{
-					for (unsigned int j = downGrid.y; j <= upGrid.y; j++)
-					{
-						finalGrid.push_back(Vector2u(i, j));
-					}
-				}
-
-				int i = 0;
-
-				for (auto it : finalGrid)
-				{
-					CreateBackGround(it.x, it.y);
-					std::cout << ++i << "Fgrid : " << it.x << " " << it.y << "\n";
-				}
+				CreateBackGround(upGrid.x, upGrid.y);
 			}
 			break;
 
 		case::ButtonState::BLOCK:
 			if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
 			{
-
 				CollisionBlock* block = new CollisionBlock(currentDrag->getGlobalBounds(), downGrid);
 				blocks.push_back(block);
 
@@ -293,7 +283,7 @@ void MapScene::UpdateMousePos(RenderWindow* window)
 	mousePosText.setPosition(mousePosWindow.x + 10.f, mousePosWindow.y + 10.f);
 }
 
-int MapScene::CreateBackGround(int r, int c)
+int MapScene::CreateBackGround(int c, int r)
 {
 	int TILE_SIZE = 32;
 	int TILE_TYPES = 0;
