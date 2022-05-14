@@ -50,6 +50,33 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 	}
 
 
+	if (InputManager::GetKeyDown(Keyboard::Z) && inventory == true && SuppliesNum == 1 && menuNum == 3)
+	{
+		Zfoodview = !Zfoodview;
+	}
+
+
+
+
+	if (InputManager::GetKeyDown(Keyboard::Z) && inventory == true && EquipmentNum == 1 && menuNum == 4)
+	{
+		ZEquipview = !ZEquipview;
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::X) && inventory == true && EquipmentNum == 2 && menuNum == 4)
+	{
+		XEquipview = !XEquipview;
+	}
+
+
+
+	if (InputManager::GetKeyDown(Keyboard::Z) && inventory == true && relicsNum == 1 && menuNum == 5)
+	{
+		Zrelicsview = !Zrelicsview;
+	}
+
+
+
 
 	if (InputManager::GetKeyDown(Keyboard::Key::Escape) && inventory == false && MAP == false)
 	{
@@ -59,8 +86,12 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 	if (InputManager::GetKeyDown(Keyboard::Tab) && Escmenu == false)
 	{
 		menuNum = 1;
+		orderNum = 1;
+		weaponNum = 1;
+		SuppliesNum = 1;
 		MAP = false;
 		inventory = true;
+		InvenallCS.setPosition(340, 394);
 		SeeInven();
 		weaponlist1();		
 	}
@@ -69,14 +100,7 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 		weaponlist2();
 	}
 
-	if (InputManager::GetKeyDown(Keyboard::Key::Right) && inventory == true && menuNum == 2 && orderNum == 1 && Zscroll == true && Xscroll == true)
-	{
-		scrollList1();
-	}
-	if (InputManager::GetKeyDown(Keyboard::Key::Down) && inventory == true && menuNum == 2 && orderNum == 2 && Zscroll == true && Xscroll == true)
-	{
-		scrollList2();
-	}
+
 	
 	
 	if (InputManager::GetKeyDown(Keyboard::Escape) && inventory == true)
@@ -100,14 +124,26 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 
 	if (InputManager::GetKeyDown(Keyboard::Key::Left) && inventory == true && menuNum != 1)
 	{
+		orderNum = 1;
+		weaponNum = 1;
+		SuppliesNum = 1;
+		EquipmentNum = 1;
+		relicsNum = 1;
 		--menuNum;
 		InvenCS.setPosition(InvenCS.getPosition().x - 80, 328);
+		InvenallCS.setPosition(340, 394);
 	}
 
 	if (InputManager::GetKeyDown(Keyboard::Key::Right) && inventory == true && menuNum != 7)
 	{
+		orderNum = 1;
+		weaponNum = 1;
+		SuppliesNum = 1;
+		EquipmentNum = 1;
+		relicsNum = 1;
 		++menuNum;
 		InvenCS.setPosition(InvenCS.getPosition().x + 80, 328);
+		InvenallCS.setPosition(340, 394);
 	}
 
 	
@@ -137,6 +173,53 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 			++orderNum;
 			InvenallCS.setPosition(340, InvenallCS.getPosition().y + 50);
 		}
+	}
+
+
+	if (inventory == true && ZEquip == true && menuNum == 4 && XEquip == true)
+	{
+		if (InputManager::GetKeyDown(Keyboard::Key::Up) && EquipmentNum != 1)
+		{
+			--EquipmentNum;
+			InvenallCS.setPosition(340, InvenallCS.getPosition().y - 50);
+		}
+		if (InputManager::GetKeyDown(Keyboard::Key::Down) && EquipmentNum != 2)
+		{
+			++EquipmentNum;
+			InvenallCS.setPosition(340, InvenallCS.getPosition().y + 50);
+		}
+	}
+
+
+
+	if (InputManager::GetKeyDown(Keyboard::Key::Right) && inventory == true && menuNum == 2 && orderNum == 1 && Zscroll == true && Xscroll == true)
+	{
+		scrollList1();
+	}
+	if (InputManager::GetKeyDown(Keyboard::Key::Down) && inventory == true && menuNum == 2 && orderNum == 2 && Zscroll == true && Xscroll == true)
+	{
+		scrollList2();
+	}
+
+
+	if (InputManager::GetKeyDown(Keyboard::Key::Right) && inventory == true && menuNum == 3 && SuppliesNum == 1 && Zfood == true)
+	{
+		Supplies();
+	}
+
+
+	if (InputManager::GetKeyDown(Keyboard::Key::Right) && inventory == true && menuNum == 4 && EquipmentNum == 1 && ZEquip == true && XEquip == true)
+	{
+		EquipList1();
+	}
+	if (InputManager::GetKeyDown(Keyboard::Key::Down) && inventory == true && menuNum == 4 && EquipmentNum == 2 && ZEquip == true && XEquip == true)
+	{
+		EquipList2();
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Key::Right) && inventory == true && menuNum == 5 && relicsNum == 1 && Zrelics == true)
+	{
+		relics();
 	}
 
 	
@@ -333,10 +416,8 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 
 void TestUi::Draw(RenderWindow* window, View* mainView)
 {
-	//window->draw(scr1);
-	//window->draw(scr2);
-	window->draw(amr1);
-	window->draw(amr2);
+	/*window->draw(amr1);
+	window->draw(amr2);*/
 	window->draw(HPbarLine);
 	window->draw(HPbar);
 	window->draw(MPbarLine);
@@ -349,11 +430,11 @@ void TestUi::Draw(RenderWindow* window, View* mainView)
 	window->draw(Mapicon);
 	window->draw(Wear1);
 	window->draw(Wear2);
-
 	window->draw(Shield);
 	window->draw(Weapon);
 	window->draw(ScrollA);
 	window->draw(ScrollS);
+	
 
 	window->draw(ButtonTab);
 	window->draw(ButtonM);
@@ -587,14 +668,7 @@ void TestUi::Draw(RenderWindow* window, View* mainView)
 				window->draw(InvenWeaponZblock6);
 				window->draw(InvenWeaponZblock26);
 			}
-			
-			window->draw(wea);
 		}
-		else
-		{
-
-		}
-
 		if (Xweaponview)
 		{
 			if (inventory == true)
@@ -602,14 +676,9 @@ void TestUi::Draw(RenderWindow* window, View* mainView)
 				window->draw(InvenWeaponXblock7);
 				window->draw(InvenWeaponXblock27);
 			}
-
-			window->draw(shi);			
-		}
-		else
-		{
-
 		}
 	}
+
 
 	if (Zweapon == true && menuNum == 1 && Xweapon == true && weaponNum == 2)
 	{
@@ -638,13 +707,7 @@ void TestUi::Draw(RenderWindow* window, View* mainView)
 				window->draw(InvenWeaponZblock6);
 				window->draw(InvenWeaponZblock26);
 			}
-
-			window->draw(wea);
 		}
-		else
-		{
-		}
-
 		if (Xweaponview)
 		{
 			if (inventory == true)
@@ -652,15 +715,18 @@ void TestUi::Draw(RenderWindow* window, View* mainView)
 				window->draw(InvenWeaponXblock7);
 				window->draw(InvenWeaponXblock27);
 			}
-
-			window->draw(shi);
-		}
-		else
-		{
-
 		}
 	}
 
+	if (Zweaponview)
+	{
+		window->draw(wea);
+	}
+
+	if (Xweaponview)
+	{
+		window->draw(shi);
+	}
 	////////////////////////////////////////////////////////////////////
 	
 	if (Zscroll == true && menuNum == 2 && Xscroll == true && orderNum == 1)
@@ -683,38 +749,26 @@ void TestUi::Draw(RenderWindow* window, View* mainView)
 			window->draw(OItemDescription2);
 			window->draw(OItemDescription3);
 		}
-
 		if (Zscrollview)
 		{
 			if (inventory == true)
 			{
 				window->draw(Orderfullrhombus1);
-				window->draw(Orderfullrhombus2);
-			}
-
-			window->draw(scr1);
+				window->draw(Orderfullrhombus3);
+			}			
 		}
-		else
-		{
 
-		}
 
 		if (Xscrollview)
 		{
 			if (inventory == true)
 			{
-				window->draw(Orderfullrhombus1);
 				window->draw(Orderfullrhombus2);
-			}
-
-			window->draw(scr2);
-		}
-		else
-		{
-
-		}
+				window->draw(Orderfullrhombus4);
+			}			
+		}		
 	}
-
+	
 	
 
 	if (Zscroll == true && menuNum == 2 && Xscroll == true && orderNum == 2)
@@ -738,33 +792,182 @@ void TestUi::Draw(RenderWindow* window, View* mainView)
 			window->draw(OItemDescription03);
 			window->draw(OItemDescription04);
 		}
+
 		if (Zscrollview)
 		{
 			if (inventory == true)
 			{
 				window->draw(Orderfullrhombus1);
-				window->draw(Orderfullrhombus2);
-			}
+				window->draw(Orderfullrhombus3);
+			}						
+		}
 
-			window->draw(scr1);
-		}
-		else
-		{
-		}
 
 		if (Xscrollview)
 		{
 			if (inventory == true)
 			{
-				window->draw(Orderfullrhombus1);
 				window->draw(Orderfullrhombus2);
-			}
-
-			window->draw(scr2);
+				window->draw(Orderfullrhombus4);
+			}					
 		}
-		else
-		{
+	}
+	if (Zscrollview)
+	{
+		window->draw(scr1);
+	}
+	if (Xscrollview)
+	{
+		window->draw(scr2);
+	}
 
+
+
+	if (Zfood == true && menuNum == 3 && SuppliesNum == 1)
+	{
+		if (inventory == true)
+		{
+			window->draw(Suppliesitembackground1);
+			window->draw(InvenallCS);
+			window->draw(Suppliesblankrhombus1);
+			window->draw(Suppliestextscrollname1);
+			window->draw(Suppliesitemphotoframe1);
+			window->draw(SuppliestextItemnamefield1);
+			window->draw(SuppliesdescriptionImage1);
+			window->draw(Suppliesmagictype1);
+			window->draw(Suppliesattackspeed1);
+			window->draw(SuppliesDamage1);
+			window->draw(SuppliesItemDescription1);
+			window->draw(SuppliesItemDescription2);
+			window->draw(SuppliesItemDescription3);
+		}
+		if (Zfoodview)
+		{
+			if (inventory == true)
+			{
+				window->draw(Suppliesrderfullrhombus1);
+			}
+		}
+	}
+
+
+
+	if (ZEquip == true && menuNum == 4 && XEquip == true && EquipmentNum == 1)
+	{
+		if (inventory == true)
+		{
+			window->draw(Equipitembackground1);
+			window->draw(InvenallCS);
+			window->draw(Equipblankrhombus1);
+			window->draw(Equiptextscrollname1);
+			window->draw(Equipblankrhombus2);
+			window->draw(Equiptextscrollname2);
+			window->draw(Equipitemphotoframe1);
+			window->draw(EquiptextItemnamefield1);
+			window->draw(EquipdescriptionImage1);
+			window->draw(Equipmagictype1);
+			window->draw(Equipattackspeed1);
+			window->draw(EquipDamage1);
+			window->draw(EquipItemDescription1);
+			window->draw(EquipItemDescription2);
+			window->draw(EquipItemDescription3);
+		}
+		if (ZEquipview)
+		{
+			if (inventory == true)
+			{
+				window->draw(Equiprderfullrhombus1);
+				window->draw(Equiprderfullrhombus3);
+			}
+		}
+
+
+		if (XEquipview)
+		{
+			if (inventory == true)
+			{
+				window->draw(Equiprderfullrhombus2);
+				window->draw(Equiprderfullrhombus4);
+			}
+		}
+	}
+
+
+
+	if (ZEquip == true && menuNum == 4 && XEquip == true && EquipmentNum == 2)
+	{
+		if (inventory == true)
+		{
+			window->draw(Equipitembackground2);
+			window->draw(InvenallCS);
+			window->draw(Equipblankrhombus1);
+			window->draw(Equiptextscrollname1);
+			window->draw(Equipblankrhombus2);
+			window->draw(Equiptextscrollname2);
+			window->draw(Equipitemphotoframe2);
+			window->draw(EquiptextItemnamefield2);
+			window->draw(EquipdescriptionImage2);
+			window->draw(Equipmagictype2);
+			window->draw(Equipattackspeed2);
+			window->draw(EquipDamage2);
+			window->draw(EquipItemDescription01);
+			window->draw(EquipItemDescription02);
+			window->draw(EquipItemDescription03);
+			window->draw(EquipItemDescription04);
+		}
+
+		if (ZEquipview)
+		{
+			if (inventory == true)
+			{
+				window->draw(Equiprderfullrhombus1);
+				window->draw(Equiprderfullrhombus3);
+			}
+		}
+
+
+		if (XEquipview)
+		{
+			if (inventory == true)
+			{
+				window->draw(Equiprderfullrhombus2);
+				window->draw(Equiprderfullrhombus4);
+			}
+		}
+	}
+	if (ZEquipview)
+	{
+		window->draw(amr1);
+	}
+	if (XEquipview)
+	{
+		window->draw(amr2);
+	}
+
+	if (Zrelics == true && menuNum == 5 && relicsNum == 1)
+	{
+		if (inventory == true)
+		{
+			window->draw(Relicitembackground1);
+			window->draw(InvenallCS);
+			window->draw(Relicblankrhombus1);
+			window->draw(Relictextscrollname1);
+			window->draw(Relicitemphotoframe1);
+			window->draw(RelictextItemnamefield1);
+			window->draw(RelicdescriptionImage1);
+			window->draw(Relicmagictype1);
+			window->draw(Relicattackspeed1);
+			window->draw(RelicDamage1);
+			window->draw(RelicItemDescription1);
+			window->draw(RelicItemDescription2);
+			window->draw(RelicItemDescription3);
+		}
+		if (Zrelicsview)
+		{
+			if (inventory == true)
+			{
+				window->draw(Relicrderfullrhombus1);
+			}
 		}
 	}
 }
@@ -980,6 +1183,7 @@ void TestUi::Initstartimg()
 	orderNum = 1;		// 인벤토리 -> 주문서 상하
 	SuppliesNum = 1;	// 인벤토리 -> 소모품 상하
 	EquipmentNum = 1;	// 인벤토리 -> 장비 상하
+	relicsNum = 1;
 
 	escNum = 1;		// ESC 상하
 	settingNum = 1;	// ESC -> Setting
@@ -1004,6 +1208,14 @@ void TestUi::Initstartimg()
 	Zscrollview = false;
 	Xscroll = true;
 	Xscrollview = false;
+	Zfood = true;
+	Zfoodview = false;
+	ZEquip = true;
+	ZEquipview = false;
+	XEquip = true;
+	XEquipview = false;
+	Zrelics = true;
+	Zrelicsview = false;
 }
 
 void TestUi::EscKeyboard() // ESC -> Setting -> Keyboard
@@ -1608,15 +1820,14 @@ void TestUi::scrollList1()
 	Otextscrollname2.setPosition(380, 445);
 
 	Orderfullrhombus1.setTexture(textureSQ);
-	Orderfullrhombus1.setTextureRect(IntRect(79, 1016, 39, 31)); // 1. 채워진 마름모
+	Orderfullrhombus1.setTextureRect(IntRect(79, 1016, 39, 31)); // 1-1. 채워진 마름모
 	Orderfullrhombus1.setScale(Vector2f(1.0f, 1.0f));
 	Orderfullrhombus1.setPosition(320, 400);
 
-	Orderfullrhombus2.setTexture(textureSQ); // 2. 채워진 마름모
+	Orderfullrhombus2.setTexture(textureSQ); // 1-2. 채워진 마름모
 	Orderfullrhombus2.setTextureRect(IntRect(79, 1016, 39, 31));
 	Orderfullrhombus2.setScale(Vector2f(1.0f, 1.0f));
 	Orderfullrhombus2.setPosition(320, 450);
-
 
 	///////////////////////////////////////////////////////////////
 
@@ -1706,15 +1917,15 @@ void TestUi::scrollList2()
 	Otextscrollname2.setFillColor(Color::Red);
 	Otextscrollname2.setPosition(380, 445);
 
-	Orderfullrhombus1.setTexture(textureSQ);
-	Orderfullrhombus1.setTextureRect(IntRect(79, 1016, 39, 31)); // 1. 채워진 마름모
-	Orderfullrhombus1.setScale(Vector2f(1.0f, 1.0f));
-	Orderfullrhombus1.setPosition(320, 400);
+	Orderfullrhombus3.setTexture(textureSQ);
+	Orderfullrhombus3.setTextureRect(IntRect(79, 1016, 39, 31)); // 1. 채워진 마름모
+	Orderfullrhombus3.setScale(Vector2f(1.0f, 1.0f));
+	Orderfullrhombus3.setPosition(320, 400);
 
-	Orderfullrhombus2.setTexture(textureSQ); // 2. 채워진 마름모
-	Orderfullrhombus2.setTextureRect(IntRect(79, 1016, 39, 31));
-	Orderfullrhombus2.setScale(Vector2f(1.0f, 1.0f));
-	Orderfullrhombus2.setPosition(320, 450);
+	Orderfullrhombus4.setTexture(textureSQ); // 2. 채워진 마름모
+	Orderfullrhombus4.setTextureRect(IntRect(79, 1016, 39, 31));
+	Orderfullrhombus4.setScale(Vector2f(1.0f, 1.0f));
+	Orderfullrhombus4.setPosition(320, 450);
 
 
 	///////////////////////////////////////////////////////////////
@@ -1781,6 +1992,370 @@ void TestUi::scrollList2()
 	OItemDescription04.setCharacterSize(25);
 	OItemDescription04.setFillColor(Color::White);
 	OItemDescription04.setPosition(980, 840);
+}
+
+void TestUi::Supplies()
+{
+	textureSQ = TextureHolder::GetTexture("graphics/SQ.png");
+	fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");	
+
+	Suppliesblankrhombus1.setTexture(textureSQ); //  1. 마름모 빈칸
+	Suppliesblankrhombus1.setTextureRect(IntRect(33, 1016, 39, 31));
+	Suppliesblankrhombus1.setScale(Vector2f(1.0f, 1.0f));
+	Suppliesblankrhombus1.setPosition(320, 400);
+
+	Suppliestextscrollname1.setFont(fontLostRuins); // 1. 리스트 내 아이템 이름
+	Suppliestextscrollname1.setString("one chicken");
+	Suppliestextscrollname1.setCharacterSize(30);
+	Suppliestextscrollname1.setFillColor(Color::Red);
+	Suppliestextscrollname1.setPosition(380, 395);
+	
+	Suppliesrderfullrhombus1.setTexture(textureSQ);
+	Suppliesrderfullrhombus1.setTextureRect(IntRect(79, 1016, 39, 31)); // 1-1. 채워진 마름모
+	Suppliesrderfullrhombus1.setScale(Vector2f(1.0f, 1.0f));
+	Suppliesrderfullrhombus1.setPosition(320, 400);
+
+	Suppliesitemphotoframe1.setTexture(textureSQ); // 1. 우측 아이템 네모칸
+	Suppliesitemphotoframe1.setTextureRect(IntRect(254, 673, 92, 96));
+	Suppliesitemphotoframe1.setScale(Vector2f(1.0f, 1.0f));
+	Suppliesitemphotoframe1.setPosition(980, 380);
+
+	SuppliestextItemnamefield1.setFont(fontLostRuins); // 1. 우측 아이템 이름
+	SuppliestextItemnamefield1.setString("Picture of chicken");
+	SuppliestextItemnamefield1.setCharacterSize(40);
+	SuppliestextItemnamefield1.setFillColor(Color::Red);
+	SuppliestextItemnamefield1.setPosition(1100, 400);
+
+	SuppliesdescriptionImage1.setTexture(textureSQ); // 1. 우측 아이템 이미지
+	SuppliesdescriptionImage1.setTextureRect(IntRect(314, 478, 52, 26));
+	SuppliesdescriptionImage1.setScale(Vector2f(1.1f, 1.0f));
+	SuppliesdescriptionImage1.setPosition(1020, 400);
+
+	Suppliesitembackground1.setTexture(textureSQ); // 1. 우측 아이템 이미지 뒷배경
+	Suppliesitembackground1.setTextureRect(IntRect(62, 605, 42, 40));
+	Suppliesitembackground1.setScale(Vector2f(2.2f, 2.4f));
+	Suppliesitembackground1.setPosition(980, 380);
+
+	Suppliesmagictype1.setFont(fontLostRuins); // 1. 음식 타입
+	Suppliesmagictype1.setString("Food type : Chicken with eyes only");
+	Suppliesmagictype1.setCharacterSize(25);
+	Suppliesmagictype1.setFillColor(Color::White);
+	Suppliesmagictype1.setPosition(980, 520);
+
+	Suppliesattackspeed1.setFont(fontLostRuins); // 1. 효과
+	Suppliesattackspeed1.setString("Effect : Just looking at it makes me hungry.");
+	Suppliesattackspeed1.setCharacterSize(25);
+	Suppliesattackspeed1.setFillColor(Color::White);
+	Suppliesattackspeed1.setPosition(980, 560);
+
+	SuppliesDamage1.setFont(fontLostRuins); // 1. 데미지
+	SuppliesDamage1.setString("Damage : Physical 0");
+	SuppliesDamage1.setCharacterSize(25);
+	SuppliesDamage1.setFillColor(Color::White);
+	SuppliesDamage1.setPosition(980, 600);
+
+	SuppliesItemDescription1.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	SuppliesItemDescription1.setString("A chicken image created");
+	SuppliesItemDescription1.setCharacterSize(25);
+	SuppliesItemDescription1.setFillColor(Color::White);
+	SuppliesItemDescription1.setPosition(980, 720);
+
+	SuppliesItemDescription2.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	SuppliesItemDescription2.setString("by UI creator Lee Ji-woo");
+	SuppliesItemDescription2.setCharacterSize(25);
+	SuppliesItemDescription2.setFillColor(Color::White);
+	SuppliesItemDescription2.setPosition(980, 760);
+
+	SuppliesItemDescription3.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	SuppliesItemDescription3.setString("because he was hungry.");
+	SuppliesItemDescription3.setCharacterSize(25);
+	SuppliesItemDescription3.setFillColor(Color::White);
+	SuppliesItemDescription3.setPosition(980, 800);
+}
+
+void TestUi::EquipList1()
+{
+	EquipmentNum = 1;
+	textureSQ = TextureHolder::GetTexture("graphics/SQ.png");
+	fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");
+	scrollpng = TextureHolder::GetTexture("graphics/Scroll.png");
+
+	Equipblankrhombus1.setTexture(textureSQ); //  1. 마름모 빈칸
+	Equipblankrhombus1.setTextureRect(IntRect(33, 1016, 39, 31));
+	Equipblankrhombus1.setScale(Vector2f(1.0f, 1.0f));
+	Equipblankrhombus1.setPosition(320, 400);
+
+	Equiptextscrollname1.setFont(fontLostRuins); // 1. 리스트 내 아이템 이름
+	Equiptextscrollname1.setString("Red necklace of harmony");
+	Equiptextscrollname1.setCharacterSize(30);
+	Equiptextscrollname1.setFillColor(Color::Red);
+	Equiptextscrollname1.setPosition(380, 395);
+
+	Equipblankrhombus2.setTexture(textureSQ); // 2. 마름모 빈칸
+	Equipblankrhombus2.setTextureRect(IntRect(33, 1016, 39, 31));
+	Equipblankrhombus2.setScale(Vector2f(1.0f, 1.0f));
+	Equipblankrhombus2.setPosition(320, 450);
+
+	Equiptextscrollname2.setFont(fontLostRuins); // 2. 리스트 내 아이템 이름
+	Equiptextscrollname2.setString("Blue necklace of harmony");
+	Equiptextscrollname2.setCharacterSize(30);
+	Equiptextscrollname2.setFillColor(Color::Red);
+	Equiptextscrollname2.setPosition(380, 445);
+
+	Equiprderfullrhombus1.setTexture(textureSQ);
+	Equiprderfullrhombus1.setTextureRect(IntRect(79, 1016, 39, 31)); // 1-1. 채워진 마름모
+	Equiprderfullrhombus1.setScale(Vector2f(1.0f, 1.0f));
+	Equiprderfullrhombus1.setPosition(320, 400);
+
+	Equiprderfullrhombus2.setTexture(textureSQ); // 1-2. 채워진 마름모
+	Equiprderfullrhombus2.setTextureRect(IntRect(79, 1016, 39, 31));
+	Equiprderfullrhombus2.setScale(Vector2f(1.0f, 1.0f));
+	Equiprderfullrhombus2.setPosition(320, 450);
+
+	///////////////////////////////////////////////////////////////
+
+	Equipitemphotoframe1.setTexture(textureSQ); // 1. 우측 아이템 네모칸
+	Equipitemphotoframe1.setTextureRect(IntRect(254, 673, 92, 96));
+	Equipitemphotoframe1.setScale(Vector2f(1.0f, 1.0f));
+	Equipitemphotoframe1.setPosition(980, 380);
+
+	EquiptextItemnamefield1.setFont(fontLostRuins); // 1. 우측 아이템 이름
+	EquiptextItemnamefield1.setString("Red necklace of harmony");
+	EquiptextItemnamefield1.setCharacterSize(40);
+	EquiptextItemnamefield1.setFillColor(Color::Red);
+	EquiptextItemnamefield1.setPosition(1100, 400);
+
+	EquipdescriptionImage1.setTexture(scrollpng); // 1. 우측 아이템 이미지
+	EquipdescriptionImage1.setTextureRect(IntRect(3, 226, 12, 15));
+	EquipdescriptionImage1.setScale(Vector2f(2.5f, 2.5f));
+	EquipdescriptionImage1.setPosition(1020, 400);
+
+	Equipitembackground1.setTexture(textureSQ); // 1. 우측 아이템 이미지 뒷배경
+	Equipitembackground1.setTextureRect(IntRect(62, 605, 42, 40));
+	Equipitembackground1.setScale(Vector2f(2.2f, 2.4f));
+	Equipitembackground1.setPosition(980, 380);
+
+	Equipmagictype1.setFont(fontLostRuins); // 1. 장비 타입
+	Equipmagictype1.setString("Equipment type : necklace");
+	Equipmagictype1.setCharacterSize(25);
+	Equipmagictype1.setFillColor(Color::White);
+	Equipmagictype1.setPosition(980, 520);
+
+	Equipattackspeed1.setFont(fontLostRuins); // 1. 아이템 희귀도
+	Equipattackspeed1.setString("Equipment rare : unique");
+	Equipattackspeed1.setCharacterSize(25);
+	Equipattackspeed1.setFillColor(Color::White);
+	Equipattackspeed1.setPosition(980, 560);
+
+	EquipDamage1.setFont(fontLostRuins); // 1. 효과
+	EquipDamage1.setString("Effect : A red necklace is displayed on the screen.");
+	EquipDamage1.setCharacterSize(25);
+	EquipDamage1.setFillColor(Color::White);
+	EquipDamage1.setPosition(980, 600);
+
+	EquipItemDescription1.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	EquipItemDescription1.setString("This necklace is modeled after the");
+	EquipItemDescription1.setCharacterSize(25);
+	EquipItemDescription1.setFillColor(Color::White);
+	EquipItemDescription1.setPosition(980, 720);
+
+	EquipItemDescription2.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	EquipItemDescription2.setString("central red part of the Taegeukgi.");
+	EquipItemDescription2.setCharacterSize(25);
+	EquipItemDescription2.setFillColor(Color::White);
+	EquipItemDescription2.setPosition(980, 760);
+
+	EquipItemDescription3.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	EquipItemDescription3.setString("Detailed instructions are on the blue necklace.");
+	EquipItemDescription3.setCharacterSize(25);
+	EquipItemDescription3.setFillColor(Color::White);
+	EquipItemDescription3.setPosition(980, 800);
+}
+
+void TestUi::EquipList2()
+{
+	textureSQ = TextureHolder::GetTexture("graphics/SQ.png");
+	fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");
+	scrollpng = TextureHolder::GetTexture("graphics/Scroll.png");
+
+	Equipblankrhombus1.setTexture(textureSQ); //  1. 마름모 빈칸
+	Equipblankrhombus1.setTextureRect(IntRect(33, 1016, 39, 31));
+	Equipblankrhombus1.setScale(Vector2f(1.0f, 1.0f));
+	Equipblankrhombus1.setPosition(320, 400);
+
+	Equiptextscrollname1.setFont(fontLostRuins); // 1. 리스트 내 아이템 이름
+	Equiptextscrollname1.setString("Red necklace of harmony");
+	Equiptextscrollname1.setCharacterSize(30);
+	Equiptextscrollname1.setFillColor(Color::Red);
+	Equiptextscrollname1.setPosition(380, 395);
+
+	Equipblankrhombus2.setTexture(textureSQ); // 2. 마름모 빈칸
+	Equipblankrhombus2.setTextureRect(IntRect(33, 1016, 39, 31));
+	Equipblankrhombus2.setScale(Vector2f(1.0f, 1.0f));
+	Equipblankrhombus2.setPosition(320, 450);
+
+	Equiptextscrollname2.setFont(fontLostRuins); // 2. 리스트 내 아이템 이름
+	Equiptextscrollname2.setString("Blue necklace of harmony");
+	Equiptextscrollname2.setCharacterSize(30);
+	Equiptextscrollname2.setFillColor(Color::Red);
+	Equiptextscrollname2.setPosition(380, 445);
+
+	Equiprderfullrhombus3.setTexture(textureSQ);
+	Equiprderfullrhombus3.setTextureRect(IntRect(79, 1016, 39, 31)); // 2-1. 채워진 마름모
+	Equiprderfullrhombus3.setScale(Vector2f(1.0f, 1.0f));
+	Equiprderfullrhombus3.setPosition(320, 400);
+
+	Equiprderfullrhombus4.setTexture(textureSQ); // 2-2. 채워진 마름모
+	Equiprderfullrhombus4.setTextureRect(IntRect(79, 1016, 39, 31));
+	Equiprderfullrhombus4.setScale(Vector2f(1.0f, 1.0f));
+	Equiprderfullrhombus4.setPosition(320, 450);
+
+
+	///////////////////////////////////////////////////////////////
+
+
+	Equipitemphotoframe2.setTexture(textureSQ); // 2. 우측 아이템 네모칸
+	Equipitemphotoframe2.setTextureRect(IntRect(254, 673, 92, 96));
+	Equipitemphotoframe2.setScale(Vector2f(1.0f, 1.0f));
+	Equipitemphotoframe2.setPosition(980, 380);
+
+	EquiptextItemnamefield2.setFont(fontLostRuins); // 2. 우측 아이템 이름
+	EquiptextItemnamefield2.setString("Blue necklace of harmony");
+	EquiptextItemnamefield2.setCharacterSize(40);
+	EquiptextItemnamefield2.setFillColor(Color::Red);
+	EquiptextItemnamefield2.setPosition(1100, 400);
+
+	EquipdescriptionImage2.setTexture(scrollpng); // 2. 우측 아이템 이미지
+	EquipdescriptionImage2.setTextureRect(IntRect(20, 226, 11, 14));
+	EquipdescriptionImage2.setScale(Vector2f(2.5f, 2.5f));
+	EquipdescriptionImage2.setPosition(1020, 400);
+
+	Equipitembackground2.setTexture(textureSQ); // 2. 우측 아이템 이미지 뒷배경
+	Equipitembackground2.setTextureRect(IntRect(62, 605, 42, 40));
+	Equipitembackground2.setScale(Vector2f(2.2f, 2.4f));
+	Equipitembackground2.setPosition(980, 380);
+
+	Equipmagictype2.setFont(fontLostRuins); // 2. 장비 타입
+	Equipmagictype2.setString("Equipment type : necklace");
+	Equipmagictype2.setCharacterSize(25);
+	Equipmagictype2.setFillColor(Color::White);
+	Equipmagictype2.setPosition(980, 520);
+
+	Equipattackspeed2.setFont(fontLostRuins); // 2. 아이템 희귀도
+	Equipattackspeed2.setString("Equipment rare : unique");
+	Equipattackspeed2.setCharacterSize(25);
+	Equipattackspeed2.setFillColor(Color::White);
+	Equipattackspeed2.setPosition(980, 560);
+
+	EquipDamage2.setFont(fontLostRuins); // 1. 효과
+	EquipDamage2.setString("Effect : A red necklace is displayed on the screen.");
+	EquipDamage2.setCharacterSize(25);
+	EquipDamage2.setFillColor(Color::White);
+	EquipDamage2.setPosition(980, 600);
+
+	EquipItemDescription01.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	EquipItemDescription01.setString("A necklace set created by team leader");
+	EquipItemDescription01.setCharacterSize(25);
+	EquipItemDescription01.setFillColor(Color::White);
+	EquipItemDescription01.setPosition(980, 720);
+
+	EquipItemDescription02.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	EquipItemDescription02.setString("Jeong-hoon Kim, who made the UI maker");
+	EquipItemDescription02.setCharacterSize(25);
+	EquipItemDescription02.setFillColor(Color::White);
+	EquipItemDescription02.setPosition(980, 760);
+
+	EquipItemDescription03.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	EquipItemDescription03.setString("with the desire to lead the team harmoniously. ");
+	EquipItemDescription03.setCharacterSize(25);
+	EquipItemDescription03.setFillColor(Color::White);
+	EquipItemDescription03.setPosition(980, 800);
+
+	EquipItemDescription04.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	EquipItemDescription04.setString("UI creators have escaped.");
+	EquipItemDescription04.setCharacterSize(25);
+	EquipItemDescription04.setFillColor(Color::White);
+	EquipItemDescription04.setPosition(980, 840);
+}
+
+void TestUi::relics()
+{
+	textureSQ = TextureHolder::GetTexture("graphics/SQ.png");
+	fontLostRuins.loadFromFile("fonts/LiberationSans-Regular.ttf");
+	scrollpng = TextureHolder::GetTexture("graphics/Scroll.png");
+
+	Relicblankrhombus1.setTexture(textureSQ); //  1. 마름모 빈칸
+	Relicblankrhombus1.setTextureRect(IntRect(33, 1016, 39, 31));
+	Relicblankrhombus1.setScale(Vector2f(1.0f, 1.0f));
+	Relicblankrhombus1.setPosition(320, 400);
+
+	Relictextscrollname1.setFont(fontLostRuins); // 1. 리스트 내 아이템 이름
+	Relictextscrollname1.setString("one chicken");
+	Relictextscrollname1.setCharacterSize(30);
+	Relictextscrollname1.setFillColor(Color::Red);
+	Relictextscrollname1.setPosition(380, 395);
+
+	Relicrderfullrhombus1.setTexture(textureSQ);
+	Relicrderfullrhombus1.setTextureRect(IntRect(79, 1016, 39, 31)); // 1-1. 채워진 마름모
+	Relicrderfullrhombus1.setScale(Vector2f(1.0f, 1.0f));
+	Relicrderfullrhombus1.setPosition(320, 400);
+
+	Relicitemphotoframe1.setTexture(textureSQ); // 1. 우측 아이템 네모칸
+	Relicitemphotoframe1.setTextureRect(IntRect(254, 673, 92, 96));
+	Relicitemphotoframe1.setScale(Vector2f(1.0f, 1.0f));
+	Relicitemphotoframe1.setPosition(980, 380);
+
+	RelictextItemnamefield1.setFont(fontLostRuins); // 1. 우측 아이템 이름
+	RelictextItemnamefield1.setString("Picture of chicken");
+	RelictextItemnamefield1.setCharacterSize(40);
+	RelictextItemnamefield1.setFillColor(Color::Red);
+	RelictextItemnamefield1.setPosition(1100, 400);
+
+	RelicdescriptionImage1.setTexture(scrollpng); // 1. 우측 아이템 이미지
+	RelicdescriptionImage1.setTextureRect(IntRect(3, 62, 26, 23));
+	RelicdescriptionImage1.setScale(Vector2f(1.1f, 1.0f));
+	RelicdescriptionImage1.setPosition(1020, 400);
+
+	Relicitembackground1.setTexture(textureSQ); // 1. 우측 아이템 이미지 뒷배경
+	Relicitembackground1.setTextureRect(IntRect(62, 605, 42, 40));
+	Relicitembackground1.setScale(Vector2f(2.2f, 2.4f));
+	Relicitembackground1.setPosition(980, 380);
+
+	Relicmagictype1.setFont(fontLostRuins); // 1. 유물 타입
+	Relicmagictype1.setString("Relic type : Chicken with eyes only");
+	Relicmagictype1.setCharacterSize(25);
+	Relicmagictype1.setFillColor(Color::White);
+	Relicmagictype1.setPosition(980, 520);
+
+	Relicattackspeed1.setFont(fontLostRuins); // 1. 아이템 희귀도
+	Relicattackspeed1.setString("Item rare : Relic");
+	Relicattackspeed1.setCharacterSize(25);
+	Relicattackspeed1.setFillColor(Color::White);
+	Relicattackspeed1.setPosition(980, 560);
+
+	RelicDamage1.setFont(fontLostRuins); // 1. 효과
+	RelicDamage1.setString("Effect : If you have it, you have to code it.");
+	RelicDamage1.setCharacterSize(25);
+	RelicDamage1.setFillColor(Color::White);
+	RelicDamage1.setPosition(980, 600);
+
+	RelicItemDescription1.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	RelicItemDescription1.setString("It's a relic that UI creators had a hard time making.");
+	RelicItemDescription1.setCharacterSize(25);
+	RelicItemDescription1.setFillColor(Color::White);
+	RelicItemDescription1.setPosition(980, 720);
+
+	RelicItemDescription2.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	RelicItemDescription2.setString("There is a longing to go home,");
+	RelicItemDescription2.setCharacterSize(25);
+	RelicItemDescription2.setFillColor(Color::White);
+	RelicItemDescription2.setPosition(980, 760);
+
+	RelicItemDescription3.setFont(fontLostRuins); // 1. 아이템 설명 텍스트
+	RelicItemDescription3.setString("actually got off work.");
+	RelicItemDescription3.setCharacterSize(25);
+	RelicItemDescription3.setFillColor(Color::White);
+	RelicItemDescription3.setPosition(980, 800);
 }
 
 void TestUi::EscSetting()

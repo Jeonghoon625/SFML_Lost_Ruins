@@ -129,8 +129,10 @@ private:
 	Sprite OdescriptionImage2; // 2. 우측 아이템 이미지
 	Sprite Oitembackground1; // 1. 우측 아이템 이미지 뒷배경
 	Sprite Oitembackground2; // 2. 우측 아이템 이미지 뒷배경
-	Sprite Orderfullrhombus1; // 1. 채원진 마름모
-	Sprite Orderfullrhombus2; // 2. 채원진 마름모
+	Sprite Orderfullrhombus1; // 1-1. 채원진 마름모
+	Sprite Orderfullrhombus2; // 1-2. 채원진 마름모
+	Sprite Orderfullrhombus3; // 2-1. 채원진 마름모
+	Sprite Orderfullrhombus4; // 2-2. 채원진 마름모
 
 	Text Otextscrollname1; // 1. 리스트 내 아이템 이름
 	Text Otextscrollname2; // 2. 리스트 내 아이템 이름
@@ -157,12 +159,20 @@ private:
 	////////////////////////////////////////////
 
 	Sprite InvenSupplies; // 소모품
-	Sprite InvenSuppliesblock1;
-	Sprite InvenSuppliesblock2;
-	Sprite InvenSuppliesblock3;
-	Text textInvenSupplies1;
-	Text textInvenSupplies2;
-	Text textInvenSupplies3;
+	Sprite Suppliesblankrhombus1; //  1. 마름모 빈칸 
+	Sprite Suppliesitemphotoframe1; // 1. 우측 아이템 네모칸 
+	Sprite SuppliesdescriptionImage1; // 1. 우측 아이템 이미지 
+	Sprite Suppliesitembackground1; // 1. 우측 아이템 이미지 뒷배경 
+	Sprite Suppliesrderfullrhombus1; // 1-1. 채원진 마름모
+
+	Text Suppliestextscrollname1; // 1. 리스트 내 아이템 이름 
+	Text SuppliestextItemnamefield1; // 1. 우측 아이템 이름 
+	Text Suppliesmagictype1; // 1. 마법타입 
+	Text Suppliesattackspeed1; // 1. 공격속도 
+	Text SuppliesDamage1; // 1. 데미지 
+	Text SuppliesItemDescription1; // 1. 아이템설명 텍스트 
+	Text SuppliesItemDescription2; // 1. 아이템설명 텍스트 
+	Text SuppliesItemDescription3; // 1. 아이템설명 텍스트 
 
 	////////////////////////////////////////////
 	//                                        //
@@ -171,12 +181,37 @@ private:
 	////////////////////////////////////////////
 
 	Sprite InvenEquipment; // 장비
-	Sprite InvenEquipmentblock1;
-	Sprite InvenEquipmentblock2;
-	Sprite InvenEquipmentblock3;
-	Text textInvenEquipment1;
-	Text textInvenEquipment2;
-	Text textInvenEquipment3;
+
+	Sprite Equipblankrhombus1; //  1. 마름모 빈칸
+	Sprite Equipblankrhombus2; // 2. 마름모 빈칸
+	Sprite Equipitemphotoframe1; // 1. 우측 아이템 네모칸
+	Sprite Equipitemphotoframe2; // 2. 우측 아이템 네모칸
+	Sprite EquipdescriptionImage1; // 1. 우측 아이템 이미지
+	Sprite EquipdescriptionImage2; // 2. 우측 아이템 이미지
+	Sprite Equipitembackground1; // 1. 우측 아이템 이미지 뒷배경
+	Sprite Equipitembackground2; // 2. 우측 아이템 이미지 뒷배경
+	Sprite Equiprderfullrhombus1; // 1-1. 채원진 마름모
+	Sprite Equiprderfullrhombus2; // 1-2. 채원진 마름모
+	Sprite Equiprderfullrhombus3; // 2-1. 채원진 마름모
+	Sprite Equiprderfullrhombus4; // 2-2. 채원진 마름모
+
+	Text Equiptextscrollname1; // 1. 리스트 내 아이템 이름
+	Text Equiptextscrollname2; // 2. 리스트 내 아이템 이름
+	Text EquiptextItemnamefield1; // 1. 우측 아이템 이름
+	Text EquiptextItemnamefield2; // 2. 우측 아이템 이름
+	Text Equipmagictype1; // 1. 장비타입
+	Text Equipmagictype2; // 2. 장비타입
+	Text Equipattackspeed1; // 1. 아이템 희귀도
+	Text Equipattackspeed2; // 2. 아이템 희귀도
+	Text EquipDamage1; // 1. 효과
+	Text EquipDamage2; // 2. 효과
+	Text EquipItemDescription1; // 1. 아이템설명 텍스트
+	Text EquipItemDescription2; // 1. 아이템설명 텍스트
+	Text EquipItemDescription3; // 1. 아이템설명 텍스트
+	Text EquipItemDescription01; // 2. 아이템설명 텍스트
+	Text EquipItemDescription02; // 2. 아이템설명 텍스트
+	Text EquipItemDescription03; // 2. 아이템설명 텍스트
+	Text EquipItemDescription04; // 2. 아이템설명 텍스트
 
 	////////////////////////////////////////////
 	//                                        //
@@ -185,7 +220,20 @@ private:
 	////////////////////////////////////////////
 
 	Sprite InvenRelic; // 유물
-	Sprite InvenRelicblock;
+	Sprite Relicblankrhombus1; //  1. 마름모 빈칸 
+	Sprite Relicitemphotoframe1; // 1. 우측 아이템 네모칸 
+	Sprite RelicdescriptionImage1; // 1. 우측 아이템 이미지 
+	Sprite Relicitembackground1; // 1. 우측 아이템 이미지 뒷배경 
+	Sprite Relicrderfullrhombus1; // 1-1. 채원진 마름모
+
+	Text Relictextscrollname1; // 1. 리스트 내 아이템 이름 
+	Text RelictextItemnamefield1; // 1. 우측 아이템 이름 
+	Text Relicmagictype1; // 1. 마법타입 
+	Text Relicattackspeed1; // 1. 공격속도 
+	Text RelicDamage1; // 1. 데미지 
+	Text RelicItemDescription1; // 1. 아이템설명 텍스트 
+	Text RelicItemDescription2; // 1. 아이템설명 텍스트 
+	Text RelicItemDescription3; // 1. 아이템설명 텍스트 
 
 	////////////////////////////////////////////
 	//                                        //
@@ -382,6 +430,7 @@ private:
 	int orderNum;
 	int SuppliesNum;
 	int EquipmentNum;
+	int relicsNum;
 
 	bool inventory;
 	bool MAP;
@@ -396,6 +445,14 @@ private:
 	bool Zscrollview;
 	bool Xscroll;
 	bool Xscrollview;
+	bool Zfood;
+	bool Zfoodview;
+	bool ZEquip;
+	bool ZEquipview;
+	bool XEquip;
+	bool XEquipview;
+	bool Zrelics;
+	bool Zrelicsview;
 
 	bool Escset;
 	bool FullCSsetview;
@@ -415,8 +472,15 @@ public:
 	void EscSetting();
 	void ESCsettag();
 	void EscKeyboard();
+
+	///////////////////////////////////////////////
+
 	void weaponlist1();
 	void weaponlist2();
 	void scrollList1();
 	void scrollList2();
+	void Supplies();
+	void EquipList1();
+	void EquipList2();
+	void relics();
 };
