@@ -244,7 +244,9 @@ void LamiPhaseTwo::SetStatus(Lami2Status newStatus)
 		break;
 	case Lami2Status::STATUS_REAPPEARING:
 		animation.Play(strReappearing, std::bind(&LamiPhaseTwo::SetIdle, this));
-
+		break;
+	case Lami2Status::STATUS_DEAD:
+		animation.Play(strDead);
 		break;
 	default:
 		break;
@@ -370,26 +372,28 @@ void LamiPhaseTwo::Update(Player& player, float dt, std::vector<TestBlock*> bloc
 	Walk(dt, player);
 	/*Attack(dt, atk, player, playTime);*/
 	Dive(dt, player);
-	if (!isDiving && !isReappearing)
+	if (health > 0)
 	{
-		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 35, sprite.getGlobalBounds().top + 17));
-		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 89, sprite.getGlobalBounds().top + 17));
-	}
-	else if (isDiving && !isReappearing)
-	{
-		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 20, sprite.getGlobalBounds().top + 26));
-		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 76, sprite.getGlobalBounds().top + 26));
-	}
-	else if (!isDiving && isReappearing)
-	{
+		if (!isDiving && !isReappearing)
+		{
+			leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 35, sprite.getGlobalBounds().top + 17));
+			rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 89, sprite.getGlobalBounds().top + 17));
+		}
+		else if (isDiving && !isReappearing)
+		{
+			leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 20, sprite.getGlobalBounds().top + 26));
+			rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 76, sprite.getGlobalBounds().top + 26));
+		}
+		else if (!isDiving && isReappearing)
+		{
 
-		leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 29, sprite.getGlobalBounds().top + 19));
-		rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 85, sprite.getGlobalBounds().top + 19));
+			leftHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 29, sprite.getGlobalBounds().top + 19));
+			rightHand.Update(dt, Vector2f(sprite.getGlobalBounds().left + 85, sprite.getGlobalBounds().top + 19));
+		}
+
+		leftEye.Update(sprite, player, dt, hitBox);
+		rightEye.Update(sprite, player, dt, hitBox);
 	}
-
-	leftEye.Update(sprite, player, dt, hitBox);
-	rightEye.Update(sprite, player, dt, hitBox);
-
 	AnimationUpdate();
 	
 	animation.Update(dt);
