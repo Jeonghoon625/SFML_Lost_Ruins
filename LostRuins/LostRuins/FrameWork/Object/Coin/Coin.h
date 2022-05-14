@@ -56,7 +56,7 @@ public:
 	Sprite GetSprite() const;
 
 	void Init();
-	void Update(float dt, std::vector<CollisionBlock*> blocks, Player &player);
+	void Update(float dt, std::vector<CollisionBlock*> blocks, Player *player);
 	void Draw(RenderWindow* window, View* mainView, View* uiView);
 
 	

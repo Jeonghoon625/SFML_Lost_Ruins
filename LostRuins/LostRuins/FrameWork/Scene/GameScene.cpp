@@ -25,7 +25,7 @@ void GameScene::Init(SceneManager* sceneManager)
 	
 }
 
-void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
+void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* objectView, View* uiView)
 {
 	if (player.GetPause() == false)
 	{
@@ -43,10 +43,15 @@ void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* main
 
 		player.Update(dt, blocks, playTime);
 	}
+
+	testUI.Update(dt, playTime, window, uiView, player);
+	testNpc.Update(dt);
+	coin.Update(dt, blocks, &player);
 }
 
 void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
 {
+	window->setView(*objectView);
 	/* View ¼³Á¤*/
 	objectView->setCenter(player.GetPosition());
 
@@ -86,8 +91,12 @@ void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
 
 	// test
 	zombieWalker->Draw(window);
-	
-	//testUI.Draw(window, mainView);
+
+	testNpc.Draw(window);
+	coin.Draw(window, objectView, uiView);
+
+	window->setView(*uiView);
+	testUI.Draw(window, uiView);
 }
 
 GameScene::~GameScene()

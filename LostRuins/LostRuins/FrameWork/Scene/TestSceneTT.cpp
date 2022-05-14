@@ -37,7 +37,7 @@ void TestSceneTT::Update(float dt, Time playTime, RenderWindow* window, View* ma
 {
 	testUI.Update(dt, playTime, window, uiView, player);
 	testNpc.Update(dt);
-	coin.Update(dt, blocks, player);
+	coin.Update(dt, blocks, &player);
 	if (player.GetPause() == false)
 	{
 		if (player.GetAlive() == false)
