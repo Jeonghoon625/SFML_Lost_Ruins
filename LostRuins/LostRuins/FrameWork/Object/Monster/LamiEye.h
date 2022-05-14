@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "LamiPhaseTwo.h"
+#include "../Player/Player.h"
+#include "LamiHand.h"
 
 using namespace sf;
 
@@ -13,10 +14,12 @@ private:
 
 	Image Idle;
 	Image Idle2;
+
+	Lami2Status currentStatus;
 	
 	float eyeSpeed;
 
-	float a = 1.f;
+	float a;
 	float upY;
 	float downY;
 	float prevY;
@@ -25,8 +28,10 @@ private:
 	Vector2f prevLeftEyePos;
 public:
 	LamiEye();
-	void Init(Vector2f pos, int eyeSide, Sprite& sprite);
-	void Update(Sprite& sprite, Player& player, float dt);
+	void Init(int eyeSide, Sprite& sprite);
+	void Update(Sprite& sprite, Player& player, float dt, RectangleShape& hitBox);
 	void Draw(RenderWindow* window);
+
+	void SetStatus(Lami2Status newStatus, Sprite& sprite);
 };
 

@@ -4,7 +4,7 @@
 #include "../../Mgr/TextureHolder.h"
 #include "LamiHand.h"
 #include "LamiPhaseTwo.h"
-
+#include "LamiEye.h"
 using namespace sf;
 
 class LamiPhaseTwo : public Monster
@@ -17,25 +17,17 @@ private:
 
 	Lami2Status currentStatus;
 
-	Sprite leftSclera;
-	Sprite rightSclera;
-
-	Sprite leftEye;
-	Sprite RightEye;
-
 	LamiHand leftHand;
 	LamiHand rightHand;
+
+	LamiEye leftEye;
+	LamiEye rightEye;
 
 	String strDiving;
 	String strReappearing;
 	String strReappearingToIdle;
 
-	Image Idle;
-	Image Idle2;
-
-	Vector2f prevLeftEyePos;
 	Vector2f originalPos;
-	float a = 1.f;
 
 	bool isNearAttackPlayer;
 	bool isMiddleAttackPlayer;
@@ -51,11 +43,6 @@ private:
 	bool diveOn;
 	bool ReappearOn;
 
-
-	float upY;
-	float downY;
-	float prevY;
-	float updateY;
 	float diveDelay;
 	int punchCount;
 	int diveCount;
@@ -79,6 +66,7 @@ public:
 	void EyeUpdate(float dt, Player& player);
 	void SetDive();
 	void SetIdle();
+	void EyeSetIdleStatus();
 
 	virtual bool OnHitted(int atk, float dt, Time timeHit);
 	virtual void Gravity(float dt, std::vector<TestBlock*> blocks);
