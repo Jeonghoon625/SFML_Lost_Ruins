@@ -22,6 +22,8 @@ void GameScene::Init(SceneManager* sceneManager)
 	//Dummy Map
 	CreateBackGround();
 	texBackground = TextureHolder::GetTexture("maps/Another/SewerWall.png");
+
+	testUI.Init(sceneManager);
 	
 }
 
@@ -45,8 +47,8 @@ void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* obje
 	}
 
 	testUI.Update(dt, playTime, window, uiView, player);
-	testNpc.Update(dt);
-	coin.Update(dt, blocks, &player);
+	/*testNpc.Update(dt);
+	coin.Update(dt, blocks, &player);*/
 }
 
 void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
@@ -79,7 +81,6 @@ void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
 		objectView->move(0, (gameMap.top + gameMap.height) - ((objectView->getCenter().y) + (objectView->getSize().y * 0.5f)));
 	}
 
-
 	window->draw(tileMap, &texBackground);
 
 	for (auto blockShape : blocks)
@@ -92,8 +93,8 @@ void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
 	// test
 	zombieWalker->Draw(window);
 
-	testNpc.Draw(window);
-	coin.Draw(window, objectView, uiView);
+	//testNpc.Draw(window);
+	//coin.Draw(window, objectView, uiView);
 
 	window->setView(*uiView);
 	testUI.Draw(window, uiView);

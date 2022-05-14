@@ -8,8 +8,8 @@ void TestUi::Init(SceneManager* sceneManager)
 {
 	this->sceneMgr = sceneManager;
 
-	resolution.x = VideoMode::getDesktopMode().width * 0.8f; //1920
-	resolution.y = VideoMode::getDesktopMode().height * 0.8f; //1080
+	resolution.x = 1920.f;
+	resolution.y = 1080.f;
 
 	Initstartimg();
 }
