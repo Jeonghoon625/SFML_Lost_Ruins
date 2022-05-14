@@ -446,9 +446,19 @@ int Player::GetHealth() const
 	return health;
 }
 
+int Player::GetMaxHealth() const
+{
+	return maxHealth;
+}
+
 int Player::GetMana() const
 {
 	return mana;
+}
+
+int Player::GetMaxMana() const
+{
+	return maxMana;
 }
 
 RectangleShape Player::GetHitBox()
