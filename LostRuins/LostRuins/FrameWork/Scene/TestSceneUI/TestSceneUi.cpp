@@ -18,8 +18,13 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 {
 	float HPbarwidth = 314;
 	float HPbarHeight = 17;
+	float MPbarwidth = 314;
+	float MPbarHeight = 17;
+
 	healthBarsize = Vector2f(HPbarwidth, HPbarHeight);
 	HPbar.setScale(player.GetHealth() / 20.f, 1.f); //player.GetMaxHealth()
+	mpBarsize = Vector2f(MPbarwidth, MPbarHeight);
+	MPbar.setScale(player.GetMana() / 20.f, 1.f);
 
 	/*float MPwidth = 314;
 	float MPbarHeight = 17;

@@ -6,6 +6,9 @@ void Player::Init(ZombieWalker* zombie)
 {
 	health = START_HEALTH;
 	maxHealth = START_HEALTH;
+	mana = START_MANA;
+	maxMana = START_MANA;
+
 	speed = START_SPEED;
 	JumpingSpeed = START_JUMP_SPEED;
 	fallingSpeed = 0.f;
@@ -143,7 +146,11 @@ void Player::PlayerAction(float dt, Time playTime)
 					{
 						attackMgr.SetAttackType(AttackType::FIRE_ARROW);
 						attackFps = attackMgr.GetAttackFps();
-						isSpell = true;
+						if (mana >= attackMgr.PaySpellCost())
+						{
+							mana -= attackMgr.PaySpellCost();
+							isSpell = true;
+						}
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Space))
 					{
@@ -189,7 +196,7 @@ void Player::PlayerAction(float dt, Time playTime)
 						{
 							if (attackMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
 							{
-								std::cout << "Hit" << zombie->GetHealth() << std::endl;
+								//std::cout << "Hit" << zombie->GetHealth() << std::endl;
 								zombie->OnHitted(attackMgr.GetAttackPoint(), dt, playTime);
 							}
 						}
@@ -437,6 +444,11 @@ Sprite Player::GetSprite() const
 int Player::GetHealth() const
 {
 	return health;
+}
+
+int Player::GetMana() const
+{
+	return mana;
 }
 
 RectangleShape Player::GetHitBox()
@@ -916,7 +928,7 @@ void Player::Spawn(float x, float y)
 	position.x = x;
 	position.y = y;
 
-	hitBox.setFillColor(Color(103, 103, 103, 125));
+	hitBox.setFillColor(Color(103, 103, 103, 0));
 	hitBox.setSize(Vector2f(20.f, 48.f));
 	hitBox.setOrigin(hitBoxStand);
 	hitBox.setScale(scale);
