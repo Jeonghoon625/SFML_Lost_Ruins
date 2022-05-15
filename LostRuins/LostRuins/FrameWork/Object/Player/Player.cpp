@@ -87,10 +87,12 @@ void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTim
 
 	if (InputManager::GetKeyDown(Keyboard::Tab) && isPause == false)
 	{
+		soundWalk.setLoop(false);
 		isPause = true;
 	}
 	else if (InputManager::GetKeyDown(Keyboard::Escape) && isPause == false)
 	{
+		soundWalk.setLoop(false);
 		isPause = true;
 	}
 }
@@ -793,7 +795,7 @@ void Player::AnimationUpdate(float dt)
 		{
 			SetStatus(Status::STATUS_FALLING);
 		}
-		else if (InputManager::GetKeyUp(Keyboard::Left) || InputManager::GetKeyUp(Keyboard::Right))
+		else if (!(InputManager::GetKey(Keyboard::Left) || InputManager::GetKey(Keyboard::Right)))
 		{
 			SetStatus(Status::STATUS_IDLE);
 		}
@@ -984,6 +986,7 @@ void Player::SetStatus(Status newStatus)
 		break;
 	case Status::STATUS_DEAD:
 		soundWalk.setLoop(false);
+		soundBackGround.stop();
 		soundDeath.play();
 		animation.Play("Dead");
 		break;
