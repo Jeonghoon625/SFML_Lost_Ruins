@@ -10,6 +10,9 @@ void Npc::Init()
 	AnimationInit();
 	Spawn(gameMapNpc, resolustionNpc, tileSizeNpc);
 	animationNpc.Play("Idle");
+	positionNpc.x = 1680.f;
+	positionNpc.y = 736.f;
+	spriteNpc.setPosition(positionNpc);
 }
 
 void Npc::Spawn(IntRect gameMap, Vector2i res, int tileSize)

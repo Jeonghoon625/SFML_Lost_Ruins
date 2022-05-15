@@ -44,8 +44,8 @@ class GameScene : public Scene
 	Player player;
 
 	TestUi testUI;
-	/*Npc testNpc;
-	Coin coin;*/
+	Npc testNpc;
+	Coin coin;
 
 	Texture textureHeroine;
 

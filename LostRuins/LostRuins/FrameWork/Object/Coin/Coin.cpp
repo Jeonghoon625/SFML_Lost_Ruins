@@ -11,6 +11,9 @@ void Coin::Init()
 	Spawn(gameMapCoin, resolustionCoin, tileSizeCoin);
 	animationCoin.Play("Gold");
 	coinTimer = 2.f;
+	positionCoin.x = 1000.f;
+	positionCoin.y = 736.f;
+	spriteCoin.setPosition(positionCoin);
 }
 
 void Coin::Update(float dt, std::vector<CollisionBlock*> blocks, Player* player)
@@ -113,6 +116,7 @@ void Coin::UpdateCollision(std::vector<CollisionBlock*> blocks)
 			spriteCoin.setPosition(pos);
 		}
 	}
+
 }
 
 void Coin::Spawn(IntRect gameMap, Vector2i res, int tileSize)

@@ -22,10 +22,52 @@ void GameScene::Init(SceneManager* sceneManager)
 	texBackground = TextureHolder::GetTexture("maps/Another/SewerWall.png");
 
 	testUI.Init(sceneManager);
+
+	testNpc.Init();
+	coin.Init();
+	testNpc.Spawn((IntRect)gameMap, resolution, 32.f);
+	coin.Spawn((IntRect)gameMap, resolution, 32.f);
 }
 
 void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* objectView, View* uiView)
 {
+	testNpc.Update(dt);
+	coin.Update(dt, blocks, &player);
+
+	if (InputManager::GetKeyDown(Keyboard::Num8))
+	{
+		for (auto v : monsters)
+		{
+			delete v;
+		}
+		monsters.clear();
+
+		Monster* goblin = new GoblinAttacker;
+		goblin->MonsterInit();
+		goblin->Spawn(Vector2f(200, 200));
+		monsters.push_back(goblin);
+
+		Monster* zombieWalker = new ZombieWalker;
+		zombieWalker->MonsterInit();
+		zombieWalker->Spawn(Vector2f(800, 200));
+		monsters.push_back(zombieWalker);
+
+		Monster* zombieCrawler = new ZombieCrawler;
+		zombieCrawler->MonsterInit();
+		zombieCrawler->Spawn(Vector2f(600, 200));
+		monsters.push_back(zombieCrawler);
+
+		Monster* slimeGreen = new SlimeGreen;
+		slimeGreen->MonsterInit();
+		slimeGreen->Spawn(Vector2f(200, 400));
+		monsters.push_back(slimeGreen);
+
+		Monster* lamiPhaseOne = new LamiPhaseOne;
+		lamiPhaseOne->MonsterInit();
+		lamiPhaseOne->Spawn(Vector2f(400, 200));
+		monsters.push_back(lamiPhaseOne);
+	}
+
 	if (InputManager::GetKeyDown(Keyboard::Num9))
 	{
 		Monster* lamiPhaseTwo = new LamiPhaseTwo;
@@ -33,6 +75,7 @@ void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* obje
 		lamiPhaseTwo->Spawn(Vector2f(400, 200));
 		monsters.push_back(lamiPhaseTwo);
 	}
+
 
 	if (player.GetPause() == false)
 	{
@@ -109,6 +152,8 @@ void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
 
 	//testNpc.Draw(window);
 	//coin.Draw(window, objectView, uiView);
+	testNpc.Draw(window);
+	coin.Draw(window, objectView, uiView);
 
 	window->setView(*uiView);
 	testUI.Draw(window, uiView);
@@ -207,36 +252,7 @@ int GameScene::CreateBackGround()
 
 void GameScene::CreateMonsters()
 {
-	for (auto v : monsters)
-	{
-		delete v;
-	}
-	monsters.clear();
-
-	Monster* goblin = new GoblinAttacker;
-	goblin->MonsterInit();
-	goblin->Spawn(Vector2f(200, 200));
-	monsters.push_back(goblin);
-
-	Monster* zombieWalker = new ZombieWalker;
-	zombieWalker->MonsterInit();
-	zombieWalker->Spawn(Vector2f(800, 200));
-	monsters.push_back(zombieWalker);
-
-	Monster* zombieCrawler = new ZombieCrawler;
-	zombieCrawler->MonsterInit();
-	zombieCrawler->Spawn(Vector2f(600, 200));
-	monsters.push_back(zombieCrawler);
-
-	Monster* slimeGreen = new SlimeGreen;
-	slimeGreen->MonsterInit();
-	slimeGreen->Spawn(Vector2f(200, 400));
-	monsters.push_back(slimeGreen);
-
-	Monster* lamiPhaseOne = new LamiPhaseOne;
-	lamiPhaseOne->MonsterInit();
-	lamiPhaseOne->Spawn(Vector2f(400, 200));
-	monsters.push_back(lamiPhaseOne);
+	
 
 	/*Monster* lamiPhaseTwo = new LamiPhaseTwo;
 	lamiPhaseTwo->MonsterInit();

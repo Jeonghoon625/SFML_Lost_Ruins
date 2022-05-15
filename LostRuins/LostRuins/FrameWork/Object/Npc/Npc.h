@@ -13,7 +13,7 @@ using namespace sf;
 class Npc
 {
 private:
-	const Vector2f scale = Vector2f(3.f, 3.f);
+	const Vector2f scale = Vector2f(1.f, 1.f);
 
 	AnimationController animationNpc;
 
