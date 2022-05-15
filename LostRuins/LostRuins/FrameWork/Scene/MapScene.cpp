@@ -61,11 +61,11 @@ void MapScene::Init(SceneManager* sceneManager)
 	stateText.setString("TEST");
 
 	//test
-	
+	//selectTexture = objectResource.find("m_LamiPhase2")->second.tex;
 	isDraw = true;
 
 	//버튼 집합 생성
-	CreateButtonSet();
+	CreateDefaultButtonSet();
 }
 
 void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
@@ -185,6 +185,8 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 			isDraw = !isDraw;
 		}
 	}
+
+	UpdateSelectTexture();
 }
 
 void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
@@ -205,17 +207,6 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 		}
 	}
 
-	fromX = mousePosGrid.x;
-	fromY = mousePosGrid.y;
-
-	textureShape.setFillColor({ 255, 255, 255, 75});
-	textureShape.setTexture(&selectTexture);
-	textureShape.setSize(Vector2f(1.f, 1.f));
-	textureShape.setScale(selectTexture.getSize().x, selectTexture.getSize().y);
-	textureShape.setPosition((fromX  + (textureShape.getLocalBounds().width * 0.5f)) * gridSizeU, (fromY + (textureShape.getLocalBounds().height * 0.5f)) * gridSizeU);
-	textureShape.setOrigin(textureShape.getLocalBounds().width * 0.5f, textureShape.getLocalBounds().height * 0.5f);
-	//textureShape.setRotation(180.f);
-
 	window->draw(vertexMap, &selectTexture);
 
 	if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == ButtonState::BLOCK && currentDrag != nullptr)
@@ -231,14 +222,14 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 		}
 	}
 	
-
 	window->draw(tileSelector);
+
 	if (player != nullptr)
 	{
 		player->Draw(window, mapView);
 	}
 
-	window->draw(textureShape);
+	window->draw(currentTextureShape);
 
 	//UI Render
 	window->setView(*uiView);
@@ -335,7 +326,7 @@ int MapScene::CreateBackGround(int c, int r)
 	return cols * rows;
 }
 
-void MapScene::CreateButtonSet()
+void MapScene::CreateDefaultButtonSet()
 {
 	Button buttonTerrain = InitButton(resolution.x * 0.9f, resolution.y * 0.5f, 100.f, 50.f, "Terrain", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::TERRAIN);
 	buttons.push_back(buttonTerrain);
@@ -484,6 +475,43 @@ void MapScene::SetCurrentDrawState(ButtonState state)
 
 void MapScene::MapDataInit()
 {
+	//Map Resource
+	rapidcsv::Document resouceBackGrounds("data_tables/maps/Resource_BackGround.csv");
+	std::vector<std::string> colResouceBackGroundsId = resouceBackGrounds.GetColumn<std::string>("resourceId");
+	std::vector<std::string> colResouceBackGroundsPath = resouceBackGrounds.GetColumn<std::string>("resourcePath");
+	int totalResouceBackGrounds = colResouceBackGroundsId.size();
+	for (int i = 0; i < totalResouceBackGrounds; ++i)
+	{
+		backGroundResource.insert({ colResouceBackGroundsId[i], TextureHolder::GetTexture(colResouceBackGroundsPath[i]) });
+	}
+
+	rapidcsv::Document resouceObjects("data_tables/maps/Resource_Object.csv");
+	std::vector<std::string> colResouceObjectsId = resouceObjects.GetColumn<std::string>("resourceId");
+	std::vector<std::string> colResouceObjectsPath = resouceObjects.GetColumn<std::string>("resourcePath");
+	std::vector<std::string> colResouceObjectsType = resouceObjects.GetColumn<std::string>("resourceType");
+	int totalResouceObjects = colResouceObjectsId.size();
+	for (int i = 0; i < totalResouceObjects; ++i)
+	{
+		ObjectResource object;
+		object.tex = TextureHolder::GetTexture(colResouceObjectsPath[i]);
+		object.type = colResouceObjectsType[i];
+		objectResource.insert({ colResouceObjectsId[i], object });
+	}
+
+	rapidcsv::Document resouceTerrains("data_tables/maps/Resource_Terrain.csv");
+	std::vector<std::string> colResouceTerrainsId = resouceTerrains.GetColumn<std::string>("resourceId");
+	std::vector<std::string> colResouceTerrainsPath = resouceTerrains.GetColumn<std::string>("resourcePath");
+	int totalResouceTerrains = colResouceTerrainsId.size();
+	for (int i = 0; i < totalResouceTerrains; ++i)
+	{
+		TerrainResource terrain;
+		terrain.tex = TextureHolder::GetTexture(colResouceObjectsPath[i]);
+		terrain.angle = 0.f;
+		terrain.flip = Flip::NONE;
+		terrainResource.insert({ colResouceTerrainsId[i], terrain });
+	}
+
+	//Map information
 	rapidcsv::Document clips("data_tables/maps/Map_Clips.csv");
 	std::vector<std::string> colId = clips.GetColumn<std::string>("mapId");
 	std::vector<int> colWidth = clips.GetColumn<int>("mapWidth");
@@ -494,30 +522,6 @@ void MapScene::MapDataInit()
 
 	mapWidth = colWidth[0];
 	mapHeight = colHeight[0];
-	
-	rapidcsv::Document resouceBackGrounds("data_tables/maps/Resource_BackGround.csv");
-	std::vector<std::string> colResouceBackGroundsId = resouceBackGrounds.GetColumn<std::string>("resourceId");
-	std::vector<std::string> colResouceBackGroundsPath = resouceBackGrounds.GetColumn<std::string>("resourcePath");
-	int totalResouceBackGrounds = colResouceBackGroundsId.size();
-	for (int i = 0; i < totalResouceBackGrounds; ++i)
-	{
-		backGroundResource.insert({colResouceBackGroundsId[i], TextureHolder::GetTexture(colResouceBackGroundsPath[i])});
-	}
-	/*for (auto iter : backGroundResource)
-	{ 
-		cout << iter.first << " " << iter.second.getSize().x << endl;
-	}*/
-
-	rapidcsv::Document resouceObjects("data_tables/maps/Resource_Object.csv");
-	std::vector<std::string> colResouceBackGroundsId = resouceBackGrounds.GetColumn<std::string>("resourceId");
-	std::vector<std::string> colResouceBackGroundsPath = resouceBackGrounds.GetColumn<std::string>("resourcePath");
-	int totalResouceBackGrounds = colResouceBackGroundsId.size();
-	for (int i = 0; i < totalResouceBackGrounds; ++i)
-	{
-		backGroundResource.insert({ colResouceBackGroundsId[i], TextureHolder::GetTexture(colResouceBackGroundsPath[i]) });
-	}
-
-	rapidcsv::Document resouceTerrains("data_tables/maps/Resource_Terrain.csv");
 }
 
 MapScene::~MapScene()
@@ -532,6 +536,26 @@ MapScene::~MapScene()
 
 	blocks.clear();
 }
+
+void MapScene::UpdateSelectTexture()
+{
+	fromX = mousePosGrid.x;
+	fromY = mousePosGrid.y;
+
+	currentTextureShape.setFillColor({ 255, 255, 255, 75 });
+	currentTextureShape.setTexture(&selectTexture);
+	currentTextureShape.setSize(Vector2f(1.f, 1.f));
+	currentTextureShape.setScale(selectTexture.getSize().x, selectTexture.getSize().y);
+	currentTextureShape.setPosition((fromX + (currentTextureShape.getLocalBounds().width * 0.5f)) * gridSizeU, (fromY + (currentTextureShape.getLocalBounds().height * 0.5f)) * gridSizeU);
+	currentTextureShape.setOrigin(currentTextureShape.getLocalBounds().width * 0.5f, currentTextureShape.getLocalBounds().height * 0.5f);
+	//currentTextureShape.setRotation(180.f);
+}
+
+
+/*for (auto iter : backGroundResource)
+	{
+		cout << iter.first << " " << iter.second.getSize().x << endl;
+	}*/
 
 
 //csv 파일쓰기

@@ -124,7 +124,7 @@ class MapScene : public Scene
 	int fromY;
 	int toY;
 
-	RectangleShape textureShape;
+	RectangleShape currentTextureShape;
 
 	map<string, ObjectResource> objectResource;
 	map<string, TerrainResource> terrainResource;
@@ -138,19 +138,23 @@ public:
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
 	virtual void Draw(RenderWindow* window, View* mainView, View* uiView);
 
+	void MapDataInit();
+
 	void MoveView(float dt);
 	void UpdateMousePos(RenderWindow* window);
 
 	int CreateBackGround(int c, int r);
 
-	void CreateButtonSet();
+	void CreateDefaultButtonSet();
+	void CreateSelectButtonSet();
+
 	Button InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonCategory category, ButtonState state);
 	bool UpdateButton();
 
 	void SetCurrentInputState(ButtonState state);
 	void SetCurrentDrawState(ButtonState state);
 
-	void MapDataInit();
+	void UpdateSelectTexture();
 
 	virtual ~MapScene();
 };
