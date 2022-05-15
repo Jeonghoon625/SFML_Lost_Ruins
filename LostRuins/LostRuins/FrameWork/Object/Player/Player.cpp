@@ -148,7 +148,7 @@ void Player::PlayerAction(float dt, Time playTime)
 						attackMgr.SetAttackPosition(sprite);
 						isAttack = true;
 					}
-					else if (InputManager::GetKeyDown(Keyboard::A))
+					else if (InputManager::GetKeyDown(Keyboard::A) && isAequip == true)
 					{
 						attackMgr.SetAttackType(AttackType::FIRE_ARROW);
 						attackFps = attackMgr.GetAttackFps();
@@ -735,7 +735,7 @@ void Player::AnimationUpdate(float dt)
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
-		else if (InputManager::GetKeyDown(Keyboard::A))
+		else if (InputManager::GetKeyDown(Keyboard::A) && isSpell == true)
 		{
 			SetStatus(Status::STATUS_SPELL);
 		}
@@ -777,7 +777,7 @@ void Player::AnimationUpdate(float dt)
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
-		else if (InputManager::GetKeyDown(Keyboard::A))
+		else if (InputManager::GetKeyDown(Keyboard::A) && isSpell == true)
 		{
 			SetStatus(Status::STATUS_SPELL);
 		}
