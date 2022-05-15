@@ -31,6 +31,7 @@ enum class ButtonState
 	BLOCK,
 	OBJECT,
 	TERRAIN,
+	BACKGROUND,
 	GATE,
 	NONE
 };
@@ -125,11 +126,17 @@ class MapScene : public Scene
 	int toY;
 
 	RectangleShape currentTextureShape;
+	Texture currentTexture;
 
 	map<string, ObjectResource> objectResource;
 	map<string, TerrainResource> terrainResource;
 	map<string, Texture> backGroundResource;
 	map<std::string, Texture> texmap;
+
+	bool isSelect;
+
+	RectangleShape selectTable;
+	vector<Button> selectButtons;
 
 public:
 	MapScene();
@@ -146,7 +153,7 @@ public:
 	int CreateBackGround(int c, int r);
 
 	void CreateDefaultButtonSet();
-	void CreateSelectButtonSet();
+	void CreateSelectButtonSet(ButtonState state);
 
 	Button InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonCategory category, ButtonState state);
 	bool UpdateButton();

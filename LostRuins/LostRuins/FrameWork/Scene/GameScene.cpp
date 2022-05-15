@@ -24,7 +24,6 @@ void GameScene::Init(SceneManager* sceneManager)
 	texBackground = TextureHolder::GetTexture("maps/Another/SewerWall.png");
 
 	testUI.Init(sceneManager);
-	
 }
 
 void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* objectView, View* uiView)

@@ -201,10 +201,13 @@ void Player::PlayerAction(float dt, Time playTime)
 					{
 						if (attackMgr.GetFps() > attackMgr.GetHitFrame())
 						{
-							if (attackMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+							if (zombie != nullptr)
 							{
-								//std::cout << "Hit" << zombie->GetHealth() << std::endl;
-								zombie->OnHitted(attackMgr.GetAttackPoint(), dt, playTime);
+								if (attackMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+								{
+									//std::cout << "Hit" << zombie->GetHealth() << std::endl;
+									zombie->OnHitted(attackMgr.GetAttackPoint(), dt, playTime);
+								}
 							}
 						}
 					}
