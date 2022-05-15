@@ -4,6 +4,8 @@ void EffectManager::Init()
 {
 	isDirection = true;
 
+	soundExplosion.setBuffer(SoundHolder::GetBuffer("sound/EXPLOSION_Medium_Weak_Debris_stereo.wav"));
+
 	for (int i = 0; i < MAX_BLOOD_CACHE_SIZE; i++)
 	{
 		unuseBlood.push_back(new Blood());
@@ -91,6 +93,7 @@ void EffectManager::HitActor(Sprite sprite)
 
 void EffectManager::HitExplosion(Vector2f pos)
 {
+	soundExplosion.play();
 	Vector2f spawnPos = pos;
 	if (unuseExplosion.empty())
 	{

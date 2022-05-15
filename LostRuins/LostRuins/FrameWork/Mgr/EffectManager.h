@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <list>
+#include "../Mgr/SoundHolder.h"
 #include "../Object/Effect/Blood.h"
 #include "../Object/Effect/Explosion.h"
 
@@ -13,6 +15,7 @@ private:
 	const int MAX_EXPLOSION_CACHE_SIZE = 50;
 
 	bool isDirection;
+	Sound soundExplosion;
 
 	std::list<Blood*> unuseBlood;
 	std::list<Blood*> useBlood;

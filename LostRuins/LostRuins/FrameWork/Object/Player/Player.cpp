@@ -16,6 +16,7 @@ void Player::Init(ZombieWalker* zombie)
 	knockBackSpeed = START_KNOCK_BACK_SPEED;
 
 	attackFps = 0.f;
+	soundDelay = 0.f;
 	rollTime = START_ROLL_TIME;
 	immuneMs = START_IMMUNE_MS;
 	deadTime = DEAD_TIME_COUNT;
@@ -39,6 +40,7 @@ void Player::Init(ZombieWalker* zombie)
 
 	effectMgr.Init();
 	attackMgr.Init(zombie, &effectMgr);
+	SoundInit();
 
 	this->zombie = zombie;
 
@@ -57,7 +59,7 @@ void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTim
 	UpdateCollision(blocks);
 
 	// 애니메이션
-	AnimationUpdate();
+	AnimationUpdate(dt);
 	animation.Update(dt);
 
 	attackMgr.Update(dt, blocks, playTime);
@@ -181,6 +183,11 @@ void Player::PlayerAction(float dt, Time playTime)
 			attackFps -= dt;
 			if (attackFps < 0.f)
 			{
+				if (attackMgr.GetFps() == 5)
+				{
+					attackMgr.GetAttackSound();
+				}
+
 				if (isDelay == false)
 				{
 					attackMgr.NextFps();
@@ -221,13 +228,12 @@ void Player::PlayerAction(float dt, Time playTime)
 			attackFps -= dt;
 			if (attackFps < 0.2f && isDelay == false)
 			{
-				//std::cout << "발사" << std::endl;
+				soundFireArrow.play();
 				attackMgr.CastingSpell(sprite);
 				isDelay = true;
 			}
 			else if (attackFps < 0.f && isDelay == true)
 			{
-				//std::cout << "주문 완료" << std::endl;
 				isDelay = false;
 				isSpell = false;
 			}
@@ -522,6 +528,20 @@ void Player::AnimationInit(Sprite* sprite)
 	}
 }
 
+void Player::SoundInit()
+{
+	soundBackGround.setBuffer(SoundHolder::GetBuffer("sound/12058396_MotionElements_suspenseful-background.wav"));
+	soundWalk.setBuffer(SoundHolder::GetBuffer("sound/FOOTSTEP_Trainers_Gravel_Compact_Run_RR2_mono.wav"));
+	soundJump.setBuffer(SoundHolder::GetBuffer("sound/PlayerJumpRoll2.wav"));
+	soundRoll.setBuffer(SoundHolder::GetBuffer("sound/PlayerJumpRoll1.wav"));
+	soundDagger.setBuffer(SoundHolder::GetBuffer("sound/PlayerAttackShort0.wav"));
+	soundTwoHanded.setBuffer(SoundHolder::GetBuffer("sound/PlayerAttackLong1.wav"));
+	soundFireArrow.setBuffer(SoundHolder::GetBuffer("sound/FireArrow.wav"));
+	soundDamage.setBuffer(SoundHolder::GetBuffer("sound/damage_a_03.wav"));
+	soundDeath.setBuffer(SoundHolder::GetBuffer("sound/death_a_03.wav"));
+	soundBackGround.play();
+}
+
 void Player::UpdateCollision(std::vector<CollisionBlock*> blocks)
 {
 	bool isCollided = false;
@@ -657,7 +677,7 @@ void Player::UpdateCollision(std::vector<CollisionBlock*> blocks)
 	}
 }
 
-void Player::AnimationUpdate()
+void Player::AnimationUpdate(float dt)
 {
 	// 스프라이트 반전
 	if (isAttack == false && isRoll == false && isHit == false && isSpell == false && isAlive == true)
@@ -718,6 +738,12 @@ void Player::AnimationUpdate()
 		}
 		break;
 	case Status::STATUS_RUN:
+		/*soundDelay -= dt;
+		if (soundDelay < 0.f)
+		{
+			soundWalk.play();
+			soundDelay = SOUND_DELAY_WALK;
+		}*/
 		if (isAlive == false)
 		{
 			SetStatus(Status::STATUS_DEAD);
@@ -869,6 +895,7 @@ void Player::SetStatus(Status newStatus)
 	switch (currentStatus)
 	{
 	case Status::STATUS_IDLE:
+		soundWalk.setLoop(false);
 		if (prevStatus == Status::STATUS_RUN)
 		{
 			animation.Play("RuntoIdle");
@@ -876,6 +903,7 @@ void Player::SetStatus(Status newStatus)
 		}
 		else if (prevStatus == Status::STATUS_FALLING)
 		{
+			soundWalk.play();
 			animation.Play("Landing");
 			animation.PlayQueue("Idle");
 		}
@@ -890,6 +918,8 @@ void Player::SetStatus(Status newStatus)
 		}
 		break;
 	case Status::STATUS_RUN:
+		soundWalk.setLoop(true);
+		soundWalk.play();
 		if (prevStatus == Status::STATUS_IDLE)
 		{
 			animation.Play("IdletoRun");
@@ -901,37 +931,51 @@ void Player::SetStatus(Status newStatus)
 		}
 		break;
 	case Status::STATUS_JUMP:
+		soundWalk.setLoop(false);
+		soundJump.play();
 		animation.Play("Jump");
 		break;
 	case Status::STATUS_FALLING:
+		soundWalk.setLoop(false);
 		animation.Play("Falling");
 		break;
 	case Status::STATUS_CROUCH:
+		soundWalk.setLoop(false);
 		animation.Play("Crouch");
 		animation.PlayQueue("Crouching");
 		break;
 	case Status::STATUS_ROLL:
+		soundWalk.setLoop(false);
+		soundRoll.play();
 		animation.Play("Roll");
 		break;
 	case Status::STATUS_ATK_TWO_STAND:
+		soundWalk.setLoop(false);
+		soundTwoHanded.play();
 		animation.Play("Attack_Twohanded_Standing");
 		break;
 	case Status::STATUS_ATK_DAGGER:
+		soundWalk.setLoop(false);
+		soundDagger.play();
 		animation.Play("Attack_Dagger_Standing");
 		break;
 	case Status::STATUS_SPELL:
+		soundWalk.setLoop(false);
 		animation.Play("CastingSpell1");
 		animation.PlayQueue("CastingSpell3");
 		break;
 	case Status::STATUS_HIT:
+		soundWalk.setLoop(false);
+		soundDamage.play();
 		animation.Play("DamageTaken");
 		break;
 	case Status::STATUS_DEAD:
+		soundWalk.setLoop(false);
+		soundDeath.play();
 		animation.Play("Dead");
 		break;
 	}
 }
-
 
 void Player::Spawn(float x, float y)
 {

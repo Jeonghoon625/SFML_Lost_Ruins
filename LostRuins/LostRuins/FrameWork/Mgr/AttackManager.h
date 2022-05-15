@@ -1,7 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <algorithm>
 #include <list>
+#include "../Mgr/SoundHolder.h"
 #include "../Object/CollisionBlock/CollisionBlock.h"
 #include "../Object/Weapon/TwohandWeapon.h"
 #include "../Object/Weapon/Dagger.h"
@@ -42,6 +44,11 @@ private:
 	AttackType currentAtkType;
 	Sprite sprite;
 
+	SoundBuffer soundDagger;
+	SoundBuffer soundTwoHanded;
+
+	Sound soundWeapon;
+
 	int isFps;
 	int maxFps;
 	int cost;
@@ -67,6 +74,7 @@ public:
 	void SetAttackType(AttackType attackType);
 	void SetAttackPosition(Sprite sprite);
 	void CastingSpell(Sprite sprite);
+	void GetAttackSound();
 
 	int GetAttackPoint();
 	int GetHitFrame();

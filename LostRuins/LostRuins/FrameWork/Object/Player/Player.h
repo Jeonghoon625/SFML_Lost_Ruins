@@ -1,10 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <string>
 #include <map>
 #include <list>
 #include <cstdlib>
 #include "../../Mgr/TextureHolder.h"
+#include "../../Mgr/SoundHolder.h"
 #include "../../Animation/AnimationController.h"
 #include "../../Animation/rapidcsv.h"
 #include "../../Mgr/Utils.h"
@@ -43,7 +45,7 @@ private:
 
 	const int START_HEALTH = 20;
 	const int START_MANA = 20;
-	const float START_SPEED = 200.f;
+	const float START_SPEED = 150.f;
 	const float START_JUMP_SPEED = 300.f;
 	const float START_ROLL_SPEED = 150.f;
 	const float START_ROLL_TIME = 0.5f;
@@ -54,6 +56,8 @@ private:
 	const float DEAD_TIME_COUNT = 1.f;
 	const int MAX_TEXT_CACHE_SIZE = 50;
 
+	const float SOUND_DELAY_WALK = 0.3f;
+
 	AnimationController animation;
 	AttackManager attackMgr;
 	EffectManager effectMgr;
@@ -61,9 +65,18 @@ private:
 	Sprite sprite;
 
 	Vector2f position;
-	
 	Vector2i resolustion;
 	IntRect gameMap;
+
+	Sound soundBackGround;
+	Sound soundWalk;
+	Sound soundJump;
+	Sound soundRoll;
+	Sound soundDagger;
+	Sound soundTwoHanded;
+	Sound soundFireArrow;
+	Sound soundDamage;
+	Sound soundDeath;
 
 	int tileSize;
 	int health;
@@ -78,6 +91,7 @@ private:
 	float knockBackSpeed;
 
 	float attackFps;
+	float soundDelay;
 	float rollTime;
 	float immuneMs;
 	float deadTime;
@@ -129,11 +143,11 @@ public:
 	bool GetPause();
 
 	void AnimationInit(Sprite* sprite);
+	void SoundInit();
 	void UpdateCollision(std::vector <CollisionBlock*> blocks);
 
-	void AnimationUpdate();
+	void AnimationUpdate(float dt);
 	void SetStatus(Status newStatus);
 
-	
 };
 
