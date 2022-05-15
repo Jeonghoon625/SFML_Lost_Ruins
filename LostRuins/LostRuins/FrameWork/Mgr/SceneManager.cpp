@@ -3,7 +3,7 @@
 
 void SceneManager::Init()
 {
-	SceneSwitch(SceneType::TITLE);
+	SceneSwitch(SceneType::EndingScene);
 }
 
 void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
@@ -53,6 +53,9 @@ void SceneManager::SceneSwitch(SceneType sceneType)
 
 	case SceneType::MapScene:
 		currentScene = new MapScene();
+		break;
+	case SceneType::EndingScene:
+		currentScene = new EndingScene();
 		break;
 	}
 	sceneInit();

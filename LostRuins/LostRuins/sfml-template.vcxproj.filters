@@ -167,6 +167,9 @@
     <ClCompile Include="FrameWork\Object\Monster\SlimeGreen.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Scene\EndingScene.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Animation\AnimationClip.h">
@@ -303,6 +306,9 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Object\Monster\SlimeGreen.h">
       <Filter>FrameWork\Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Scene\EndingScene.h">
+      <Filter>FrameWork\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
