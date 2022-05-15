@@ -25,6 +25,7 @@ void LamiHand::Init(Vector2f pos, int handSide)
 	strReappearing = "Lami2HandReappearing";
 	strReappearingToIdle = "Lami2HandReappearingToIdle";
 
+
 	sprite.setOrigin(80.f,31.f);
 	sprite.setPosition(pos);
 	

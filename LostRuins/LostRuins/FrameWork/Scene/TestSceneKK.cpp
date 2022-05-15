@@ -38,7 +38,6 @@ void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* ma
 	for (auto itMonster : monsters)
 	{
 		itMonster->Update(player, dt, blocks, playTime);
-		std::cout << itMonster->GetPosition().x << " " << itMonster->GetPosition().y << std::endl;
 	}
 
 	/*Lami2.Update(player, dt, blocks, playTime);*/
@@ -202,29 +201,35 @@ void TestSceneKK::CreateMonsters()
 	}
 	monsters.clear();
 
-	//Monster* goblin = new GoblinAttacker;
-	//goblin->MonsterInit();
-	//goblin->Spawn(Vector2f(90,200));
+	Monster* goblin = new GoblinAttacker;
+	goblin->MonsterInit();
+	goblin->Spawn(Vector2f(200,200));
+	monsters.push_back(goblin);
 
-	//Monster* zombieWalker = new ZombieWalker;
-	//zombieWalker->MonsterInit();
-	//zombieWalker->Spawn(Vector2f(90, 200));
-	//monsters.push_back(zombieWalker);
+	Monster* zombieWalker = new ZombieWalker;
+	zombieWalker->MonsterInit();
+	zombieWalker->Spawn(Vector2f(800, 200));
+	monsters.push_back(zombieWalker);
 
-	//Monster* zombieCrawler = new ZombieCrawler;
-	//zombieCrawler->MonsterInit();
-	//zombieCrawler->Spawn(Vector2f(90, 200));
-	//monsters.push_back(zombieCrawler);
-	//
+	Monster* zombieCrawler = new ZombieCrawler;
+	zombieCrawler->MonsterInit();
+	zombieCrawler->Spawn(Vector2f(600, 200));
+	monsters.push_back(zombieCrawler);
+	
 	Monster* slimeGreen = new SlimeGreen;
 	slimeGreen->MonsterInit();
-	slimeGreen->Spawn(Vector2f(90, 200));
+	slimeGreen->Spawn(Vector2f(200, 400));
 	monsters.push_back(slimeGreen);
 
-	/*Monster* lamiPhaseOne = new LamiPhaseOne;
+	Monster* lamiPhaseOne = new LamiPhaseOne;
 	lamiPhaseOne->MonsterInit();
-	lamiPhaseOne->Spawn(Vector2f(90, 200));
-	monsters.push_back(lamiPhaseOne);*/
+	lamiPhaseOne->Spawn(Vector2f(400, 200));
+	monsters.push_back(lamiPhaseOne);
+
+	/*Monster* lamiPhaseTwo = new LamiPhaseTwo;
+	lamiPhaseTwo->MonsterInit();
+	lamiPhaseTwo->Spawn(Vector2f(90, 150));
+	monsters.push_back(lamiPhaseTwo);*/
 
 }
 

@@ -7,6 +7,30 @@ ZombieWalker::ZombieWalker()
 
 }
 
+void ZombieWalker::Spawn(Vector2f pos)
+{
+	position = pos;
+	sprite.setPosition(position);
+
+	findPlayerBox.setSize(Vector2f(200.f, 40.f));
+	findPlayerBox.setOrigin(200, 40);
+	findPlayerBox.setScale(scale);
+	findPlayerBox.setFillColor(Color(153, 153, 0, 80));
+	findPlayerBox.setPosition(position);
+
+	attackRangeBox.setSize(Vector2f(25.f, 30.f));
+	attackRangeBox.setOrigin(20, 30);
+	attackRangeBox.setScale(scale);
+	attackRangeBox.setFillColor(Color(155, 0, 0, 80));
+	attackRangeBox.setPosition(position);
+
+	hitBox.setSize(Vector2f(40.f, 30.f));
+	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y * 0.99f);
+	hitBox.setScale(scale);
+	hitBox.setFillColor(Color(155, 0, 255, 80));
+	hitBox.setPosition(position);
+}
+
 void ZombieWalker::SetPosition(float x, float y)
 {
 	this->position.x = x;
@@ -40,7 +64,7 @@ void ZombieWalker::MonsterInit()
 	findPlayerBox.setPosition(sprite.getOrigin());
 
 	attackRangeBox.setSize(Vector2f(30.f, 30.f));
-	attackRangeBox.setOrigin(30, 30);
+	attackRangeBox.setOrigin(20, 30);
 	attackRangeBox.setScale(scale);
 	attackRangeBox.setFillColor(Color(155, 0, 0, 80));
 	attackRangeBox.setPosition(sprite.getOrigin());

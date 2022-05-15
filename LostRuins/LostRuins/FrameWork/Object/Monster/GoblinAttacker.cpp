@@ -5,6 +5,30 @@ GoblinAttacker::GoblinAttacker()
 {
 }
 
+void GoblinAttacker::Spawn(Vector2f pos)
+{
+	position = pos;
+	sprite.setPosition(position);
+
+	findPlayerBox.setSize(Vector2f(200.f, 40.f));
+	findPlayerBox.setScale(scale);
+	findPlayerBox.setFillColor(Color(255, 255, 255, 80));
+	findPlayerBox.setOrigin(200, 40);
+	findPlayerBox.setPosition(position);
+
+	attackRangeBox.setSize(Vector2f(30.f, 30.f));
+	attackRangeBox.setScale(scale);
+	attackRangeBox.setFillColor(Color(153, 0, 0, 80));
+	attackRangeBox.setOrigin(30, 30);
+	attackRangeBox.setPosition(position);
+
+	hitBox.setSize(Vector2f(43.f, 30.f));
+	hitBox.setScale(scale);
+	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y * 0.99f);
+	hitBox.setFillColor(Color(50, 50, 25, 70));
+	hitBox.setPosition(position);
+}
+
 void GoblinAttacker::MonsterInit()
 {
 	strWalk = ("GoblinAttackerWalk");

@@ -1,8 +1,169 @@
 #include "LamiPhaseOne.h"
 
 LamiPhaseOne::LamiPhaseOne()
-	:Monster(), attackCount(0)
+	:Monster(), attackCount(0), isUppercut(false)
 {
+}
+
+void LamiPhaseOne::Spawn(Vector2f pos)
+{
+	position = pos;
+	sprite.setPosition(position);
+
+	findPlayerBox.setSize(Vector2f(200.f, 40.f));
+	findPlayerBox.setScale(scale);
+	findPlayerBox.setFillColor(Color(255, 255, 255, 80));
+	findPlayerBox.setOrigin(200, 40);
+	findPlayerBox.setPosition(position);
+
+	attackRangeBox.setSize(Vector2f(51.f, 30.f));
+	attackRangeBox.setScale(scale);
+	attackRangeBox.setFillColor(Color(153, 0, 0, 80));
+	attackRangeBox.setOrigin(30, 30);
+	attackRangeBox.setPosition(position);
+
+	hitBox.setSize(Vector2f(45.f, 30.f));
+	hitBox.setScale(scale);
+	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y * 0.99f);
+	hitBox.setFillColor(Color(50, 50, 25, 70));
+	hitBox.setPosition(position);
+}
+
+void LamiPhaseOne::AnimationUpdate()
+{
+	switch (currentStatus)
+	{
+	case MonsterStatus::STATUS_IDLE:
+		if (isAlive == false)
+		{
+			SetStatus(MonsterStatus::STATUS_DEAD);
+		}
+		else if (isHit == true)
+		{
+			SetStatus(MonsterStatus::STATUS_HIT);
+		}
+		else if (isAttackPlayer == true)
+		{
+			SetStatus(MonsterStatus::STATUS_ATTACK);
+		}
+		else if (isUppercut == true)
+		{
+			SetStatus(MonsterStatus::STATUS_UPPERCUT);
+		}
+		else if (isWalk == true)
+		{
+			SetStatus(MonsterStatus::STATUS_WALK);
+		}
+		else if (isFindPlayer == true)
+		{
+			SetStatus(MonsterStatus::STATUS_RUN);
+		}
+		break;
+	case MonsterStatus::STATUS_WALK:
+		if (isAlive == false)
+		{
+			SetStatus(MonsterStatus::STATUS_DEAD);
+		}
+		else if (isHit == true)
+		{
+			SetStatus(MonsterStatus::STATUS_HIT);
+		}
+		else if (isFindPlayer == true)
+		{
+			SetStatus(MonsterStatus::STATUS_RUN);
+		}
+		else if (isIdle == true)
+		{
+			SetStatus(MonsterStatus::STATUS_IDLE);
+		}
+	case MonsterStatus::STATUS_RUN:
+		if (isAlive == false)
+		{
+			SetStatus(MonsterStatus::STATUS_DEAD);
+		}
+		else if (isHit == true)
+		{
+			SetStatus(MonsterStatus::STATUS_HIT);
+		}
+		else if (isAttackPlayer)
+		{
+			SetStatus(MonsterStatus::STATUS_ATTACK);
+		}
+		else if (isUppercut)
+		{
+			SetStatus(MonsterStatus::STATUS_UPPERCUT);
+		}
+		break;
+	case MonsterStatus::STATUS_ATTACK:
+		if (isAlive == false)
+		{
+			SetStatus(MonsterStatus::STATUS_DEAD);
+		}
+		else if (isHit == true)
+		{
+			SetStatus(MonsterStatus::STATUS_HIT);
+		}
+		else if (isAttackPlayer == false)
+		{
+			SetStatus(MonsterStatus::STATUS_RUN);
+		}
+		break;
+	case MonsterStatus::STATUS_UPPERCUT:
+		if (isAlive == false)
+		{
+			SetStatus(MonsterStatus::STATUS_DEAD);
+		}
+		else if (isHit == true)
+		{
+			SetStatus(MonsterStatus::STATUS_HIT);
+		}
+		else if (isUppercut == false)
+		{
+			SetStatus(MonsterStatus::STATUS_RUN);
+		}
+		break;
+	case MonsterStatus::STATUS_HIT:
+		if (isHit == false)
+		{
+			SetStatus(MonsterStatus::STATUS_RUN);
+		}
+	case MonsterStatus::STATUS_DEAD:
+		break;
+	default:
+		break;
+	}
+}
+
+void LamiPhaseOne::SetStatus(MonsterStatus newStatus)
+{
+	MonsterStatus prevStatus = currentStatus;
+	currentStatus = newStatus;
+
+	switch (currentStatus)
+	{
+	case MonsterStatus::STATUS_IDLE:
+		animation.Play(strIdle);
+		break;
+	case MonsterStatus::STATUS_WALK:
+		animation.Play(strWalk);
+		break;
+	case MonsterStatus::STATUS_RUN:
+		animation.Play(strRun);
+		break;
+	case MonsterStatus::STATUS_ATTACK:
+		animation.Play(strAttack);
+		break;
+	case MonsterStatus::STATUS_UPPERCUT:
+		animation.Play(strUppercut);
+		break;
+	case MonsterStatus::STATUS_HIT:
+		soundHitted.play();
+		animation.Play(strDamageTaken);
+		break;
+	case MonsterStatus::STATUS_DEAD:
+		animation.Play(strDead);
+		break;
+	}
 }
 
 void LamiPhaseOne::MonsterInit()
@@ -53,16 +214,25 @@ void LamiPhaseOne::ChasePlayer(Player& player, float dt)
 {
 	if (isAlive)
 	{
-		if (isFindPlayer && !isAttackPlayer)
+		if (isFindPlayer && !isAttackPlayer && !isUppercut)
 		{
 			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay > 1.5f)
 			{
+				attackCount++;
 				attackDelay = 0.f;
 				isFindPlayer = false;
-				isAttackPlayer = true;
+
+				if (attackCount > 3)
+				{
+					isUppercut = true;
+				}
+				else
+				{
+					isAttackPlayer = true;
+				}
 			}
 
-			if (!isAttackPlayer && !isHit)
+			if (!isUppercut &&!isAttackPlayer && !isHit)
 			{
 				float h = player.GetPosition().x - sprite.getPosition().x;
 				float v = 0.f;
@@ -132,6 +302,57 @@ void LamiPhaseOne::Attack(float dt, int atk, Player& player, Time timeHit)
 				isAttackPlayer = false;
 				isFindPlayer = true;
 			}
+		}
+		else if (isUppercut)
+		{
+			attackHitDelay += dt;
+
+			sprite.setPosition(position);
+			findPlayerBox.setPosition(position);
+			attackRangeBox.setPosition(position);
+			hitBox.setPosition(position);
+
+			if (attackHitDelay > 0.65f)
+			{
+				if (sprite.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+				{
+					player.OnHitted(atk, timeHit);
+				}
+
+				attackHitDelay = 0.f;
+				isUppercut = false;
+				attackCount = 0;
+				isFindPlayer = true;
+			}
+		}
+	}
+}
+
+bool LamiPhaseOne::OnHitted(int atk, float dt, Time timeHit)
+{
+	if (isAlive)
+	{
+		if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
+		{
+			lastHit = timeHit;
+			if (health > 0)
+			{
+				/*animation.Play(strDamageTaken);*/
+				attackDelay = 0;
+				isFindPlayer = false;
+				isHit = true;
+				attackHitDelay = 0.f;
+				isUppercut = false;
+				isAttackPlayer = false;	//맞으면 공격하려던거 취소
+				health -= atk;
+				std::cout << "HP : " << GetHealth() << std::endl;
+				return true;
+			}
+			else
+			{
+				isAlive = false;
+			}
+			return false;
 		}
 	}
 }

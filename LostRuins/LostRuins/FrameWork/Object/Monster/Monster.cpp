@@ -372,7 +372,7 @@ void Monster::ChasePlayer(Player& player, float dt)
 		/*animation.PlayQueue(strRun);*/
 		if (isFindPlayer && !isAttackPlayer)
 		{
-			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && (attackDelay > 1.5f))
+			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && (attackDelay > 1.f))
 			{
 				attackDelay = 0.f;
 				/*animation.Play(strAttack);*/
