@@ -23,6 +23,7 @@ enum class ButtonCategory
 {
 	INPUT,
 	SELECT,
+	DELETE,
 	DRAW
 };
 
@@ -33,13 +34,6 @@ enum class ButtonState
 	TERRAIN,
 	BACKGROUND,
 	GATE,
-	NONE
-};
-
-enum class Flip
-{
-	HOR,
-	VER,
 	NONE
 };
 
@@ -60,14 +54,24 @@ struct Button
 struct TerrainResource
 {
 	Texture tex;
-	int angle;
-	Flip flip;
+	string type;
 };   
 
 struct ObjectResource
 {
 	Texture tex;
 	string type;
+};
+
+struct InputData
+{
+	RectangleShape shape;
+	string resourceId;
+	float rotate;
+	float scaleX;
+	float scaleY;
+	float posX;
+	float posY;
 };
 
 class MapScene : public Scene
@@ -104,11 +108,6 @@ class MapScene : public Scene
 	Text stateText;
 	Font font;
 
-	vector <CollisionBlock*> blocks;
-
-	Texture selectTexture;
-	VertexArray vertexMap;
-
 	ButtonState currentInputState;
 	ButtonState currentDrawState;
 
@@ -126,18 +125,27 @@ class MapScene : public Scene
 	int toX;
 	int toY;
 
-	RectangleShape currentTextureShape;
-	Texture currentTexture;
-
+	int rotation;
+	
 	map<string, TerrainResource> terrainResource;
 	map<string, ObjectResource> objectResource;
 	map<string, Texture> backGroundResource;
-	map<std::string, Texture> texmap;
 
 	bool isSelect;
+	bool isDelete;
+	bool isClicked;
 
 	RectangleShape selectTable;
 	vector<Button> selectButtons;
+	vector <Monster*> monsters;
+
+	InputData* currentInput;
+	Texture currentTexture;
+
+	vector <CollisionBlock*> blocks;
+	vector<InputData> terrainInput;
+	vector<InputData> objectInput;
+	vector<InputData> backGroundInput;
 
 public:
 	MapScene();
@@ -163,6 +171,8 @@ public:
 	void SetCurrentDrawState(ButtonState state);
 
 	void UpdateSelectTexture();
+
+	void CreateInputData(InputData currentInputData);
 
 	virtual ~MapScene();
 };

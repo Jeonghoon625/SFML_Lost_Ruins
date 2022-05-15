@@ -62,7 +62,7 @@ void MapScene::Init(SceneManager* sceneManager)
 	stateText.setString("TEST");
 
 	//test
-	//selectTexture = terrainResource.find("SewerBossOneWayCorner")->second.tex;
+	//currentTexture = terrainResource.find("SewerBossOneWayCorner")->second.tex;
 	isDraw = true;
 	isSelect = false;
 
@@ -79,17 +79,22 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 	{
 		if (InputManager::GetMouseButtonDown(Mouse::Button::Left))
 		{
-			if (mousePosWorld.x >= 0.f && mousePosWorld.y >= 0.f && mousePosWorld.x <= mapWidth * gridSizeU && mousePosWorld.y <= mapHeight * gridSizeU)
+			if (mousePosWorld.x < 0.f || mousePosWorld.y < 0.f || (mousePosWorld.x > mapWidth * gridSizeU) ||(mousePosWorld.y > mapHeight * gridSizeU))
 			{
 				currentInputState = ButtonState::NONE;
+				selectButtons.clear();
+				//currentInput.shape.setFillColor(Color::Transparent);
 			}
 
 			downGrid = mousePosGrid;
 			std::cout << "DGrid : " << downGrid.x << " " << downGrid.y << "\n";
 			ingGrid.push_back(mousePosGrid);
-			if (currentInputState == ButtonState::TERRAIN)
+			if (currentInputState == ButtonState::TERRAIN || currentInputState == ButtonState::OBJECT || currentInputState == ButtonState::BACKGROUND)
 			{
-				//CreateBackGround(downGrid.x, downGrid.y);
+				if(currentInput != nullptr)
+				{
+					CreateInputData(*currentInput);
+				}
 			}
 
 			if (currentInputState == ButtonState::BLOCK)
@@ -122,7 +127,10 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 				auto it = find(ingGrid.begin(), ingGrid.end(), mousePosGrid);
 				if (it == ingGrid.end())
 				{
-					//CreateBackGround(mousePosGrid.x, mousePosGrid.y);
+					if (currentInput != nullptr)
+					{
+						CreateInputData(*currentInput);
+					}
 				}
 
 				ingGrid.push_back(mousePosGrid);
@@ -136,12 +144,20 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 			{
 				upGrid = mousePosGrid;
 				std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
+				if (currentInput != nullptr)
+				{
+					CreateInputData(*currentInput);
+				}
+
+				delete currentInput;
+				currentInput = nullptr;
+
 				ingGrid.clear();
 			}
 			break;
 
 		case::ButtonState::BLOCK:
-			if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
+			if (InputManager::GetMouseButtonUp(Mouse::Button::Left) && currentDrag != nullptr)
 			{
 				CollisionBlock* block = new CollisionBlock(currentDrag->getGlobalBounds(), downGrid);
 				blocks.push_back(block);
@@ -178,7 +194,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 					dt *= 0.25f;
 				}
 
-				/*player->Update(dt, blocks, playTime);*/
+				player->Update(dt, blocks, playTime, monsters);
 			}
 
 			if (InputManager::GetKeyDown(Keyboard::F9))
@@ -214,9 +230,6 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 		}
 	}
 
-
-	window->draw(vertexMap, &selectTexture);
-
 	if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == ButtonState::BLOCK && currentDrag != nullptr)
 	{
 		window->draw(*currentDrag);
@@ -229,7 +242,22 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 			window->draw(blockShape->GetBlockShape());
 		}
 	}
-	
+
+	for (auto backGround : backGroundInput)
+	{
+		window->draw(backGround.shape);
+	}
+
+	for (auto terrain : terrainInput)
+	{
+		window->draw(terrain.shape);
+	}
+
+	for (auto object : objectInput)
+	{
+		window->draw(object.shape);
+	}
+
 	window->draw(tileSelector);
 
 	if (player != nullptr)
@@ -237,7 +265,11 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 		player->Draw(window, mapView);
 	}
 
-	window->draw(currentTextureShape);
+	if (currentInputState != ButtonState::NONE && currentInput != nullptr)
+	{
+		window->draw(currentInput->shape);
+	}
+	
 
 	//UI Render
 	window->setView(*uiView);
@@ -259,7 +291,6 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 	}
 
 	window->setView(*mapView);
-	
 }
 
 void MapScene::MoveView(float dt)
@@ -314,11 +345,20 @@ void MapScene::UpdateMousePos(RenderWindow* window)
 
 void MapScene::CreateDefaultButtonSet()
 {
-	Button buttonBlock = InitButton(resolution.x * 0.75f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Collision\n  Block  ", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::BLOCK);
-	buttons.push_back(buttonBlock);
+	Button buttonUndo0 = InitButton(resolution.x * 0.75f - 105.f - 105.f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Undo\nOBJECT", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::OBJECT);
+	buttons.push_back(buttonUndo0);
 
-	Button buttonGate = InitButton(resolution.x * 0.75f, resolution.y * 0.05f, 100.f, 50.f, "Gate", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::GATE);
-	buttons.push_back(buttonGate);
+	Button buttonUndo1 = InitButton(resolution.x * 0.75f - 105.f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Undo\nBLOCK", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::BLOCK);
+	buttons.push_back(buttonUndo1);
+
+	Button buttonUndo2 = InitButton(resolution.x * 0.75f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Undo\nTERRAIN", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::TERRAIN);
+	buttons.push_back(buttonUndo2);
+
+	Button buttonUndo3 = InitButton(resolution.x * 0.75f - 105.f , resolution.y * 0.05f, 100.f, 50.f, "Undo\nBACK", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::BACKGROUND);
+	buttons.push_back(buttonUndo3);
+
+	Button buttonBlock = InitButton(resolution.x * 0.75f, resolution.y * 0.05f, 100.f, 50.f, "Collision\n  Block  ", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::BLOCK);
+	buttons.push_back(buttonBlock);
 
 	Button buttonTerrain = InitButton(resolution.x * 0.75f + 105.f, resolution.y * 0.05f, 100.f, 50.f, "Terrain", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::TERRAIN);
 	buttons.push_back(buttonTerrain);
@@ -337,19 +377,13 @@ void MapScene::CreateSelectButtonSet(ButtonState state)
 	float posY = resolution.y * 0.15f;
 	int i = 0;
 
+	Button buttonDelete;
+	
 	switch (state)
 	{
 	case ButtonState::BLOCK:
 		
-		isSelect = false;
-
-		selectButtons.clear();
-
-		break;
-
-	case ButtonState::GATE:
-
-		isSelect = false;
+		isSelect = true;
 
 		selectButtons.clear();
 
@@ -381,6 +415,7 @@ void MapScene::CreateSelectButtonSet(ButtonState state)
 			button = InitButton(posX, posY, 300.f, 50.f, iter.first, ButtonType::DEFAULT, ButtonCategory::SELECT, ButtonState::OBJECT);
 			selectButtons.push_back(button);
 		}
+
 		break;
 
 	case ButtonState::TERRAIN:
@@ -409,6 +444,7 @@ void MapScene::CreateSelectButtonSet(ButtonState state)
 			button = InitButton(posX, posY, 300.f, 50.f, iter.first, ButtonType::DEFAULT, ButtonCategory::SELECT, ButtonState::TERRAIN);
 			selectButtons.push_back(button);
 		}
+
 		break;
 
 	case ButtonState::BACKGROUND:
@@ -437,9 +473,8 @@ void MapScene::CreateSelectButtonSet(ButtonState state)
 			button = InitButton(posX, posY, 300.f, 50.f, iter.first, ButtonType::DEFAULT, ButtonCategory::SELECT, ButtonState::BACKGROUND);
 			selectButtons.push_back(button);
 		}
+
 		break;
-
-
 	}
 }
 
@@ -499,6 +534,14 @@ bool MapScene::UpdateButton()
 				switch (button.buttonType)
 				{
 				case ButtonType::DEFAULT:
+
+					if (currentInput != nullptr)
+					{
+						delete currentInput;
+					}
+
+					currentInput = nullptr;
+
 					if (button.buttonCategory == ButtonCategory::INPUT)
 					{
 						SetCurrentInputState(button.buttonState);
@@ -510,6 +553,44 @@ bool MapScene::UpdateButton()
 						SetCurrentDrawState(button.buttonState);
 						CreateSelectButtonSet(button.buttonState);
 					}
+
+					if (button.buttonCategory == ButtonCategory::DELETE)
+					{
+						SetCurrentInputState(button.buttonState);
+						switch (currentInputState)
+						{
+						case ButtonState::BLOCK:
+							if (!blocks.empty())
+							{
+								if (*(blocks.end() - 1) != nullptr)
+								{
+									delete* (blocks.end() - 1);
+								}
+								blocks.pop_back();
+							}
+						
+						case ButtonState::OBJECT:
+							if (!objectInput.empty())
+							{
+								objectInput.pop_back();
+							}
+							
+
+						case ButtonState::TERRAIN:
+							if (!terrainInput.empty())
+							{
+								terrainInput.pop_back();
+							}
+							
+
+						case ButtonState::BACKGROUND:
+							if (!backGroundInput.empty())
+							{
+								backGroundInput.pop_back();
+							}
+						}
+					}
+
 					break;
 				
 				case ButtonType::TOGGLE:
@@ -552,20 +633,53 @@ bool MapScene::UpdateButton()
 			{
 				if (button.buttonState == ButtonState::BACKGROUND)
 				{
-					cout << (string)button.buttonText.getString() << endl;
-					selectTexture = backGroundResource.find((string)button.buttonText.getString())->second;
+					currentInputState = (button.buttonState);
+					currentTexture = backGroundResource.find((string)button.buttonText.getString())->second;
+					if (currentInput != nullptr)
+					{
+						delete currentInput;
+						currentInput = nullptr;
+					}
+
+					currentInput = new InputData();
+					currentInput->resourceId = (string)button.buttonText.getString();
+					currentInput->scaleX = 96.f;
+					currentInput->scaleY = 96.f;
+					currentInput->rotate = 0.f;
 				}
 
 				if (button.buttonState == ButtonState::OBJECT)
 				{
-					cout << (string)button.buttonText.getString() << endl;
-					selectTexture = objectResource.find((string)button.buttonText.getString())->second.tex;
+					currentInputState = (button.buttonState);
+					if (currentInput != nullptr)
+					{
+						delete currentInput;
+						currentInput = nullptr;
+					}
+					currentInput = new InputData();
+					currentInput->resourceId = (string)button.buttonText.getString();
+					currentTexture = objectResource.find((string)button.buttonText.getString())->second.tex;
+					currentInput->resourceId = (string)button.buttonText.getString();
+					currentInput->scaleX = currentTexture.getSize().x;
+					currentInput->scaleY = currentTexture.getSize().y;
+					currentInput->rotate = 0.f;
 				}
 
 				if (button.buttonState == ButtonState::TERRAIN)
 				{
-					cout << (string)button.buttonText.getString() << endl;
-					selectTexture = terrainResource.find((string)button.buttonText.getString())->second.tex;
+					currentInputState = (button.buttonState);
+					if (currentInput != nullptr)
+					{
+						delete currentInput;
+						currentInput = nullptr;
+					}
+					currentInput = new InputData();
+					currentInput->resourceId = (string)button.buttonText.getString();
+					currentTexture = terrainResource.find((string)button.buttonText.getString())->second.tex;
+					currentInput->resourceId = (string)button.buttonText.getString();
+					currentInput->scaleX = currentTexture.getSize().x;
+					currentInput->scaleY = currentTexture.getSize().y;
+					currentInput->rotate = 0.f;
 				}
 
 				button.buttonShape.setFillColor(Color(255, 0, 0, 125)); //Red
@@ -595,7 +709,12 @@ bool MapScene::UpdateButton()
 	case ButtonState::TERRAIN:
 		inputState = "TERRAIN";
 		break;
+
+	case ButtonState::BACKGROUND:
+		inputState = "BACKGROUND";
+		break;
 	}
+
 	string drawState;
 	switch (currentDrawState)
 	{
@@ -663,8 +782,7 @@ void MapScene::MapDataInit()
 	{
 		TerrainResource terrain;
 		terrain.tex = TextureHolder::GetTexture(colResouceTerrainsPath[i]);
-		terrain.angle = 0.f;
-		terrain.flip = Flip::NONE;
+		terrain.type = "T";
 		terrainResource.insert({ colResouceTerrainsId[i], terrain });
 	}
 
@@ -681,6 +799,80 @@ void MapScene::MapDataInit()
 	mapHeight = colHeight[0];
 }
 
+void MapScene::UpdateSelectTexture()
+{
+	if (currentInput != nullptr)
+	{
+		if (currentInputState == ButtonState::TERRAIN || currentInputState == ButtonState::BACKGROUND)
+		{
+			currentInput->posX = (mousePosGrid.x + (currentInput->shape.getLocalBounds().width * 0.5f)) * gridSizeU;
+			currentInput->posY = (mousePosGrid.y + (currentInput->shape.getLocalBounds().height * 0.5f)) * gridSizeU;
+		}
+		else
+		{
+			currentInput->posX = mousePosWorld.x + (currentInput->shape.getLocalBounds().width * 0.5f);
+			currentInput->posY = mousePosWorld.y + (currentInput->shape.getLocalBounds().height * 0.5f);
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::U))
+		{
+			currentInput->scaleX *= -1.f;
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::I))
+		{
+			currentInput->scaleY *= -1.f;
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::O))
+		{
+			currentInput->rotate += 90.f;
+		}
+
+		if (InputManager::GetKeyDown(Keyboard::P))
+		{
+			currentInput->rotate -= 90.f;
+		}
+
+		currentInput->shape.setFillColor({ 255, 255, 255, 75 });
+		currentInput->shape.setTexture(&currentTexture, true);
+		currentInput->shape.setSize(Vector2f(1.f, 1.f));
+		currentInput->shape.setScale(currentInput->scaleX, currentInput->scaleY);
+		currentInput->shape.setPosition(currentInput->posX, currentInput->posY);
+		currentInput->shape.setOrigin(currentInput->shape.getLocalBounds().width * 0.5f, currentInput->shape.getLocalBounds().height * 0.5f);
+		currentInput->shape.setRotation(currentInput->rotate);
+	}
+}
+
+void MapScene::CreateInputData(InputData currentInputData)
+{
+	InputData inputData;
+
+	switch (currentInputState)
+	{
+	case ButtonState::BACKGROUND:
+		inputData = currentInputData;
+		inputData.shape.setTexture(&(backGroundResource.find(inputData.resourceId)->second));
+		inputData.shape.setFillColor({ 255,255,255 });
+		backGroundInput.push_back(inputData);
+		break;
+
+	case ButtonState::TERRAIN:
+		inputData = currentInputData;
+		inputData.shape.setTexture(&(terrainResource.find(inputData.resourceId)->second.tex));
+		inputData.shape.setFillColor({ 255,255,255 });
+		terrainInput.push_back(inputData);
+		break;
+
+	case ButtonState::OBJECT:
+		inputData = currentInputData;
+		inputData.shape.setTexture(&(objectResource.find(inputData.resourceId)->second.tex));
+		inputData.shape.setFillColor({ 255,255,255 });
+		objectInput.push_back(inputData);
+		break;
+	}
+}
+
 MapScene::~MapScene()
 {
 	delete mapView;
@@ -692,20 +884,6 @@ MapScene::~MapScene()
 	}
 
 	blocks.clear();
-}
-
-void MapScene::UpdateSelectTexture()
-{
-	fromX = mousePosGrid.x;
-	fromY = mousePosGrid.y;
-
-	currentTextureShape.setFillColor({255, 255, 255, 75});
-	currentTextureShape.setTexture(&selectTexture, true);
-	currentTextureShape.setSize(Vector2f(1.f, 1.f));
-	currentTextureShape.setScale(selectTexture.getSize().x, selectTexture.getSize().y);
-	currentTextureShape.setPosition((fromX + (currentTextureShape.getLocalBounds().width * 0.5f)) * gridSizeU, (fromY + (currentTextureShape.getLocalBounds().height * 0.5f)) * gridSizeU);
-	currentTextureShape.setOrigin(currentTextureShape.getLocalBounds().width * 0.5f, currentTextureShape.getLocalBounds().height * 0.5f);
-	//currentTextureShape.setRotation(180.f);
 }
 
 //Map ¼øÈ¸
