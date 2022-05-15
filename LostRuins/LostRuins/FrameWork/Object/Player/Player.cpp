@@ -174,7 +174,7 @@ void Player::PlayerAction(float dt, Time playTime)
 				}
 			}
 
-			if (InputManager::GetKeyUp(Keyboard::Down) && isCrouch == true)
+			if (!InputManager::GetKey(Keyboard::Down) && isCrouch == true)
 			{
 				hitBox.setSize(Vector2f(20.f, 48.f));
 				hitBox.setOrigin(hitBoxStand);
@@ -560,6 +560,7 @@ void Player::SoundInit()
 	soundFireArrow.setBuffer(SoundHolder::GetBuffer("sound/FireArrow.wav"));
 	soundDamage.setBuffer(SoundHolder::GetBuffer("sound/damage_a_03.wav"));
 	soundDeath.setBuffer(SoundHolder::GetBuffer("sound/death_a_03.wav"));
+	soundBackGround.setLoop(true);
 	soundBackGround.play();
 }
 
@@ -837,7 +838,7 @@ void Player::AnimationUpdate(float dt)
 		{
 			SetStatus(Status::STATUS_HIT);
 		}
-		else if (InputManager::GetKeyUp(Keyboard::Down))
+		else if (!InputManager::GetKey(Keyboard::Down))
 		{
 			SetStatus(Status::STATUS_IDLE);
 		}
