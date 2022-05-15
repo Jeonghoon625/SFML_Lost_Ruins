@@ -18,9 +18,19 @@ enum GameMenu
 	EXIT,
 };
 
+enum class MenuType
+{
+	MENU_SELECT,
+	MENU_LOAD,
+	MENU_OPTION,
+};
+
 class TitleScene : public Scene
 {
 private:
+	const int MAX_MENU_SLOT = 5;
+	const int MAX_SAVE_SLOT = 3;
+
 	SceneManager* sceneMgr;
 
 	Vector2i resolution;
@@ -28,9 +38,12 @@ private:
 	AnimationController aniHeroine;
 	AnimationController aniRope1;
 	AnimationController aniRope2;
+	AnimationController aniTree;
+	AnimationController aniDeadBush;
 
 	Font fontLostRuins;
 	Texture textureTitle;
+	Texture textureUi;
 
 	Sprite sky;
 	Sprite backGround;
@@ -40,9 +53,16 @@ private:
 	Sprite heroine;
 	Sprite rope1;
 	Sprite rope2;
+	Sprite tree;
+	Sprite deadBush;
+	Sprite loadBar;
 
 	RectangleShape topBar;
 	RectangleShape bottomBar;
+
+	RectangleShape loadBack;
+	RectangleShape loadScreen;
+	RectangleShape loadSlot;
 
 	Text textGameStart;
 	Text textContinue;
@@ -50,9 +70,13 @@ private:
 	Text textMapEditor;
 	Text textExit;
 
+	Text textLoadSlot[3];
+
 	Sound backGroundSound;
 
-	int isPosition;
+	int menuPos;
+	int loadPos;
+	MenuType menuType;
 
 	std::map<std::string, Texture> texmap;
 
@@ -61,6 +85,9 @@ public:
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
 	virtual void Draw(RenderWindow* window, View* mainView, View* uiView);
 	virtual ~TitleScene();
+
+	void SelectingMenu(float dt, RenderWindow* window);
+	void LoadingMenu(float dt, RenderWindow* window);
 
 	void GetSelect(RenderWindow* window);
 	void SettingTextrue();

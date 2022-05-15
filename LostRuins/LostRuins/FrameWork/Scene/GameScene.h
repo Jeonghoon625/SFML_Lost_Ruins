@@ -1,13 +1,16 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <algorithm>
+#include <map>
 #include "Scene.h"
 #include "../Mgr/TextureHolder.h"
 #include "../Object/Player/Player.h"
-#include "../Object/TestBlock/TestBlock.h"
+#include "../Object/CollisionBlock/CollisionBlock.h"
 #include "../Object/Monster/Monster.h"
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
+#include "../Object/Npc/Npc.h"
+#include "../Object/Coin/Coin.h"
 #include "TestSceneUI/TestSceneUi.h"
 
 class GameScene : public Scene
@@ -15,16 +18,19 @@ class GameScene : public Scene
 	SceneManager* sceneMgr;
 	Vector2i resolution;
 
+	FloatRect gameMap;
 	Player player;
-	IntRect gameMap;
+
+	TestUi testUI;
+	/*Npc testNpc;
+	Coin coin;*/
 
 	Texture textureHeroine;
 
-	vector <TestBlock*> blocks;
+	vector <CollisionBlock*> blocks;
 
 	// test
 	ZombieWalker* zombieWalker;
-	TestUi testUI;
 
 	//Dummy Map
 	Texture texBackground;

@@ -10,14 +10,11 @@ void GameScene::Init(SceneManager* sceneManager)
 	zombieWalker = new ZombieWalker();
 
 	player.Init(zombieWalker);
-	gameMap = IntRect(0, 0, resolution.x, resolution.y);
+	gameMap = FloatRect(0, 0, 35.f * 32.f, 15.f * 32.f);
 
 	CreateBlock();
 
-	player.Spawn(gameMap, resolution, 0.5f);
-
-	float wpXpos = 500.f;
-	float wpYpos = resolution.y * 0.5f;
+	player.Spawn(90.f, 340.f);
 
 	// test
 	zombieWalker->MonsterInit();
@@ -25,10 +22,12 @@ void GameScene::Init(SceneManager* sceneManager)
 	//Dummy Map
 	CreateBackGround();
 	texBackground = TextureHolder::GetTexture("maps/Another/SewerWall.png");
+
+	testUI.Init(sceneManager);
 	
 }
 
-void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
+void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* objectView, View* uiView)
 {
 	if (player.GetPause() == false)
 	{
@@ -46,10 +45,23 @@ void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* main
 
 		player.Update(dt, blocks, playTime);
 	}
+	else
+	{
+		if (InputManager::GetKeyDown(Keyboard::Escape) && 
+			player.GetPause() == true)
+		{
+			player.SetPause(false);
+		}
+	}
+
+	testUI.Update(dt, playTime, window, uiView, player);
+	/*testNpc.Update(dt);
+	coin.Update(dt, blocks, &player);*/
 }
 
 void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
 {
+	window->setView(*objectView);
 	/* View ¼³Á¤*/
 	objectView->setCenter(player.GetPosition());
 
@@ -77,7 +89,6 @@ void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
 		objectView->move(0, (gameMap.top + gameMap.height) - ((objectView->getCenter().y) + (objectView->getSize().y * 0.5f)));
 	}
 
-
 	window->draw(tileMap, &texBackground);
 
 	for (auto blockShape : blocks)
@@ -89,8 +100,12 @@ void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
 
 	// test
 	zombieWalker->Draw(window);
-	
-	//testUI.Draw(window, mainView);
+
+	//testNpc.Draw(window);
+	//coin.Draw(window, objectView, uiView);
+
+	window->setView(*uiView);
+	testUI.Draw(window, uiView);
 }
 
 GameScene::~GameScene()
@@ -112,18 +127,35 @@ void GameScene::CreateBlock()
 
 	blocks.clear();
 
-	Vector2i res = resolution;
-
-	TestBlock* block1 = new TestBlock(res.x * 0.5f, res.y * 0.5f, 800.f, 50.f);
+	CollisionBlock* block1 = new CollisionBlock(0, 0, 64, 416);
 	blocks.push_back(block1);
-	TestBlock* block2 = new TestBlock(res.x * 0.5f, res.y - 50.f, res.x, 100.f);
+	CollisionBlock* block2 = new CollisionBlock(1056, 0, 64, 416);
 	blocks.push_back(block2);
-	TestBlock* block3 = new TestBlock(440.f, res.y * 0.75f - 50.f, 600.f, 50.f);
+	CollisionBlock* block3 = new CollisionBlock(0, 416, 1120, 64);
 	blocks.push_back(block3);
-	TestBlock* block4 = new TestBlock(1480.f, res.y * 0.75f - 50.f, 600.f, 50.f);
+	CollisionBlock* block4 = new CollisionBlock(128, 352, 256, 32);
 	blocks.push_back(block4);
-	TestBlock* block7 = new TestBlock(res.x * 0.5f, res.y - 150.f, 100.f, 100.f);
+	CollisionBlock* block5 = new CollisionBlock(416, 288, 224, 32);
+	blocks.push_back(block5);
+	CollisionBlock* block13 = new CollisionBlock(600, 220, 32, 32);
+	blocks.push_back(block13);
+	CollisionBlock* block14 = new CollisionBlock(480, 220, 32, 32);
+	blocks.push_back(block14);
+	CollisionBlock* block6 = new CollisionBlock(672, 352, 192, 32);
+	blocks.push_back(block6);
+	CollisionBlock* block7 = new CollisionBlock(928, 384, 32, 32);
 	blocks.push_back(block7);
+	CollisionBlock* block8 = new CollisionBlock(992, 320, 32, 32);
+	blocks.push_back(block8);
+	CollisionBlock* block9 = new CollisionBlock(128, 192, 224, 64);
+	blocks.push_back(block9);
+	CollisionBlock* block10 = new CollisionBlock(672, 192, 224, 64);
+	blocks.push_back(block10);
+	CollisionBlock* block11 = new CollisionBlock(928, 300, 32, 32);
+	blocks.push_back(block11);
+	CollisionBlock* block12 = new CollisionBlock(1012, 230, 32, 32);
+	blocks.push_back(block12);
+
 }
 
 int GameScene::CreateBackGround()

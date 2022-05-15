@@ -1,15 +1,16 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <string>
 #include <map>
 #include <list>
 #include <cstdlib>
 #include "../../Mgr/TextureHolder.h"
+#include "../../Mgr/SoundHolder.h"
 #include "../../Animation/AnimationController.h"
 #include "../../Animation/rapidcsv.h"
 #include "../../Mgr/Utils.h"
 #include "../../Mgr/InputManager.h"
-#include "../TestBlock/TestBlock.h"
 #include "../../Mgr/AttackManager.h"
 #include "../CollisionBlock/CollisionBlock.h"
 #include "../../Mgr/EffectManager.h"
@@ -44,14 +45,14 @@ private:
 
 	const int START_HEALTH = 20;
 	const int START_MANA = 20;
-	const float START_SPEED = 200.f;
+	const float START_SPEED = 150.f;
 	const float START_JUMP_SPEED = 300.f;
 	const float START_ROLL_SPEED = 150.f;
 	const float START_ROLL_TIME = 0.5f;
 	const float GRAVITY_POWER = 600.f;
 	const float START_IMMUNE_MS = 500.f;
-	const float START_KNOCK_BACK_SPEED = 550.f;
-	const float DEAD_FALLING_SPEED = 600.f;
+	const float START_KNOCK_BACK_SPEED = 180.f;
+	const float DEAD_FALLING_SPEED = 200.f;
 	const float DEAD_TIME_COUNT = 1.f;
 	const int MAX_TEXT_CACHE_SIZE = 50;
 
@@ -62,13 +63,24 @@ private:
 	Sprite sprite;
 
 	Vector2f position;
-	
 	Vector2i resolustion;
 	IntRect gameMap;
+
+	Sound soundBackGround;
+	Sound soundWalk;
+	Sound soundJump;
+	Sound soundRoll;
+	Sound soundDagger;
+	Sound soundTwoHanded;
+	Sound soundFireArrow;
+	Sound soundDamage;
+	Sound soundDeath;
 
 	int tileSize;
 	int health;
 	int maxHealth;
+	int mana;
+	int maxMana;
 
 	float speed;
 	float JumpingSpeed;
@@ -77,6 +89,7 @@ private:
 	float knockBackSpeed;
 
 	float attackFps;
+	float soundDelay;
 	float rollTime;
 	float immuneMs;
 	float deadTime;
@@ -105,7 +118,6 @@ private:
 
 public:
 	void Init(ZombieWalker* zombie);
-	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
 	void Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime);
 	void Draw(RenderWindow* window, View* mainView);
 	
@@ -120,16 +132,20 @@ public:
 	Vector2f GetPosition() const;
 	Sprite GetSprite() const;
 	int GetHealth() const;
+	int GetMaxHealth() const;
+	int GetMana() const;
+	int GetMaxMana() const;
 	RectangleShape GetHitBox();
 	bool GetAlive();
+	void SetPause(bool isPause);
 	bool GetPause();
 
 	void AnimationInit(Sprite* sprite);
-	void UpdateCollision(std::vector <TestBlock*> blocks);
+	void SoundInit();
+	void UpdateCollision(std::vector <CollisionBlock*> blocks);
 
-	void AnimationUpdate();
+	void AnimationUpdate(float dt);
 	void SetStatus(Status newStatus);
 
-	
 };
 

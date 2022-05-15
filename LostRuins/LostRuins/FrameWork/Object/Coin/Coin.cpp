@@ -13,7 +13,7 @@ void Coin::Init()
 	coinTimer = 2.f;
 }
 
-void Coin::Update(float dt, std::vector<TestBlock*> blocks, Player &player)
+void Coin::Update(float dt, std::vector<CollisionBlock*> blocks, Player* player)
 {
 	animationCoin.Update(dt);
 	animationCoin.PlayQueue("Gold");
@@ -32,7 +32,7 @@ void Coin::Update(float dt, std::vector<TestBlock*> blocks, Player &player)
 
 	if (Coindelete == false)
 	{
-		if (spriteCoin.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+		if (spriteCoin.getGlobalBounds().intersects(player->GetHitBox().getGlobalBounds()))
 		{
 			Coindelete = true;
 
@@ -65,7 +65,7 @@ void Coin::Draw(RenderWindow* window, View* mainView, View* uiView)
 	}
 }
 
-void Coin::Gravity(float dt, std::vector<TestBlock*> blocks)
+void Coin::Gravity(float dt, std::vector<CollisionBlock*> blocks)
 {
 	if (isFalling)
 	{
@@ -80,7 +80,7 @@ void Coin::Gravity(float dt, std::vector<TestBlock*> blocks)
 	UpdateCollision(blocks);
 }
 
-void Coin::UpdateCollision(std::vector<TestBlock*> blocks)
+void Coin::UpdateCollision(std::vector<CollisionBlock*> blocks)
 {
 	isFalling = true;
 	isCollideCoin = false;

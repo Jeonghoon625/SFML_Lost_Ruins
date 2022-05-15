@@ -11,7 +11,6 @@
 #include "../Object/Monster/Monster.h"
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
-#include "../Object/TestBlock/TestBlock.h"
 #include "../Object/Monster/LamiPhaseTwo.h"
 #include "../Object/Monster/SlimeGreen.h"
 
@@ -25,7 +24,7 @@ private:
 	Vector2i resolution;
 
 	AnimationController animation;
-	IntRect gameMap;
+	FloatRect gameMap;
 
 	Player player;
 	Texture textureHeroine;
@@ -39,7 +38,7 @@ private:
 
 	LamiPhaseTwo Lami2;
 
-	vector <TestBlock*> blocks;
+	vector <CollisionBlock*> blocks;
 	//Dummy Map
 	Texture texBackground;
 	VertexArray tileMap;

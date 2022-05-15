@@ -5,11 +5,9 @@
 #include "../Mgr/Utils.h"
 #include "../Animation/AnimationController.h"
 #include "../Animation/rapidcsv.h"
-#include "TestSceneUI/TestSceneUi.h"
 #include "../Object/Npc/Npc.h"
 #include "../Object/Coin/Coin.h"
 #include "../Object/Player/Player.h"
-#include "../Object/TestBlock/TestBlock.h"
 #include "../Object/Monster/Monster.h"
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
@@ -33,7 +31,7 @@ private:
 	Texture textureHeroine;
 	Sprite heroineAction;
 
-	vector <TestBlock*> blocks;
+	vector <CollisionBlock*> blocks;
 
 	Sprite testSprite;
 	Sprite testWeapon;

@@ -12,13 +12,16 @@ void AttackManager::Init(ZombieWalker* zombie, EffectManager* effectMgr)
 	TwohandWeaponInit();
 	DaggerWeaponInit();
 
+	soundDagger = SoundHolder::GetBuffer("sound/Woosh_Sword_Dagger_02.wav");
+	soundTwoHanded = SoundHolder::GetBuffer("sound/Woosh_Sword_Heavy_03.wav");
+
 	for (int i = 0; i < MAX_SPELL_CACHE_SIZE; i++)
 	{
 		unuseSpell.push_back(new FireArrow(zombie, effectMgr));
 	}
 }
 
-void AttackManager::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
+void AttackManager::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime)
 {
 	auto spell = useSpell.begin();
 	while (spell != useSpell.end())
@@ -69,17 +72,20 @@ void AttackManager::SetAttackType(AttackType attackType)
 	switch (attackType)
 	{
 	case AttackType::DAGGER:
+		soundWeapon.setBuffer(soundDagger);
 		currentAtkType = AttackType::DAGGER;
 		maxFps = MAX_DAGGER_FPS;
 		delay = DAGGER_DELAY;
 		currentAtkType = AttackType::DAGGER;
 		break;
 	case AttackType::TWO_HANDED:
+		soundWeapon.setBuffer(soundTwoHanded);
 		maxFps = MAX_TWO_HANDED_FPS;
 		delay = TWO_HANDED_DELAY;
 		currentAtkType = AttackType::TWO_HANDED;
 		break;
 	case AttackType::FIRE_ARROW:
+		cost = SPELL_COST_FIRE_ARROW;
 		currentAtkType = AttackType::FIRE_ARROW;
 		break;
 	}
@@ -130,6 +136,11 @@ void AttackManager::CastingSpell(Sprite sprite)
 	unuseSpell.pop_front();
 	useSpell.push_back(spell);
 	spell->Spell(spawnPos, isDirection);
+}
+
+void AttackManager::GetAttackSound()
+{
+	soundWeapon.play();
 }
 
 int AttackManager::GetAttackPoint()
@@ -211,6 +222,11 @@ void AttackManager::ResetFps()
 Sprite AttackManager::GetSprite()
 {
 	return sprite;
+}
+
+int AttackManager::PaySpellCost()
+{
+	return cost;
 }
 
 AttackManager::~AttackManager()

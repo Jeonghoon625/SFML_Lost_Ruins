@@ -1,8 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <algorithm>
 #include <list>
-#include "../Object/TestBlock/TestBlock.h"
+#include "../Mgr/SoundHolder.h"
+#include "../Object/CollisionBlock/CollisionBlock.h"
 #include "../Object/Weapon/TwohandWeapon.h"
 #include "../Object/Weapon/Dagger.h"
 #include "../Object/Spell/FireArrow.h"
@@ -11,7 +13,7 @@
 using namespace sf;
 using namespace std;
 
-class TestBlock;
+class CollisionBlock;
 class ZombieWalker;
 
 enum class AttackType
@@ -34,14 +36,22 @@ private:
 	const float DAGGER_ATTACK_FPS = 0.03f;
 	const float TWO_HANDED_ATTACK_FPS = 0.04f;
 
+	const int SPELL_COST_FIRE_ARROW = 4;
+
 	const int MAX_SPELL_CACHE_SIZE = 50;
 	const float FIRE_ARROW_CAST_TIME = 0.8f;
 
 	AttackType currentAtkType;
 	Sprite sprite;
 
+	SoundBuffer soundDagger;
+	SoundBuffer soundTwoHanded;
+
+	Sound soundWeapon;
+
 	int isFps;
 	int maxFps;
+	int cost;
 	int delay;
 
 	bool isDirection;
@@ -57,13 +67,14 @@ private:
 
 public:
 	void Init(ZombieWalker* zombie, EffectManager* effectMgr);
-	void Update(float dt, std::vector <TestBlock*> blocks, Time playTime);
+	void Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime);
 	void WeaponDraw(RenderWindow* window, View* mainView);
 	void SpellDraw(RenderWindow* window);
 
 	void SetAttackType(AttackType attackType);
 	void SetAttackPosition(Sprite sprite);
 	void CastingSpell(Sprite sprite);
+	void GetAttackSound();
 
 	int GetAttackPoint();
 	int GetHitFrame();
@@ -74,6 +85,8 @@ public:
 	void NextFps();
 	void ResetFps();
 	Sprite GetSprite();
+
+	int PaySpellCost();
 
 	~AttackManager();
 	void TwohandWeaponInit();

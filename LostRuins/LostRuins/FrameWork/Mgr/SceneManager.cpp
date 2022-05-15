@@ -3,16 +3,21 @@
 
 void SceneManager::Init()
 {
-	SceneSwitch(SceneType::TEST_KK);
+	SceneSwitch(SceneType::MapScene);
 }
 
 void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
 	currentScene->Update(dt, playTime, window, mainView, uiView);
 
-	if (InputManager::GetKeyDown(Keyboard::Escape))
+	if (InputManager::GetKeyDown(Keyboard::BackSpace))
 	{
 		SceneSwitch(SceneType::TITLE);
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::F10))
+	{
+		SceneSwitch(SceneType::TEST_KK);
 	}
 }
 
@@ -39,7 +44,7 @@ void SceneManager::SceneSwitch(SceneType sceneType)
 		break;
 
 	case SceneType::TEST_LMH:
-		currentScene = new TestScene();
+		currentScene = new GameScene();
 		break;
 
 	case SceneType::GameScene:

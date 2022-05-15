@@ -6,6 +6,9 @@ void Player::Init(ZombieWalker* zombie)
 {
 	health = START_HEALTH;
 	maxHealth = START_HEALTH;
+	mana = START_MANA;
+	maxMana = START_MANA;
+
 	speed = START_SPEED;
 	JumpingSpeed = START_JUMP_SPEED;
 	fallingSpeed = 0.f;
@@ -13,6 +16,7 @@ void Player::Init(ZombieWalker* zombie)
 	knockBackSpeed = START_KNOCK_BACK_SPEED;
 
 	attackFps = 0.f;
+	soundDelay = 0.f;
 	rollTime = START_ROLL_TIME;
 	immuneMs = START_IMMUNE_MS;
 	deadTime = DEAD_TIME_COUNT;
@@ -36,6 +40,7 @@ void Player::Init(ZombieWalker* zombie)
 
 	effectMgr.Init();
 	attackMgr.Init(zombie, &effectMgr);
+	SoundInit();
 
 	this->zombie = zombie;
 
@@ -45,7 +50,7 @@ void Player::Init(ZombieWalker* zombie)
 	}
 }
 
-void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
+void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime)
 {
 	// 플레이어 행동
 	PlayerAction(dt, playTime);
@@ -54,7 +59,7 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 	UpdateCollision(blocks);
 
 	// 애니메이션
-	AnimationUpdate();
+	AnimationUpdate(dt);
 	animation.Update(dt);
 
 	attackMgr.Update(dt, blocks, playTime);
@@ -74,6 +79,15 @@ void Player::Update(float dt, std::vector <TestBlock*> blocks, Time playTime)
 		{
 			++DorR;
 		}
+	}
+
+	if (InputManager::GetKeyDown(Keyboard::Tab) && isPause == false)
+	{
+		isPause = true;
+	}
+	else if (InputManager::GetKeyDown(Keyboard::Escape) && isPause == false)
+	{
+		isPause = true;
 	}
 }
 
@@ -134,7 +148,11 @@ void Player::PlayerAction(float dt, Time playTime)
 					{
 						attackMgr.SetAttackType(AttackType::FIRE_ARROW);
 						attackFps = attackMgr.GetAttackFps();
-						isSpell = true;
+						if (mana >= attackMgr.PaySpellCost())
+						{
+							mana -= attackMgr.PaySpellCost();
+							isSpell = true;
+						}
 					}
 					else if (InputManager::GetKeyDown(Keyboard::Space))
 					{
@@ -165,6 +183,11 @@ void Player::PlayerAction(float dt, Time playTime)
 			attackFps -= dt;
 			if (attackFps < 0.f)
 			{
+				if (attackMgr.GetFps() == 5)
+				{
+					attackMgr.GetAttackSound();
+				}
+
 				if (isDelay == false)
 				{
 					attackMgr.NextFps();
@@ -180,7 +203,7 @@ void Player::PlayerAction(float dt, Time playTime)
 						{
 							if (attackMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
 							{
-								std::cout << "Hit" << zombie->GetHealth() << std::endl;
+								//std::cout << "Hit" << zombie->GetHealth() << std::endl;
 								zombie->OnHitted(attackMgr.GetAttackPoint(), dt, playTime);
 							}
 						}
@@ -205,13 +228,12 @@ void Player::PlayerAction(float dt, Time playTime)
 			attackFps -= dt;
 			if (attackFps < 0.2f && isDelay == false)
 			{
-				//std::cout << "발사" << std::endl;
+				soundFireArrow.play();
 				attackMgr.CastingSpell(sprite);
 				isDelay = true;
 			}
 			else if (attackFps < 0.f && isDelay == true)
 			{
-				//std::cout << "주문 완료" << std::endl;
 				isDelay = false;
 				isSpell = false;
 			}
@@ -430,6 +452,21 @@ int Player::GetHealth() const
 	return health;
 }
 
+int Player::GetMaxHealth() const
+{
+	return maxHealth;
+}
+
+int Player::GetMana() const
+{
+	return mana;
+}
+
+int Player::GetMaxMana() const
+{
+	return maxMana;
+}
+
 RectangleShape Player::GetHitBox()
 {
 	return hitBox;
@@ -438,6 +475,11 @@ RectangleShape Player::GetHitBox()
 bool Player::GetAlive()
 {
 	return isAlive;
+}
+
+void Player::SetPause(bool isPause)
+{
+	this->isPause = isPause;
 }
 
 bool Player::GetPause()
@@ -486,7 +528,21 @@ void Player::AnimationInit(Sprite* sprite)
 	}
 }
 
-void Player::UpdateCollision(std::vector<TestBlock*> blocks)
+void Player::SoundInit()
+{
+	soundBackGround.setBuffer(SoundHolder::GetBuffer("sound/12058396_MotionElements_suspenseful-background.wav"));
+	soundWalk.setBuffer(SoundHolder::GetBuffer("sound/FOOTSTEP_Trainers_Gravel_Compact_Run_RR2_mono.wav"));
+	soundJump.setBuffer(SoundHolder::GetBuffer("sound/PlayerJumpRoll2.wav"));
+	soundRoll.setBuffer(SoundHolder::GetBuffer("sound/PlayerJumpRoll1.wav"));
+	soundDagger.setBuffer(SoundHolder::GetBuffer("sound/PlayerAttackShort0.wav"));
+	soundTwoHanded.setBuffer(SoundHolder::GetBuffer("sound/PlayerAttackLong1.wav"));
+	soundFireArrow.setBuffer(SoundHolder::GetBuffer("sound/FireArrow.wav"));
+	soundDamage.setBuffer(SoundHolder::GetBuffer("sound/damage_a_03.wav"));
+	soundDeath.setBuffer(SoundHolder::GetBuffer("sound/death_a_03.wav"));
+	soundBackGround.play();
+}
+
+void Player::UpdateCollision(std::vector<CollisionBlock*> blocks)
 {
 	bool isCollided = false;
 	for (auto bk : blocks)
@@ -494,64 +550,19 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
 		{
 			float blockUp = bk->GetBlockRect().top;
-			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height * 0.5f; // t+h
+			float blockDown = bk->GetBlockRect().top + bk->GetBlockRect().height;
 			float blockLeft = bk->GetBlockRect().left;
-			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width * 0.5f; // l+w
+			float blockRight = bk->GetBlockRect().left + bk->GetBlockRect().width;
 
-			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height;
-			float playerDown = hitBox.getPosition().y;
+			float playerUp = hitBox.getGlobalBounds().top;
+			float playerDown = hitBox.getGlobalBounds().top + hitBox.getGlobalBounds().height;
 			float playerLeft = hitBox.getGlobalBounds().left;
-			float playerRight = hitBox.getPosition().x + hitBox.getGlobalBounds().width * 0.5f;
+			float playerRight = hitBox.getGlobalBounds().left + hitBox.getGlobalBounds().width;
 
-			float playerXpos = hitBox.getPosition().x;
-			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
+			float playerXpos = hitBox.getGlobalBounds().left + hitBox.getGlobalBounds().width * 0.5f;
+			float playerYpos = hitBox.getGlobalBounds().top + hitBox.getGlobalBounds().height * 0.5f;
 			Vector2f pos = hitBox.getPosition();
 
-			// 블럭 CB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
-			{
-				pos.y = blockDown + hitBox.getGlobalBounds().height;
-				isJump = false;
-				JumpingSpeed = START_JUMP_SPEED;
-			}
-			// 블럭 LB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockLeft > playerXpos)
-			{
-				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
-				{
-					pos.y = blockDown + hitBox.getGlobalBounds().height;
-					isJump = false;
-					JumpingSpeed = START_JUMP_SPEED;
-				}
-				else if (abs(blockLeft - playerRight) < abs(blockDown - playerUp))
-				{
-					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
-				}
-				else
-				{
-					pos.x -= abs(blockLeft - playerRight);
-					pos.y += abs(blockDown - playerUp);
-				}
-			}
-			// 블럭 RB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockRight < playerXpos)
-			{
-				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
-				{
-					pos.y = blockDown + hitBox.getGlobalBounds().height;
-					isJump = false;
-					JumpingSpeed = START_JUMP_SPEED;
-				}
-				else if (abs(blockRight - playerLeft) < abs(blockDown - playerUp))
-				{
-					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
-				}
-				else
-				{
-					pos.x += abs(blockRight - playerLeft);
-					pos.y += abs(blockDown - playerUp);
-				}
-			}
 			// 블럭 CT에 플레이어가 충돌
 			if (blockUp > playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
 			{
@@ -560,7 +571,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				fallingSpeed = 0.f;
 			}
 			// 블럭 LT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockLeft > playerXpos)
+			else if (blockUp > playerYpos && blockLeft > playerXpos)
 			{
 				if (abs(blockLeft - playerRight) > abs(blockUp - playerDown))
 				{
@@ -580,7 +591,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				}
 			}
 			// 블럭 RT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockRight < playerXpos)
+			else if (blockUp > playerYpos && blockRight < playerXpos)
 			{
 				if (abs(blockRight - playerLeft) > abs(blockUp - playerDown))
 				{
@@ -600,14 +611,59 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 				}
 			}
 			// 블럭 LC에 플레이어가 충돌
-			if (blockLeft > playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			else if (blockLeft > playerXpos && blockUp < playerYpos && blockDown > playerYpos)
 			{
 				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
 			}
 			// 블럭 RC에 플레이어가 충돌
-			if (blockRight < playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			else if (blockRight < playerXpos && blockUp < playerYpos && blockDown > playerYpos)
 			{
 				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+			}
+			// 블럭 CB에 플레이어가 충돌
+			else if (blockDown < playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
+			{
+				pos.y = blockDown + hitBox.getGlobalBounds().height;
+				isJump = false;
+				JumpingSpeed = START_JUMP_SPEED;
+			}
+			// 블럭 LB에 플레이어가 충돌
+			else if (blockDown < playerYpos && blockLeft > playerXpos)
+			{
+				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+					isJump = false;
+					JumpingSpeed = START_JUMP_SPEED;
+				}
+				else if (abs(blockLeft - playerRight) < abs(blockDown - playerUp))
+				{
+					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockLeft - playerRight);
+					pos.y += abs(blockDown - playerUp);
+				}
+			}
+			// 블럭 RB에 플레이어가 충돌
+			else if (blockDown < playerYpos && blockRight < playerXpos)
+			{
+				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+					isJump = false;
+					JumpingSpeed = START_JUMP_SPEED;
+				}
+				else if (abs(blockRight - playerLeft) < abs(blockDown - playerUp))
+				{
+					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x += abs(blockRight - playerLeft);
+					pos.y += abs(blockDown - playerUp);
+				}
 			}
 
 			isCollided = true;
@@ -621,7 +677,7 @@ void Player::UpdateCollision(std::vector<TestBlock*> blocks)
 	}
 }
 
-void Player::AnimationUpdate()
+void Player::AnimationUpdate(float dt)
 {
 	// 스프라이트 반전
 	if (isAttack == false && isRoll == false && isHit == false && isSpell == false && isAlive == true)
@@ -833,6 +889,7 @@ void Player::SetStatus(Status newStatus)
 	switch (currentStatus)
 	{
 	case Status::STATUS_IDLE:
+		soundWalk.setLoop(false);
 		if (prevStatus == Status::STATUS_RUN)
 		{
 			animation.Play("RuntoIdle");
@@ -840,6 +897,7 @@ void Player::SetStatus(Status newStatus)
 		}
 		else if (prevStatus == Status::STATUS_FALLING)
 		{
+			soundWalk.play();
 			animation.Play("Landing");
 			animation.PlayQueue("Idle");
 		}
@@ -854,6 +912,8 @@ void Player::SetStatus(Status newStatus)
 		}
 		break;
 	case Status::STATUS_RUN:
+		soundWalk.setLoop(true);
+		soundWalk.play();
 		if (prevStatus == Status::STATUS_IDLE)
 		{
 			animation.Play("IdletoRun");
@@ -865,207 +925,60 @@ void Player::SetStatus(Status newStatus)
 		}
 		break;
 	case Status::STATUS_JUMP:
+		soundWalk.setLoop(false);
+		soundJump.play();
 		animation.Play("Jump");
 		break;
 	case Status::STATUS_FALLING:
+		soundWalk.setLoop(false);
 		animation.Play("Falling");
 		break;
 	case Status::STATUS_CROUCH:
+		soundWalk.setLoop(false);
 		animation.Play("Crouch");
 		animation.PlayQueue("Crouching");
 		break;
 	case Status::STATUS_ROLL:
+		soundWalk.setLoop(false);
+		soundRoll.play();
 		animation.Play("Roll");
 		break;
 	case Status::STATUS_ATK_TWO_STAND:
+		soundWalk.setLoop(false);
+		soundTwoHanded.play();
 		animation.Play("Attack_Twohanded_Standing");
 		break;
 	case Status::STATUS_ATK_DAGGER:
+		soundWalk.setLoop(false);
+		soundDagger.play();
 		animation.Play("Attack_Dagger_Standing");
 		break;
 	case Status::STATUS_SPELL:
+		soundWalk.setLoop(false);
 		animation.Play("CastingSpell1");
 		animation.PlayQueue("CastingSpell3");
 		break;
 	case Status::STATUS_HIT:
+		soundWalk.setLoop(false);
+		soundDamage.play();
 		animation.Play("DamageTaken");
 		break;
 	case Status::STATUS_DEAD:
+		soundWalk.setLoop(false);
+		soundDeath.play();
 		animation.Play("Dead");
 		break;
 	}
 }
-
 
 void Player::Spawn(float x, float y)
 {
 	position.x = x;
 	position.y = y;
 
-	hitBox.setFillColor(Color(103, 103, 103, 125));
+	hitBox.setFillColor(Color(103, 103, 103, 0));
 	hitBox.setSize(Vector2f(20.f, 48.f));
 	hitBox.setOrigin(hitBoxStand);
 	hitBox.setScale(scale);
 	hitBox.setPosition(position);
-}
-
-void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime)
-{
-	// 플레이어 행동
-	PlayerAction(dt, playTime);
-
-	// 충돌 처리
-	bool isCollided = false;
-	for (auto bk : blocks)
-	{
-		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
-		{
-			float blockUp = bk->GetBlockRect().top;
-			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height; //t+h
-			float blockLeft = bk->GetBlockRect().left;
-			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width; //l+w
-
-			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height;
-			float playerDown = hitBox.getPosition().y;
-			float playerLeft = hitBox.getGlobalBounds().left;
-			float playerRight = hitBox.getPosition().x + hitBox.getGlobalBounds().width * 0.5f;
-
-			float playerXpos = hitBox.getPosition().x;
-			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
-			Vector2f pos = hitBox.getPosition();
-
-			// 블럭 CB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
-			{
-				pos.y = blockDown + hitBox.getGlobalBounds().height;
-				isJump = false;
-				JumpingSpeed = START_JUMP_SPEED;
-			}
-			// 블럭 LB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockLeft > playerXpos && blockDown < playerYpos)
-			{
-				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
-				{
-					pos.y = blockDown + hitBox.getGlobalBounds().height;
-					isJump = false;
-					JumpingSpeed = START_JUMP_SPEED;
-				}
-				else if (abs(blockLeft - playerRight) < abs(blockDown - playerUp))
-				{
-					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
-				}
-				else
-				{
-					pos.x -= abs(blockLeft - playerRight);
-					pos.y -= abs(blockDown - playerUp);
-				}
-			}
-			// 블럭 RB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockRight < playerXpos && blockDown < playerYpos)
-			{
-				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
-				{
-					pos.y = blockDown + hitBox.getGlobalBounds().height;
-					isJump = false;
-					JumpingSpeed = START_JUMP_SPEED;
-				}
-				else if (abs(blockRight - playerLeft) < abs(blockDown - playerUp))
-				{
-					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
-				}
-				else
-				{
-					pos.x += abs(blockRight - playerLeft);
-					pos.y -= abs(blockDown - playerUp);
-				}
-			}
-			// 블럭 CT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
-			{
-				pos.y = blockUp + 1.f;
-				isFloor = true;
-				fallingSpeed = 0.f;
-			}
-			// 블럭 LT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockLeft > playerXpos && blockUp > playerYpos)
-			{
-				if (abs(blockLeft - playerRight) > abs(blockUp - playerDown))
-				{
-					pos.y = blockUp + 1.f;
-					isFloor = true;
-					fallingSpeed = 0.f;
-				}
-				else if (abs(blockLeft - playerRight) < abs(blockUp - playerDown))
-				{
-					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
-				}
-				else
-				{
-					pos.x -= abs(blockLeft - playerRight);
-					pos.y -= abs(blockUp - playerDown);
-					pos.y += 1.f;
-				}
-			}
-			// 블럭 RT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockRight < playerXpos && blockUp > playerYpos)
-			{
-				if (abs(blockRight - playerLeft) > abs(blockUp - playerDown))
-				{
-					pos.y = blockUp + 1.f;
-					isFloor = true;
-					fallingSpeed = 0.f;
-				}
-				else if (abs(blockRight - playerLeft) < abs(blockUp - playerDown))
-				{
-					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
-				}
-				else
-				{
-					pos.x -= abs(blockRight - playerLeft);
-					pos.y -= abs(blockUp - playerDown);
-					pos.y += 1.f;
-				}
-			}
-			// 블럭 LC에 플레이어가 충돌
-			if (blockLeft > playerXpos && blockUp < playerYpos && blockDown > playerYpos)
-			{
-				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
-			}
-			// 블럭 RC에 플레이어가 충돌
-			if (blockRight < playerXpos && blockUp < playerYpos && blockDown > playerYpos)
-			{
-				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
-			}
-
-			isCollided = true;
-			hitBox.setPosition(pos);
-			position = pos;
-		}
-	}
-	if (isCollided == false)
-	{
-		isFloor = false;
-	}
-
-	// 애니메이션
-	AnimationUpdate();
-	animation.Update(dt);
-
-	//attackMgr.Update(dt);
-
-	auto DorR = useDorR.begin();
-	while (DorR != useDorR.end())
-	{
-		DamageAndRecovery* isDorR = *DorR;
-		isDorR->Update(dt);
-
-		if (!isDorR->IsActive())
-		{
-			DorR = useDorR.erase(DorR);
-		}
-		else
-		{
-			++DorR;
-		}
-	}
 }

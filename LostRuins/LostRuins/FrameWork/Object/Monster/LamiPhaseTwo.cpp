@@ -362,7 +362,7 @@ void LamiPhaseTwo::Attack(float dt, int atk, Player& player, Time timeHit)
 
 }
 
-void LamiPhaseTwo::Update(Player& player, float dt, std::vector<TestBlock*> blocks, Time playTime)
+void LamiPhaseTwo::Update(Player& player, float dt, std::vector<CollisionBlock*> blocks, Time playTime)
 {
 	if (health > START_HEALTH * 0.5f)
 	{
@@ -553,14 +553,14 @@ bool LamiPhaseTwo::OnHitted(int atk, float dt, Time timeHit)
 	return false;
 }
 
-void LamiPhaseTwo::Gravity(float dt, std::vector<TestBlock*> blocks)
+void LamiPhaseTwo::Gravity(float dt, std::vector<CollisionBlock*> blocks)
 {
 }
 
-void LamiPhaseTwo::UpdateCollision(std::vector<TestBlock*> blocks)
+void LamiPhaseTwo::UpdateCollision(std::vector<CollisionBlock*> blocks)
 {
 }
 
-void LamiPhaseTwo::UpdateCollisionAttackRangeBox(std::vector<TestBlock*> blocks)
+void LamiPhaseTwo::UpdateCollisionAttackRangeBox(std::vector<CollisionBlock*> blocks)
 {
 }

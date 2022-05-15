@@ -10,8 +10,21 @@
 #include "../Object/Monster/ZombieWalker.h"
 #include "../Object/CollisionBlock/CollisionBlock.h"
 #include "TestSceneUI/TestSceneUi.h"
+#include "../Map/Map.h"
 
-enum class InputState
+enum class ButtonType
+{
+	DEFAULT,
+	TOGGLE
+};
+
+enum class ButtonCategory
+{
+	DRAW,
+	INPUT
+};
+
+enum class ButtonState
 {
 	BLOCK,
 	OBJECT,
@@ -24,13 +37,25 @@ struct Button
 	RectangleShape buttonShape;
 	FloatRect buttonRect;
 	Text buttonText;
+
+	ButtonType buttonType;
+	ButtonCategory buttonCategory;
+	ButtonState buttonState;
+
+	bool isButtonClick;
+	bool isButtonToggle;
 };
+
+struct Tile
+{
+
+};   
 
 class MapScene : public Scene
 {
-	const int mapWidth = 50;
-	const int mapHeight = 20;
-	const float VIEW_SPEED = mapWidth * 10.f;
+	int mapWidth;
+	int mapHeight;
+	float VIEW_SPEED;
 
 	float gridSizeF;
 	unsigned gridSizeU;
@@ -45,7 +70,6 @@ class MapScene : public Scene
 	RectangleShape shape;
 	RectangleShape tileSelector;
 	vector<vector <RectangleShape>> gridTileMap;
-	
 
 	Vector2i mousePosScreen;
 	Vector2i mousePosWindow;
@@ -54,10 +78,11 @@ class MapScene : public Scene
 
 	Vector2u downGrid;
 	Vector2u upGrid;
-	vector<Vector2u> finalGrid;
+	vector<Vector2u> ingGrid;
 	RectangleShape* currentDrag;
 
-	Text text;
+	Text mousePosText;
+	Text stateText;
 	Font font;
 
 	vector <CollisionBlock*> blocks;
@@ -65,10 +90,11 @@ class MapScene : public Scene
 	Texture selectTexture;
 	VertexArray vertexMap;
 
-	InputState currentInputState;
+	ButtonState currentInputState;
+	ButtonState currentDrawState;
 
 	vector <Button> buttons;
-	
+
 	string name;
 
 	//test
@@ -80,6 +106,7 @@ class MapScene : public Scene
 	int fromY;
 	int toY;
 
+	RectangleShape textureShape;
 public:
 	MapScene();
 
@@ -93,8 +120,13 @@ public:
 	int CreateBackGround(int c, int r);
 
 	void CreateButtonSet();
-	Button CreateButton(float left, float top, float width, float height, string name);
-	void UpdateButton();
+	Button InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonCategory category, ButtonState state);
+	bool UpdateButton();
+
+	void SetCurrentInputState(ButtonState state);
+	void SetCurrentDrawState(ButtonState state);
+
+	void MapDataInit();
 
 	virtual ~MapScene();
 };

@@ -8,8 +8,8 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 	resolution.y = 1080.f;
 
 	player.Init(nullptr);
-	gameMap = IntRect(0, 0, resolution.x, resolution.y);
-	player.Spawn(gameMap, resolution, 0.5f);
+	gameMap = FloatRect(0, 0, 35.f * 32.f, 15.f * 32.f);
+	player.Spawn(90.f, 340.f);
 
 	//Goblin.MonsterInit();
 	//zombieCrawler.MonsterInit();
@@ -21,6 +21,7 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 	texBackground = TextureHolder::GetTexture("maps/Another/SewerWall.png");
 	slimeGreen.MonsterInit();
 	Lami2.MonsterInit();
+	Lami2.Spawn(Vector2f(100.f, 340.f));
 }
 
 void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
@@ -35,6 +36,7 @@ void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* ma
 
 void TestSceneKK::Draw(RenderWindow* window, View* mainView, View* uiView)
 {
+	window->setView(*mainView);
 	/* View ¼³Á¤*/
 	mainView->setCenter(player.GetPosition());
 
@@ -96,19 +98,36 @@ void TestSceneKK::CreateBlock()
 	}
 
 	blocks.clear();
+	
 
-	Vector2i res = resolution;
-
-	TestBlock* block1 = new TestBlock(res.x * 0.5f, res.y * 0.5f, 800.f, 50.f);
+	CollisionBlock* block1 = new CollisionBlock(0, 0, 64, 416);
 	blocks.push_back(block1);
-	TestBlock* block2 = new TestBlock(res.x * 0.5f, res.y - 50.f, res.x, 100.f);
+	CollisionBlock* block2 = new CollisionBlock(1056, 0, 64, 416);
 	blocks.push_back(block2);
-	TestBlock* block3 = new TestBlock(440.f, res.y * 0.75f - 50.f, 600.f, 50.f);
+	CollisionBlock* block3 = new CollisionBlock(0, 416, 1120, 64);
 	blocks.push_back(block3);
-	TestBlock* block4 = new TestBlock(1480.f, res.y * 0.75f - 50.f, 600.f, 50.f);
+	CollisionBlock* block4 = new CollisionBlock(128, 352, 256, 32);
 	blocks.push_back(block4);
-	TestBlock* block7 = new TestBlock(res.x * 0.5f, res.y - 150.f, 100.f, 100.f);
+	CollisionBlock* block5 = new CollisionBlock(416, 288, 224, 32);
+	blocks.push_back(block5);
+	CollisionBlock* block13 = new CollisionBlock(600, 220, 32, 32);
+	blocks.push_back(block13);
+	CollisionBlock* block14 = new CollisionBlock(480, 220, 32, 32);
+	blocks.push_back(block14);
+	CollisionBlock* block6 = new CollisionBlock(672, 352, 192, 32);
+	blocks.push_back(block6);
+	CollisionBlock* block7 = new CollisionBlock(928, 384, 32, 32);
 	blocks.push_back(block7);
+	CollisionBlock* block8 = new CollisionBlock(992, 320, 32, 32);
+	blocks.push_back(block8);
+	CollisionBlock* block9 = new CollisionBlock(128, 192, 224, 64);
+	blocks.push_back(block9);
+	CollisionBlock* block10 = new CollisionBlock(672, 192, 224, 64);
+	blocks.push_back(block10);
+	CollisionBlock* block11 = new CollisionBlock(928, 300, 32, 32);
+	blocks.push_back(block11);
+	CollisionBlock* block12 = new CollisionBlock(1012, 230, 32, 32);
+	blocks.push_back(block12);
 }
 
 int TestSceneKK::CreateBackGround()

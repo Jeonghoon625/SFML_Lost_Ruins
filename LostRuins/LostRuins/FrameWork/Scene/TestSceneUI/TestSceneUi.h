@@ -13,6 +13,7 @@ class TestUi
 {
 private:
 	SceneManager* sceneMgr;
+	Player player;
 	Vector2i resolution;
 	std::map<std::string, Texture> texmap;
 	Vector2f healthBarsize; // HP바 사이즈
@@ -68,6 +69,17 @@ private:
 	Sprite Invenwindow; // 인벤토리 창
 	Sprite InventoryMAP;// 맵창
 	Sprite InvenallCS;	// 인벤토리 내 카테고리 커서
+	Sprite InvenSpaceBar;
+
+	Text textInvenSpaceBar;
+	Text textInvenspace;
+
+	Text textinvenname;
+	Text textmapname;
+	Text textgold;
+	Text textMoney;
+	Text shopbuyname;
+	Text shopsellname;
 	
 	////////////////////////////////////////////
 	//                                        //
@@ -129,8 +141,10 @@ private:
 	Sprite OdescriptionImage2; // 2. 우측 아이템 이미지
 	Sprite Oitembackground1; // 1. 우측 아이템 이미지 뒷배경
 	Sprite Oitembackground2; // 2. 우측 아이템 이미지 뒷배경
-	Sprite Orderfullrhombus1; // 1. 채원진 마름모
-	Sprite Orderfullrhombus2; // 2. 채원진 마름모
+	Sprite Orderfullrhombus1; // 1-1. 채원진 마름모
+	Sprite Orderfullrhombus2; // 1-2. 채원진 마름모
+	Sprite Orderfullrhombus3; // 2-1. 채원진 마름모
+	Sprite Orderfullrhombus4; // 2-2. 채원진 마름모
 
 	Text Otextscrollname1; // 1. 리스트 내 아이템 이름
 	Text Otextscrollname2; // 2. 리스트 내 아이템 이름
@@ -157,12 +171,20 @@ private:
 	////////////////////////////////////////////
 
 	Sprite InvenSupplies; // 소모품
-	Sprite InvenSuppliesblock1;
-	Sprite InvenSuppliesblock2;
-	Sprite InvenSuppliesblock3;
-	Text textInvenSupplies1;
-	Text textInvenSupplies2;
-	Text textInvenSupplies3;
+	Sprite Suppliesblankrhombus1; //  1. 마름모 빈칸 
+	Sprite Suppliesitemphotoframe1; // 1. 우측 아이템 네모칸 
+	Sprite SuppliesdescriptionImage1; // 1. 우측 아이템 이미지 
+	Sprite Suppliesitembackground1; // 1. 우측 아이템 이미지 뒷배경 
+	Sprite Suppliesrderfullrhombus1; // 1-1. 채원진 마름모
+
+	Text Suppliestextscrollname1; // 1. 리스트 내 아이템 이름 
+	Text SuppliestextItemnamefield1; // 1. 우측 아이템 이름 
+	Text Suppliesmagictype1; // 1. 마법타입 
+	Text Suppliesattackspeed1; // 1. 공격속도 
+	Text SuppliesDamage1; // 1. 데미지 
+	Text SuppliesItemDescription1; // 1. 아이템설명 텍스트 
+	Text SuppliesItemDescription2; // 1. 아이템설명 텍스트 
+	Text SuppliesItemDescription3; // 1. 아이템설명 텍스트 
 
 	////////////////////////////////////////////
 	//                                        //
@@ -171,12 +193,37 @@ private:
 	////////////////////////////////////////////
 
 	Sprite InvenEquipment; // 장비
-	Sprite InvenEquipmentblock1;
-	Sprite InvenEquipmentblock2;
-	Sprite InvenEquipmentblock3;
-	Text textInvenEquipment1;
-	Text textInvenEquipment2;
-	Text textInvenEquipment3;
+
+	Sprite Equipblankrhombus1; //  1. 마름모 빈칸
+	Sprite Equipblankrhombus2; // 2. 마름모 빈칸
+	Sprite Equipitemphotoframe1; // 1. 우측 아이템 네모칸
+	Sprite Equipitemphotoframe2; // 2. 우측 아이템 네모칸
+	Sprite EquipdescriptionImage1; // 1. 우측 아이템 이미지
+	Sprite EquipdescriptionImage2; // 2. 우측 아이템 이미지
+	Sprite Equipitembackground1; // 1. 우측 아이템 이미지 뒷배경
+	Sprite Equipitembackground2; // 2. 우측 아이템 이미지 뒷배경
+	Sprite Equiprderfullrhombus1; // 1-1. 채원진 마름모
+	Sprite Equiprderfullrhombus2; // 1-2. 채원진 마름모
+	Sprite Equiprderfullrhombus3; // 2-1. 채원진 마름모
+	Sprite Equiprderfullrhombus4; // 2-2. 채원진 마름모
+
+	Text Equiptextscrollname1; // 1. 리스트 내 아이템 이름
+	Text Equiptextscrollname2; // 2. 리스트 내 아이템 이름
+	Text EquiptextItemnamefield1; // 1. 우측 아이템 이름
+	Text EquiptextItemnamefield2; // 2. 우측 아이템 이름
+	Text Equipmagictype1; // 1. 장비타입
+	Text Equipmagictype2; // 2. 장비타입
+	Text Equipattackspeed1; // 1. 아이템 희귀도
+	Text Equipattackspeed2; // 2. 아이템 희귀도
+	Text EquipDamage1; // 1. 효과
+	Text EquipDamage2; // 2. 효과
+	Text EquipItemDescription1; // 1. 아이템설명 텍스트
+	Text EquipItemDescription2; // 1. 아이템설명 텍스트
+	Text EquipItemDescription3; // 1. 아이템설명 텍스트
+	Text EquipItemDescription01; // 2. 아이템설명 텍스트
+	Text EquipItemDescription02; // 2. 아이템설명 텍스트
+	Text EquipItemDescription03; // 2. 아이템설명 텍스트
+	Text EquipItemDescription04; // 2. 아이템설명 텍스트
 
 	////////////////////////////////////////////
 	//                                        //
@@ -185,7 +232,20 @@ private:
 	////////////////////////////////////////////
 
 	Sprite InvenRelic; // 유물
-	Sprite InvenRelicblock;
+	Sprite Relicblankrhombus1; //  1. 마름모 빈칸 
+	Sprite Relicitemphotoframe1; // 1. 우측 아이템 네모칸 
+	Sprite RelicdescriptionImage1; // 1. 우측 아이템 이미지 
+	Sprite Relicitembackground1; // 1. 우측 아이템 이미지 뒷배경 
+	Sprite Relicrderfullrhombus1; // 1-1. 채원진 마름모
+
+	Text Relictextscrollname1; // 1. 리스트 내 아이템 이름 
+	Text RelictextItemnamefield1; // 1. 우측 아이템 이름 
+	Text Relicmagictype1; // 1. 마법타입 
+	Text Relicattackspeed1; // 1. 공격속도 
+	Text RelicDamage1; // 1. 데미지 
+	Text RelicItemDescription1; // 1. 아이템설명 텍스트 
+	Text RelicItemDescription2; // 1. 아이템설명 텍스트 
+	Text RelicItemDescription3; // 1. 아이템설명 텍스트 
 
 	////////////////////////////////////////////
 	//                                        //
@@ -382,6 +442,7 @@ private:
 	int orderNum;
 	int SuppliesNum;
 	int EquipmentNum;
+	int relicsNum;
 
 	bool inventory;
 	bool MAP;
@@ -396,12 +457,181 @@ private:
 	bool Zscrollview;
 	bool Xscroll;
 	bool Xscrollview;
+	bool Zfood;
+	bool Zfoodview;
+	bool ZEquip;
+	bool ZEquipview;
+	bool XEquip;
+	bool XEquipview;
+	bool Zrelics;
+	bool Zrelicsview;
 
 	bool Escset;
 	bool FullCSsetview;
 	bool VsyCSSetview;
 	bool BattleCSSetview;
 	bool Esckey;
+
+	/////////////////////////////////////////////
+	//             상점
+	////////////상점 구매칸////////////
+
+	Sprite shopBlur;
+	Sprite shopWindow;
+	Sprite shopWeapon;
+	Sprite shopOrder;
+	Sprite shopSupplies;
+	Sprite shopEquipment;
+	Sprite shopCS;
+	Sprite shopBuybox;
+	Sprite shopSELLbox;
+	Sprite shopBTQbox;
+	Sprite shopBTWbox;
+	Sprite shoprkfhCS;
+
+	Text shopBTQ;
+	Text shopBTW;
+	Text shopBuyname;
+	Text shopSELLname;
+
+	////////////상점 판매칸////////////
+
+	Sprite SshopBlur;
+	Sprite SshopWindow;
+	Sprite SshopWeapon;
+	Sprite SshopOrder;
+	Sprite SshopSupplies;
+	Sprite SshopEquipment;
+	Sprite SshopCS;
+	Sprite SshopBuybox;
+	Sprite SshopSELLbox;
+	Sprite SshopBTQbox;
+	Sprite SshopBTWbox;
+
+	Text SshopBTQ;
+	Text SshopBTW;
+	Text SshopBuyname;
+	Text SshopSELLname;
+
+	///////// 상점 아이템 무기목록 ///////////
+
+	Text textShopweapon1Lname;
+	Sprite Shopweapon1Box;
+	Text textShopweapon1Rname;
+	Sprite Shopweapon1img;
+	Sprite Shopweapon1bk;
+	Text textShopweapon1text1;
+	Text textShopweapon1text2;
+	Text textShopweapon1text3;
+
+	Text textShopweapon2name;
+	Sprite Shopweapon2Box;
+	Text textShopweapon2Rname;
+	Sprite Shopweapon2img;
+	Sprite Shopweapon2bk;
+	Text textShopweapon2text1;
+	Text textShopweapon2text2;
+	Text textShopweapon2text3;
+
+	Text textShopweapon3name;
+	Sprite Shopweapon3Box;
+	Text textShopweapon3Rname;
+	Sprite Shopweapon3img;
+	Sprite Shopweapon3bk;
+	Text textShopweapon3text1;
+	Text textShopweapon3text2;
+	Text textShopweapon3text3;
+
+	Text textShopweapon4name;
+	Sprite Shopweapon4Box;
+	Text textShopweapon4Rname;
+	Sprite Shopweapon4img;
+	Sprite Shopweapon4bk;
+	Text textShopweapon4text1;
+	Text textShopweapon4text2;
+	Text textShopweapon4text3;
+
+	///////// 상점 아이템 마법목록 ///////////
+
+	Text textShopord1Lname;
+	Sprite Shopord1Box;
+	Text textShopord1Rname;
+	Sprite Shopord1img;
+	Sprite Shopord1bk;
+	Text textShopord1text1;
+	Text textShopord1text2;
+	Text textShopord1text3;
+
+	Text textShopord2Lname;
+	Sprite Shopord2Box;
+	Text textShopord2Rname;
+	Sprite Shopord2img;
+	Sprite Shopord2bk;
+	Text textShopord2text1;
+	Text textShopord2text2;
+	Text textShopord2text3;
+
+	Text textShopord3Lname;
+	Sprite Shopord3Box;
+	Text textShopord3Rname;
+	Sprite Shopord3img;
+	Sprite Shopord3bk;
+	Text textShopord3text1;
+	Text textShopord3text2;
+	Text textShopord3text3;	
+
+	///////// 상점 아이템 소모품목록 ///////////
+
+	Text textShopsup1Lname;
+	Sprite Shopsup1Box;
+	Text textShopsup1Rname;
+	Sprite Shopsup1img;
+	Sprite Shopsup1bk;
+	Text textShopsup1text1;
+	Text textShopsup1text2;
+	Text textShopsup1text3;
+
+	Text textShopsup2name;
+	Sprite Shopsup2Box;
+	Text textShopsup2Rname;
+	Sprite Shopsup2img;
+	Sprite Shopsup2bk;
+	Text textShopsup2text1;
+	Text textShopsup2text2;
+	Text textShopsup2text3;
+
+	///////// 상점 아이템 장비목록 ///////////
+
+	Text textShopequ1Lname;
+	Sprite Shopequ1Box;
+	Text textShopequ1Rname;
+	Sprite Shopequ1img;
+	Sprite Shopequ1bk;
+	Text textShopequ1text1;
+	Text textShopequ1text2;
+	Text textShopequ1text3;
+
+	Text textShopequ2Lname;
+	Sprite Shopequ2Box;
+	Text textShopequ2Rname;
+	Sprite Shopequ2img;
+	Sprite Shopequ2bk;
+	Text textShopequ2text1;
+	Text textShopequ2text2;
+	Text textShopequ2text3;
+
+	bool shopBuy1; // 구매메뉴
+	bool shopSell1; // 판매메뉴
+	int shopBuynum;
+	int shopSellnum;
+	int shopweaNum1;
+	int shoporderNum1;
+	int shopSupNum1;
+	int shopEquNum1;
+	int shopweaNum2;
+	int shoporderNum2;
+	int shopSupNum2;
+	int shopEquNum2;
 
 public:
 
@@ -415,8 +645,35 @@ public:
 	void EscSetting();
 	void ESCsettag();
 	void EscKeyboard();
+
+	///////////////////////////////////////////////
+
 	void weaponlist1();
 	void weaponlist2();
 	void scrollList1();
-	void scrollList2();
+	void Supplies();
+	void EquipList1();
+	void EquipList2();
+	void relics();	
+
+	/////////////////////////////////////////////
+
+	////////////상점////////////
+	void shopBuy();
+	void Buywea1();
+	void Buywea2();
+	void Buywea3();
+	void Buywea4();
+
+	void Buyord1();
+	void Buyord2();
+	void Buyord3();
+
+	void Buysup1();
+	void Buysup2();
+
+	void Buyequ1();
+	void Buyequ2();
+
+	void shopSell();
 };

@@ -41,9 +41,6 @@
     <ClCompile Include="FrameWork\Object\Player\Player.cpp">
       <Filter>FrameWork\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp">
-      <Filter>FrameWork\Object\TestBlock</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\Object\Weapon\TwohandWeapon.cpp">
       <Filter>FrameWork\Object\Weapon</Filter>
     </ClCompile>
@@ -65,12 +62,6 @@
     <ClCompile Include="FrameWork\Object\Monster\GoblinAttacker.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Object\TestBlock\TestBlock.cpp">
-      <Filter>FrameWork\Object\TestBlock</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Object\TestMonster\TestZombieWalker.cpp">
-      <Filter>FrameWork\Object\TestMonster</Filter>
-    </ClCompile>
     <ClCompile Include="FrameWork\FrameWork.cpp">
       <Filter>FrameWork</Filter>
     </ClCompile>
@@ -78,9 +69,6 @@
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Scene\Scene.cpp">
-      <Filter>FrameWork\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork\Scene\TestScene.cpp">
       <Filter>FrameWork\Scene</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork\Scene\TestSceneKK.cpp">
@@ -173,6 +161,9 @@
     <ClCompile Include="FrameWork\Object\Monster\LamiEye.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="FrameWork\Map\Map.cpp">
+      <Filter>FrameWork\Map</Filter>
+    </ClCompile>
     <ClCompile Include="FrameWork\Object\Monster\SlimeGreen.cpp">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClCompile>
@@ -229,9 +220,6 @@
     <ClInclude Include="FrameWork\Object\Monster\Monster.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Object\TestBlock\TestBlock.h">
-      <Filter>FrameWork\Object\TestBlock</Filter>
-    </ClInclude>
     <ClInclude Include="FrameWork\FrameWork.h">
       <Filter>FrameWork</Filter>
     </ClInclude>
@@ -239,9 +227,6 @@
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\Scene.h">
-      <Filter>FrameWork\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Scene\TestScene.h">
       <Filter>FrameWork\Scene</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TestSceneKK.h">
@@ -255,9 +240,6 @@
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\TitleScene.h">
       <Filter>FrameWork\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork\Object\TestMonster\TestZombieWalker.h">
-      <Filter>FrameWork\Object\TestMonster</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork\Scene\MapScene.h">
       <Filter>FrameWork\Scene</Filter>
@@ -313,6 +295,12 @@
     <ClInclude Include="FrameWork\Object\Monster\LamiEye.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="FrameWork\Map\Map.h">
+      <Filter>FrameWork\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\Map\csvfile.h">
+      <Filter>FrameWork\Map</Filter>
+    </ClInclude>
     <ClInclude Include="FrameWork\Object\Monster\SlimeGreen.h">
       <Filter>FrameWork\Object\Monster</Filter>
     </ClInclude>
@@ -342,14 +330,8 @@
     <Filter Include="FrameWork\Object\Monster">
       <UniqueIdentifier>{c61f3fd8-fdd2-4927-bea5-7481777f35ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Object\TestBlock">
-      <UniqueIdentifier>{bea93276-62d3-4225-831a-a52d5590aede}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrameWork\Map">
       <UniqueIdentifier>{8375b908-087e-488e-a92d-e5a51eb0b3be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Object\TestMonster">
-      <UniqueIdentifier>{7b038bf1-d284-45fa-af93-57b466cfd4a4}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\Scene">
       <UniqueIdentifier>{1c78ff4b-7a1d-4a87-90fe-41f5998b7565}</UniqueIdentifier>
