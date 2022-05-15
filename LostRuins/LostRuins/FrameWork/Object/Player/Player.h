@@ -16,7 +16,6 @@
 #include "../../Mgr/EffectManager.h"
 #include "../DamageAndRecovery/DamageAndRecovery.h"
 
-
 using namespace sf;
 
 class ZombieWalker;
@@ -120,10 +119,10 @@ private:
 
 	RectangleShape hitBox;
 
-	ZombieWalker* zombie;
+	vector <Monster*> monsters;
 
 public:
-	void Init(ZombieWalker* zombie);
+	void Init(vector <Monster*> monsters);
 	void Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime, std::vector<Monster*>& monsters);
 	void Draw(RenderWindow* window, View* mainView);
 	

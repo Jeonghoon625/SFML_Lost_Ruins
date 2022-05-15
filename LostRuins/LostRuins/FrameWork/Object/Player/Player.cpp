@@ -1,10 +1,13 @@
 #include "Player.h"
 #include "../Monster/Monster.h"
 #include "../Monster/ZombieWalker.h"
+#include "../../Scene/TestSceneKK.h"
+
 #include <iostream>
 
-void Player::Init(ZombieWalker* zombie)
+void Player::Init(vector <Monster*> monsters)
 {
+	this->monsters = monsters;
 	health = START_HEALTH;
 	maxHealth = START_HEALTH;
 	mana = START_MANA;
@@ -44,10 +47,8 @@ void Player::Init(ZombieWalker* zombie)
 	animation.Play("Idle");
 
 	effectMgr.Init();
-	attackMgr.Init(zombie, &effectMgr);
+	attackMgr.Init(nullptr, &effectMgr);
 	SoundInit();
-
-	this->zombie = zombie;
 
 	for (int i = 0; i < MAX_TEXT_CACHE_SIZE; i++)
 	{

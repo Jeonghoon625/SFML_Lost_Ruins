@@ -7,9 +7,6 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 	resolution.x = 1920.f;
 	resolution.y = 1080.f;
 
-
-
-	player.Init(nullptr);
 	gameMap = FloatRect(0, 0, 35.f * 32.f, 15.f * 32.f);
 	player.Spawn(90.f, 340.f);
 	/*Goblin.MonsterInit();*/

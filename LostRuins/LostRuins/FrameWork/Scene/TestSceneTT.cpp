@@ -14,7 +14,7 @@ void TestSceneTT::Init(SceneManager* sceneManager)
 
 	zombieWalker = new ZombieWalker();
 
-	player.Init(zombieWalker);
+	//player.Init(zombieWalker);
 	gameMap = IntRect(0, 0, resolution.x, resolution.y);
 
 	CreateBlock();

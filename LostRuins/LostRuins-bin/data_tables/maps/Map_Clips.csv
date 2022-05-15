@@ -1,2 +1,2 @@
-mapId,mapWidth,mapHeight,mapDataPath
-mapTypeA,35,15,data_tables/maps/Map_TypeA.csv
+mapId,mapWidth,mapHeight,spritePath,blockPath
+default,25,10,data_tables/maps/defaultSprite.csv,data_tables/maps/defaultBlock.csv

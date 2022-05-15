@@ -17,12 +17,6 @@
 #include "../Object/Monster/SlimeGreen.h"
 #include "../Object/Monster/LamiPhaseOne.h"
 
-class MonsterSet 
-{
-public:
-	Monster* monster;
-};
-
 class TestSceneKK : public Scene
 {
 private:

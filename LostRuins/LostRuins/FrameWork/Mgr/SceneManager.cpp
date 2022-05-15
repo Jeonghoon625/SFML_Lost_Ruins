@@ -3,7 +3,7 @@
 
 void SceneManager::Init()
 {
-	SceneSwitch(SceneType::EndingScene);
+	SceneSwitch(SceneType::TITLE);
 }
 
 void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
@@ -17,7 +17,7 @@ void SceneManager::Update(float dt, Time playTime, RenderWindow* window, View* m
 
 	if (InputManager::GetKeyDown(Keyboard::F10))
 	{
-		SceneSwitch(SceneType::TEST_KK);
+		SceneSwitch(SceneType::EndingScene);
 	}
 }
 

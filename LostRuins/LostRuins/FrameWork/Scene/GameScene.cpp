@@ -7,9 +7,7 @@ void GameScene::Init(SceneManager* sceneManager)
 	resolution.x = 1920.f;
 	resolution.y = 1080.f;
 
-	zombieWalker = new ZombieWalker();
-
-	player.Init(zombieWalker);
+	player.Init(monsters);
 	gameMap = FloatRect(0, 0, 35.f * 32.f, 15.f * 32.f);
 
 	CreateBlock();
@@ -17,7 +15,7 @@ void GameScene::Init(SceneManager* sceneManager)
 	player.Spawn(90.f, 340.f);
 
 	// test
-	zombieWalker->MonsterInit();
+	CreateMonsters();
 
 	//Dummy Map
 	CreateBackGround();
@@ -28,6 +26,14 @@ void GameScene::Init(SceneManager* sceneManager)
 
 void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* objectView, View* uiView)
 {
+	if (InputManager::GetKeyDown(Keyboard::Num9))
+	{
+		Monster* lamiPhaseTwo = new LamiPhaseTwo;
+		lamiPhaseTwo->MonsterInit();
+		lamiPhaseTwo->Spawn(Vector2f(400, 200));
+		monsters.push_back(lamiPhaseTwo);
+	}
+
 	if (player.GetPause() == false)
 	{
 		if (player.GetAlive() == false)
@@ -35,11 +41,9 @@ void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* obje
 			dt *= 0.25f;
 		}
 		
-		zombieWalker->Update(player, dt, blocks, playTime);
-
-		if (zombieWalker->GetHealth() == 0)
+		for (auto itMonster : monsters)
 		{
-			zombieWalker->SetPosition(9999.f, 9999.f);
+			itMonster->Update(player, dt, blocks, playTime);
 		}
 
 		player.Update(dt, blocks, playTime, monsters);
@@ -98,7 +102,10 @@ void GameScene::Draw(RenderWindow* window, View* objectView, View* uiView)
 	player.Draw(window, objectView);
 
 	// test
-	zombieWalker->Draw(window);
+	for (auto itMonster : monsters)
+	{
+		itMonster->Draw(window);
+	}
 
 	//testNpc.Draw(window);
 	//coin.Draw(window, objectView, uiView);
@@ -196,4 +203,44 @@ int GameScene::CreateBackGround()
 	}
 
 	return cols * rows;
+}
+
+void GameScene::CreateMonsters()
+{
+	for (auto v : monsters)
+	{
+		delete v;
+	}
+	monsters.clear();
+
+	Monster* goblin = new GoblinAttacker;
+	goblin->MonsterInit();
+	goblin->Spawn(Vector2f(200, 200));
+	monsters.push_back(goblin);
+
+	Monster* zombieWalker = new ZombieWalker;
+	zombieWalker->MonsterInit();
+	zombieWalker->Spawn(Vector2f(800, 200));
+	monsters.push_back(zombieWalker);
+
+	Monster* zombieCrawler = new ZombieCrawler;
+	zombieCrawler->MonsterInit();
+	zombieCrawler->Spawn(Vector2f(600, 200));
+	monsters.push_back(zombieCrawler);
+
+	Monster* slimeGreen = new SlimeGreen;
+	slimeGreen->MonsterInit();
+	slimeGreen->Spawn(Vector2f(200, 400));
+	monsters.push_back(slimeGreen);
+
+	Monster* lamiPhaseOne = new LamiPhaseOne;
+	lamiPhaseOne->MonsterInit();
+	lamiPhaseOne->Spawn(Vector2f(400, 200));
+	monsters.push_back(lamiPhaseOne);
+
+	/*Monster* lamiPhaseTwo = new LamiPhaseTwo;
+	lamiPhaseTwo->MonsterInit();
+	lamiPhaseTwo->Spawn(Vector2f(90, 150));
+	monsters.push_back(lamiPhaseTwo);*/
+
 }

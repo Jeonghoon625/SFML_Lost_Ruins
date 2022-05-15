@@ -12,6 +12,28 @@
 #include "../Object/Npc/Npc.h"
 #include "../Object/Coin/Coin.h"
 #include "TestSceneUI/TestSceneUi.h"
+#include <SFML/Graphics.hpp>
+#include "Scene.h"
+#include "../Object/CollisionBlock/CollisionBlock.h"
+#include "../Mgr/TextureHolder.h"
+#include "../Object/Player/Player.h"
+#include "../Mgr/Utils.h"
+#include "../Animation/AnimationController.h"
+#include "../Animation/rapidcsv.h"
+#include <map>
+#include "../Object/Monster/Monster.h"
+#include "../Object/Monster/GoblinAttacker.h"
+#include "../Object/Monster/ZombieCrawler.h"
+#include "../Object/Monster/ZombieWalker.h"
+#include "../Object/Monster/LamiPhaseTwo.h"
+#include "../Object/Monster/SlimeGreen.h"
+#include "../Object/Monster/LamiPhaseOne.h"
+
+class MonsterSet
+{
+public:
+	Monster* monster;
+};
 
 class GameScene : public Scene
 {
@@ -27,11 +49,16 @@ class GameScene : public Scene
 
 	Texture textureHeroine;
 
-	vector <Monster*> monsters;
 	vector <CollisionBlock*> blocks;
 
 	// test
-	ZombieWalker* zombieWalker;
+	vector <Monster*> monsters;
+
+	GoblinAttacker Goblin;
+	ZombieCrawler zombieCrawler;
+	ZombieWalker zombieWalker;
+	SlimeGreen slimeGreen;
+	LamiPhaseTwo Lami2;
 
 	//Dummy Map
 	Texture texBackground;
@@ -45,5 +72,6 @@ public:
 
 	void CreateBlock(); 
 	int CreateBackGround();
+	void CreateMonsters();
 };
 

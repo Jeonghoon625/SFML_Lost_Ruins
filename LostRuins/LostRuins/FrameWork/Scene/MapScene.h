@@ -147,6 +147,9 @@ class MapScene : public Scene
 	vector<InputData> objectInput;
 	vector<InputData> backGroundInput;
 
+	string spritePath;
+	string blockPath;
+
 public:
 	MapScene();
 
@@ -173,6 +176,8 @@ public:
 	void UpdateSelectTexture();
 
 	void CreateInputData(InputData currentInputData);
+
+	void Save();
 
 	virtual ~MapScene();
 };

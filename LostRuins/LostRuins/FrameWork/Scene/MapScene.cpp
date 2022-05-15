@@ -181,7 +181,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 				delete player;
 			}
 			player = new Player();
-			player->Init(nullptr);
+			//player->Init(nullptr);
 			player->Spawn(mousePosWorld.x, mousePosWorld.y);
 		}
 
@@ -345,6 +345,9 @@ void MapScene::UpdateMousePos(RenderWindow* window)
 
 void MapScene::CreateDefaultButtonSet()
 {
+	Button buttonSave = InitButton(resolution.x * 0.75f - 105.f - 105.f - 105.f - 105.f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Save", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::NONE);
+	buttons.push_back(buttonSave);
+
 	Button buttonUndo0 = InitButton(resolution.x * 0.75f - 105.f - 105.f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Undo\nOBJECT", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::OBJECT);
 	buttons.push_back(buttonUndo0);
 
@@ -544,8 +547,16 @@ bool MapScene::UpdateButton()
 
 					if (button.buttonCategory == ButtonCategory::INPUT)
 					{
-						SetCurrentInputState(button.buttonState);
-						CreateSelectButtonSet(button.buttonState);
+						if (button.buttonText.getString() == "Save")
+						{
+							Save();
+						}
+
+						else
+						{
+							SetCurrentInputState(button.buttonState);
+							CreateSelectButtonSet(button.buttonState);
+						}
 					}
 
 					if (button.buttonCategory == ButtonCategory::DRAW)
@@ -791,12 +802,14 @@ void MapScene::MapDataInit()
 	std::vector<std::string> colId = clips.GetColumn<std::string>("mapId");
 	std::vector<int> colWidth = clips.GetColumn<int>("mapWidth");
 	std::vector<int> colHeight = clips.GetColumn<int>("mapHeight");
-	std::vector<std::string> colPath = clips.GetColumn<std::string>("mapDataPath");
-
+	std::vector<std::string> colspritePath = clips.GetColumn<std::string>("spritePath");
+	std::vector<std::string> colblockPath = clips.GetColumn<std::string>("blockPath");
 	int totalMaps = colId.size();
 
 	mapWidth = colWidth[0];
 	mapHeight = colHeight[0];
+	spritePath = colspritePath[0];
+	blockPath = colblockPath[0];
 }
 
 void MapScene::UpdateSelectTexture()
@@ -870,6 +883,37 @@ void MapScene::CreateInputData(InputData currentInputData)
 		inputData.shape.setFillColor({ 255,255,255 });
 		objectInput.push_back(inputData);
 		break;
+	}
+}
+
+void MapScene::Save()
+{
+	csvfile csvSprite("defaultSprite.csv");
+
+	csvSprite << "resourceType" << "resourceId" << "rotate" << "scaleX" << "scaleY" << "posX" << "posY" << endrow;
+	for (auto terrain : terrainInput)
+	{
+		csvSprite << "terrainInput" << terrain.resourceId << terrain.rotate << terrain.scaleX << terrain.scaleY << terrain.posX << terrain.posY << endrow;
+	}
+	
+	for (auto object : objectInput)
+	{
+		csvSprite << "objectInput" << object.resourceId << object.rotate << object.scaleX << object.scaleY << object.posX << object.posY << endrow;
+	}
+
+	for (auto backGround : backGroundInput)
+	{
+		csvSprite << "backGroundInput" << backGround.resourceId << backGround.rotate << backGround.scaleX << backGround.scaleY << backGround.posX << backGround.posY << endrow;
+	}
+
+	csvfile csvBlock("defaultBlock.csv");
+
+	int i = 0;
+	csvBlock << "index" << "x" << "y" << "width" << "height" << endrow;
+
+	for (auto block : blocks)
+	{
+		csvBlock << i++ << block->GetBlockRect().left << block->GetBlockRect().top << block->GetBlockRect().width << block->GetBlockRect().height << endrow;
 	}
 }
 

@@ -25,7 +25,6 @@ CollisionBlock::CollisionBlock(FloatRect getGlobalBounds, Vector2u mousePosGrid)
 	blockShape.setFillColor(Color(255, 0, 0, 125));
 	blockShape.setSize(Vector2f(getGlobalBounds.width, getGlobalBounds.height));
 	blockShape.setPosition(position);
-	std::cout << blockRect.left << ", " << blockRect.top << ", " << blockRect.width << ", " << blockRect.height << ", " << std::endl;
 }
 
 const Vector2f CollisionBlock::GetPosition()
