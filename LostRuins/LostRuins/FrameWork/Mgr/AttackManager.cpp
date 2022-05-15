@@ -12,6 +12,9 @@ void AttackManager::Init(ZombieWalker* zombie, EffectManager* effectMgr)
 	TwohandWeaponInit();
 	DaggerWeaponInit();
 
+	soundDagger = SoundHolder::GetBuffer("sound/Woosh_Sword_Dagger_02.wav");
+	soundTwoHanded = SoundHolder::GetBuffer("sound/Woosh_Sword_Heavy_03.wav");
+
 	for (int i = 0; i < MAX_SPELL_CACHE_SIZE; i++)
 	{
 		unuseSpell.push_back(new FireArrow(zombie, effectMgr));
@@ -69,12 +72,14 @@ void AttackManager::SetAttackType(AttackType attackType)
 	switch (attackType)
 	{
 	case AttackType::DAGGER:
+		soundWeapon.setBuffer(soundDagger);
 		currentAtkType = AttackType::DAGGER;
 		maxFps = MAX_DAGGER_FPS;
 		delay = DAGGER_DELAY;
 		currentAtkType = AttackType::DAGGER;
 		break;
 	case AttackType::TWO_HANDED:
+		soundWeapon.setBuffer(soundTwoHanded);
 		maxFps = MAX_TWO_HANDED_FPS;
 		delay = TWO_HANDED_DELAY;
 		currentAtkType = AttackType::TWO_HANDED;
@@ -131,6 +136,11 @@ void AttackManager::CastingSpell(Sprite sprite)
 	unuseSpell.pop_front();
 	useSpell.push_back(spell);
 	spell->Spell(spawnPos, isDirection);
+}
+
+void AttackManager::GetAttackSound()
+{
+	soundWeapon.play();
 }
 
 int AttackManager::GetAttackPoint()
