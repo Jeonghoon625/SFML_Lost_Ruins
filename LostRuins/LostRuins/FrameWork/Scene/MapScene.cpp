@@ -12,6 +12,7 @@ MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSize
 void MapScene::Init(SceneManager* sceneManager)
 {
 	MapDataInit();
+
 	VIEW_SPEED = mapWidth * 10.f;
 	this->sceneMgr = sceneManager;
 
@@ -65,7 +66,7 @@ void MapScene::Init(SceneManager* sceneManager)
 	isDraw = true;
 	isSelect = false;
 
-	//버튼 집합 생성
+	//Default Button Set
 	CreateDefaultButtonSet();
 }
 
@@ -88,7 +89,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 			ingGrid.push_back(mousePosGrid);
 			if (currentInputState == ButtonState::TERRAIN)
 			{
-				CreateBackGround(downGrid.x, downGrid.y);
+				//CreateBackGround(downGrid.x, downGrid.y);
 			}
 
 			if (currentInputState == ButtonState::BLOCK)
@@ -121,7 +122,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 				auto it = find(ingGrid.begin(), ingGrid.end(), mousePosGrid);
 				if (it == ingGrid.end())
 				{
-					CreateBackGround(mousePosGrid.x, mousePosGrid.y);
+					//CreateBackGround(mousePosGrid.x, mousePosGrid.y);
 				}
 
 				ingGrid.push_back(mousePosGrid);
@@ -309,38 +310,6 @@ void MapScene::UpdateMousePos(RenderWindow* window)
 		<< "Grid : " << mousePosGrid.x << " " << mousePosGrid.y << "\n";
 	mousePosText.setString(ss.str());
 	mousePosText.setPosition(mousePosWindow.x + 10.f, mousePosWindow.y + 10.f);
-}
-
-int MapScene::CreateBackGround(int c, int r) 
-{
-	int TILE_WIDTH = 32;
-	int TILE_HEIGHT = 32;
-	int TILE_TYPES = 0;
-	int VERTS_IN_QUAD = 4;
-
-	int cols = mapHeight;
-	int rows = mapWidth;
-
-	vertexMap.setPrimitiveType(Quads);
-	vertexMap.resize(cols * rows * VERTS_IN_QUAD);
-
-	int index = r + c * cols;
-	int vertexIndex = index * VERTS_IN_QUAD;
-
-	float x = c * gridSizeF;
-	float y = r * gridSizeF;
-
-	vertexMap[vertexIndex + 0].position = Vector2f(x, y);
-	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_WIDTH, y);
-	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_WIDTH, y + TILE_HEIGHT);
-	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_HEIGHT);
-	
-	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, 0.f);
-	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_WIDTH, 0.f);
-	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_WIDTH, TILE_HEIGHT);
-	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, TILE_HEIGHT);
-	
-	return cols * rows;
 }
 
 void MapScene::CreateDefaultButtonSet()
@@ -739,12 +708,44 @@ void MapScene::UpdateSelectTexture()
 	//currentTextureShape.setRotation(180.f);
 }
 
-
+//Map 순회
 /*for (auto iter : backGroundResource)
 	{
 		cout << iter.first << " " << iter.second.getSize().x << endl;
 	}*/
 
+//Vertex
+/*int MapScene::CreateBackGround(int c, int r)
+{
+	int TILE_WIDTH = 32;
+	int TILE_HEIGHT = 32;
+	int TILE_TYPES = 0;
+	int VERTS_IN_QUAD = 4;
+
+	int cols = mapHeight;
+	int rows = mapWidth;
+
+	vertexMap.setPrimitiveType(Quads);
+	vertexMap.resize(cols * rows * VERTS_IN_QUAD);
+
+	int index = r + c * cols;
+	int vertexIndex = index * VERTS_IN_QUAD;
+
+	float x = c * gridSizeF;
+	float y = r * gridSizeF;
+
+	vertexMap[vertexIndex + 0].position = Vector2f(x, y);
+	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_WIDTH, y);
+	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_WIDTH, y + TILE_HEIGHT);
+	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_HEIGHT);
+	
+	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, 0.f);
+	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_WIDTH, 0.f);
+	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_WIDTH, TILE_HEIGHT);
+	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, TILE_HEIGHT);
+	
+	return cols * rows;
+}*/
 
 //csv 파일쓰기
 /*

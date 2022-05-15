@@ -121,15 +121,16 @@ class MapScene : public Scene
 	Player* player;
 
 	int fromX;
-	int toX;
 	int fromY;
+
+	int toX;
 	int toY;
 
 	RectangleShape currentTextureShape;
 	Texture currentTexture;
 
-	map<string, ObjectResource> objectResource;
 	map<string, TerrainResource> terrainResource;
+	map<string, ObjectResource> objectResource;
 	map<string, Texture> backGroundResource;
 	map<std::string, Texture> texmap;
 
@@ -150,7 +151,7 @@ public:
 	void MoveView(float dt);
 	void UpdateMousePos(RenderWindow* window);
 
-	int CreateBackGround(int c, int r);
+	//int CreateBackGround(int c, int r);
 
 	void CreateDefaultButtonSet();
 	void CreateSelectButtonSet(ButtonState state);
