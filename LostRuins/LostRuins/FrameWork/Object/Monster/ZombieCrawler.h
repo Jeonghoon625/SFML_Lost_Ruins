@@ -9,4 +9,5 @@ private:
 public:
 	ZombieCrawler();
 	virtual void MonsterInit();
+	virtual void SoundInit();
 };

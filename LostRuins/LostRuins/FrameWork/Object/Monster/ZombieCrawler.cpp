@@ -43,6 +43,15 @@ void ZombieCrawler::MonsterInit()
 	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());
 
+	SoundInit();
+
 	animation.Play(strIdle);
 	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);
+}
+
+void ZombieCrawler::SoundInit()
+{
+	soundFindPlayer.setBuffer(SoundHolder::GetBuffer("sound/monster/Zombie0.wav"));
+	soundHitted.setBuffer(SoundHolder::GetBuffer("sound/monster/Zombie1.wav"));
+	soundDeath.setBuffer(SoundHolder::GetBuffer("sound/monster/Zombie2.wav"));
 }

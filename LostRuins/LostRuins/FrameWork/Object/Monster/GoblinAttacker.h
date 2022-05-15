@@ -9,5 +9,7 @@ private:
 public:
 	GoblinAttacker();
 
+	virtual void Spawn(Vector2f pos);
 	virtual void MonsterInit();
+	virtual void SoundInit();
 };

@@ -14,6 +14,7 @@ private:
 
 	RectangleShape attackRangeLeftBox;
 	RectangleShape attackRangeRightBox;
+	RectangleShape attackFarHitBox;
 
 	Lami2Status currentStatus;
 
@@ -72,5 +73,7 @@ public:
 	virtual void Gravity(float dt, std::vector<CollisionBlock*> blocks);
 	virtual void UpdateCollision(std::vector <CollisionBlock*> blocks);
 	virtual void UpdateCollisionAttackRangeBox(std::vector <CollisionBlock*> blocks);
+
+	virtual void SoundInit();
 };
 

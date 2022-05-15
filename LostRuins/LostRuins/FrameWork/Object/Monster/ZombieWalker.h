@@ -8,7 +8,12 @@ private:
 
 public:
 	ZombieWalker();
+
+	virtual void Spawn(Vector2f pos);
+
 	void SetPosition(float x, float y);
 	virtual void MonsterInit();
+
+	virtual void SoundInit();
 };
 

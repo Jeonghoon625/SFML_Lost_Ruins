@@ -44,6 +44,11 @@ protected:
 	string strAttackBlocked;
 	string strDamageTaken;
 
+
+	Sound soundFindPlayer;
+	Sound soundHitted;
+	Sound soundDeath;
+
 	MonsterStatus currentStatus;
 
 	int nextMove;
@@ -85,7 +90,7 @@ public:
 	int GetHealth();
 	void SetHealth(int damage);
 
-	void Spawn(Vector2f pos);
+	virtual void Spawn(Vector2f pos);
 
 	int GetAtk();
 	void SetAtk(int atk);
@@ -117,6 +122,8 @@ public:
 
 	virtual void Update(Player& player, float dt, std::vector<CollisionBlock*> blocks, Time playtime);
 	virtual void UpdateDelayAndStatus(float dt);
+
+	virtual void SoundInit();
 
 	virtual void Draw(RenderWindow* window);
 };

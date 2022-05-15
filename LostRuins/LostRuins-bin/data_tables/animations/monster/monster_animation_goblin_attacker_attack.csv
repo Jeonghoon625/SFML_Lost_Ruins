@@ -1,8 +1,8 @@
 TEXTURE PATH,L,T,W,H
-graphics/GoblinAttacker.png,0,216,45,42
-graphics/GoblinAttacker.png,45,216,43,42
-graphics/GoblinAttacker.png,90,216,40,42
-graphics/GoblinAttacker.png,135,216,30,42
-graphics/GoblinAttacker.png,180,216,32,42
-graphics/GoblinAttacker.png,225,216,47,42
-graphics/GoblinAttacker.png,270,216,44,42
+graphics/GoblinAttacker.png,0,211,65,42
+graphics/GoblinAttacker.png,65,211,65,42
+graphics/GoblinAttacker.png,130,211,65,42
+graphics/GoblinAttacker.png,195,211,65,42
+graphics/GoblinAttacker.png,260,211,65,42
+graphics/GoblinAttacker.png,325,211,65,42
+graphics/GoblinAttacker.png,390,211,65,42
