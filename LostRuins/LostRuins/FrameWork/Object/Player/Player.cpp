@@ -738,12 +738,6 @@ void Player::AnimationUpdate(float dt)
 		}
 		break;
 	case Status::STATUS_RUN:
-		/*soundDelay -= dt;
-		if (soundDelay < 0.f)
-		{
-			soundWalk.play();
-			soundDelay = SOUND_DELAY_WALK;
-		}*/
 		if (isAlive == false)
 		{
 			SetStatus(Status::STATUS_DEAD);

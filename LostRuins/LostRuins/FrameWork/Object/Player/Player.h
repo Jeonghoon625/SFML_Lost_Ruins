@@ -56,8 +56,6 @@ private:
 	const float DEAD_TIME_COUNT = 1.f;
 	const int MAX_TEXT_CACHE_SIZE = 50;
 
-	const float SOUND_DELAY_WALK = 0.3f;
-
 	AnimationController animation;
 	AttackManager attackMgr;
 	EffectManager effectMgr;
