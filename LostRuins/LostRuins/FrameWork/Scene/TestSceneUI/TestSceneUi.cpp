@@ -2682,11 +2682,6 @@ void TestUi::relics()
 	RelicItemDescription3.setPosition(980, 800);
 }
 
-bool TestUi::GetEscMenu()
-{
-	return Escmenu;
-}
-
 void TestUi::EscSetting()
 {
 	settingNum = 1;

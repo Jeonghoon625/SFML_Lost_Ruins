@@ -6,7 +6,7 @@ bool FrameWork::Initialize()
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 
-	window = new RenderWindow(VideoMode(resolution.x, resolution.y), "Lost Ruins", Style::Fullscreen); 
+	window = new RenderWindow(VideoMode(resolution.x, resolution.y), "Lost Ruins", Style::Default); 
 
 	objectView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	objectView->setCenter(resolution.x * 0.5f, resolution.y * 0.5f);

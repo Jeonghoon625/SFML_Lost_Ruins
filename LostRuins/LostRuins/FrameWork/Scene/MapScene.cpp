@@ -3,6 +3,7 @@
 #include <iostream>
 #include "../Map/csvfile.h"
 #include "../Mgr/InputManager.h"
+#include "../Mgr/Utils.h"
 
 MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSizeF)), shape(Vector2f(gridSizeF, gridSizeF)), tileSelector(Vector2f(gridSizeF, gridSizeF))
 {
@@ -60,7 +61,8 @@ void MapScene::Init(SceneManager* sceneManager)
 	stateText.setString("TEST");
 
 	//test
-	selectTexture = TextureHolder::GetTexture("maps/Stage1/test.png");
+	
+	selectTexture = TextureHolder::GetTexture("maps/Stage1/SewerTop0.png");
 	isDraw = true;
 
 	//버튼 집합 생성
@@ -203,19 +205,19 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 			}
 		}
 	}
-	RectangleShape textureShape;
 
 	fromX = mousePosGrid.x;
 	fromY = mousePosGrid.y;
 
-	textureShape.setFillColor({ 255, 255, 255, 125 });
+	textureShape.setFillColor({ 255, 255, 255, 75});
 	textureShape.setTexture(&selectTexture);
-	textureShape.setPosition(fromX * gridSizeU, fromY * gridSizeU);
-	textureShape.setSize(Vector2f(0.f, 0.f));
+	textureShape.setSize(Vector2f(1.f, 1.f));
 	textureShape.setScale(selectTexture.getSize().x, selectTexture.getSize().y);
+	textureShape.setPosition((fromX  + (textureShape.getLocalBounds().width * 0.5f)) * gridSizeU, (fromY + (textureShape.getLocalBounds().height * 0.5f)) * gridSizeU);
+	textureShape.setOrigin(textureShape.getLocalBounds().width * 0.5f, textureShape.getLocalBounds().height * 0.5f);
+	//textureShape.setRotation(180.f);
 
 	window->draw(vertexMap, &selectTexture);
-	window->draw(textureShape);
 
 	if (InputManager::GetMouseButton(Mouse::Button::Left) && currentInputState == ButtonState::BLOCK && currentDrag != nullptr)
 	{
@@ -236,6 +238,8 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 	{
 		player->Draw(window, mapView);
 	}
+
+	window->draw(textureShape);
 
 	//UI Render
 	window->setView(*uiView);
@@ -302,8 +306,8 @@ void MapScene::UpdateMousePos(RenderWindow* window)
 
 int MapScene::CreateBackGround(int c, int r)
 {
-	std::cout << "cccc" << std::endl;
-	int TILE_SIZE = 32;
+	int TILE_WIDTH = 32;
+	int TILE_HEIGHT = 32;
 	int TILE_TYPES = 0;
 	int VERTS_IN_QUAD = 4;
 
@@ -318,17 +322,16 @@ int MapScene::CreateBackGround(int c, int r)
 
 	float x = c * gridSizeF;
 	float y = r * gridSizeF;
-	 
-	std::cout << vertexMap[vertexIndex + 0].position.y << std::endl;
+
 	vertexMap[vertexIndex + 0].position = Vector2f(x, y);
-	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_SIZE, y);
-	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_SIZE, y + TILE_SIZE);
-	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_SIZE);
+	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_WIDTH, y);
+	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_WIDTH, y + TILE_HEIGHT);
+	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_HEIGHT);
 	
 	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, 0.f);
-	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_SIZE, 0.f);
-	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
-	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, TILE_SIZE);
+	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_WIDTH, 0.f);
+	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_WIDTH, TILE_HEIGHT);
+	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, TILE_HEIGHT);
 	
 	return cols * rows;
 }

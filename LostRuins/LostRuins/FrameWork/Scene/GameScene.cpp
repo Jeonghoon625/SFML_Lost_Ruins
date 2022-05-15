@@ -48,7 +48,7 @@ void GameScene::Update(float dt, Time playTime, RenderWindow* window, View* obje
 	else
 	{
 		if (InputManager::GetKeyDown(Keyboard::Escape) && 
-			player.GetPause() == true && testUI.GetEscMenu() == false)
+			player.GetPause() == true)
 		{
 			player.SetPause(false);
 		}

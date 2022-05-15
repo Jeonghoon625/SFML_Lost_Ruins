@@ -46,9 +46,13 @@ struct Button
 	bool isButtonToggle;
 };
 
+struct Tile
+{
+
+};   
+
 class MapScene : public Scene
 {
-	
 	int mapWidth;
 	int mapHeight;
 	float VIEW_SPEED;
@@ -102,6 +106,7 @@ class MapScene : public Scene
 	int fromY;
 	int toY;
 
+	RectangleShape textureShape;
 public:
 	MapScene();
 
