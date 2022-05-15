@@ -13,5 +13,6 @@ public:
 	virtual void Attack(float dt, int atk, Player& player, Time timeHit);
 	virtual void SetStatus(MonsterStatus newStatus);
 	void IsFinishAttack();
+
 };
 

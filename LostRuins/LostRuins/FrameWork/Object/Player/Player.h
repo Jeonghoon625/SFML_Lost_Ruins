@@ -16,9 +16,11 @@
 #include "../../Mgr/EffectManager.h"
 #include "../DamageAndRecovery/DamageAndRecovery.h"
 
+
 using namespace sf;
 
 class ZombieWalker;
+class Monster;
 
 enum class Status
 {
@@ -118,10 +120,10 @@ private:
 
 public:
 	void Init(ZombieWalker* zombie);
-	void Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime);
+	void Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime, std::vector<Monster*>& monsters);
 	void Draw(RenderWindow* window, View* mainView);
 	
-	void PlayerAction(float dt, Time playTime);
+	void PlayerAction(float dt, Time playTime, std::vector<Monster*> monsters);
 	void Spawn(IntRect gameMap, Vector2i res, int tileSize);
 	void Spawn(float x, float y);
 

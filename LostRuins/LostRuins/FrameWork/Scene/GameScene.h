@@ -27,6 +27,7 @@ class GameScene : public Scene
 
 	Texture textureHeroine;
 
+	vector <Monster*> monsters;
 	vector <CollisionBlock*> blocks;
 
 	// test

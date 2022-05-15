@@ -7,31 +7,42 @@ void TestSceneKK::Init(SceneManager* sceneManager)
 	resolution.x = 1920.f;
 	resolution.y = 1080.f;
 
+
+
 	player.Init(nullptr);
 	gameMap = FloatRect(0, 0, 35.f * 32.f, 15.f * 32.f);
 	player.Spawn(90.f, 340.f);
-
-	//Goblin.MonsterInit();
+	/*Goblin.MonsterInit();*/
 	//zombieCrawler.MonsterInit();
 	//zombieWalker.MonsterInit();
-
+	CreateMonsters();
 	CreateBlock();
+
 	//Dummy Map
 	CreateBackGround();
 	texBackground = TextureHolder::GetTexture("maps/Another/SewerWall.png");
-	slimeGreen.MonsterInit();
-	Lami2.MonsterInit();
-	Lami2.Spawn(Vector2f(100.f, 340.f));
+	/*Goblin.Spawn(Vector2f(200, 300))*/;
+	/*slimeGreen.MonsterInit();*/
+	/*Lami2.MonsterInit();
+	Lami2.Spawn(Vector2f(100.f, 340.f));*/
+	
 }
 
 void TestSceneKK::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
-	//Goblin.Update(player,dt, blocks, playTime);
+	/*Goblin.Update(player,dt, blocks, playTime);*/
 	//zombieCrawler.Update(player,dt, blocks, playTime);
 	//zombieWalker.Update(player,dt, blocks, playTime);
-	slimeGreen.Update(player, dt, blocks, playTime);
-	Lami2.Update(player, dt, blocks, playTime);
-	player.Update(dt, blocks, playTime);
+	/*slimeGreen.Update(player, dt, blocks, playTime);*/
+	
+	for (auto itMonster : monsters)
+	{
+		itMonster->Update(player, dt, blocks, playTime);
+		std::cout << itMonster->GetPosition().x << " " << itMonster->GetPosition().y << std::endl;
+	}
+
+	/*Lami2.Update(player, dt, blocks, playTime);*/
+	player.Update(dt, blocks, playTime, monsters);
 }
 
 void TestSceneKK::Draw(RenderWindow* window, View* mainView, View* uiView)
@@ -72,12 +83,18 @@ void TestSceneKK::Draw(RenderWindow* window, View* mainView, View* uiView)
 		window->draw(blockShape->GetBlockShape());
 	}
 
-	/*
-	Goblin.Draw(window);
-	zombieCrawler.Draw(window);
+
+
+	for (auto itMonster : monsters)
+	{
+		itMonster->Draw(window);
+	}
+	
+	/*Goblin.Draw(window);*/
+	/*zombieCrawler.Draw(window);
 	zombieWalker.Draw(window);*/
-	slimeGreen.Draw(window);
-	Lami2.Draw(window);
+	/*slimeGreen.Draw(window);*/
+	/*Lami2.Draw(window);*/
 	player.Draw(window, mainView);
 }
 
@@ -88,6 +105,12 @@ TestSceneKK::~TestSceneKK()
 		delete blockShape;
 	}
 	blocks.clear();
+
+	for (auto monster : monsters)
+	{
+		delete monster;
+	}
+	monsters.clear();
 }
 
 void TestSceneKK::CreateBlock()
@@ -169,5 +192,39 @@ int TestSceneKK::CreateBackGround()
 	}
 
 	return cols * rows;
+}
+
+void TestSceneKK::CreateMonsters()
+{
+	for (auto v : monsters)
+	{
+		delete v;
+	}
+	monsters.clear();
+
+	//Monster* goblin = new GoblinAttacker;
+	//goblin->MonsterInit();
+	//goblin->Spawn(Vector2f(90,200));
+
+	//Monster* zombieWalker = new ZombieWalker;
+	//zombieWalker->MonsterInit();
+	//zombieWalker->Spawn(Vector2f(90, 200));
+	//monsters.push_back(zombieWalker);
+
+	//Monster* zombieCrawler = new ZombieCrawler;
+	//zombieCrawler->MonsterInit();
+	//zombieCrawler->Spawn(Vector2f(90, 200));
+	//monsters.push_back(zombieCrawler);
+	//
+	//Monster* slimeGreen = new SlimeGreen;
+	//slimeGreen->MonsterInit();
+	//slimeGreen->Spawn(Vector2f(90, 200));
+	//monsters.push_back(slimeGreen);
+
+	Monster* lamiPhaseOne = new LamiPhaseOne;
+	lamiPhaseOne->MonsterInit();
+	lamiPhaseOne->Spawn(Vector2f(90, 200));
+	monsters.push_back(lamiPhaseOne);
+
 }
 

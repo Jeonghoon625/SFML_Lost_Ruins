@@ -4,6 +4,8 @@
 #include "../../Animation/rapidcsv.h"
 #include "../../Object/CollisionBlock/CollisionBlock.h"
 #include "../Player/Player.h"
+
+
 using namespace sf;
 
 enum class MonsterStatus
@@ -114,8 +116,8 @@ public:
 	virtual void UpdateCollisionAttackRangeBox(std::vector <CollisionBlock*> blocks);
 
 	virtual void Update(Player& player, float dt, std::vector<CollisionBlock*> blocks, Time playtime);
-	void UpdateDelayAndStatus(float dt);
+	virtual void UpdateDelayAndStatus(float dt);
 
-	void Draw(RenderWindow* window);
+	virtual void Draw(RenderWindow* window);
 };
 

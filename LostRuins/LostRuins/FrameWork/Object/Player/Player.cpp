@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../Monster/Monster.h"
 #include "../Monster/ZombieWalker.h"
 #include <iostream>
 
@@ -50,10 +51,10 @@ void Player::Init(ZombieWalker* zombie)
 	}
 }
 
-void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime)
+void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTime, std::vector<Monster*>& monsters)
 {
 	// 플레이어 행동
-	PlayerAction(dt, playTime);
+	PlayerAction(dt, playTime, monsters);
 
 	// 충돌 처리
 	UpdateCollision(blocks);
@@ -109,7 +110,7 @@ void Player::Draw(RenderWindow* window, View* mainView)
 	}
 }
 
-void Player::PlayerAction(float dt, Time playTime)
+void Player::PlayerAction(float dt, Time playTime, std::vector<Monster*> monsters)
 {
 	float h = InputManager::GetAxisRaw(Axis::Horizontal);
 	float v = InputManager::GetAxisRaw(Axis::Vertical);
@@ -201,11 +202,20 @@ void Player::PlayerAction(float dt, Time playTime)
 					{
 						if (attackMgr.GetFps() > attackMgr.GetHitFrame())
 						{
-							if (attackMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+							for (auto monster : monsters)
 							{
-								//std::cout << "Hit" << zombie->GetHealth() << std::endl;
-								zombie->OnHitted(attackMgr.GetAttackPoint(), dt, playTime);
+								if (attackMgr.GetSprite().getGlobalBounds().intersects(monster->GetHitBox().getGlobalBounds()))
+								{
+									monster->OnHitted(attackMgr.GetAttackPoint(), dt, playTime);
+								}
 							}
+
+							//if (attackMgr.GetSprite().getGlobalBounds().intersects(zombie->GetHitBox().getGlobalBounds()))
+							//{
+							//	//std::cout << "Hit" << zombie->GetHealth() << std::endl;
+							//	/*zombie->OnHitted(attackMgr.GetAttackPoint(), dt, playTime);*/
+							//	
+							//}
 						}
 					}
 				}

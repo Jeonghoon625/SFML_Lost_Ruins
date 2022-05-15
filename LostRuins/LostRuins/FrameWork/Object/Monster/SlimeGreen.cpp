@@ -19,9 +19,9 @@ void SlimeGreen::MonsterInit()
 
 	SetHealth(20);
 	SetAtk(3);
-	SetSpeed(80.f);
+	SetSpeed(40.f);
 
-	sprite.setPosition(resolution.x * 0.2f, resolution.y * 0.5f);
+	sprite.setPosition(90, 340);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
 	
@@ -55,7 +55,7 @@ void SlimeGreen::ChasePlayer(Player& player, float dt)
 		/*animation.PlayQueue(strRun);*/
 		if (isFindPlayer && !isAttackPlayer)
 		{
-			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay > 0.5f)
+			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay > 5.5f)
 			{
 				AttackPlayerPos = player.GetPosition();
 				attackDelay = 0.f;
@@ -83,7 +83,7 @@ void SlimeGreen::ChasePlayer(Player& player, float dt)
 					findPlayerBox.setOrigin(200.f, 40.f);
 				}
 
-				if (h * h > 600.f * 600.f || (sprite.getPosition().y - player.GetPosition().y) > 260 || sprite.getPosition().y - player.GetPosition().y < -150)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
+				if (h * h > 200.f * 200.f || (sprite.getPosition().y - player.GetPosition().y) > 85 || sprite.getPosition().y - player.GetPosition().y < -50)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
 				{
 					isFindPlayer = false;
 					isIdle = true;
@@ -193,3 +193,7 @@ void SlimeGreen::IsFinishAttack()
 {
 	attackHitDelay = 20.f;
 }
+
+
+
+
