@@ -19,7 +19,7 @@ void GoblinAttacker::MonsterInit()
 	SetAtk(3);
 	SetSpeed(70.f);
 	
-	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
+	sprite.setPosition(100, 340);
 	sprite.setScale(scale);
 	position = sprite.getPosition();
 	

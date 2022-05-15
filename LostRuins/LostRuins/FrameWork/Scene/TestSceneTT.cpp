@@ -52,7 +52,7 @@ void TestSceneTT::Update(float dt, Time playTime, RenderWindow* window, View* ma
 			zombieWalker->SetPosition(9999.f, 9999.f);
 		}
 
-		player.Update(dt, blocks, playTime);
+		player.Update(dt, blocks, playTime, monsters);
 	}
 }
 

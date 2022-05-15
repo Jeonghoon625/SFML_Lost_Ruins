@@ -178,7 +178,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 					dt *= 0.25f;
 				}
 
-				player->Update(dt, blocks, playTime);
+				/*player->Update(dt, blocks, playTime);*/
 			}
 
 			if (InputManager::GetKeyDown(Keyboard::F9))

@@ -31,6 +31,7 @@ private:
 	Texture textureHeroine;
 	Sprite heroineAction;
 
+	vector <Monster*> monsters;
 	vector <CollisionBlock*> blocks;
 
 	Sprite testSprite;

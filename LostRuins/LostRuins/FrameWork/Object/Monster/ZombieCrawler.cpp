@@ -11,7 +11,7 @@ void ZombieCrawler::MonsterInit()
 	strWalk = ("ZombieCrawlerWalk");
 	strIdle = ("ZombieCrawlerIdle");
 	strRun = ("ZombieCrawlerWalk");
-	strDead = ("ZombieCrawlerDead");
+	strDead = ("ZombieCrawlerGiblets");
 	strAttack = ("ZombieCrawlerAttack");
 	strAttackBlocked = ("ZombieCrawlerAttackBlocked");
 	strDamageTaken = ("ZombieCrawlerDamageTaken");

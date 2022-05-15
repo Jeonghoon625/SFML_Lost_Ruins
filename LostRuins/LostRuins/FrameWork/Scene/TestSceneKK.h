@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Scene.h"
+#include "../Object/CollisionBlock/CollisionBlock.h"
 #include "../Mgr/TextureHolder.h"
 #include "../Object/Player/Player.h"
 #include "../Mgr/Utils.h"
@@ -9,12 +10,18 @@
 #include "../Animation/rapidcsv.h"
 #include <map>
 #include "../Object/Monster/Monster.h"
+#include "../Object/Monster/GoblinAttacker.h"
 #include "../Object/Monster/ZombieCrawler.h"
 #include "../Object/Monster/ZombieWalker.h"
 #include "../Object/Monster/LamiPhaseTwo.h"
 #include "../Object/Monster/SlimeGreen.h"
+#include "../Object/Monster/LamiPhaseOne.h"
 
-
+class MonsterSet 
+{
+public:
+	Monster* monster;
+};
 
 class TestSceneKK : public Scene
 {
@@ -30,8 +37,9 @@ private:
 	Texture textureHeroine;
 	Sprite heroineAction;
 	
+	vector <Monster*> monsters;
 
-	Monster Goblin;
+	GoblinAttacker Goblin;
 	ZombieCrawler zombieCrawler;
 	ZombieWalker zombieWalker;
 	SlimeGreen slimeGreen;
@@ -51,6 +59,7 @@ public:
 
 	void CreateBlock();
 	int CreateBackGround();
+	void CreateMonsters();
 };
 
 

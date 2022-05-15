@@ -4,7 +4,7 @@
 
 Monster::Monster()
 	:health(20), atk(3), speed(50.f), nextMove(0.f), checkTime(0.f), isFindPlayer(false), isAttackPlayer(false), attackHitDelay(0.f), isFalling(true), hitDelay(0.f), isAlive(true), immuneMs(START_IMMUNE_MS)
-	, isCollideHitBox(false), isCollideAttackRangeBox(false), attackDelay(0.f)
+	, isCollideHitBox(false), isCollideAttackRangeBox(false), attackDelay(0.f), fallingSpeed(0.f)
 {
 	isAttackPlayer = false;
 	isHit = false;
@@ -44,8 +44,26 @@ void Monster::SetHealth(int healthNum)
 
 void Monster::Spawn(Vector2f pos)
 {
-	sprite.setPosition(pos);
-	position = sprite.getPosition();
+	position = pos;
+	sprite.setPosition(position);
+	std::cout << sprite.getPosition().x << " " << sprite.getPosition().y << std::endl;
+	findPlayerBox.setSize(Vector2f(200.f, 40.f));
+	findPlayerBox.setScale(scale);
+	findPlayerBox.setFillColor(Color(255, 255, 255, 80));
+	findPlayerBox.setOrigin(200, 40);
+	findPlayerBox.setPosition(position);
+	
+	attackRangeBox.setSize(Vector2f(30.f, 30.f));
+	attackRangeBox.setScale(scale);
+	attackRangeBox.setFillColor(Color(153, 0, 0, 80));
+	attackRangeBox.setOrigin(30, 30);
+	attackRangeBox.setPosition(position);
+
+	hitBox.setSize(Vector2f(43.f, 30.f));
+	hitBox.setScale(scale);
+	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y * 0.99f);
+	hitBox.setFillColor(Color(50, 50, 25, 70));
+	hitBox.setPosition(position);
 }
 
 int Monster::GetAtk()
@@ -87,12 +105,12 @@ void Monster::MonsterInit()
 	animation.Play(strIdle);
 	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);
 
-	sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);
+	/*sprite.setPosition(resolution.x * 0.3f, resolution.y * 0.5f);*/
 	sprite.setScale(scale);
-	position = sprite.getPosition();
+	/*position = sprite.getPosition();*/
 
 
-	findPlayerBox.setSize(Vector2f(200.f, 40.f));
+	/*findPlayerBox.setSize(Vector2f(200.f, 40.f));
 	findPlayerBox.setScale(scale);
 	findPlayerBox.setFillColor(Color(255, 255, 255, 80));
 	findPlayerBox.setOrigin(200, 40);
@@ -108,7 +126,7 @@ void Monster::MonsterInit()
 	hitBox.setScale(scale);
 	hitBox.setOrigin(hitBox.getSize().x * 0.5f, hitBox.getSize().y * 0.99f);
 	hitBox.setFillColor(Color(50, 50, 25, 70));
-	hitBox.setPosition(sprite.getOrigin());
+	hitBox.setPosition(sprite.getOrigin());*/
 
 	currentStatus = MonsterStatus::STATUS_IDLE;
 }
@@ -377,7 +395,7 @@ void Monster::ChasePlayer(Player& player, float dt)
 					findPlayerBox.setOrigin(200.f, 40.f);
 				}
 
-				if (h * h > 600.f * 600.f || (sprite.getPosition().y - player.GetPosition().y) > 260 || sprite.getPosition().y - player.GetPosition().y < -150)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
+				if (h * h > 200.f * 200.f || (sprite.getPosition().y - player.GetPosition().y) > 85 || sprite.getPosition().y - player.GetPosition().y < -50)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
 				{
 					isFindPlayer = false;
 					isIdle = true;
@@ -478,7 +496,7 @@ void Monster::Gravity(float dt, std::vector<CollisionBlock*> blocks)
 		position.y += fallingSpeed * dt;
 	}
 
-	UpdateCollision(blocks);
+	
 }
 
 void Monster::UpdateCollision(std::vector<CollisionBlock*> blocks)
@@ -490,76 +508,34 @@ void Monster::UpdateCollision(std::vector<CollisionBlock*> blocks)
 		if (hitBox.getGlobalBounds().intersects(bk->GetBlockRect()))
 		{
 			float blockUp = bk->GetBlockRect().top;
-			float blockDown = bk->GetPosition().y + bk->GetBlockRect().height * 0.5f;
+			float blockDown = bk->GetBlockRect().top + bk->GetBlockRect().height;
 			float blockLeft = bk->GetBlockRect().left;
-			float blockRight = bk->GetPosition().x + bk->GetBlockRect().width * 0.5f;
+			float blockRight = bk->GetBlockRect().left + bk->GetBlockRect().width;
 
-			float playerUp = hitBox.getPosition().y - hitBox.getGlobalBounds().height;
-			float playerDown = hitBox.getPosition().y;
+			float playerUp = hitBox.getGlobalBounds().top;
+			float playerDown = hitBox.getGlobalBounds().top + hitBox.getGlobalBounds().height;
 			float playerLeft = hitBox.getGlobalBounds().left;
-			float playerRight = hitBox.getPosition().x + hitBox.getGlobalBounds().width * 0.5f;
+			float playerRight = hitBox.getGlobalBounds().left + hitBox.getGlobalBounds().width;
 
-			float playerXpos = hitBox.getPosition().x;
-			float playerYpos = hitBox.getPosition().y - hitBox.getGlobalBounds().height * 0.5f;
-
+			float playerXpos = hitBox.getGlobalBounds().left + hitBox.getGlobalBounds().width * 0.5f;
+			float playerYpos = hitBox.getGlobalBounds().top + hitBox.getGlobalBounds().height * 0.5f;
 			Vector2f pos = hitBox.getPosition();
 
 			isCollideHitBox = true;
 
-			// 블럭 CB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
-			{
-				pos.y = blockDown + hitBox.getGlobalBounds().height;
-
-			}
-			// 블럭 LB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockLeft > playerXpos && blockDown < playerYpos)
-			{
-				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
-				{
-					pos.y = blockDown + hitBox.getGlobalBounds().height;
-				}
-				else if (abs(blockLeft - playerRight) < abs(blockDown - playerUp))
-				{
-					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
-				}
-				else
-				{
-					pos.x -= abs(blockLeft - playerRight);
-					pos.y -= abs(blockDown - playerUp);
-				}
-			}
-			// 블럭 RB에 플레이어가 충돌
-			if (blockDown < playerYpos && blockRight < playerXpos && blockDown < playerYpos)
-			{
-				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
-				{
-					pos.y = blockDown + hitBox.getGlobalBounds().height;
-
-				}
-				else if (abs(blockRight - playerLeft) < abs(blockDown - playerUp))
-				{
-					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
-				}
-				else
-				{
-					pos.x += abs(blockRight - playerLeft);
-					pos.y -= abs(blockDown - playerUp);
-				}
-			}
 			// 블럭 CT에 플레이어가 충돌
 			if (blockUp > playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
 			{
-				pos.y = blockUp;
+				pos.y = blockUp + 1.f;
 				isFalling = false;
 				fallingSpeed = 0.f;
 			}
 			// 블럭 LT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockLeft > playerXpos && blockUp > playerYpos)
+			else if (blockUp > playerYpos && blockLeft > playerXpos)
 			{
 				if (abs(blockLeft - playerRight) > abs(blockUp - playerDown))
 				{
-					pos.y = blockUp;
+					pos.y = blockUp + 1.f;
 					isFalling = false;
 					fallingSpeed = 0.f;
 				}
@@ -571,14 +547,15 @@ void Monster::UpdateCollision(std::vector<CollisionBlock*> blocks)
 				{
 					pos.x -= abs(blockLeft - playerRight);
 					pos.y -= abs(blockUp - playerDown);
+					pos.y += 1.f;
 				}
 			}
 			// 블럭 RT에 플레이어가 충돌
-			if (blockUp > playerYpos && blockRight < playerXpos && blockUp > playerYpos)
+			else if (blockUp > playerYpos && blockRight < playerXpos)
 			{
 				if (abs(blockRight - playerLeft) > abs(blockUp - playerDown))
 				{
-					pos.y = blockUp;
+					pos.y = blockUp + 1.f;
 					isFalling = false;
 					fallingSpeed = 0.f;
 				}
@@ -588,19 +565,62 @@ void Monster::UpdateCollision(std::vector<CollisionBlock*> blocks)
 				}
 				else
 				{
-					pos.x -= abs(blockRight - playerLeft);
+					pos.x += abs(blockRight - playerLeft);
 					pos.y -= abs(blockUp - playerDown);
+					pos.y += 1.f;
 				}
 			}
 			// 블럭 LC에 플레이어가 충돌
-			if (blockLeft > playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			else if (blockLeft > playerXpos && blockUp < playerYpos && blockDown > playerYpos)
 			{
 				pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
 			}
 			// 블럭 RC에 플레이어가 충돌
-			if (blockRight < playerXpos && blockUp < playerYpos && blockDown > playerYpos)
+			else if (blockRight < playerXpos && blockUp < playerYpos && blockDown > playerYpos)
 			{
 				pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+			}
+			// 블럭 CB에 플레이어가 충돌
+			else if (blockDown < playerYpos && blockLeft < playerXpos && blockRight > playerXpos)
+			{
+				pos.y = blockDown + hitBox.getGlobalBounds().height;
+				
+			}
+			// 블럭 LB에 플레이어가 충돌
+			else if (blockDown < playerYpos && blockLeft > playerXpos)
+			{
+				if (abs(blockLeft - playerRight) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+					
+				}
+				else if (abs(blockLeft - playerRight) < abs(blockDown - playerUp))
+				{
+					pos.x = blockLeft - hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x -= abs(blockLeft - playerRight);
+					pos.y += abs(blockDown - playerUp);
+				}
+			}
+			// 블럭 RB에 플레이어가 충돌
+			else if (blockDown < playerYpos && blockRight < playerXpos)
+			{
+				if (abs(blockRight - playerLeft) > abs(blockDown - playerUp))
+				{
+					pos.y = blockDown + hitBox.getGlobalBounds().height;
+					
+				}
+				else if (abs(blockRight - playerLeft) < abs(blockDown - playerUp))
+				{
+					pos.x = blockRight + hitBox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					pos.x += abs(blockRight - playerLeft);
+					pos.y += abs(blockDown - playerUp);
+				}
 			}
 			hitBox.setPosition(pos);
 			position = pos;
@@ -625,14 +645,16 @@ void Monster::UpdateCollisionAttackRangeBox(std::vector<CollisionBlock*> blocks)
 void Monster::Update(Player& player, float dt, std::vector<CollisionBlock*> blocks, Time playTime)
 {
 	animation.Update(dt);
-	UpdateCollisionAttackRangeBox(blocks);
+
 	Gravity(dt, blocks);
+	UpdateCollision(blocks);
 	Walk(dt);
 	FindPlayer(player);
 	ChasePlayer(player, dt);
 	Attack(dt, atk, player, playTime);
 	AnimationUpdate();
 	UpdateDelayAndStatus(dt);
+	UpdateCollisionAttackRangeBox(blocks);
 }
 
 void Monster::UpdateDelayAndStatus(float dt)

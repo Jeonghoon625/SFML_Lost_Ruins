@@ -53,4 +53,5 @@ void ZombieWalker::MonsterInit()
 
 	animation.Play(strIdle);
 	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);
+
 }
