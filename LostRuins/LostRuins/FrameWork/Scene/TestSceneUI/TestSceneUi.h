@@ -69,6 +69,17 @@ private:
 	Sprite Invenwindow; // 인벤토리 창
 	Sprite InventoryMAP;// 맵창
 	Sprite InvenallCS;	// 인벤토리 내 카테고리 커서
+	Sprite InvenSpaceBar;
+
+	Text textInvenSpaceBar;
+	Text textInvenspace;
+
+	Text textinvenname;
+	Text textmapname;
+	Text textgold;
+	Text textMoney;
+	Text shopbuyname;
+	Text shopsellname;
 	
 	////////////////////////////////////////////
 	//                                        //
@@ -461,6 +472,167 @@ private:
 	bool BattleCSSetview;
 	bool Esckey;
 
+	/////////////////////////////////////////////
+	//             상점
+	////////////상점 구매칸////////////
+
+	Sprite shopBlur;
+	Sprite shopWindow;
+	Sprite shopWeapon;
+	Sprite shopOrder;
+	Sprite shopSupplies;
+	Sprite shopEquipment;
+	Sprite shopCS;
+	Sprite shopBuybox;
+	Sprite shopSELLbox;
+	Sprite shopBTQbox;
+	Sprite shopBTWbox;
+	Sprite shoprkfhCS;
+
+	Text shopBTQ;
+	Text shopBTW;
+	Text shopBuyname;
+	Text shopSELLname;
+
+	////////////상점 판매칸////////////
+
+	Sprite SshopBlur;
+	Sprite SshopWindow;
+	Sprite SshopWeapon;
+	Sprite SshopOrder;
+	Sprite SshopSupplies;
+	Sprite SshopEquipment;
+	Sprite SshopCS;
+	Sprite SshopBuybox;
+	Sprite SshopSELLbox;
+	Sprite SshopBTQbox;
+	Sprite SshopBTWbox;
+
+	Text SshopBTQ;
+	Text SshopBTW;
+	Text SshopBuyname;
+	Text SshopSELLname;
+
+	///////// 상점 아이템 무기목록 ///////////
+
+	Text textShopweapon1Lname;
+	Sprite Shopweapon1Box;
+	Text textShopweapon1Rname;
+	Sprite Shopweapon1img;
+	Sprite Shopweapon1bk;
+	Text textShopweapon1text1;
+	Text textShopweapon1text2;
+	Text textShopweapon1text3;
+
+	Text textShopweapon2name;
+	Sprite Shopweapon2Box;
+	Text textShopweapon2Rname;
+	Sprite Shopweapon2img;
+	Sprite Shopweapon2bk;
+	Text textShopweapon2text1;
+	Text textShopweapon2text2;
+	Text textShopweapon2text3;
+
+	Text textShopweapon3name;
+	Sprite Shopweapon3Box;
+	Text textShopweapon3Rname;
+	Sprite Shopweapon3img;
+	Sprite Shopweapon3bk;
+	Text textShopweapon3text1;
+	Text textShopweapon3text2;
+	Text textShopweapon3text3;
+
+	Text textShopweapon4name;
+	Sprite Shopweapon4Box;
+	Text textShopweapon4Rname;
+	Sprite Shopweapon4img;
+	Sprite Shopweapon4bk;
+	Text textShopweapon4text1;
+	Text textShopweapon4text2;
+	Text textShopweapon4text3;
+
+	///////// 상점 아이템 마법목록 ///////////
+
+	Text textShopord1Lname;
+	Sprite Shopord1Box;
+	Text textShopord1Rname;
+	Sprite Shopord1img;
+	Sprite Shopord1bk;
+	Text textShopord1text1;
+	Text textShopord1text2;
+	Text textShopord1text3;
+
+	Text textShopord2Lname;
+	Sprite Shopord2Box;
+	Text textShopord2Rname;
+	Sprite Shopord2img;
+	Sprite Shopord2bk;
+	Text textShopord2text1;
+	Text textShopord2text2;
+	Text textShopord2text3;
+
+	Text textShopord3Lname;
+	Sprite Shopord3Box;
+	Text textShopord3Rname;
+	Sprite Shopord3img;
+	Sprite Shopord3bk;
+	Text textShopord3text1;
+	Text textShopord3text2;
+	Text textShopord3text3;	
+
+	///////// 상점 아이템 소모품목록 ///////////
+
+	Text textShopsup1Lname;
+	Sprite Shopsup1Box;
+	Text textShopsup1Rname;
+	Sprite Shopsup1img;
+	Sprite Shopsup1bk;
+	Text textShopsup1text1;
+	Text textShopsup1text2;
+	Text textShopsup1text3;
+
+	Text textShopsup2name;
+	Sprite Shopsup2Box;
+	Text textShopsup2Rname;
+	Sprite Shopsup2img;
+	Sprite Shopsup2bk;
+	Text textShopsup2text1;
+	Text textShopsup2text2;
+	Text textShopsup2text3;
+
+	///////// 상점 아이템 장비목록 ///////////
+
+	Text textShopequ1Lname;
+	Sprite Shopequ1Box;
+	Text textShopequ1Rname;
+	Sprite Shopequ1img;
+	Sprite Shopequ1bk;
+	Text textShopequ1text1;
+	Text textShopequ1text2;
+	Text textShopequ1text3;
+
+	Text textShopequ2Lname;
+	Sprite Shopequ2Box;
+	Text textShopequ2Rname;
+	Sprite Shopequ2img;
+	Sprite Shopequ2bk;
+	Text textShopequ2text1;
+	Text textShopequ2text2;
+	Text textShopequ2text3;
+
+	bool shopBuy1; // 구매메뉴
+	bool shopSell1; // 판매메뉴
+	int shopBuynum;
+	int shopSellnum;
+	int shopweaNum1;
+	int shoporderNum1;
+	int shopSupNum1;
+	int shopEquNum1;
+	int shopweaNum2;
+	int shoporderNum2;
+	int shopSupNum2;
+	int shopEquNum2;
+
 public:
 
 	virtual void Init(SceneManager* sceneManager);
@@ -479,11 +651,29 @@ public:
 	void weaponlist1();
 	void weaponlist2();
 	void scrollList1();
-	void scrollList2();
 	void Supplies();
 	void EquipList1();
 	void EquipList2();
-	void relics();
+	void relics();	
 
-	bool GetEscMenu();
+	/////////////////////////////////////////////
+
+	////////////상점////////////
+	void shopBuy();
+	void Buywea1();
+	void Buywea2();
+	void Buywea3();
+	void Buywea4();
+
+	void Buyord1();
+	void Buyord2();
+	void Buyord3();
+
+	void Buysup1();
+	void Buysup2();
+
+	void Buyequ1();
+	void Buyequ2();
+
+	void shopSell();
 };
