@@ -57,17 +57,42 @@ void TestUi::Update(float dt, Time playTime, RenderWindow* window, View* mainVie
 	if (InputManager::GetKeyDown(Keyboard::Space) && inventory == true && weaponNum == 1 && menuNum == 1)
 	{
 		Zweaponview = !Zweaponview;
+
+		if (Zweaponview == true)
+		{
+			player.SetZWeapon(true);
+		}
+		else if (Zweaponview == false)
+		{
+			player.SetZWeapon(false);
+		}
 	}
 	if (InputManager::GetKeyDown(Keyboard::Space) && inventory == true && weaponNum == 2 && menuNum == 1)
 	{
 		Xweaponview = !Xweaponview;
+
+		if (Xweaponview == true)
+		{
+			player.SetXWeapon(true);
+		}
+		else if (Xweaponview == false)
+		{
+			player.SetXWeapon(false);
+		}
 	}
-
-
 
 	if (InputManager::GetKeyDown(Keyboard::Space) && inventory == true && orderNum == 1 && menuNum == 2)
 	{
 		Zscrollview = !Zscrollview;
+
+		if (Zscrollview == true)
+		{
+			player.SetASpell(true);
+		}
+		else if (Zscrollview == false)
+		{
+			player.SetASpell(false);
+		}
 	}
 
 	if (InputManager::GetKeyDown(Keyboard::Space) && inventory == true && orderNum == 2 && menuNum == 2)

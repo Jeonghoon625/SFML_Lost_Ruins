@@ -106,6 +106,10 @@ private:
 	bool isAlive;
 	bool isPause;
 
+	bool isXequip;
+	bool isZequip;
+	bool isAequip;
+
 	Time lastHit;
 
 	std::map<std::string, Texture> texmap;
@@ -139,6 +143,10 @@ public:
 	bool GetAlive();
 	void SetPause(bool isPause);
 	bool GetPause();
+
+	void SetXWeapon(bool isXequip);
+	void SetZWeapon(bool isZequip);
+	void SetASpell(bool isAequip);
 
 	void AnimationInit(Sprite* sprite);
 	void SoundInit();

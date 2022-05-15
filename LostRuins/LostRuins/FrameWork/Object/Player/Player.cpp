@@ -32,6 +32,10 @@ void Player::Init(ZombieWalker* zombie)
 	isAlive = true;
 	isPause = false;
 
+	isXequip = false;
+	isZequip = false;
+	isAequip = false;
+
 	AnimationInit(&sprite);
 	sprite.setOrigin(15.5f, 50.f);
 	sprite.setScale(scale);
@@ -83,10 +87,12 @@ void Player::Update(float dt, std::vector <CollisionBlock*> blocks, Time playTim
 
 	if (InputManager::GetKeyDown(Keyboard::Tab) && isPause == false)
 	{
+		soundWalk.setLoop(false);
 		isPause = true;
 	}
 	else if (InputManager::GetKeyDown(Keyboard::Escape) && isPause == false)
 	{
+		soundWalk.setLoop(false);
 		isPause = true;
 	}
 }
@@ -130,21 +136,21 @@ void Player::PlayerAction(float dt, Time playTime)
 				}
 				if (isAttack == false && isSpell == false)
 				{
-					if (InputManager::GetKeyDown(Keyboard::X))
+					if (InputManager::GetKeyDown(Keyboard::X) && isXequip == true)
 					{
 						attackMgr.SetAttackType(AttackType::DAGGER);
 						attackFps = attackMgr.GetAttackFps();
 						attackMgr.SetAttackPosition(sprite);
 						isAttack = true;
 					}
-					else if (InputManager::GetKeyDown(Keyboard::Z))
+					else if (InputManager::GetKeyDown(Keyboard::Z) && isZequip == true)
 					{
 						attackMgr.SetAttackType(AttackType::TWO_HANDED);
 						attackFps = attackMgr.GetAttackFps();
 						attackMgr.SetAttackPosition(sprite);
 						isAttack = true;
 					}
-					else if (InputManager::GetKeyDown(Keyboard::A))
+					else if (InputManager::GetKeyDown(Keyboard::A) && isAequip == true)
 					{
 						attackMgr.SetAttackType(AttackType::FIRE_ARROW);
 						attackFps = attackMgr.GetAttackFps();
@@ -168,7 +174,7 @@ void Player::PlayerAction(float dt, Time playTime)
 				}
 			}
 
-			if (InputManager::GetKeyUp(Keyboard::Down) && isCrouch == true)
+			if (!InputManager::GetKey(Keyboard::Down) && isCrouch == true)
 			{
 				hitBox.setSize(Vector2f(20.f, 48.f));
 				hitBox.setOrigin(hitBoxStand);
@@ -490,6 +496,21 @@ bool Player::GetPause()
 	return isPause;
 }
 
+void Player::SetXWeapon(bool isXequip)
+{
+	this->isXequip = isXequip;
+}
+
+void Player::SetZWeapon(bool isZequip)
+{
+	this->isZequip = isZequip;
+}
+
+void Player::SetASpell(bool isAequip)
+{
+	this->isAequip = isAequip;
+}
+
 void Player::AnimationInit(Sprite* sprite)
 {
 	animation.SetTarget(sprite);
@@ -542,6 +563,7 @@ void Player::SoundInit()
 	soundFireArrow.setBuffer(SoundHolder::GetBuffer("sound/FireArrow.wav"));
 	soundDamage.setBuffer(SoundHolder::GetBuffer("sound/damage_a_03.wav"));
 	soundDeath.setBuffer(SoundHolder::GetBuffer("sound/death_a_03.wav"));
+	soundBackGround.setLoop(true);
 	soundBackGround.play();
 }
 
@@ -711,15 +733,15 @@ void Player::AnimationUpdate(float dt)
 		{
 			SetStatus(Status::STATUS_JUMP);
 		}
-		else if (InputManager::GetKeyDown(Keyboard::X))
+		else if (InputManager::GetKeyDown(Keyboard::X) && isXequip == true)
 		{
 			SetStatus(Status::STATUS_ATK_DAGGER);
 		}
-		else if (InputManager::GetKeyDown(Keyboard::Z))
+		else if (InputManager::GetKeyDown(Keyboard::Z) && isZequip == true)
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
-		else if (InputManager::GetKeyDown(Keyboard::A))
+		else if (InputManager::GetKeyDown(Keyboard::A) && isSpell == true)
 		{
 			SetStatus(Status::STATUS_SPELL);
 		}
@@ -753,15 +775,15 @@ void Player::AnimationUpdate(float dt)
 		{
 			SetStatus(Status::STATUS_JUMP);
 		}
-		else if (InputManager::GetKeyDown(Keyboard::X))
+		else if (InputManager::GetKeyDown(Keyboard::X) && isXequip == true)
 		{
 			SetStatus(Status::STATUS_ATK_DAGGER);
 		}
-		else if (InputManager::GetKeyDown(Keyboard::Z))
+		else if (InputManager::GetKeyDown(Keyboard::Z) && isZequip == true)
 		{
 			SetStatus(Status::STATUS_ATK_TWO_STAND);
 		}
-		else if (InputManager::GetKeyDown(Keyboard::A))
+		else if (InputManager::GetKeyDown(Keyboard::A) && isSpell == true)
 		{
 			SetStatus(Status::STATUS_SPELL);
 		}
@@ -777,7 +799,7 @@ void Player::AnimationUpdate(float dt)
 		{
 			SetStatus(Status::STATUS_FALLING);
 		}
-		else if (InputManager::GetKeyUp(Keyboard::Left) || InputManager::GetKeyUp(Keyboard::Right))
+		else if (!(InputManager::GetKey(Keyboard::Left) || InputManager::GetKey(Keyboard::Right)))
 		{
 			SetStatus(Status::STATUS_IDLE);
 		}
@@ -819,7 +841,7 @@ void Player::AnimationUpdate(float dt)
 		{
 			SetStatus(Status::STATUS_HIT);
 		}
-		else if (InputManager::GetKeyUp(Keyboard::Down))
+		else if (!InputManager::GetKey(Keyboard::Down))
 		{
 			SetStatus(Status::STATUS_IDLE);
 		}
@@ -968,6 +990,7 @@ void Player::SetStatus(Status newStatus)
 		break;
 	case Status::STATUS_DEAD:
 		soundWalk.setLoop(false);
+		soundBackGround.stop();
 		soundDeath.play();
 		animation.Play("Dead");
 		break;

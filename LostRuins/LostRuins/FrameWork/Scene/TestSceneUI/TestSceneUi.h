@@ -676,4 +676,6 @@ public:
 	void Buyequ2();
 
 	void shopSell();
+	bool GetEscMenu();
+
 };
