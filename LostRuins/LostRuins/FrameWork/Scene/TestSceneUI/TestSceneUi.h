@@ -486,4 +486,5 @@ public:
 	void relics();
 
 	bool GetEscMenu();
+
 };
