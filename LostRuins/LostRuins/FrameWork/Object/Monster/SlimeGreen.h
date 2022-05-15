@@ -14,5 +14,7 @@ public:
 	virtual void SetStatus(MonsterStatus newStatus);
 	void IsFinishAttack();
 
+	virtual void SoundInit();
+
 };
 

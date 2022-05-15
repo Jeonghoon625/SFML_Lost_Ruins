@@ -33,6 +33,7 @@ void LamiPhaseTwo::MonsterInit()
 	strDiving = "Lami2Diving";
 	strReappearing = "Lami2Reappearing";
 	strReappearingToIdle = "Lami2Reappearing";
+	strDead = "Lami2Dead";
 
 	animation.Play(strIdle);
 
@@ -78,6 +79,10 @@ void LamiPhaseTwo::MonsterInit()
 	attackRangeRightBox.setOrigin(attackRangeRightBox.getSize().x * 0, attackRangeBox.getSize().y);
 	attackRangeRightBox.setPosition(sprite.getOrigin().x + 90.f, sprite.getOrigin().y);
 
+	attackFarHitBox.setSize(Vector2f(100.f, 50.f));
+	attackFarHitBox.setFillColor(Color::Yellow);
+	attackFarHitBox.setOrigin(attackFarHitBox.getSize().x * 0.5f, attackFarHitBox.getSize().y);
+	attackFarHitBox.setPosition(sprite.getOrigin());
 
 	hitBox.setSize(Vector2f(60.f, 100.f));
 	hitBox.setScale(scale);
@@ -93,9 +98,45 @@ void LamiPhaseTwo::MonsterInit()
 
 void LamiPhaseTwo::Spawn(Vector2f pos)
 {
-	sprite.setPosition(pos);
+	position = pos;
+	sprite.setPosition(position);
 	position = sprite.getPosition();
-	originalPos = pos;
+	originalPos = position;
+
+	findPlayerBox.setSize(Vector2f(200.f, 40.f));
+	findPlayerBox.setScale(scale);
+	findPlayerBox.setFillColor(Color(255, 255, 255, 80));
+	findPlayerBox.setOrigin(200, 40);
+	findPlayerBox.setPosition(sprite.getOrigin());
+
+	attackRangeBox.setSize(Vector2f(60.f, 150.f));
+	attackRangeBox.setScale(scale);
+	attackRangeBox.setFillColor(Color(153, 0, 0, 80));
+	attackRangeBox.setOrigin(attackRangeBox.getSize().x * 0.5, attackRangeBox.getSize().y);
+	attackRangeBox.setPosition(sprite.getOrigin());
+
+	attackRangeLeftBox.setSize(Vector2f(40.f, 150.f));
+	attackRangeLeftBox.setScale(scale);
+	attackRangeLeftBox.setFillColor(Color(153, 0, 0, 80));
+	attackRangeLeftBox.setOrigin(attackRangeLeftBox.getSize().x * 1, attackRangeBox.getSize().y);
+	attackRangeLeftBox.setPosition(sprite.getOrigin().x - 90.f, sprite.getOrigin().y);
+
+	attackRangeRightBox.setSize(Vector2f(40.f, 150.f));
+	attackRangeRightBox.setScale(scale);
+	attackRangeRightBox.setFillColor(Color(153, 0, 0, 80));
+	attackRangeRightBox.setOrigin(attackRangeRightBox.getSize().x * 0, attackRangeBox.getSize().y);
+	attackRangeRightBox.setPosition(sprite.getOrigin().x + 90.f, sprite.getOrigin().y);
+
+	attackFarHitBox.setSize(Vector2f(100.f, 50.f));
+	attackFarHitBox.setFillColor(Color::Yellow);
+	attackFarHitBox.setOrigin(attackFarHitBox.getSize().x * 0.5f, attackFarHitBox.getSize().y);
+	attackFarHitBox.setPosition(sprite.getOrigin());
+
+	leftEye.Init(0, sprite);
+	rightEye.Init(1, sprite);
+	
+	leftHand.Init(Vector2f(sprite.getGlobalBounds().left + 35, sprite.getGlobalBounds().top + 17), 0);
+	rightHand.Init(Vector2f(sprite.getGlobalBounds().left + 89, sprite.getGlobalBounds().top + 17), 1);
 }
 
 void LamiPhaseTwo::Walk(float dt, Player& player)
@@ -121,6 +162,7 @@ void LamiPhaseTwo::Walk(float dt, Player& player)
 		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 1.5f, position.y);
 		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 1.5f, position.y);
 		hitBox.setPosition(position);
+		attackFarHitBox.setPosition(position);
 	}
 }
 
@@ -240,12 +282,14 @@ void LamiPhaseTwo::SetStatus(Lami2Status newStatus)
 		}
 		break;
 	case Lami2Status::STATUS_DIVING:
+		soundHitted.play();
 		animation.Play(strDiving, std::bind(&LamiPhaseTwo::SetDive, this));
 		break;
 	case Lami2Status::STATUS_REAPPEARING:
 		animation.Play(strReappearing, std::bind(&LamiPhaseTwo::SetIdle, this));
 		break;
 	case Lami2Status::STATUS_DEAD:
+		soundDeath.play();
 		animation.Play(strDead);
 		break;
 	default:
@@ -342,7 +386,11 @@ void LamiPhaseTwo::Attack(float dt, int atk, Player& player, Time timeHit)
 			}
 			else if (isFar && rightHand.GetIsAttacking() == false)
 			{
-				if (leftHand.GetSprite().getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) || rightHand.GetSprite().getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+				/*if (leftHand.GetSprite().getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) || rightHand.GetSprite().getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
+				{
+					player.OnHitted(atk, timeHit);
+				}*/
+				if (attackFarHitBox.getGlobalBounds().intersects((player.GetHitBox().getGlobalBounds())))
 				{
 					player.OnHitted(atk, timeHit);
 				}
@@ -364,13 +412,13 @@ void LamiPhaseTwo::Attack(float dt, int atk, Player& player, Time timeHit)
 
 void LamiPhaseTwo::Update(Player& player, float dt, std::vector<CollisionBlock*> blocks, Time playTime)
 {
-	if (health > START_HEALTH * 0.5f)
+	/*if (health > START_HEALTH * 0.5f)
 	{
 		health -= 1;
-	}
+	}*/
 	std::cout << health << std::endl;
 	Walk(dt, player);
-	/*Attack(dt, atk, player, playTime);*/
+	Attack(dt, atk, player, playTime);
 	Dive(dt, player);
 	if (health > 0)
 	{
@@ -423,6 +471,7 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 1.5f, position.y);
 		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 1.5f, position.y);
 		hitBox.setPosition(position);
+		attackFarHitBox.setPosition(position);
 	}
 
 	if (isDiving && diveOn)
@@ -439,6 +488,7 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 1.5f, position.y);
 		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 1.5f, position.y);
 		hitBox.setPosition(position);
+		attackFarHitBox.setPosition(position);
 
 		if (diveDelay > 5.f)
 		{
@@ -462,6 +512,7 @@ void LamiPhaseTwo::Dive(float dt, Player& player)
 		attackRangeLeftBox.setPosition(position.x - attackRangeBox.getSize().x * 1.5f, position.y);
 		attackRangeRightBox.setPosition(position.x + attackRangeBox.getSize().x * 1.5f, position.y);
 		hitBox.setPosition(position);
+		attackFarHitBox.setPosition(position);
 
 
 		if (sprite.getPosition().y < (originalPos.y))
@@ -563,4 +614,11 @@ void LamiPhaseTwo::UpdateCollision(std::vector<CollisionBlock*> blocks)
 
 void LamiPhaseTwo::UpdateCollisionAttackRangeBox(std::vector<CollisionBlock*> blocks)
 {
+}
+
+void LamiPhaseTwo::SoundInit()
+{
+	soundFindPlayer.setBuffer(SoundHolder::GetBuffer("sound/monster/Slime2.wav"));
+	soundHitted.setBuffer(SoundHolder::GetBuffer("sound/monster/SlimeHitVoice0.wav"));
+	soundDeath.setBuffer(SoundHolder::GetBuffer("sound/monster/SlimeDie0.wav"));
 }

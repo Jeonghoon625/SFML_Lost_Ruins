@@ -51,7 +51,16 @@ void ZombieWalker::MonsterInit()
 	hitBox.setFillColor(Color(155, 0, 255, 80));
 	hitBox.setPosition(sprite.getOrigin());
 
+	SoundInit();
+
 	animation.Play(strIdle);
 	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);
 
+}
+
+void ZombieWalker::SoundInit()
+{
+	soundFindPlayer.setBuffer(SoundHolder::GetBuffer("sound/monster/Zombie0.wav"));
+	soundHitted.setBuffer(SoundHolder::GetBuffer("sound/monster/Zombie1.wav"));
+	soundDeath.setBuffer(SoundHolder::GetBuffer("sound/monster/Zombie2.wav"));
 }

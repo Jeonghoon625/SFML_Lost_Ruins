@@ -43,6 +43,8 @@ void LamiPhaseOne::MonsterInit()
 	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());
 
+	SoundInit();
+
 	animation.Play(strIdle);
 	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);
 }
@@ -53,14 +55,14 @@ void LamiPhaseOne::ChasePlayer(Player& player, float dt)
 	{
 		if (isFindPlayer && !isAttackPlayer)
 		{
-			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay > 0.5f)
+			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay > 1.5f)
 			{
 				attackDelay = 0.f;
 				isFindPlayer = false;
 				isAttackPlayer = true;
 			}
 
-			if (!isAttackPlayer)
+			if (!isAttackPlayer && !isHit)
 			{
 				float h = player.GetPosition().x - sprite.getPosition().x;
 				float v = 0.f;
@@ -79,7 +81,7 @@ void LamiPhaseOne::ChasePlayer(Player& player, float dt)
 					findPlayerBox.setOrigin(200.f, 40.f);
 				}
 
-				if (h * h > 600.f * 600.f || (sprite.getPosition().y - player.GetPosition().y) > 260 || sprite.getPosition().y - player.GetPosition().y < -150)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
+				if (h * h > 200.f * 200.f || (sprite.getPosition().y - player.GetPosition().y) > 85 || sprite.getPosition().y - player.GetPosition().y < -50)		//플레이어의 거리가 떨어지면 플레이어 추적하는거 취소
 				{
 					isFindPlayer = false;
 					isIdle = true;
@@ -132,4 +134,11 @@ void LamiPhaseOne::Attack(float dt, int atk, Player& player, Time timeHit)
 			}
 		}
 	}
+}
+
+void LamiPhaseOne::SoundInit()
+{
+	soundFindPlayer.setBuffer(SoundHolder::GetBuffer("sound/monster/Slime2.wav"));
+	soundHitted.setBuffer(SoundHolder::GetBuffer("sound/monster/SlimeHitVoice0.wav"));
+	soundDeath.setBuffer(SoundHolder::GetBuffer("sound/monster/SlimeDie0.wav"));
 }

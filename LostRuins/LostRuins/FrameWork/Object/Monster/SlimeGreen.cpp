@@ -44,6 +44,8 @@ void SlimeGreen::MonsterInit()
 	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());
 
+	SoundInit();
+
 	animation.Play(strIdle);
 	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);
 }
@@ -181,9 +183,11 @@ void SlimeGreen::SetStatus(MonsterStatus newStatus)
 		animation.Play(strAttack, std::bind(&SlimeGreen::IsFinishAttack, this));
 		break;
 	case MonsterStatus::STATUS_HIT:
+		soundHitted.play();
 		animation.Play(strDamageTaken);
 		break;
 	case MonsterStatus::STATUS_DEAD:
+		soundDeath.play();
 		animation.Play(strDead);
 		break;
 	}
@@ -192,6 +196,13 @@ void SlimeGreen::SetStatus(MonsterStatus newStatus)
 void SlimeGreen::IsFinishAttack()
 {
 	attackHitDelay = 20.f;
+}
+
+void SlimeGreen::SoundInit()
+{
+	soundFindPlayer.setBuffer(SoundHolder::GetBuffer("sound/monster/Slime0.wav"));
+	soundHitted.setBuffer(SoundHolder::GetBuffer("sound/monster/SlimeHitVoice0.wav"));
+	soundDeath.setBuffer(SoundHolder::GetBuffer("sound/monster/SlimeDie0.wav"));
 }
 
 

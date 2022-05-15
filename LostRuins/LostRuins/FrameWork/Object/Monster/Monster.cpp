@@ -128,6 +128,8 @@ void Monster::MonsterInit()
 	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());*/
 
+	SoundInit();
+
 	currentStatus = MonsterStatus::STATUS_IDLE;
 }
 
@@ -277,6 +279,7 @@ void Monster::SetStatus(MonsterStatus newStatus)
 		animation.Play(strAttack);
 		break;
 	case MonsterStatus::STATUS_HIT:
+		soundHitted.play();
 		animation.Play(strDamageTaken);
 		break;
 	case MonsterStatus::STATUS_DEAD:
@@ -348,13 +351,14 @@ void Monster::FindPlayer(Player& player)
 {
 	if (isAlive)
 	{
-		if (!isFindPlayer)
+		if (!isFindPlayer && !isAttackPlayer && !isHit)
 		{
 			if (findPlayerBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()))
 			{
 				isIdle = false;
 				isWalk = false;
 				isFindPlayer = true;
+				soundFindPlayer.play();
 				/*	animation.Play(strRun);*/
 			}
 		}
@@ -368,7 +372,7 @@ void Monster::ChasePlayer(Player& player, float dt)
 		/*animation.PlayQueue(strRun);*/
 		if (isFindPlayer && !isAttackPlayer)
 		{
-			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && attackDelay > 0.5f)
+			if (attackRangeBox.getGlobalBounds().intersects(player.GetHitBox().getGlobalBounds()) && (attackDelay > 1.5f))
 			{
 				attackDelay = 0.f;
 				/*animation.Play(strAttack);*/
@@ -376,7 +380,7 @@ void Monster::ChasePlayer(Player& player, float dt)
 				isAttackPlayer = true;
 			}
 
-			if (!isAttackPlayer)
+			if (!isAttackPlayer && !isHit)
 			{
 				float h = player.GetPosition().x - sprite.getPosition().x;
 				float v = 0.f;
@@ -447,7 +451,7 @@ void Monster::Attack(float dt, int atk, Player& player, Time timeHit)
 					player.OnHitted(atk, timeHit);
 					// ¿©±â¿¡ player.onhitted
 				}
-
+				attackDelay = 0.f;
 				attackHitDelay = 0.f;
 				isAttackPlayer = false;
 				isFindPlayer = true;
@@ -467,6 +471,7 @@ bool Monster::OnHitted(int atk, float dt, Time timeHit)
 			if (health > 0)
 			{
 				/*animation.Play(strDamageTaken);*/
+				attackDelay = 0;
 				isFindPlayer = false;
 				isHit = true;
 				attackHitDelay = 0.f;
@@ -662,7 +667,7 @@ void Monster::UpdateDelayAndStatus(float dt)
 	if (isHit)
 	{
 		hitDelay += dt;
-		if (hitDelay > 0.3f)
+		if (hitDelay > 0.9f)
 		{
 			hitDelay = 0.f;
 			isHit = false;
@@ -677,6 +682,15 @@ void Monster::UpdateDelayAndStatus(float dt)
 
 	attackDelay += dt;
 }
+
+void Monster::SoundInit()
+{
+	soundFindPlayer.setBuffer(SoundHolder::GetBuffer("sound/monster/Slime0.wav"));
+	soundHitted.setBuffer(SoundHolder::GetBuffer("sound/monster/SlimeHitVoice0.wav"));
+	soundDeath.setBuffer(SoundHolder::GetBuffer("sound/monster/SlimeDie0.wav"));
+}
+
+
 
 
 void Monster::Draw(RenderWindow* window)

@@ -10,4 +10,5 @@ public:
 	GoblinAttacker();
 
 	virtual void MonsterInit();
+	virtual void SoundInit();
 };

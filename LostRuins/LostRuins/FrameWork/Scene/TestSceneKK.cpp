@@ -216,15 +216,15 @@ void TestSceneKK::CreateMonsters()
 	//zombieCrawler->Spawn(Vector2f(90, 200));
 	//monsters.push_back(zombieCrawler);
 	//
-	//Monster* slimeGreen = new SlimeGreen;
-	//slimeGreen->MonsterInit();
-	//slimeGreen->Spawn(Vector2f(90, 200));
-	//monsters.push_back(slimeGreen);
+	Monster* slimeGreen = new SlimeGreen;
+	slimeGreen->MonsterInit();
+	slimeGreen->Spawn(Vector2f(90, 200));
+	monsters.push_back(slimeGreen);
 
-	Monster* lamiPhaseOne = new LamiPhaseOne;
+	/*Monster* lamiPhaseOne = new LamiPhaseOne;
 	lamiPhaseOne->MonsterInit();
 	lamiPhaseOne->Spawn(Vector2f(90, 200));
-	monsters.push_back(lamiPhaseOne);
+	monsters.push_back(lamiPhaseOne);*/
 
 }
 

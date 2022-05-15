@@ -42,6 +42,15 @@ void GoblinAttacker::MonsterInit()
 	hitBox.setFillColor(Color(50, 50, 25, 70));
 	hitBox.setPosition(sprite.getOrigin());
 
+	SoundInit();
+
 	animation.Play(strIdle);
 	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);
+}
+
+void GoblinAttacker::SoundInit()
+{
+	soundFindPlayer.setBuffer(SoundHolder::GetBuffer("sound/monster/Goblin0.wav"));
+	soundHitted.setBuffer(SoundHolder::GetBuffer("sound/monster/GoblinHit0.wav"));
+	soundDeath.setBuffer(SoundHolder::GetBuffer("sound/monster/GoblinDie0.wav"));
 }
