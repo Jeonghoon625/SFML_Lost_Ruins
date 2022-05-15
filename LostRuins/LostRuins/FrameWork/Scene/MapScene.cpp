@@ -62,7 +62,6 @@ void MapScene::Init(SceneManager* sceneManager)
 
 	//test
 	
-	selectTexture = TextureHolder::GetTexture("maps/Stage1/SewerTop0.png");
 	isDraw = true;
 
 	//버튼 집합 생성
@@ -496,11 +495,29 @@ void MapScene::MapDataInit()
 	mapWidth = colWidth[0];
 	mapHeight = colHeight[0];
 	
-	csvfile csv("Test.csv");
-	csv << "X" << "VALUE" << endrow;
-	// Data
-	int i = 1;
-	csv << i++ << 123 << endrow;
+	rapidcsv::Document resouceBackGrounds("data_tables/maps/Resource_BackGround.csv");
+	std::vector<std::string> colResouceBackGroundsId = resouceBackGrounds.GetColumn<std::string>("resourceId");
+	std::vector<std::string> colResouceBackGroundsPath = resouceBackGrounds.GetColumn<std::string>("resourcePath");
+	int totalResouceBackGrounds = colResouceBackGroundsId.size();
+	for (int i = 0; i < totalResouceBackGrounds; ++i)
+	{
+		backGroundResource.insert({colResouceBackGroundsId[i], TextureHolder::GetTexture(colResouceBackGroundsPath[i])});
+	}
+	/*for (auto iter : backGroundResource)
+	{ 
+		cout << iter.first << " " << iter.second.getSize().x << endl;
+	}*/
+
+	rapidcsv::Document resouceObjects("data_tables/maps/Resource_Object.csv");
+	std::vector<std::string> colResouceBackGroundsId = resouceBackGrounds.GetColumn<std::string>("resourceId");
+	std::vector<std::string> colResouceBackGroundsPath = resouceBackGrounds.GetColumn<std::string>("resourcePath");
+	int totalResouceBackGrounds = colResouceBackGroundsId.size();
+	for (int i = 0; i < totalResouceBackGrounds; ++i)
+	{
+		backGroundResource.insert({ colResouceBackGroundsId[i], TextureHolder::GetTexture(colResouceBackGroundsPath[i]) });
+	}
+
+	rapidcsv::Document resouceTerrains("data_tables/maps/Resource_Terrain.csv");
 }
 
 MapScene::~MapScene()
@@ -515,6 +532,18 @@ MapScene::~MapScene()
 
 	blocks.clear();
 }
+
+
+//csv 파일쓰기
+/*
+
+csvfile csv("Test.csv");
+csv << "X" << "VALUE" << endrow;
+// Data
+int i = 1;
+csv << i++ << 123 << endrow;
+
+*/
 
 //미리보기
 /*

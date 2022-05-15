@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include <vector>
+#include <map>
 #include "Scene.h"
 #include "../Mgr/TextureHolder.h"
 #include "../Object/Player/Player.h"
@@ -20,8 +21,9 @@ enum class ButtonType
 
 enum class ButtonCategory
 {
-	DRAW,
-	INPUT
+	INPUT,
+	SELECT,
+	DRAW
 };
 
 enum class ButtonState
@@ -29,6 +31,14 @@ enum class ButtonState
 	BLOCK,
 	OBJECT,
 	TERRAIN,
+	GATE,
+	NONE
+};
+
+enum class Flip
+{
+	HOR,
+	VER,
 	NONE
 };
 
@@ -46,10 +56,18 @@ struct Button
 	bool isButtonToggle;
 };
 
-struct Tile
+struct TerrainResource
 {
-
+	Texture tex;
+	int angle;
+	Flip flip;
 };   
+
+struct ObjectResource
+{
+	Texture tex;
+	string type;
+};
 
 class MapScene : public Scene
 {
@@ -93,7 +111,7 @@ class MapScene : public Scene
 	ButtonState currentInputState;
 	ButtonState currentDrawState;
 
-	vector <Button> buttons;
+	vector<Button> buttons;
 
 	string name;
 
@@ -107,6 +125,12 @@ class MapScene : public Scene
 	int toY;
 
 	RectangleShape textureShape;
+
+	map<string, ObjectResource> objectResource;
+	map<string, TerrainResource> terrainResource;
+	map<string, Texture> backGroundResource;
+	map<std::string, Texture> texmap;
+
 public:
 	MapScene();
 
