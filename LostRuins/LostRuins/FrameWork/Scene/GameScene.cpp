@@ -252,11 +252,8 @@ int GameScene::CreateBackGround()
 
 void GameScene::CreateMonsters()
 {
-	
-
 	/*Monster* lamiPhaseTwo = new LamiPhaseTwo;
 	lamiPhaseTwo->MonsterInit();
 	lamiPhaseTwo->Spawn(Vector2f(90, 150));
 	monsters.push_back(lamiPhaseTwo);*/
-
 }

@@ -25,7 +25,7 @@ public:
         , special_chars_("\"")
     {
         fs_.exceptions(std::ios::failbit | std::ios::badbit);
-        fs_.open("data_tables/maps/" + filename, std::ios::trunc);
+        fs_.open("data_tables/maps/" + filename, ios_base::in | ios_base::out | ios_base::trunc);
     }
 
     ~csvfile()

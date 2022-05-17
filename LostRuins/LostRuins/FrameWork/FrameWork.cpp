@@ -45,10 +45,10 @@ void FrameWork::Update()
 
 		//ESC close
 		case Event::KeyPressed:
-			if (event.key.code == Keyboard::Escape)
+		/*	if (event.key.code == Keyboard::Escape)
 			{
 				window->close();
-			}
+			}*/
 
 			if (event.key.code == Keyboard::F5)
 			{
@@ -62,7 +62,6 @@ void FrameWork::Update()
 				{
 					window->create(VideoMode(resolution.x, resolution.y), "Lost Ruins", Style::Default);
 				}
-				
 			}
 			break;
 		

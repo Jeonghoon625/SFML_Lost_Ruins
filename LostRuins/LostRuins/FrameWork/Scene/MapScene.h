@@ -100,18 +100,18 @@ class MapScene : public Scene
 	Vector2u downGrid;
 	Vector2u upGrid;
 	vector<Vector2u> ingGrid;
+
 	RectangleShape* currentDrag;
 
 	Text mousePosText;
 	Text stateText;
+	Text currentMapIdText;
 	Font font;
 
 	ButtonState currentInputState;
 	ButtonState currentDrawState;
 
 	vector<Button> buttons;
-
-	string name;
 
 	//test
 	bool isDraw;
@@ -148,6 +148,8 @@ class MapScene : public Scene
 	string spritePath;
 	string blockPath;
 
+	string currentMapId;
+
 public:
 	MapScene();
 
@@ -160,23 +162,22 @@ public:
 	void MoveView(float dt);
 	void UpdateMousePos(RenderWindow* window);
 
-	//int CreateBackGround(int c, int r);
+	Button InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonCategory category, ButtonState state);
 
 	void CreateDefaultButtonSet();
-	void CreateSelectButtonSet(ButtonState state);
+	void CreateSelectButtonSet(string buttonName);
+	void CreateInputData(InputData currentInputData);
 
-	Button InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonCategory category, ButtonState state);
 	bool UpdateButton();
+	void UpdateSelectTexture();
 
 	void SetCurrentInputState(ButtonState state);
 	void SetCurrentDrawState(ButtonState state);
 
-	void UpdateSelectTexture();
-
-	void CreateInputData(InputData currentInputData);
+	bool CompareInputData(InputData inputData, vector<InputData> inputDatas);
 
 	void Save();
+	void Load(string mapName);
 
 	virtual ~MapScene();
 };
-

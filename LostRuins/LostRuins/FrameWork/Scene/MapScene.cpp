@@ -16,8 +16,8 @@ void MapScene::Init(SceneManager* sceneManager)
 	VIEW_SPEED = mapWidth * 10.f;
 	this->sceneMgr = sceneManager;
 
-	resolution.x = 1920.f; // VideoMode::getDesktopMode().width;
-	resolution.y = 1080.f; // VideoMode::getDesktopMode().height;
+	resolution.x = VideoMode::getDesktopMode().width;
+	resolution.y = VideoMode::getDesktopMode().height;
 
 	mapView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
@@ -35,7 +35,7 @@ void MapScene::Init(SceneManager* sceneManager)
 		for (int j = 0; j < mapHeight; j++)
 		{
 			gridTileMap[i][j].setSize(Vector2f(gridSizeF, gridSizeF));
-			gridTileMap[i][j].setFillColor(Color::White);
+			gridTileMap[i][j].setFillColor({255, 255, 255});
 			gridTileMap[i][j].setOutlineThickness(1.f);
 			gridTileMap[i][j].setOutlineColor(Color::Black);
 			gridTileMap[i][j].setPosition(i * gridSizeF, j * gridSizeF);
@@ -61,8 +61,13 @@ void MapScene::Init(SceneManager* sceneManager)
 	stateText.setPosition(0.f, 0.f);
 	stateText.setString("TEST");
 
+	currentMapIdText.setCharacterSize(30);
+	currentMapIdText.setFillColor(Color::Red);
+	currentMapIdText.setFont(font);
+	currentMapIdText.setPosition(resolution.x * 0.393f, 7.f);
+	currentMapIdText.setString("Map Id : Default");
+
 	//test
-	//currentTexture = terrainResource.find("SewerBossOneWayCorner")->second.tex;
 	isDraw = true;
 	isSelect = false;
 
@@ -73,7 +78,7 @@ void MapScene::Init(SceneManager* sceneManager)
 void MapScene::DefaultMapInit()
 {
 	//Map Resource
-	rapidcsv::Document resouceBackGrounds("data_tables/maps/Resource_BackGround.csv");
+	rapidcsv::Document resouceBackGrounds("data_tables/maps/Resource/Resource_BackGround.csv");
 	std::vector<std::string> colResouceBackGroundsId = resouceBackGrounds.GetColumn<std::string>("resourceId");
 	std::vector<std::string> colResouceBackGroundsPath = resouceBackGrounds.GetColumn<std::string>("resourcePath");
 	int totalResouceBackGrounds = colResouceBackGroundsId.size();
@@ -82,7 +87,7 @@ void MapScene::DefaultMapInit()
 		backGroundResource.insert({ colResouceBackGroundsId[i], TextureHolder::GetTexture(colResouceBackGroundsPath[i]) });
 	}
 
-	rapidcsv::Document resouceObjects("data_tables/maps/Resource_Object.csv");
+	rapidcsv::Document resouceObjects("data_tables/maps/Resource/Resource_Object.csv");
 	std::vector<std::string> colResouceObjectsId = resouceObjects.GetColumn<std::string>("resourceId");
 	std::vector<std::string> colResouceObjectsPath = resouceObjects.GetColumn<std::string>("resourcePath");
 	std::vector<std::string> colResouceObjectsType = resouceObjects.GetColumn<std::string>("resourceType");
@@ -95,7 +100,7 @@ void MapScene::DefaultMapInit()
 		objectResource.insert({ colResouceObjectsId[i], object });
 	}
 
-	rapidcsv::Document resouceTerrains("data_tables/maps/Resource_Terrain.csv");
+	rapidcsv::Document resouceTerrains("data_tables/maps/Resource/Resource_Terrain.csv");
 	std::vector<std::string> colResouceTerrainsId = resouceTerrains.GetColumn<std::string>("resourceId");
 	std::vector<std::string> colResouceTerrainsPath = resouceTerrains.GetColumn<std::string>("resourcePath");
 	int totalResouceTerrains = colResouceTerrainsId.size();
@@ -108,20 +113,49 @@ void MapScene::DefaultMapInit()
 	}
 
 	//Map information
-	rapidcsv::Document clips("data_tables/maps/Map_Default.csv");
-	std::vector<std::string> colId = clips.GetColumn<std::string>("mapId");
-	std::vector<int> colWidth = clips.GetColumn<int>("mapWidth");
-	std::vector<int> colHeight = clips.GetColumn<int>("mapHeight");
-	std::vector<std::string> colspritePath = clips.GetColumn<std::string>("spritePath");
-	std::vector<std::string> colblockPath = clips.GetColumn<std::string>("blockPath");
+	rapidcsv::Document mapList("data_tables/maps/Map_List.csv");
+	std::vector<std::string> colId = mapList.GetColumn<std::string>("mapId");
+	std::vector<int> colWidth = mapList.GetColumn<int>("mapWidth");
+	std::vector<int> colHeight = mapList.GetColumn<int>("mapHeight");
+	std::vector<std::string> colspritePath = mapList.GetColumn<std::string>("spritePath");
+	std::vector<std::string> colblockPath = mapList.GetColumn<std::string>("blockPath");
 	int totalMaps = colId.size();
 
+	currentMapId = colId[0];
 	mapWidth = colWidth[0];
 	mapHeight = colHeight[0];
 	spritePath = colspritePath[0];
 	blockPath = colblockPath[0];
 }
 
+Button MapScene::InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonCategory category, ButtonState state)
+{
+	RectangleShape buttonShape(Vector2f(width, height));
+	buttonShape.setFillColor({ 15, 153, 153, 125 });
+	buttonShape.setPosition(left, top);
+
+	FloatRect buttonRect(left, top, width, height);
+
+	Text buttonText;
+	buttonText.setFont(font);
+	buttonText.setCharacterSize(15);
+	buttonText.setFillColor(Color::Black);
+	buttonText.setString(name);
+	buttonText.setOrigin(buttonText.getLocalBounds().left + buttonText.getLocalBounds().width * 0.5, buttonText.getLocalBounds().top + buttonText.getLocalBounds().height * 0.5);
+	buttonText.setPosition(left + width * 0.5, top + height * 0.5);
+
+	Button button;
+	button.buttonRect = buttonRect;
+	button.buttonShape = buttonShape;
+	button.buttonText = buttonText;
+	button.buttonType = type;
+	button.buttonCategory = category;
+	button.buttonState = state;
+	button.isButtonToggle = false;
+	button.isButtonClick = false;
+
+	return button;
+}
 
 void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
@@ -140,7 +174,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 			}
 
 			downGrid = mousePosGrid;
-			std::cout << "DGrid : " << downGrid.x << " " << downGrid.y << "\n";
+			//std::cout << "DGrid : " << downGrid.x << " " << downGrid.y << "\n";
 			ingGrid.push_back(mousePosGrid);
 			if (currentInputState == ButtonState::TERRAIN || currentInputState == ButtonState::OBJECT || currentInputState == ButtonState::BACKGROUND)
 			{
@@ -175,18 +209,9 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 				}
 			}
 
-			if (currentInputState == ButtonState::TERRAIN)
+			if (currentInputState == ButtonState::TERRAIN && currentInput != nullptr)
 			{
-				auto it = find(ingGrid.begin(), ingGrid.end(), mousePosGrid);
-				if (it == ingGrid.end())
-				{
-					if (currentInput != nullptr)
-					{
-						CreateInputData(*currentInput);
-					}
-				}
-
-				ingGrid.push_back(mousePosGrid);
+				CreateInputData(*currentInput);
 			}
 		}
 
@@ -197,13 +222,11 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 			{
 				upGrid = mousePosGrid;
 				std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
+
 				if (currentInput != nullptr)
 				{
 					CreateInputData(*currentInput);
 				}
-
-				delete currentInput;
-				currentInput = nullptr;
 
 				ingGrid.clear();
 			}
@@ -220,10 +243,13 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 				
 				upGrid = mousePosGrid;
 				std::cout << "UGrid : " << upGrid.x << " " << upGrid.y << "\n";
+
+				ingGrid.clear();
 			}
 			break;
 
 		default:
+			ingGrid.clear();
 			break;
 		}
 
@@ -234,7 +260,7 @@ void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainV
 				delete player;
 			}
 			player = new Player();
-			//player->Init(nullptr);
+			player->Init(monsters);
 			player->Spawn(mousePosWorld.x, mousePosWorld.y);
 		}
 
@@ -272,8 +298,6 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 
 	if (isDraw)
 	{
-		window->draw(shape);
-
 		for (int i = 0; i < mapWidth; i++)
 		{
 			for (int j = 0; j < mapHeight; j++)
@@ -323,11 +347,12 @@ void MapScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 		window->draw(currentInput->shape);
 	}
 	
-
 	//UI Render
 	window->setView(*uiView);
 	window->draw(mousePosText);
 	window->draw(stateText);
+	window->draw(currentMapIdText);
+
 	for (auto button : buttons)
 	{
 		window->draw(button.buttonShape);
@@ -398,20 +423,27 @@ void MapScene::UpdateMousePos(RenderWindow* window)
 
 void MapScene::CreateDefaultButtonSet()
 {
-	Button buttonSave = InitButton(resolution.x * 0.75f - 105.f - 105.f - 105.f - 105.f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Save", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::NONE);
+	Button buttonSave = InitButton(resolution.x * 0.75f - 105.f - 105.f - 105.f - 105.f - 105.f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Save", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::NONE);
 	buttons.push_back(buttonSave);
 
-	Button buttonUndo0 = InitButton(resolution.x * 0.75f - 105.f - 105.f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Undo\nOBJECT", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::OBJECT);
-	buttons.push_back(buttonUndo0);
+	Button buttonLoad = InitButton(resolution.x * 0.75f - 105.f - 105.f - 105.f - 105.f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Load", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::NONE);
+	buttons.push_back(buttonLoad);
+	
+	Button buttonClear = InitButton(resolution.x * 0.75f - 105.f - 105.f - 105.f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "All\nClear", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::NONE);
+	buttons.push_back(buttonClear);
 
-	Button buttonUndo1 = InitButton(resolution.x * 0.75f - 105.f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Undo\nBLOCK", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::BLOCK);
-	buttons.push_back(buttonUndo1);
+	Button buttonUndoBlock = InitButton(resolution.x * 0.75f, resolution.y * 0.05f + 55.f, 100.f, 50.f, "Undo\nBlock", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::OBJECT);
+	buttons.push_back(buttonUndoBlock);
 
-	Button buttonUndo2 = InitButton(resolution.x * 0.75f - 105.f - 105.f, resolution.y * 0.05f, 100.f, 50.f, "Undo\nTERRAIN", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::TERRAIN);
-	buttons.push_back(buttonUndo2);
+	Button buttonUndoTerrain = InitButton(resolution.x * 0.75f + 105.f, resolution.y * 0.05f + 55.f, 100.f, 50.f, "Undo\nTerrain", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::BLOCK);
+	buttons.push_back(buttonUndoTerrain);
 
-	Button buttonUndo3 = InitButton(resolution.x * 0.75f - 105.f , resolution.y * 0.05f, 100.f, 50.f, "Undo\nBACK", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::BACKGROUND);
-	buttons.push_back(buttonUndo3);
+	Button buttonUndoObject = InitButton(resolution.x * 0.75f + 105.f + 105.f, resolution.y * 0.05f + 55.f, 100.f, 50.f, "Undo\nObject", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::TERRAIN);
+	buttons.push_back(buttonUndoObject);
+
+	Button buttonUndoBack = InitButton(resolution.x * 0.75f + 105.f + 105.f + 105.f, resolution.y * 0.05f + 55.f, 100.f, 50.f, "Undo\nBackGround", ButtonType::DEFAULT, ButtonCategory::DELETE, ButtonState::BACKGROUND);
+	buttons.push_back(buttonUndoBack);
+
 
 	Button buttonBlock = InitButton(resolution.x * 0.75f, resolution.y * 0.05f, 100.f, 50.f, "Collision\n  Block  ", ButtonType::DEFAULT, ButtonCategory::INPUT, ButtonState::BLOCK);
 	buttons.push_back(buttonBlock);
@@ -426,7 +458,7 @@ void MapScene::CreateDefaultButtonSet()
 	buttons.push_back(buttonBackGround);
 }
 
-void MapScene::CreateSelectButtonSet(ButtonState state)
+void MapScene::CreateSelectButtonSet(string buttonName)
 {
 	isSelect = true;
 	float posX = resolution.x * 0.5f;
@@ -435,27 +467,15 @@ void MapScene::CreateSelectButtonSet(ButtonState state)
 
 	Button buttonDelete;
 	
-	switch (state)
+	isSelect = true;
+
+	selectButtons.clear();
+
+	posX = resolution.x * 0.5f;
+	posY = resolution.y * 0.15f;
+
+	if (buttonName == "Object")
 	{
-	case ButtonState::BLOCK:
-		
-		isSelect = true;
-
-		selectButtons.clear();
-
-		break;
-
-	case ButtonState::OBJECT:
-		
-		isSelect = true;
-
-		selectButtons.clear();
-
-		posX = resolution.x * 0.5f;
-		posY = resolution.y * 0.15f;
-
-		i = 0;
-
 		for (auto iter : objectResource)
 		{
 			if (i % 12 == 0)
@@ -471,20 +491,10 @@ void MapScene::CreateSelectButtonSet(ButtonState state)
 			button = InitButton(posX, posY, 300.f, 50.f, iter.first, ButtonType::DEFAULT, ButtonCategory::SELECT, ButtonState::OBJECT);
 			selectButtons.push_back(button);
 		}
+	}
 
-		break;
-
-	case ButtonState::TERRAIN:
-
-		isSelect = true;
-
-		selectButtons.clear();
-
-		posX = resolution.x * 0.5f;
-		posY = resolution.y * 0.15f;
-
-		i = 0;
-
+	if (buttonName == "Terrain")
+	{
 		for (auto iter : terrainResource)
 		{
 			if (i % 12 == 0)
@@ -500,28 +510,14 @@ void MapScene::CreateSelectButtonSet(ButtonState state)
 			button = InitButton(posX, posY, 300.f, 50.f, iter.first, ButtonType::DEFAULT, ButtonCategory::SELECT, ButtonState::TERRAIN);
 			selectButtons.push_back(button);
 		}
+	}
 
-		break;
-
-	case ButtonState::BACKGROUND:
-
-		isSelect = true;
-
-		selectButtons.clear();
-
-		posX = resolution.x * 0.5f;
-		posY = resolution.y * 0.15f;
-
-		i = 0;
+	if (buttonName == "BackGround")
+	{
+		posX += 610.f;
 
 		for (auto iter : backGroundResource)
 		{
-			if (i % 12 == 0)
-			{
-				posX += 305.f;
-				posY = resolution.y * 0.15f;
-			}
-
 			posY += 55.f;
 			i++;
 
@@ -529,38 +525,7 @@ void MapScene::CreateSelectButtonSet(ButtonState state)
 			button = InitButton(posX, posY, 300.f, 50.f, iter.first, ButtonType::DEFAULT, ButtonCategory::SELECT, ButtonState::BACKGROUND);
 			selectButtons.push_back(button);
 		}
-
-		break;
 	}
-}
-
-Button MapScene::InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonCategory category, ButtonState state)
-{
-	RectangleShape buttonShape(Vector2f(width, height));
-	buttonShape.setFillColor({15, 153, 153, 125});
-	buttonShape.setPosition(left, top);
-
-	FloatRect buttonRect(left, top, width, height);
-
-	Text buttonText;
-	buttonText.setFont(font);
-	buttonText.setCharacterSize(15);
-	buttonText.setFillColor(Color::Black);
-	buttonText.setString(name);
-	buttonText.setOrigin(buttonText.getLocalBounds().left + buttonText.getLocalBounds().width * 0.5, buttonText.getLocalBounds().top + buttonText.getLocalBounds().height * 0.5);
-	buttonText.setPosition(left + width * 0.5, top + height * 0.5);
-
-	Button button;
-	button.buttonRect = buttonRect;
-	button.buttonShape = buttonShape;
-	button.buttonText = buttonText;
-	button.buttonType = type;
-	button.buttonCategory = category;
-	button.buttonState = state;
-	button.isButtonToggle = false;
-	button.isButtonClick = false;
-
-	return button;
 }
 
 bool MapScene::UpdateButton()
@@ -600,57 +565,70 @@ bool MapScene::UpdateButton()
 
 					if (button.buttonCategory == ButtonCategory::INPUT)
 					{
-						if (button.buttonText.getString() == "Save")
-						{
-							Save();
-						}
-
-						else
-						{
-							SetCurrentInputState(button.buttonState);
-							CreateSelectButtonSet(button.buttonState);
-						}
+						SetCurrentInputState(button.buttonState);
+						CreateSelectButtonSet(button.buttonText.getString());
 					}
 
 					if (button.buttonCategory == ButtonCategory::DRAW)
 					{
 						SetCurrentDrawState(button.buttonState);
-						CreateSelectButtonSet(button.buttonState);
+						CreateSelectButtonSet(button.buttonText.getString());
 					}
 
 					if (button.buttonCategory == ButtonCategory::DELETE)
 					{
-						SetCurrentInputState(button.buttonState);
-						switch (currentInputState)
+						string undo = button.buttonText.getString();
+
+						if (undo == "Undo\nBlock")
 						{
-						case ButtonState::BLOCK:
 							if (!blocks.empty())
 							{
 								if (*(blocks.end() - 1) != nullptr)
 								{
 									delete* (blocks.end() - 1);
+									*(blocks.end() - 1) = nullptr;
 								}
 								blocks.pop_back();
 							}
-						
-						case ButtonState::OBJECT:
-							if (!objectInput.empty())
-							{
-								objectInput.pop_back();
-							}
-							
+						}
 
-						case ButtonState::TERRAIN:
+						if (undo == "Undo\nTerrain")
+						{
 							if (!terrainInput.empty())
 							{
 								terrainInput.pop_back();
 							}
-							
+						}
 
-						case ButtonState::BACKGROUND:
+						if (undo == "Undo\nBackGround")
+						{
 							if (!backGroundInput.empty())
 							{
 								backGroundInput.pop_back();
+							}
+						}
+
+						if (undo == "Undo\nObject")
+						{
+							if (!objectInput.empty())
+							{
+								objectInput.pop_back();
+							}
+						}
+
+						if (undo == "All\nClear")
+						{
+							terrainInput.clear();
+							objectInput.clear();
+							backGroundInput.clear();
+
+							for (auto it : blocks)
+							{
+								if (it != nullptr)
+								{
+									delete it;
+									it = nullptr;
+								}
 							}
 						}
 					}
@@ -695,55 +673,39 @@ bool MapScene::UpdateButton()
 
 			if (InputManager::GetMouseButtonUp(Mouse::Button::Left))
 			{
+				currentInputState = (button.buttonState);
+
+				if (currentInput != nullptr)
+				{
+					delete currentInput;
+					currentInput = nullptr;
+				}
+
+				currentInput = new InputData();
+				currentInput->resourceId = (string)button.buttonText.getString();
+				currentInput->rotate = 0.f;
+
 				if (button.buttonState == ButtonState::BACKGROUND)
 				{
-					currentInputState = (button.buttonState);
 					currentTexture = backGroundResource.find((string)button.buttonText.getString())->second;
-					if (currentInput != nullptr)
-					{
-						delete currentInput;
-						currentInput = nullptr;
-					}
-
-					currentInput = new InputData();
-					currentInput->resourceId = (string)button.buttonText.getString();
+					
 					currentInput->scaleX = 96.f;
 					currentInput->scaleY = 96.f;
-					currentInput->rotate = 0.f;
 				}
 
-				if (button.buttonState == ButtonState::OBJECT)
+				if (button.buttonState == ButtonState::OBJECT || button.buttonState == ButtonState::TERRAIN)
 				{
-					currentInputState = (button.buttonState);
-					if (currentInput != nullptr)
+					if (button.buttonState == ButtonState::OBJECT)
 					{
-						delete currentInput;
-						currentInput = nullptr;
+						currentTexture = objectResource.find((string)button.buttonText.getString())->second.tex;
 					}
-					currentInput = new InputData();
-					currentInput->resourceId = (string)button.buttonText.getString();
-					currentTexture = objectResource.find((string)button.buttonText.getString())->second.tex;
-					currentInput->resourceId = (string)button.buttonText.getString();
+					else
+					{
+						currentTexture = terrainResource.find((string)button.buttonText.getString())->second.tex;
+					}
+					
 					currentInput->scaleX = currentTexture.getSize().x;
 					currentInput->scaleY = currentTexture.getSize().y;
-					currentInput->rotate = 0.f;
-				}
-
-				if (button.buttonState == ButtonState::TERRAIN)
-				{
-					currentInputState = (button.buttonState);
-					if (currentInput != nullptr)
-					{
-						delete currentInput;
-						currentInput = nullptr;
-					}
-					currentInput = new InputData();
-					currentInput->resourceId = (string)button.buttonText.getString();
-					currentTexture = terrainResource.find((string)button.buttonText.getString())->second.tex;
-					currentInput->resourceId = (string)button.buttonText.getString();
-					currentInput->scaleX = currentTexture.getSize().x;
-					currentInput->scaleY = currentTexture.getSize().y;
-					currentInput->rotate = 0.f;
 				}
 
 				button.buttonShape.setFillColor(Color(255, 0, 0, 125)); //Red
@@ -757,6 +719,7 @@ bool MapScene::UpdateButton()
 			button.buttonShape.setFillColor(Color(15, 153, 153, 125)); //Gray
 		}
 	}
+
 	std::stringstream ss;
 	string inputState;
 	switch (currentInputState)
@@ -795,6 +758,7 @@ bool MapScene::UpdateButton()
 		drawState = "TERRAIN";
 		break;
 	}
+
 	ss << "InputState : " << inputState << '\n'
 		<< "DrawState : " << drawState << std::endl;
 
@@ -802,17 +766,6 @@ bool MapScene::UpdateButton()
 
 	return isButtonUpdate;
 }
-
-void MapScene::SetCurrentInputState(ButtonState state)
-{
-	currentInputState = state;
-}
-
-void MapScene::SetCurrentDrawState(ButtonState state)
-{
-	currentDrawState = state;
-}
-
 
 void MapScene::UpdateSelectTexture()
 {
@@ -862,35 +815,44 @@ void MapScene::UpdateSelectTexture()
 void MapScene::CreateInputData(InputData currentInputData)
 {
 	InputData inputData;
+	inputData = currentInputData;
+	inputData.shape.setFillColor({ 255,255,255 });
 
 	switch (currentInputState)
 	{
 	case ButtonState::BACKGROUND:
-		inputData = currentInputData;
 		inputData.shape.setTexture(&(backGroundResource.find(inputData.resourceId)->second));
-		inputData.shape.setFillColor({ 255,255,255 });
-		backGroundInput.push_back(inputData);
+		
+		if (CompareInputData(inputData, backGroundInput) == false)
+		{
+			backGroundInput.push_back(inputData);
+		}
+		
 		break;
 
 	case ButtonState::TERRAIN:
-		inputData = currentInputData;
 		inputData.shape.setTexture(&(terrainResource.find(inputData.resourceId)->second.tex));
-		inputData.shape.setFillColor({ 255,255,255 });
-		terrainInput.push_back(inputData);
+
+		if (CompareInputData(inputData, terrainInput) == false)
+		{
+			terrainInput.push_back(inputData);
+		}
 		break;
 
 	case ButtonState::OBJECT:
-		inputData = currentInputData;
 		inputData.shape.setTexture(&(objectResource.find(inputData.resourceId)->second.tex));
-		inputData.shape.setFillColor({ 255,255,255 });
-		objectInput.push_back(inputData);
+
+		if (CompareInputData(inputData, objectInput) == false)
+		{
+			objectInput.push_back(inputData);
+		}
 		break;
 	}
 }
 
 void MapScene::Save()
 {
-	csvfile csvSprite("defaultSprite.csv");
+	csvfile csvSprite("Sprite_Default.csv");
 
 	csvSprite << "resourceType" << "resourceId" << "rotate" << "scaleX" << "scaleY" << "posX" << "posY" << endrow;
 	for (auto terrain : terrainInput)
@@ -908,7 +870,7 @@ void MapScene::Save()
 		csvSprite << "backGroundInput" << backGround.resourceId << backGround.rotate << backGround.scaleX << backGround.scaleY << backGround.posX << backGround.posY << endrow;
 	}
 
-	csvfile csvBlock("defaultBlock.csv");
+	csvfile csvBlock("Block_Default.csv");
 
 	int i = 0;
 	csvBlock << "index" << "x" << "y" << "width" << "height" << endrow;
@@ -917,6 +879,86 @@ void MapScene::Save()
 	{
 		csvBlock << i++ << block->GetBlockRect().left << block->GetBlockRect().top << block->GetBlockRect().width << block->GetBlockRect().height << endrow;
 	}
+}
+
+void MapScene::Load(string mapName)
+{
+	string path = "data_tables/maps/" + mapName;
+	rapidcsv::Document LoadSprites(path);
+	std::vector<std::string> colSpritesType = LoadSprites.GetColumn<std::string>("resourceType");
+	std::vector<std::string> colSpritesId = LoadSprites.GetColumn<std::string>("resourceId");
+	std::vector<float> colSpritesRotate = LoadSprites.GetColumn<float>("rotate");
+	std::vector<float> colSpritesScaleX = LoadSprites.GetColumn<float>("scaleX");
+	std::vector<float> colSpritesScaleY = LoadSprites.GetColumn<float>("scaleY");
+	std::vector<float> colSpritesPosX = LoadSprites.GetColumn<float>("posX");
+	std::vector<float> colSpritesPosY = LoadSprites.GetColumn<float>("posY");
+
+	int totalLoadSprites = colSpritesType.size();
+
+	for (int i = 0; i < totalLoadSprites; ++i)
+	{
+		InputData inputData;
+		inputData.resourceId = colSpritesId[i];
+		inputData.rotate = colSpritesRotate[i];
+		inputData.scaleX = colSpritesScaleX[i];
+		inputData.scaleY = colSpritesScaleY[i];
+		inputData.posX = colSpritesPosX[i];
+		inputData.posY = colSpritesPosY[i];
+		inputData.shape.setSize(Vector2f(1.f, 1.f));
+		inputData.shape.setScale(inputData.scaleX, inputData.scaleY);
+		inputData.shape.setPosition(inputData.posX, inputData.posY);
+		inputData.shape.setOrigin(inputData.shape.getLocalBounds().width * 0.5f, inputData.shape.getLocalBounds().height * 0.5f);
+		inputData.shape.setRotation(inputData.rotate);
+
+		string spriteType = colSpritesType[i];
+		if (spriteType == "terrainInput")
+		{
+			inputData.shape.setTexture(&(terrainResource.find((string)colSpritesId[i])->second.tex), true);
+			terrainInput.insert(terrainInput.begin(), inputData);
+		}
+
+		if (spriteType == "objectInput")
+		{
+			inputData.shape.setTexture(&(objectResource.find((string)colSpritesId[i])->second.tex), true);
+			objectInput.insert(objectInput.begin(), inputData);
+		}
+
+		if (spriteType == "backGroundInput")
+		{
+			inputData.shape.setTexture(&(backGroundResource.find((string)colSpritesId[i])->second), true);
+			backGroundInput.insert(backGroundInput.begin(), inputData);
+		}
+	}
+}
+
+void MapScene::SetCurrentInputState(ButtonState state)
+{
+	currentInputState = state;
+}
+
+void MapScene::SetCurrentDrawState(ButtonState state)
+{
+	currentDrawState = state;
+}
+
+bool MapScene::CompareInputData(InputData inputData, vector<InputData> inputDatas)
+{
+	for (auto it : inputDatas)
+	{
+		if(
+			it.resourceId == inputData.resourceId && 
+			it.rotate == inputData.rotate &&
+			it.scaleX == inputData.scaleX &&
+			it.scaleY == inputData.scaleY &&
+			it.posX == inputData.posX &&
+			it.posY == inputData.posY
+			)
+		{
+			return  true;
+		}
+	}
+
+	return false;
 }
 
 MapScene::~MapScene()
@@ -931,106 +973,3 @@ MapScene::~MapScene()
 
 	blocks.clear();
 }
-
-//Map 순회
-/*for (auto iter : backGroundResource)
-	{
-		cout << iter.first << " " << iter.second.getSize().x << endl;
-	}*/
-
-//Vertex
-/*int MapScene::CreateBackGround(int c, int r)
-{
-	int TILE_WIDTH = 32;
-	int TILE_HEIGHT = 32;
-	int TILE_TYPES = 0;
-	int VERTS_IN_QUAD = 4;
-
-	int cols = mapHeight;
-	int rows = mapWidth;
-
-	vertexMap.setPrimitiveType(Quads);
-	vertexMap.resize(cols * rows * VERTS_IN_QUAD);
-
-	int index = r + c * cols;
-	int vertexIndex = index * VERTS_IN_QUAD;
-
-	float x = c * gridSizeF;
-	float y = r * gridSizeF;
-
-	vertexMap[vertexIndex + 0].position = Vector2f(x, y);
-	vertexMap[vertexIndex + 1].position = Vector2f(x + TILE_WIDTH, y);
-	vertexMap[vertexIndex + 2].position = Vector2f(x + TILE_WIDTH, y + TILE_HEIGHT);
-	vertexMap[vertexIndex + 3].position = Vector2f(x, y + TILE_HEIGHT);
-	
-	vertexMap[vertexIndex + 0].texCoords = Vector2f(0.f, 0.f);
-	vertexMap[vertexIndex + 1].texCoords = Vector2f(TILE_WIDTH, 0.f);
-	vertexMap[vertexIndex + 2].texCoords = Vector2f(TILE_WIDTH, TILE_HEIGHT);
-	vertexMap[vertexIndex + 3].texCoords = Vector2f(0.f, TILE_HEIGHT);
-	
-	return cols * rows;
-}*/
-
-//csv 파일쓰기
-/*
-
-csvfile csv("Test.csv");
-csv << "X" << "VALUE" << endrow;
-// Data
-int i = 1;
-csv << i++ << 123 << endrow;
-
-*/
-
-//미리보기
-/*
-	fromX = mousePosGrid.x;
-	toX = mousePosGrid.x + 3;
-
-	fromY = mousePosGrid.y;
-	toY = mousePosGrid.y + 3;
-
-	if (fromX < 0)
-	{
-		fromX = 0;
-	}
-	else if (fromX >= mapSize)
-	{
-		fromX = mapSize - 1;
-	}
-
-	if (toX < 0)
-	{
-		toX = 0;
-	}
-	else if (toX >= mapSize)
-	{
-		toX = mapSize - 1;
-	}
-
-	if (fromY < 0)
-	{
-		fromY = 0;
-	}
-	else if (fromY >= mapSize)
-	{
-		fromY = mapSize - 1;
-	}
-
-	if (toY < 0)
-	{
-		toY = 0;
-	}
-	else if (toY >= mapSize)
-	{
-		toY = mapSize - 1;
-	}
-
-	for (int i = fromX; i < toX; i++)
-	{
-		for (int j = fromY; j < toY; j++)
-		{
-			window->draw(tileMap[i][j]);
-		}
-	}
-	*/
