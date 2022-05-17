@@ -20,6 +20,7 @@ private:
 	View* uiView;
 
 	SceneManager sceneMgr;
+
 	TextureHolder textureHolder;
 	SoundHolder soundHolder;
 
@@ -32,6 +33,8 @@ private:
 
 	candle::RadialLight light;
 	candle::EdgeVector edges;
+
+	bool isFulltScreen;
 	
 public:
 	bool Initialize();

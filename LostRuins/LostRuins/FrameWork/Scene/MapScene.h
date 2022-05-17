@@ -7,11 +7,8 @@
 #include "../Mgr/TextureHolder.h"
 #include "../Object/Player/Player.h"
 #include "../Object/Monster/Monster.h"
-#include "../Object/Monster/ZombieCrawler.h"
-#include "../Object/Monster/ZombieWalker.h"
+#include "../Object/Monster/GoblinAttacker.h"
 #include "../Object/CollisionBlock/CollisionBlock.h"
-#include "TestSceneUI/TestSceneUi.h"
-#include "../Map/Map.h"
 
 enum class ButtonType
 {
@@ -66,6 +63,7 @@ struct ObjectResource
 struct InputData
 {
 	RectangleShape shape;
+
 	string resourceId;
 	float rotate;
 	float scaleX;
@@ -157,7 +155,7 @@ public:
 	virtual void Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView);
 	virtual void Draw(RenderWindow* window, View* mainView, View* uiView);
 
-	void MapDataInit();
+	void DefaultMapInit();
 
 	void MoveView(float dt);
 	void UpdateMousePos(RenderWindow* window);

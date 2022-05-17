@@ -11,7 +11,7 @@ MapScene::MapScene() : gridSizeF(32.f), gridSizeU(static_cast<unsigned>(gridSize
 
 void MapScene::Init(SceneManager* sceneManager)
 {
-	MapDataInit();
+	DefaultMapInit();
 
 	VIEW_SPEED = mapWidth * 10.f;
 	this->sceneMgr = sceneManager;
@@ -69,6 +69,59 @@ void MapScene::Init(SceneManager* sceneManager)
 	//Default Button Set
 	CreateDefaultButtonSet();
 }
+
+void MapScene::DefaultMapInit()
+{
+	//Map Resource
+	rapidcsv::Document resouceBackGrounds("data_tables/maps/Resource_BackGround.csv");
+	std::vector<std::string> colResouceBackGroundsId = resouceBackGrounds.GetColumn<std::string>("resourceId");
+	std::vector<std::string> colResouceBackGroundsPath = resouceBackGrounds.GetColumn<std::string>("resourcePath");
+	int totalResouceBackGrounds = colResouceBackGroundsId.size();
+	for (int i = 0; i < totalResouceBackGrounds; ++i)
+	{
+		backGroundResource.insert({ colResouceBackGroundsId[i], TextureHolder::GetTexture(colResouceBackGroundsPath[i]) });
+	}
+
+	rapidcsv::Document resouceObjects("data_tables/maps/Resource_Object.csv");
+	std::vector<std::string> colResouceObjectsId = resouceObjects.GetColumn<std::string>("resourceId");
+	std::vector<std::string> colResouceObjectsPath = resouceObjects.GetColumn<std::string>("resourcePath");
+	std::vector<std::string> colResouceObjectsType = resouceObjects.GetColumn<std::string>("resourceType");
+	int totalResouceObjects = colResouceObjectsId.size();
+	for (int i = 0; i < totalResouceObjects; ++i)
+	{
+		ObjectResource object;
+		object.tex = TextureHolder::GetTexture(colResouceObjectsPath[i]);
+		object.type = colResouceObjectsType[i];
+		objectResource.insert({ colResouceObjectsId[i], object });
+	}
+
+	rapidcsv::Document resouceTerrains("data_tables/maps/Resource_Terrain.csv");
+	std::vector<std::string> colResouceTerrainsId = resouceTerrains.GetColumn<std::string>("resourceId");
+	std::vector<std::string> colResouceTerrainsPath = resouceTerrains.GetColumn<std::string>("resourcePath");
+	int totalResouceTerrains = colResouceTerrainsId.size();
+	for (int i = 0; i < totalResouceTerrains; ++i)
+	{
+		TerrainResource terrain;
+		terrain.tex = TextureHolder::GetTexture(colResouceTerrainsPath[i]);
+		terrain.type = "T";
+		terrainResource.insert({ colResouceTerrainsId[i], terrain });
+	}
+
+	//Map information
+	rapidcsv::Document clips("data_tables/maps/Map_Default.csv");
+	std::vector<std::string> colId = clips.GetColumn<std::string>("mapId");
+	std::vector<int> colWidth = clips.GetColumn<int>("mapWidth");
+	std::vector<int> colHeight = clips.GetColumn<int>("mapHeight");
+	std::vector<std::string> colspritePath = clips.GetColumn<std::string>("spritePath");
+	std::vector<std::string> colblockPath = clips.GetColumn<std::string>("blockPath");
+	int totalMaps = colId.size();
+
+	mapWidth = colWidth[0];
+	mapHeight = colHeight[0];
+	spritePath = colspritePath[0];
+	blockPath = colblockPath[0];
+}
+
 
 void MapScene::Update(float dt, Time playTime, RenderWindow* window, View* mainView, View* uiView)
 {
@@ -760,57 +813,6 @@ void MapScene::SetCurrentDrawState(ButtonState state)
 	currentDrawState = state;
 }
 
-void MapScene::MapDataInit()
-{
-	//Map Resource
-	rapidcsv::Document resouceBackGrounds("data_tables/maps/Resource_BackGround.csv");
-	std::vector<std::string> colResouceBackGroundsId = resouceBackGrounds.GetColumn<std::string>("resourceId");
-	std::vector<std::string> colResouceBackGroundsPath = resouceBackGrounds.GetColumn<std::string>("resourcePath");
-	int totalResouceBackGrounds = colResouceBackGroundsId.size();
-	for (int i = 0; i < totalResouceBackGrounds; ++i)
-	{
-		backGroundResource.insert({ colResouceBackGroundsId[i], TextureHolder::GetTexture(colResouceBackGroundsPath[i])});
-	}
-
-	rapidcsv::Document resouceObjects("data_tables/maps/Resource_Object.csv");
-	std::vector<std::string> colResouceObjectsId = resouceObjects.GetColumn<std::string>("resourceId");
-	std::vector<std::string> colResouceObjectsPath = resouceObjects.GetColumn<std::string>("resourcePath");
-	std::vector<std::string> colResouceObjectsType = resouceObjects.GetColumn<std::string>("resourceType");
-	int totalResouceObjects = colResouceObjectsId.size();
-	for (int i = 0; i < totalResouceObjects; ++i)
-	{
-		ObjectResource object;
-		object.tex = TextureHolder::GetTexture(colResouceObjectsPath[i]);
-		object.type = colResouceObjectsType[i];
-		objectResource.insert({ colResouceObjectsId[i], object });
-	}
-
-	rapidcsv::Document resouceTerrains("data_tables/maps/Resource_Terrain.csv");
-	std::vector<std::string> colResouceTerrainsId = resouceTerrains.GetColumn<std::string>("resourceId");
-	std::vector<std::string> colResouceTerrainsPath = resouceTerrains.GetColumn<std::string>("resourcePath");
-	int totalResouceTerrains = colResouceTerrainsId.size();
-	for (int i = 0; i < totalResouceTerrains; ++i)
-	{
-		TerrainResource terrain;
-		terrain.tex = TextureHolder::GetTexture(colResouceTerrainsPath[i]);
-		terrain.type = "T";
-		terrainResource.insert({ colResouceTerrainsId[i], terrain });
-	}
-
-	//Map information
-	rapidcsv::Document clips("data_tables/maps/Map_Clips.csv");
-	std::vector<std::string> colId = clips.GetColumn<std::string>("mapId");
-	std::vector<int> colWidth = clips.GetColumn<int>("mapWidth");
-	std::vector<int> colHeight = clips.GetColumn<int>("mapHeight");
-	std::vector<std::string> colspritePath = clips.GetColumn<std::string>("spritePath");
-	std::vector<std::string> colblockPath = clips.GetColumn<std::string>("blockPath");
-	int totalMaps = colId.size();
-
-	mapWidth = colWidth[0];
-	mapHeight = colHeight[0];
-	spritePath = colspritePath[0];
-	blockPath = colblockPath[0];
-}
 
 void MapScene::UpdateSelectTexture()
 {

@@ -25,6 +25,8 @@ bool FrameWork::Initialize()
 	light.setRange(0);
 	edges.emplace_back(sf::Vector2f(200.f, 100.f), sf::Vector2f(200.f, 300.f));
 	
+	isFulltScreen = false;
+
 	return true;
 }
 
@@ -42,19 +44,28 @@ void FrameWork::Update()
 			break;
 
 		//ESC close
-		/*case Event::KeyPressed:
+		case Event::KeyPressed:
 			if (event.key.code == Keyboard::Escape)
 			{
 				window->close();
 			}
-			break;
-		*/
 
-		/*case Event::MouseMoved:
-			light.setPosition(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
-			light.castLight(edges.begin(), edges.end());
+			if (event.key.code == Keyboard::F5)
+			{
+				isFulltScreen = !isFulltScreen;
+
+				if (isFulltScreen)
+				{
+					window->create(VideoMode(resolution.x, resolution.y), "Lost Ruins", Style::Fullscreen);
+				}
+				else
+				{
+					window->create(VideoMode(resolution.x, resolution.y), "Lost Ruins", Style::Default);
+				}
+				
+			}
 			break;
-		*/
+		
 		default:
 			break;
 		}
