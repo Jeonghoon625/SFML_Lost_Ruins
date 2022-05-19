@@ -286,6 +286,7 @@ void Monster::SetStatus(MonsterStatus newStatus)
 		animation.Play(strDead);
 		break;
 	}
+	sprite.setOrigin((sprite.getTextureRect().width) * 0.5f, sprite.getTextureRect().height);
 }
 
 void Monster::Walk(float dt)
