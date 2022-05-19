@@ -730,7 +730,7 @@ void TestUi::Draw(RenderWindow* window, View* mainView)
 	window->draw(ButtonM);
 	window->draw(ButtonX);
 	window->draw(ButtonZ);
-	window->draw(ButtonS);
+	window->draw(ButtonState);
 	window->draw(ButtonA);
 
 	window->draw(textHPbar); // 체력숫자
@@ -1565,9 +1565,9 @@ void TestUi::Initstartimg()
 	ButtonZ.setTextureRect(IntRect(62, 605, 42, 40));
 	ButtonZ.setPosition(1780, 60);
 
-	ButtonS.setTexture(textureUI);
-	ButtonS.setTextureRect(IntRect(62, 605, 42, 40));
-	ButtonS.setPosition(1680, 10);
+	ButtonState.setTexture(textureUI);
+	ButtonState.setTextureRect(IntRect(62, 605, 42, 40));
+	ButtonState.setPosition(1680, 10);
 
 	ButtonA.setTexture(textureUI);
 	ButtonA.setTextureRect(IntRect(62, 605, 42, 40));

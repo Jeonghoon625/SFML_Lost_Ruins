@@ -10,13 +10,15 @@
 #include "../Object/Monster/GoblinAttacker.h"
 #include "../Object/CollisionBlock/CollisionBlock.h"
 
+using namespace std;
+
 enum class ButtonType
 {
 	DEFAULT,
 	TOGGLE
 };
 
-enum class ButtonCategory
+enum class ButtonState
 {
 	INPUT,
 	SELECT,
@@ -24,13 +26,15 @@ enum class ButtonCategory
 	DRAW
 };
 
-enum class ButtonState
+enum class ButtonCategory
 {
 	BLOCK,
 	OBJECT,
 	TERRAIN,
 	BACKGROUND,
 	GATE,
+	Save,
+	Load,
 	NONE
 };
 
@@ -41,8 +45,8 @@ struct Button
 	Text buttonText;
 
 	ButtonType buttonType;
-	ButtonCategory buttonCategory;
-	ButtonState buttonState;
+	ButtonState buttonCategory;
+	ButtonCategory buttonState;
 
 	bool isButtonClick;
 	bool isButtonToggle;
@@ -108,8 +112,8 @@ class MapScene : public Scene
 	Text currentMapIdText;
 	Font font;
 
-	ButtonState currentInputState;
-	ButtonState currentDrawState;
+	ButtonCategory currentInputState;
+	ButtonCategory currentDrawState;
 
 	vector<Button> buttons;
 
@@ -128,6 +132,7 @@ class MapScene : public Scene
 	map<string, TerrainResource> terrainResource;
 	map<string, ObjectResource> objectResource;
 	map<string, Texture> backGroundResource;
+	map<string, string> MapList;
 
 	bool isSelect;
 	bool isDelete;
@@ -162,7 +167,7 @@ public:
 	void MoveView(float dt);
 	void UpdateMousePos(RenderWindow* window);
 
-	Button InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonCategory category, ButtonState state);
+	Button InitButton(float left, float top, float width, float height, string name, ButtonType type, ButtonState category, ButtonCategory state);
 
 	void CreateDefaultButtonSet();
 	void CreateSelectButtonSet(string buttonName);
@@ -171,8 +176,8 @@ public:
 	bool UpdateButton();
 	void UpdateSelectTexture();
 
-	void SetCurrentInputState(ButtonState state);
-	void SetCurrentDrawState(ButtonState state);
+	void SetCurrentInputState(ButtonCategory state);
+	void SetCurrentDrawState(ButtonCategory state);
 
 	bool CompareInputData(InputData inputData, vector<InputData> inputDatas);
 

@@ -63,7 +63,7 @@ private:
 	Sprite ButtonTab;
 	Sprite ButtonM;
 	Sprite ButtonA;
-	Sprite ButtonS;
+	Sprite ButtonState;
 	Sprite ButtonZ;
 	Sprite ButtonX;
 	Sprite Invenwindow; // 인벤토리 창

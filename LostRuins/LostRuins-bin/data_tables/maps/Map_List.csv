@@ -1,5 +1,5 @@
-mapId,mapWidth,mapHeight,spritePath,blockPath
-Default,51,24,data_tables/maps/Sprite_Default.csv,data_tables/maps/Sprite_Default.csv
-1,51,24,data_tables/maps/Sprite_Map1.csv,data_tables/maps/Block_Map1.csv
-2,51,24,data_tables/maps/Sprite_Map2.csv,data_tables/maps/Block_Map2.csv
-3,51,24,data_tables/maps/Sprite_Map3.csv,data_tables/maps/Block_Map3.csv
+mapId,mapWidth,mapHeight
+RoomA,30,15
+RoomB,15,30
+RoomC,30,15
+RoomD,15,30
